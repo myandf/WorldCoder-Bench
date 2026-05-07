@@ -1,0 +1,251 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "fullPath": "cr:fullPath",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "Scene3D-Bench Core Dataset",
+  "description": "Scene3D-Bench is a benchmark for evaluating large language models (LLMs) on interactive 3D web scene generation using Three.js. The dataset contains 205 task definitions spanning 15 domains (physics, game, product, architecture, animation, visualization, molecular, post-processing, shaders, materials, chemistry, soft-body, creative, complex system, graphics), along with 74 shared 3D assets in GLB format. Each task includes a natural language prompt, domain label, difficulty level (L3-L6), and optional physics constraints. The benchmark introduces a Probe-First evaluation paradigm that reads the Three.js scene state via window.__3D_STATE__ rather than relying on screenshots or DOM inspection.",
+  "url": "https://github.com/ANONYMOUS/scene3d-bench-core",
+  "version": "1.0.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "isLiveDataset": false,
+  "keywords": [
+    "3D generation",
+    "LLM benchmark",
+    "Three.js",
+    "interactive scenes",
+    "physics simulation",
+    "web3D",
+    "evaluation",
+    "code generation"
+  ],
+  "creator": {
+    "@type": "sc:Organization",
+    "name": "Anonymous (under double-blind review)"
+  },
+  "datePublished": "2026",
+  "inLanguage": "en",
+  "rai:dataCollection": "Task prompts were designed by human experts in 3D graphics and machine learning. Each task was manually crafted to test specific capabilities in interactive 3D scene generation. 3D assets were sourced from publicly available repositories (Khronos glTF Sample Assets, Sketchfab, Mixamo) under open licenses.",
+  "rai:dataCollectionType": "human-generated",
+  "rai:dataUseCases": "This dataset is intended for research purposes: evaluating LLM code generation capabilities for interactive 3D web applications. It may be used to train or fine-tune models, benchmark model performance, or study LLM capabilities in structured code generation.",
+  "rai:annotationsPerItem": "1",
+  "rai:annotatorDemographics": "Not applicable — tasks are expert-designed, not crowd-annotated.",
+  "rai:machineGeneratedFields": "Task prompts are human-authored. The window.__3D_STATE__ schema within each prompt was also human-designed to ensure precise programmatic evaluation.",
+  "rai:personalSensitiveInformation": "None. No personal data is collected or included.",
+  "rai:dataLimitations": "1. Tasks are focused on Three.js r170; other frameworks are not covered. 2. Difficulty calibration was performed on frontier LLMs available as of early 2026; calibration may shift for future models. 3. Some 3D assets (Mixamo) require research-use acknowledgment; commercial use may require separate licensing.",
+  "rai:socialImpact": "Scene3D-Bench enables systematic evaluation of LLMs for 3D interactive content creation, supporting research on AI-assisted 3D development tools. No offensive or harmful content is included in task definitions or assets.",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "tasks-archive",
+      "name": "tasks",
+      "description": "Directory containing 205 task definition JSON files",
+      "contentUrl": "https://github.com/ANONYMOUS/scene3d-bench-core/tree/main/tasks",
+      "encodingFormat": "application/x-directory"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "assets-archive",
+      "name": "assets",
+      "description": "Directory containing 74 shared 3D assets in GLB format",
+      "contentUrl": "https://github.com/ANONYMOUS/scene3d-bench-core/tree/main/assets",
+      "encodingFormat": "application/x-directory"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "task-json-files",
+      "name": "Task JSON files",
+      "description": "All task.json files defining benchmark tasks",
+      "containedIn": {
+        "@id": "tasks-archive"
+      },
+      "includes": "tasks/*/task.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "glb-asset-files",
+      "name": "GLB 3D asset files",
+      "description": "Shared 3D model assets in GL Transmission Format Binary",
+      "containedIn": {
+        "@id": "assets-archive"
+      },
+      "includes": "assets/*.glb",
+      "encodingFormat": "model/gltf-binary"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tasks",
+      "name": "Benchmark Tasks",
+      "description": "205 task definitions for evaluating LLM 3D scene generation",
+      "key": {
+        "@id": "tasks/id"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/id",
+          "name": "id",
+          "description": "Unique task identifier (e.g., P1_procedural_gas_law_...)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/title",
+          "name": "title",
+          "description": "Human-readable task title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/domain",
+          "name": "domain",
+          "description": "Task domain (physics, game, product, architecture, etc.)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/difficulty",
+          "name": "difficulty",
+          "description": "Task difficulty level: L3 (basic), L4 (moderate), L5 (high), L6 (expert)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.difficulty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/framework",
+          "name": "framework",
+          "description": "Target JavaScript 3D framework (three.js)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.framework"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/prompt",
+          "name": "prompt",
+          "description": "Full natural language task description provided to the LLM",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/assets",
+          "name": "assets",
+          "description": "List of required 3D asset file paths (relative to repository root)",
+          "dataType": "sc:Text",
+          "repeated": true,
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.assets"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/physics_constraints",
+          "name": "physics_constraints",
+          "description": "Optional formal physics constraints string for tasks requiring precise numerical physics",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "task-json-files"
+            },
+            "extract": {
+              "jsonPath": "$.physics_constraints"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
