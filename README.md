@@ -51,14 +51,11 @@ WorldCoder-Bench/
 │   └── ... (74 files total)
 └── tasks/                    # Task definitions (205 tasks)
     ├── P1_procedural_gas_law_pv_nrt_interactive_de/
-    │   ├── task.json
-    │   └── icg.json
+    │   └── task.json
     ├── P2_lewis_structure_3d_bond_builder_with_sav/
-    │   ├── task.json
-    │   └── icg.json
+    │   └── task.json
     ├── P3_avocado_slicer/
     │   ├── task.json
-    │   ├── icg.json
     │   └── assets/            # Task-specific 3D assets
     │       └── Avocado.glb
     └── ... (205 task directories)
@@ -68,7 +65,6 @@ WorldCoder-Bench/
 
 Each task directory contains:
 - `task.json` — Task definition and natural language prompt (see schema below)
-- `icg.json` — Interaction-Contract Graph: automated evaluation protocol with state assertions and DOM checks
 - `assets/` *(optional)* — Task-specific 3D assets
 
 ### `task.json` Schema
@@ -250,7 +246,7 @@ Scene3D-Bench introduces two key innovations:
 
 ## License
 
-- **Task definitions** (`tasks/*/task.json`, `tasks/*/icg.json`): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- **Task definitions** (`tasks/*/task.json`): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - **3D assets** (`assets/*.glb`): Individual original licenses (CC0 / CC-BY 4.0 / Adobe Standard License) — see attribution table above
 
 ---
