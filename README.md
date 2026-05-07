@@ -248,27 +248,17 @@ Scene3D-Bench introduces two key innovations:
 
 ## License
 
-- **Task definitions** (`tasks/*/task.json`): [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- **Task definitions** (`tasks/*/task.json`): [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
 - **3D assets** (`assets/*.glb`): Individual original licenses (CC0 / CC-BY 4.0 / Adobe Standard License) — see attribution table above
-- **Code and scripts**: MIT License
 
 ---
 
 ## Citation
 
-If you use this dataset, please cite:
-
-```bibtex
-@inproceedings{scene3dbench2026,
-  title     = {Scene3D-Bench: Benchmarking LLMs on Interactive 3D Web Scene Generation},
-  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
-  year      = {2026},
-  note      = {Evaluations \& Datasets Track}
-}
-```
+Citation information will be provided upon publication.
 
 ---
 
 ## Contact
 
-For questions about the dataset, please open a GitHub issue.
+For questions about the dataset, please contact via the submission system.
