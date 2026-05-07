@@ -43,22 +43,23 @@ This repository contains the **core task dataset** for Scene3D-Bench, a benchmar
 ## Repository Structure
 
 ```
-scene3d-bench-core/
+WorldCoder-Bench/
 ├── README.md
-├── LICENSE
-├── croissant.json             # Croissant machine-readable metadata
 ├── assets/                   # Shared 3D assets (74 GLB files, CC0/CC-BY)
 │   ├── ABeautifulGame.glb
 │   ├── AnimatedMorphCube.glb
 │   └── ... (74 files total)
 └── tasks/                    # Task definitions (205 tasks)
     ├── P1_procedural_gas_law_pv_nrt_interactive_de/
-    │   └── task.json
+    │   ├── task.json
+    │   └── icg.json
     ├── P2_lewis_structure_3d_bond_builder_with_sav/
-    │   └── task.json
+    │   ├── task.json
+    │   └── icg.json
     ├── P3_avocado_slicer/
     │   ├── task.json
-    │   └── assets/            # Task-specific asset symlinks or copies
+    │   ├── icg.json
+    │   └── assets/            # Task-specific 3D assets
     │       └── Avocado.glb
     └── ... (205 task directories)
 ```
@@ -66,8 +67,9 @@ scene3d-bench-core/
 ### Task Directory Structure
 
 Each task directory contains:
-- `task.json` — Task definition (see schema below)
-- `assets/` *(optional)* — Symbolic copies of required GLB assets for that task
+- `task.json` — Task definition and natural language prompt (see schema below)
+- `icg.json` — Interaction-Contract Graph: automated evaluation protocol with state assertions and DOM checks
+- `assets/` *(optional)* — Task-specific 3D assets
 
 ### `task.json` Schema
 
@@ -248,7 +250,7 @@ Scene3D-Bench introduces two key innovations:
 
 ## License
 
-- **Task definitions** (`tasks/*/task.json`): [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
+- **Task definitions** (`tasks/*/task.json`, `tasks/*/icg.json`): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - **3D assets** (`assets/*.glb`): Individual original licenses (CC0 / CC-BY 4.0 / Adobe Standard License) — see attribution table above
 
 ---
