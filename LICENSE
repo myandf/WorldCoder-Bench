@@ -1,0 +1,42 @@
+Creative Commons Attribution 4.0 International License (CC-BY 4.0)
+
+Copyright (c) 2026 Scene3D-Bench Authors
+
+This work is licensed under the Creative Commons Attribution 4.0 International License.
+
+You are free to:
+  - Share — copy and redistribute the material in any medium or format
+  - Adapt — remix, transform, and build upon the material for any purpose,
+    even commercially.
+
+Under the following terms:
+  - Attribution — You must give appropriate credit, provide a link to the license,
+    and indicate if changes were made. You may do so in any reasonable manner,
+    but not in any way that suggests the licensor endorses you or your use.
+
+No additional restrictions — You may not apply legal terms or technological
+measures that legally restrict others from doing anything the license permits.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+---
+
+THIRD-PARTY ASSETS
+==================
+
+3D assets in the assets/ directory are subject to their original licenses:
+
+- Khronos glTF Sample Assets (KhronosGroup): CC0 1.0 Universal
+  https://github.com/KhronosGroup/glTF-Sample-Assets
+
+- Mixamo characters (Michelle.glb, Xbot.glb, kira.glb, soldier.glb):
+  Adobe Standard License (free for non-commercial/research use)
+  https://www.adobe.com/legal/terms.html
+
+- Sketchfab assets: CC0 1.0 or CC-BY 4.0 as indicated per asset
+  https://creativecommons.org/licenses/by/4.0/
+
+- Ready Player Me (readyplayer.me.glb): For research use only
+  https://readyplayer.me/
+
+Please review individual asset licenses before redistribution.
