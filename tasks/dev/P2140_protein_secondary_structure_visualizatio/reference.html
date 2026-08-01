@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protein Secondary Structure Viewer</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; background: #1a1a2e; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+canvas { display: block; }
+
+#hud {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.75);
+  color: #e0e0e0;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  min-width: 220px;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+#hud .label { color: #888; }
+#hud .value { color: #fff; font-weight: 600; }
+#hud .helix-color { color: #ff4444; }
+#hud .sheet-color { color: #44aaff; }
+#hud .coil-color { color: #44ff44; }
+
+#buttons {
+  position: absolute;
+  top: 10px;
+  left: 260px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+#buttons button {
+  background: rgba(255,255,255,0.1);
+  color: #e0e0e0;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+#buttons button:hover { background: rgba(255,255,255,0.2); }
+#buttons button.active { background: rgba(100,180,255,0.3); border-color: #44aaff; color: #fff; }
+
+#info-bar {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  color: #e0e0e0;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 13px;
+  border: 1px solid rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<div id="hud"></div>
+
+<div id="buttons">
+  <button id="btn-backbone" class="active">Backbone</button>
+  <button id="btn-ribbon">Ribbon</button>
+  <button id="btn-spacefill">Spacefill</button>
+  <button id="btn-pulse">Toggle Pulse</button>
+  <button id="btn-rotation">Toggle Rotation</button>
+  <button id="btn-reset">Reset View</button>
+</div>
+
+<div id="info-bar">No residue selected</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+// --- Protein chain data ---
+const residues = [];
+for (let i = 0; i < 30; i++) {
+  let type;
+  if (i <= 9) type = 'helix';
+  else if (i <= 17) type = 'sheet';
+  else if (i <= 24) type = 'coil';
+  else type = 'helix';
+
+  const x = i * 1.2 - 18;
+  let y, z;
+  if (type === 'helix') {
+    y = Math.sin(i * 0.5) * 3;
+    z = Math.cos(i * 0.5) * 3;
+  } else if (type === 'sheet') {
+    y = 0;
+    z = 0;
+  } else {
+    y = Math.sin(i * 0.8) * 1.5;
+    z = Math.cos(i * 0.8) * 1.5;
+  }
+
+  residues.push({ index: i, type, position: { x, y, z } });
+}
+
+const typeColors = {
+  helix: 0xff4444,
+  sheet: 0x44aaff,
+  coil: 0x44ff44
+};
+
+const helixCount = 15;
+const sheetCount = 8;
+const coilCount = 7;
+const totalResidues = 30;
+const helixPercentage = 50.0;
+const sheetPercentage = parseFloat((sheetCount / totalResidues * 100).toFixed(2));
+const coilPercentage = parseFloat((coilCount / totalResidues * 100).toFixed(2));
+
+// --- State ---
+window.__3D_STATE__ = {
+  visualizationMode: 'backbone',
+  selectedResidueIndex: -1,
+  selectedResidueType: '',
+  totalResidues,
+  helixCount,
+  sheetCount,
+  coilCount,
+  helixPercentage,
+  sheetPercentage,
+  coilPercentage,
+  pulseActive: false,
+  autoRotate: false,
+  cameraPosition: { x: 0, y: 15, z: 40 },
+  proteinGroupRotationY: 0,
+  residueScales: new Array(30).fill(1.0),
+  microscopeModelLoaded: false,
+  residuePositions: residues.map(r => ({ ...r.position })),
+  frameCount: 0
+};
+
+const state = window.__3D_STATE__;
+
+// --- Scene setup ---
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1a2e);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(0, 15, 40);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 0, 0);
+
+// --- Lights ---
+const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+scene.add(ambient);
+
+const dir1 = new THREE.DirectionalLight(0xffffff, 0.8);
+dir1.position.set(10, 20, 15);
+scene.add(dir1);
+
+const dir2 = new THREE.DirectionalLight(0xffffff, 0.4);
+dir2.position.set(-10, -5, 10);
+scene.add(dir2);
+
+// --- Load GLB model ---
+const gltfLoader = new GLTFLoader();
+let microscopeModel = null;
+gltfLoader.load(
+  'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/models/gltf/AntiqueCamera.glb',
+  (gltf) => {
+    microscopeModel = gltf.scene;
+    microscopeModel.scale.set(0.02, 0.02, 0.02);
+    microscopeModel.position.set(18, -5, 0);
+    scene.add(microscopeModel);
+    state.microscopeModelLoaded = true;
+  },
+  undefined,
+  (err) => {
+    console.warn('GLB load failed:', err);
+  }
+);
+
+// --- Protein group ---
+const proteinGroup = new THREE.Group();
+scene.add(proteinGroup);
+
+// Track clickable meshes per residue
+let residueMeshes = []; // array of { index, meshes: [mesh, ...] }
+let allClickables = [];
+let previousHighlighted = null;
+
+function clearProteinGroup() {
+  while (proteinGroup.children.length > 0) {
+    const child = proteinGroup.children[0];
+    proteinGroup.remove(child);
+    child.traverse(c => {
+      if (c.geometry) c.geometry.dispose();
+      if (c.material) {
+        if (Array.isArray(c.material)) c.material.forEach(m => m.dispose());
+        else c.material.dispose();
+      }
+    });
+  }
+  residueMeshes = [];
+  allClickables = [];
+  previousHighlighted = null;
+}
+
+function makeMaterial(type) {
+  return new THREE.MeshPhongMaterial({
+    color: typeColors[type],
+    shininess: 60
+  });
+}
+
+function createCylinderBetween(p1, p2, radius, material) {
+  const dir = new THREE.Vector3().subVectors(p2, p1);
+  const len = dir.length();
+  const geo = new THREE.CylinderGeometry(radius, radius, len, 8);
+  const mesh = new THREE.Mesh(geo, material);
+  const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+  mesh.position.copy(mid);
+  dir.normalize();
+  const up = new THREE.Vector3(0, 1, 0);
+  const quat = new THREE.Quaternion().setFromUnitVectors(up, dir);
+  mesh.quaternion.copy(quat);
+  return mesh;
+}
+
+function buildBackbone() {
+  clearProteinGroup();
+  const sphereGeo = new THREE.SphereGeometry(0.4, 16, 16);
+
+  for (let i = 0; i < 30; i++) {
+    const r = residues[i];
+    const mat = makeMaterial(r.type);
+    const sphere = new THREE.Mesh(sphereGeo, mat);
+    sphere.position.set(r.position.x, r.position.y, r.position.z);
+    sphere.userData = { residueIndex: i };
+    proteinGroup.add(sphere);
+    residueMeshes.push({ index: i, meshes: [sphere] });
+    allClickables.push(sphere);
+
+    if (i > 0) {
+      const prev = residues[i - 1];
+      const p1 = new THREE.Vector3(prev.position.x, prev.position.y, prev.position.z);
+      const p2 = new THREE.Vector3(r.position.x, r.position.y, r.position.z);
+      const bondMat = new THREE.MeshPhongMaterial({ color: 0x888888, shininess: 30 });
+      const cyl = createCylinderBetween(p1, p2, 0.08, bondMat);
+      proteinGroup.add(cyl);
+    }
+  }
+}
+
+function buildRibbon() {
+  clearProteinGroup();
+
+  for (let i = 0; i < 30; i++) {
+    const r = residues[i];
+    const pos = new THREE.Vector3(r.position.x, r.position.y, r.position.z);
+    let mesh;
+
+    if (r.type === 'helix') {
+      const geo = new THREE.SphereGeometry(0.6, 16, 16);
+      const mat = makeMaterial(r.type);
+      mesh = new THREE.Mesh(geo, mat);
+      mesh.position.copy(pos);
+
+      // Connect helix residues with tube
+      if (i > 0 && residues[i - 1].type === 'helix') {
+        const prev = residues[i - 1];
+        const p1 = new THREE.Vector3(prev.position.x, prev.position.y, prev.position.z);
+        const tubeMat = new THREE.MeshPhongMaterial({ color: typeColors.helix, shininess: 40 });
+        const cyl = createCylinderBetween(p1, pos, 0.6, tubeMat);
+        proteinGroup.add(cyl);
+      }
+    } else if (r.type === 'sheet') {
+      const geo = new THREE.BoxGeometry(2, 0.2, 1.0);
+      const mat = makeMaterial(r.type);
+      mesh = new THREE.Mesh(geo, mat);
+      mesh.position.copy(pos);
+    } else {
+      const geo = new THREE.SphereGeometry(0.15, 12, 12);
+      const mat = makeMaterial(r.type);
+      mesh = new THREE.Mesh(geo, mat);
+      mesh.position.copy(pos);
+
+      if (i > 0 && residues[i - 1].type === 'coil') {
+        const prev = residues[i - 1];
+        const p1 = new THREE.Vector3(prev.position.x, prev.position.y, prev.position.z);
+        const tubeMat = new THREE.MeshPhongMaterial({ color: typeColors.coil, shininess: 40 });
+        const cyl = createCylinderBetween(p1, pos, 0.15, tubeMat);
+        proteinGroup.add(cyl);
+      }
+    }
+
+    mesh.userData = { residueIndex: i };
+    proteinGroup.add(mesh);
+    residueMeshes.push({ index: i, meshes: [mesh] });
+    allClickables.push(mesh);
+  }
+}
+
+function buildSpacefill() {
+  clearProteinGroup();
+  const sphereGeo = new THREE.SphereGeometry(0.9, 20, 20);
+
+  for (let i = 0; i < 30; i++) {
+    const r = residues[i];
+    const mat = makeMaterial(r.type);
+    const sphere = new THREE.Mesh(sphereGeo, mat);
+    sphere.position.set(r.position.x, r.position.y, r.position.z);
+    sphere.userData = { residueIndex: i };
+    proteinGroup.add(sphere);
+    residueMeshes.push({ index: i, meshes: [sphere] });
+    allClickables.push(sphere);
+  }
+}
+
+function buildVisualization(mode) {
+  state.visualizationMode = mode;
+  if (mode === 'backbone') buildBackbone();
+  else if (mode === 'ribbon') buildRibbon();
+  else if (mode === 'spacefill') buildSpacefill();
+
+  // Re-apply selection highlight
+  if (state.selectedResidueIndex >= 0) {
+    highlightResidue(state.selectedResidueIndex);
+  }
+
+  updateButtons();
+  updateHUD();
+}
+
+function highlightResidue(idx) {
+  // Clear previous
+  clearHighlight();
+
+  if (idx < 0 || idx >= 30) {
+    state.selectedResidueIndex = -1;
+    state.selectedResidueType = '';
+    updateInfoBar();
+    updateHUD();
+    return;
+  }
+
+  state.selectedResidueIndex = idx;
+  state.selectedResidueType = residues[idx].type;
+
+  const entry = residueMeshes.find(e => e.index === idx);
+  if (entry) {
+    entry.meshes.forEach(m => {
+      if (m.material) {
+        m.material.emissive = new THREE.Color(0xffff00);
+        m.material.emissiveIntensity = 0.5;
+      }
+    });
+    previousHighlighted = entry;
+  }
+
+  updateInfoBar();
+  updateHUD();
+}
+
+function clearHighlight() {
+  if (previousHighlighted) {
+    previousHighlighted.meshes.forEach(m => {
+      if (m.material) {
+        m.material.emissive = new THREE.Color(0x000000);
+        m.material.emissiveIntensity = 0;
+      }
+    });
+    previousHighlighted = null;
+  }
+}
+
+function deselectResidue() {
+  clearHighlight();
+  state.selectedResidueIndex = -1;
+  state.selectedResidueType = '';
+  updateInfoBar();
+  updateHUD();
+}
+
+// --- Raycasting ---
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+renderer.domElement.addEventListener('click', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(allClickables, false);
+
+  if (intersects.length > 0) {
+    const hit = intersects[0].object;
+    if (hit.userData.residueIndex !== undefined) {
+      highlightResidue(hit.userData.residueIndex);
+      return;
+    }
+  }
+  deselectResidue();
+});
+
+// --- UI ---
+function updateHUD() {
+  const hud = document.getElementById('hud');
+  hud.innerHTML = `
+    <div><span class="label">Mode:</span> <span class="value">${state.visualizationMode}</span></div>
+    <div><span class="label">Total Residues:</span> <span class="value">${totalResidues}</span></div>
+    <div><span class="helix-color">● Helix:</span> ${helixCount} (${helixPercentage.toFixed(1)}%)</div>
+    <div><span class="sheet-color">● Sheet:</span> ${sheetCount} (${sheetPercentage.toFixed(2)}%)</div>
+    <div><span class="coil-color">● Coil:</span> ${coilCount} (${coilPercentage.toFixed(2)}%)</div>
+    <div><span class="label">Selected:</span> <span class="value">${state.selectedResidueIndex >= 0 ? 'Residue ' + state.selectedResidueIndex + ' (' + state.selectedResidueType + ')' : 'None'}</span></div>
+    <div><span class="label">Pulse:</span> <span class="value">${state.pulseActive ? 'ON' : 'OFF'}</span></div>
+    <div><span class="label">Rotation:</span> <span class="value">${state.autoRotate ? 'ON' : 'OFF'}</span></div>
+  `;
+}
+
+function updateInfoBar() {
+  const bar = document.getElementById('info-bar');
+  if (state.selectedResidueIndex >= 0) {
+    bar.textContent = `Residue ${state.selectedResidueIndex}: ${state.selectedResidueType}`;
+  } else {
+    bar.textContent = 'No residue selected';
+  }
+}
+
+function updateButtons() {
+  document.getElementById('btn-backbone').classList.toggle('active', state.visualizationMode === 'backbone');
+  document.getElementById('btn-ribbon').classList.toggle('active', state.visualizationMode === 'ribbon');
+  document.getElementById('btn-spacefill').classList.toggle('active', state.visualizationMode === 'spacefill');
+  document.getElementById('btn-pulse').classList.toggle('active', state.pulseActive);
+  document.getElementById('btn-rotation').classList.toggle('active', state.autoRotate);
+}
+
+// --- Button handlers ---
+document.getElementById('btn-backbone').addEventListener('click', () => buildVisualization('backbone'));
+document.getElementById('btn-ribbon').addEventListener('click', () => buildVisualization('ribbon'));
+document.getElementById('btn-spacefill').addEventListener('click', () => buildVisualization('spacefill'));
+
+document.getElementById('btn-pulse').addEventListener('click', () => {
+  state.pulseActive = !state.pulseActive;
+  updateButtons();
+  updateHUD();
+});
+
+document.getElementById('btn-rotation').addEventListener('click', () => {
+  state.autoRotate = !state.autoRotate;
+  updateButtons();
+  updateHUD();
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  camera.position.set(0, 15, 40);
+  controls.target.set(0, 0, 0);
+  controls.update();
+  deselectResidue();
+  proteinGroup.rotation.y = 0;
+  state.proteinGroupRotationY = 0;
+});
+
+// --- Keyboard ---
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  if (key === '1') buildVisualization('backbone');
+  else if (key === '2') buildVisualization('ribbon');
+  else if (key === '3') buildVisualization('spacefill');
+  else if (key === 'p') {
+    state.pulseActive = !state.pulseActive;
+    updateButtons();
+    updateHUD();
+  } else if (key === 'r') {
+    state.autoRotate = !state.autoRotate;
+    updateButtons();
+    updateHUD();
+  } else if (key === 'n') {
+    const next = (state.selectedResidueIndex + 1) % 30;
+    highlightResidue(next);
+  } else if (key === 'b') {
+    let prev = state.selectedResidueIndex - 1;
+    if (prev < 0) prev = 29;
+    highlightResidue(prev);
+  }
+});
+
+// --- Resize ---
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// --- Initial build ---
+buildVisualization('backbone');
+updateHUD();
+
+// --- Animation loop ---
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const time = clock.getElapsedTime();
+  const delta = clock.getDelta();
+
+  // Auto-rotation
+  if (state.autoRotate) {
+    proteinGroup.rotation.y += 0.3 * (1 / 60);
+  }
+  state.proteinGroupRotationY = proteinGroup.rotation.y;
+
+  // Pulse animation
+  for (let i = 0; i < residueMeshes.length; i++) {
+    const entry = residueMeshes[i];
+    const idx = entry.index;
+    if (state.pulseActive) {
+      const s = 1.0 + 0.15 * Math.sin(time * 2 + idx * 0.3);
+      entry.meshes.forEach(m => m.scale.set(s, s, s));
+      state.residueScales[idx] = s;
+    } else {
+      entry.meshes.forEach(m => m.scale.set(1, 1, 1));
+      state.residueScales[idx] = 1.0;
+    }
+  }
+
+  // Update camera position in state
+  state.cameraPosition.x = camera.position.x;
+  state.cameraPosition.y = camera.position.y;
+  state.cameraPosition.z = camera.position.z;
+
+  state.frameCount++;
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+animate();
+</script>
+</body>
+</html>

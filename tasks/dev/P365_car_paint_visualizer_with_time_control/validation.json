@@ -1,0 +1,772 @@
+{
+  "task_id": "P365_car_paint_visualizer_with_time_control",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:20:44.902Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 9,
+      "total": 10,
+      "percent": 90
+    },
+    "sCov": {
+      "reached": 9,
+      "total": 9,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 37,
+      "total": 37,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 90,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 37,
+    "total": 37,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 8,
+  "total": 8,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "DuckModel",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "ColorSwatch0",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "ColorSwatch1",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "ColorSwatch2",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "FinishButton0",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "FinishButton1",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "FinishButton2",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "TimeSlider",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "AutoRotateBtn",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "TimeLabel",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintName === 'Ruby Red'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintName === 'Ruby Red'"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentFinishName === 'Glossy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishName === 'Glossy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunAngle)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunAngle)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintName === 'Ocean Blue'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintName === 'Ocean Blue'"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintColor === '#0055AA'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintColor === '#0055AA'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialMetalness >= 0 && window.__3D_STATE__.materialMetalness <= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialMetalness >= 0 && window.__3D_STATE__.materialMetalness <= 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentFinishIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishIndex === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentFinishName === 'Matte'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishName === 'Matte'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialRoughness - 0.8) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialRoughness - 0.8) < 0.1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialMetalness - 0.2) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialMetalness - 0.2) < 0.1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.timeSliderValue <= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.timeSliderValue <= 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunAngle < 0.2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunAngle < 0.2"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunPositionY < 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunPositionY < 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunIntensity <= 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunIntensity <= 0.3"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunPositionY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunPositionY)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.autoRotate === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.autoRotate === true"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.modelRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.modelRotationY)"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintName === 'Forest Green'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintName === 'Forest Green'"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintColor === '#228B22'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintColor === '#228B22'"
+        },
+        {
+          "expression": "window.__3D_STATE__.autoRotate === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.autoRotate === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentFinishIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishIndex === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentFinishName === 'Metallic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishName === 'Metallic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialRoughness - 0.25) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialRoughness - 0.25) < 0.1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialMetalness - 0.95) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialMetalness - 0.95) < 0.1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.timeSliderValue >= 95",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.timeSliderValue >= 95"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunAngle > 2.9",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunAngle > 2.9"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunPositionY < 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunPositionY < 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunIntensity <= 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunIntensity <= 0.3"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunIntensity)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunIntensity)"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintName === 'Ruby Red'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintName === 'Ruby Red'"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentFinishName === 'Glossy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishName === 'Glossy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunAngle)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunAngle)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintName === 'Ocean Blue'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintName === 'Ocean Blue'"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintColor === '#0055AA'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintColor === '#0055AA'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialMetalness >= 0 && window.__3D_STATE__.materialMetalness <= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialMetalness >= 0 && window.__3D_STATE__.materialMetalness <= 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentFinishIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishIndex === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentFinishName === 'Matte'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishName === 'Matte'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialRoughness - 0.8) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialRoughness - 0.8) < 0.1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialMetalness - 0.2) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialMetalness - 0.2) < 0.1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.timeSliderValue <= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.timeSliderValue <= 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunAngle < 0.2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunAngle < 0.2"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunPositionY < 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunPositionY < 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunIntensity <= 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunIntensity <= 0.3"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunPositionY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunPositionY)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.autoRotate === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.autoRotate === true"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.modelRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.modelRotationY)"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintName === 'Forest Green'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintName === 'Forest Green'"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintColor === '#228B22'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintColor === '#228B22'"
+        },
+        {
+          "expression": "window.__3D_STATE__.autoRotate === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.autoRotate === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentFinishIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishIndex === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentFinishName === 'Metallic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentFinishName === 'Metallic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialRoughness - 0.25) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialRoughness - 0.25) < 0.1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.materialMetalness - 0.95) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.materialMetalness - 0.95) < 0.1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentPaintIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentPaintIndex === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.timeSliderValue >= 95",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.timeSliderValue >= 95"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunAngle > 2.9",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunAngle > 2.9"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunPositionY < 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunPositionY < 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunIntensity <= 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunIntensity <= 0.3"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunIntensity)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunIntensity)"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 9,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 9,
+    "total": 9
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 0,
+      "total": 0
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 37,
+      "total": 37
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 36480
+}

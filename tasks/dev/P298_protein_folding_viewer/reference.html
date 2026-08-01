@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protein Folding Viewer</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1a2e;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #e6f1ff;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    #hud-panel {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      background: rgba(10, 12, 24, 0.78);
+      border: 1px solid rgba(120, 140, 200, 0.25);
+      border-radius: 10px;
+      padding: 12px 14px;
+      min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    #hud-panel h1 {
+      margin: 0 0 8px 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #9cc9ff;
+    }
+
+    .hud-row {
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 2px 0;
+    }
+
+    .label {
+      color: #9fb3d9;
+    }
+
+    .value {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    #reset-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 8px 10px;
+      background: #263a66;
+      color: #eef4ff;
+      border: 1px solid #4f6fb3;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    #reset-btn:hover {
+      background: #30497f;
+    }
+
+    #help {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 10;
+      background: rgba(10, 12, 24, 0.65);
+      border: 1px solid rgba(120, 140, 200, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #b9c6e6;
+      line-height: 1.5;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="hud-panel">
+      <h1>Protein Folding Viewer</h1>
+      <div class="hud-row"><span class="label">Mode:</span> <span class="value" id="mode-label">Backbone</span></div>
+      <div class="hud-row"><span class="label">Folding:</span> <span class="value" id="folding-label">Paused</span></div>
+      <div class="hud-row"><span class="label">Temperature:</span> <span class="value" id="temp-label">0.00</span></div>
+      <div class="hud-row"><span class="label">Atom Count:</span> <span class="value" id="atom-label">4532</span></div>
+      <button id="reset-btn">Reset View</button>
+    </div>
+
+    <div id="help">
+      Keys: 1 Backbone · 2 Surface · 3 Ribbon · SPACE Folding · T Temperature
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const app = document.getElementById('app');
+    const modeLabel = document.getElementById('mode-label');
+    const foldingLabel = document.getElementById('folding-label');
+    const tempLabel = document.getElementById('temp-label');
+    const atomLabel = document.getElementById('atom-label');
+    const resetBtn = document.getElementById('reset-btn');
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#1a1a2e');
+
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
+    const initialCameraPosition = new THREE.Vector3(0, 2, 5);
+    camera.position.copy(initialCameraPosition);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    app.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0, 0);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.update();
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 10, 7);
+    scene.add(directionalLight);
+
+    const grid = new THREE.GridHelper(10, 10, '#333366', '#333366');
+    grid.position.y = -2.05;
+    grid.material.transparent = true;
+    grid.material.opacity = 0.35;
+    scene.add(grid);
+
+    const modelGroup = new THREE.Group();
+    scene.add(modelGroup);
+
+    const MODE_NAMES = ['Backbone', 'Surface', 'Ribbon'];
+
+    let model = null;
+    let modelLoaded = false;
+    let currentMode = 0;
+    let foldingActive = false;
+    let temperatureMode = false;
+    let temperatureValue = 0;
+    let frameCount = 0;
+    let foldingElapsed = 0;
+    let tempElapsed = 0;
+
+    const tempBlue = new THREE.Color('#0000ff');
+    const tempRed = new THREE.Color('#ff0000');
+
+    const originalMaterials = new Map();
+
+    window.__3D_STATE__ = {
+      modelLoaded: false,
+      currentMode: 0,
+      modeName: 'Backbone',
+      foldingActive: false,
+      modelRotationY: 0,
+      modelScale: 1,
+      temperatureMode: false,
+      temperatureValue: 0,
+      cameraDistance: camera.position.length(),
+      frameCount: 0
+    };
+
+    function createMaterialForMode(mode) {
+      if (mode === 0) {
+        return new THREE.MeshStandardMaterial({
+          color: 0x00ff88,
+          wireframe: true
+        });
+      }
+      if (mode === 1) {
+        return new THREE.MeshPhongMaterial({
+          color: 0x4488ff,
+          shininess: 80,
+          wireframe: false
+        });
+      }
+      return new THREE.MeshNormalMaterial({
+        wireframe: false
+      });
+    }
+
+    function applyMaterials() {
+      if (!model) return;
+
+      model.traverse((child) => {
+        if (!child.isMesh) return;
+
+        if (!originalMaterials.has(child.uuid)) {
+          originalMaterials.set(child.uuid, child.material);
+        }
+
+        if (child.material && child.material.dispose) {
+          child.material.dispose();
+        }
+
+        child.material = createMaterialForMode(currentMode);
+
+        if (temperatureMode && currentMode !== 2) {
+          const heatColor = tempBlue.clone().lerp(tempRed, temperatureValue);
+          if (child.material.color) {
+            child.material.color.copy(heatColor);
+          }
+        }
+
+        child.castShadow = false;
+        child.receiveShadow = false;
+      });
+
+      updateHUD();
+    }
+
+    function updateHUD() {
+      modeLabel.textContent = MODE_NAMES[currentMode];
+      foldingLabel.textContent = foldingActive ? 'Active' : 'Paused';
+      tempLabel.textContent = temperatureMode ? temperatureValue.toFixed(2) : '0.00';
+      atomLabel.textContent = '4532';
+    }
+
+    function resetView() {
+      currentMode = 0;
+      foldingActive = false;
+      temperatureMode = false;
+      temperatureValue = 0;
+      tempElapsed = 0;
+      foldingElapsed = 0;
+
+      camera.position.copy(initialCameraPosition);
+      controls.target.set(0, 0, 0);
+      controls.update();
+
+      if (modelGroup) {
+        modelGroup.rotation.set(0, 0, 0);
+        modelGroup.scale.setScalar(1);
+      }
+
+      applyMaterials();
+      updateHUD();
+    }
+
+    function loadModel() {
+      const loader = new GLTFLoader();
+      loader.load(
+        'Fox.glb',
+        (gltf) => {
+          model = gltf.scene;
+
+          const box = new THREE.Box3().setFromObject(model);
+          const center = box.getCenter(new THREE.Vector3());
+          const sphere = box.getBoundingSphere(new THREE.Sphere());
+          const radius = sphere.radius || 1;
+          const scale = 2 / radius;
+
+          model.position.sub(center);
+          model.scale.setScalar(scale);
+
+          const normalizedBox = new THREE.Box3().setFromObject(model);
+          const normalizedCenter = normalizedBox.getCenter(new THREE.Vector3());
+          model.position.sub(normalizedCenter);
+
+          modelGroup.add(model);
+          modelLoaded = true;
+          applyMaterials();
+        },
+        undefined,
+        (error) => {
+          console.error('Failed to load Fox.glb:', error);
+        }
+      );
+    }
+
+    function updateTemperature(dt) {
+      if (!temperatureMode) {
+        temperatureValue = 0;
+        return;
+      }
+
+      tempElapsed += dt;
+      temperatureValue = (tempElapsed % 5) / 5;
+      applyMaterials();
+    }
+
+    function updateFolding(dt) {
+      if (!foldingActive) {
+        modelGroup.scale.setScalar(1);
+        return;
+      }
+
+      foldingElapsed += dt;
+      modelGroup.rotation.y += 0.5 * dt;
+      const scale = 1 + 0.2 * Math.sin((Math.PI * 2 * foldingElapsed) / 3);
+      modelGroup.scale.setScalar(scale);
+    }
+
+    function updateState() {
+      window.__3D_STATE__.modelLoaded = modelLoaded;
+      window.__3D_STATE__.currentMode = currentMode;
+      window.__3D_STATE__.modeName = MODE_NAMES[currentMode];
+      window.__3D_STATE__.foldingActive = foldingActive;
+      window.__3D_STATE__.modelRotationY = modelGroup.rotation.y;
+      window.__3D_STATE__.modelScale = modelGroup.scale.x;
+      window.__3D_STATE__.temperatureMode = temperatureMode;
+      window.__3D_STATE__.temperatureValue = temperatureMode ? temperatureValue : 0;
+      window.__3D_STATE__.cameraDistance = camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
+      window.__3D_STATE__.frameCount = frameCount;
+    }
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === '1') {
+        currentMode = 0;
+        applyMaterials();
+      } else if (event.key === '2') {
+        currentMode = 1;
+        applyMaterials();
+      } else if (event.key === '3') {
+        currentMode = 2;
+        applyMaterials();
+      } else if (event.key === ' ') {
+        event.preventDefault();
+        foldingActive = !foldingActive;
+        if (!foldingActive) {
+          modelGroup.scale.setScalar(1);
+        }
+        updateHUD();
+      } else if (event.key === 'T' || event.key === 't') {
+        temperatureMode = !temperatureMode;
+        if (!temperatureMode) {
+          temperatureValue = 0;
+          tempElapsed = 0;
+        }
+        applyMaterials();
+        updateHUD();
+      }
+    });
+
+    resetBtn.addEventListener('click', resetView);
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = clock.getDelta();
+
+      updateFolding(dt);
+      updateTemperature(dt);
+      controls.update();
+      updateHUD();
+
+      frameCount += 1;
+      updateState();
+
+      renderer.render(scene, camera);
+    }
+
+    loadModel();
+    updateHUD();
+    animate();
+  </script>
+</body>
+</html>

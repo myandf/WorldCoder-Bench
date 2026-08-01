@@ -1,0 +1,23 @@
+{
+  "id": "P79_geology_viewer",
+  "title": "Geological Cross-Section Layering and Cutting Visualization",
+  "domain": "visualization",
+  "route": "B",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a geological cross-section with 5 layers: each layer must have a different material color (soil, sandstone, limestone, shale, and granite), and the layers may have different thicknesses. Represent them using extruded solids (ExtrudeGeometry extruded along the cross-section) or a combination of layered Boxes.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Layering and Cross-Section Cutting]\n(1) Exactly 5 layers; each layer must have a name and thickness (numeric values displayed in __3D_STATE__).\n(2) Cut position: use a slider with id=\"cutPosition\", with a range of 0–1 or -1–1, to move the cutting plane/clip along the cutting axis and expose the internal stratification.\n(3) Clicking a layer (via raycasting) must display text such as the layer name and thickness in the element with id=\"layerInfo\".\n(4) Each layer must be independently shown/hidden: provide a toggle control for each layer, with suggested ids layerVis0 … layerVis4 (or a unified list using data-layer-index); the states must be reflected as boolean[5] in __3D_STATE__.layerVisibility.\n\n[Rendering]\n(5) OrbitControls, lighting, and a ground reference are optional.\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - layerCount: number (should be 5)\n  - cutPosition: number\n  - selectedLayer: string | null (layer name or id)\n  - layerVisibility: boolean[] (length 5)\n  - layers: Array<{ name: string, thickness: number, visible: boolean }>\n\nOutput a single HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "education",
+    "geology",
+    "cross-section",
+    "layers",
+    "clip",
+    "interactive",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 360,
+  "difficulty_analysis": "L5: Extruded layered geometry, a cutting plane and interactions, per-layer visibility controls, and state synchronization."
+}

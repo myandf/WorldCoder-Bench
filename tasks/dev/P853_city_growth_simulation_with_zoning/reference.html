@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D City Growth Simulation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { overflow: hidden; font-family: Arial, sans-serif; background: #000; }
+  #canvas-container { width: 100vw; height: 100vh; display: block; }
+  canvas { display: block; }
+
+  #toolbar {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  #toolbar button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 3px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    transition: border-color 0.2s;
+  }
+
+  #btn-residential { background: #22AA22; }
+  #btn-commercial { background: #2266CC; }
+  #btn-industrial { background: #CC8822; }
+  #btn-clear { background: #666; }
+  #btn-simulate { background: #AA2222; }
+
+  #toolbar button.active {
+    border-color: #fff;
+  }
+
+  #hud {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 16px;
+    z-index: 10;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <button id="btn-residential" class="active">Residential</button>
+  <button id="btn-commercial">Commercial</button>
+  <button id="btn-industrial">Industrial</button>
+  <button id="btn-clear">Clear</button>
+  <button id="btn-simulate">Simulate Step</button>
+</div>
+
+<div id="hud">Pop: 0 | Funds: $0 | Tick: 0</div>
+
+<div id="canvas-container"></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const GRID_SIZE = 10;
+const TILE_SIZE = 2;
+const TILE_HEIGHT = 0.05;
+const BUILDING_WIDTH = 1.5;
+const BUILDING_DEPTH = 1.5;
+const HALF_GRID = GRID_SIZE;
+
+const ZONE_COLORS = {
+  Residential: 0x22AA22,
+  Commercial: 0x2266CC,
+  Industrial: 0xCC8822
+};
+
+const BUILDING_COLORS = {
+  Residential: 0x44CC44,
+  Commercial: 0x4488EE,
+  Industrial: 0xEEAA44
+};
+
+const MAX_HEIGHTS = {
+  Residential: 4,
+  Commercial: 7,
+  Industrial: 3
+};
+
+const EMPTY_COLOR = 0x888888;
+
+// Scene
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87CEEB);
+
+// Camera
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(15, 20, 15);
+camera.lookAt(0, 0, 0);
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+// Controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.update();
+
+// Lighting
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+dirLight.position.set(10, 20, 10);
+scene.add(dirLight);
+
+const ambLight = new THREE.AmbientLight(0xffffff, 0.4);
+scene.add(ambLight);
+
+// Grid data structures
+const tileData = [];
+const tileMeshes = [];
+const buildingMeshes = [];
+
+for (let r = 0; r < GRID_SIZE; r++) {
+  for (let c = 0; c < GRID_SIZE; c++) {
+    const idx = r * GRID_SIZE + c;
+    tileData[idx] = { zone: null, buildingHeight: 0 };
+    buildingMeshes[idx] = null;
+
+    const geo = new THREE.BoxGeometry(TILE_SIZE - 0.05, TILE_HEIGHT, TILE_SIZE - 0.05);
+    const mat = new THREE.MeshStandardMaterial({ color: EMPTY_COLOR });
+    const mesh = new THREE.Mesh(geo, mat);
+
+    const x = -HALF_GRID + TILE_SIZE * c + TILE_SIZE / 2;
+    const z = -HALF_GRID + TILE_SIZE * r + TILE_SIZE / 2;
+    mesh.position.set(x, TILE_HEIGHT / 2, z);
+    mesh.userData = { row: r, col: c, idx };
+
+    scene.add(mesh);
+    tileMeshes[idx] = mesh;
+  }
+}
+
+// State
+const state = {
+  currentTool: 'Residential',
+  tickCount: 0,
+  totalZoned: 0,
+  zoneCounts: { residential: 0, commercial: 0, industrial: 0 },
+  totalBuildings: 0,
+  population: 0,
+  funds: 0,
+  gridSize: GRID_SIZE,
+  tileData: tileData.map(d => ({ zone: d.zone, buildingHeight: d.buildingHeight })),
+  lastClickedTile: null,
+  maxHeights: { Residential: 4, Commercial: 7, Industrial: 3 }
+};
+
+window.__3D_STATE__ = state;
+
+function recalcState() {
+  let totalZoned = 0;
+  let totalBuildings = 0;
+  let population = 0;
+  let funds = 0;
+  const zoneCounts = { residential: 0, commercial: 0, industrial: 0 };
+
+  for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+    const td = tileData[i];
+    state.tileData[i].zone = td.zone;
+    state.tileData[i].buildingHeight = td.buildingHeight;
+
+    if (td.zone) {
+      totalZoned++;
+      const key = td.zone.toLowerCase();
+      zoneCounts[key]++;
+
+      if (td.buildingHeight > 0) {
+        totalBuildings++;
+        if (td.zone === 'Residential') {
+          population += td.buildingHeight * 10;
+        } else if (td.zone === 'Commercial') {
+          funds += td.buildingHeight * 50;
+        } else if (td.zone === 'Industrial') {
+          funds += td.buildingHeight * 30;
+        }
+      }
+    }
+  }
+
+  state.totalZoned = totalZoned;
+  state.zoneCounts = zoneCounts;
+  state.totalBuildings = totalBuildings;
+  state.population = population;
+  state.funds = funds;
+
+  updateHUD();
+}
+
+function updateHUD() {
+  document.getElementById('hud').textContent =
+    `Pop: ${state.population} | Funds: $${state.funds} | Tick: ${state.tickCount}`;
+}
+
+// Raycasting
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function onCanvasClick(event) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(tileMeshes);
+
+  if (intersects.length > 0) {
+    const mesh = intersects[0].object;
+    const { row, col, idx } = mesh.userData;
+    state.lastClickedTile = { row, col };
+
+    const tool = state.currentTool;
+    const td = tileData[idx];
+
+    if (tool === 'Clear') {
+      td.zone = null;
+      td.buildingHeight = 0;
+      mesh.material.color.setHex(EMPTY_COLOR);
+
+      if (buildingMeshes[idx]) {
+        scene.remove(buildingMeshes[idx]);
+        buildingMeshes[idx].geometry.dispose();
+        buildingMeshes[idx].material.dispose();
+        buildingMeshes[idx] = null;
+      }
+    } else {
+      if (td.zone !== tool) {
+        // Remove existing building if changing zone type
+        if (buildingMeshes[idx]) {
+          scene.remove(buildingMeshes[idx]);
+          buildingMeshes[idx].geometry.dispose();
+          buildingMeshes[idx].material.dispose();
+          buildingMeshes[idx] = null;
+        }
+        td.buildingHeight = 0;
+      }
+      td.zone = tool;
+      mesh.material.color.setHex(ZONE_COLORS[tool]);
+    }
+
+    recalcState();
+  }
+}
+
+renderer.domElement.addEventListener('click', onCanvasClick);
+
+// Simulate step
+function simulateStep() {
+  state.tickCount++;
+
+  for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+    const td = tileData[i];
+    if (!td.zone) continue;
+
+    const maxH = MAX_HEIGHTS[td.zone];
+
+    if (td.buildingHeight === 0) {
+      // Spawn building at height 1
+      td.buildingHeight = 1;
+      createOrUpdateBuilding(i);
+    } else if (td.buildingHeight < maxH) {
+      td.buildingHeight++;
+      createOrUpdateBuilding(i);
+    }
+  }
+
+  recalcState();
+}
+
+function createOrUpdateBuilding(idx) {
+  const td = tileData[idx];
+  const h = td.buildingHeight;
+  const tileMesh = tileMeshes[idx];
+
+  if (buildingMeshes[idx]) {
+    scene.remove(buildingMeshes[idx]);
+    buildingMeshes[idx].geometry.dispose();
+    buildingMeshes[idx].material.dispose();
+    buildingMeshes[idx] = null;
+  }
+
+  const geo = new THREE.BoxGeometry(BUILDING_WIDTH, h, BUILDING_DEPTH);
+  const mat = new THREE.MeshStandardMaterial({ color: BUILDING_COLORS[td.zone] });
+  const mesh = new THREE.Mesh(geo, mat);
+
+  mesh.position.set(
+    tileMesh.position.x,
+    h / 2 + TILE_HEIGHT,
+    tileMesh.position.z
+  );
+
+  scene.add(mesh);
+  buildingMeshes[idx] = mesh;
+}
+
+// Tool buttons
+const toolButtons = {
+  'btn-residential': 'Residential',
+  'btn-commercial': 'Commercial',
+  'btn-industrial': 'Industrial',
+  'btn-clear': 'Clear'
+};
+
+function setActiveTool(tool) {
+  state.currentTool = tool;
+  Object.keys(toolButtons).forEach(id => {
+    const btn = document.getElementById(id);
+    btn.classList.toggle('active', toolButtons[id] === tool);
+  });
+}
+
+Object.keys(toolButtons).forEach(id => {
+  document.getElementById(id).addEventListener('click', () => {
+    setActiveTool(toolButtons[id]);
+  });
+});
+
+document.getElementById('btn-simulate').addEventListener('click', simulateStep);
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Animation loop
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+recalcState();
+animate();
+</script>
+</body>
+</html>

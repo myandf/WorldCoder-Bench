@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Custom SSAO Implementation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        canvas {
+            display: block;
+        }
+        #ui-panel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 280px;
+            background: rgba(20, 20, 25, 0.85);
+            color: #eee;
+            padding: 15px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            border: 1px solid #444;
+            backdrop-filter: blur(4px);
+        }
+        .control-group {
+            margin-bottom: 12px;
+        }
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+        input[type=range] {
+            width: 100%;
+            margin: 0;
+            accent-color: #4466cc;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        .checkbox-group input {
+            margin-right: 8px;
+            accent-color: #4466cc;
+        }
+        select, button {
+            width: 100%;
+            padding: 6px;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 13px;
+        }
+        select {
+            margin-bottom: 12px;
+        }
+        button {
+            background: #4466cc;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #5577dd;
+        }
+        .shortcuts {
+            margin-top: 15px;
+            font-size: 11px;
+            color: #888;
+            border-top: 1px solid #444;
+            padding-top: 10px;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="ui-panel">
+        <div class="control-group">
+            <label>Kernel Size <span id="val-kernel">32</span></label>
+            <input type="range" id="slider-kernel" min="4" max="64" step="4" value="32">
+        </div>
+        <div class="control-group">
+            <label>Radius <span id="val-radius">1.5</span></label>
+            <input type="range" id="slider-radius" min="0.1" max="5.0" step="0.1" value="1.5">
+        </div>
+        <div class="control-group">
+            <label>Bias <span id="val-bias">0.025</span></label>
+            <input type="range" id="slider-bias" min="0.001" max="0.1" step="0.001" value="0.025">
+        </div>
+        <div class="control-group">
+            <label>AO Intensity <span id="val-intensity">1.0</span></label>
+            <input type="range" id="slider-intensity" min="0.0" max="3.0" step="0.1" value="1.0">
+        </div>
+        
+        <div class="checkbox-group">
+            <input type="checkbox" id="checkbox-blur" checked>
+            <label for="checkbox-blur" style="margin:0;">Enable Blur</label>
+        </div>
+
+        <select id="select-viewmode">
+            <option value="combined">Combined</option>
+            <option value="ao_only">AO Only</option>
+            <option value="depth_only">Depth Only</option>
+            <option value="normals_only">Normals Only</option>
+        </select>
+
+        <button id="btn-reset">Reset Parameters</button>
+
+        <div class="shortcuts">
+            Shortcuts: [1-4] View Modes, [B] Toggle Blur, [R] Reset
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { Pass, FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
+
+        // --- State Management ---
+        window.__3D_STATE__ = {
+            kernelSize: 32,
+            radius: 1.5,
+            bias: 0.025,
+            aoIntensity: 1.0,
+            blurEnabled: true,
+            viewMode: 'combined',
+            kernelSamples: [],
+            frameCount: 0,
+            sceneObjectCount: 0,
+            depthTextureActive: false,
+            normalTextureActive: false,
+            composerPassCount: 0,
+            cameraPosition: { x: 0, y: 0, z: 0 },
+            noiseTextureSize: 4,
+            lastResetFrame: 0
+        };
+
+        // --- Scene Setup ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 50);
+        camera.position.set(0, 5, 12);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0x404060, 0.15);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        dirLight.position.set(5, 10, 7);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        dirLight.shadow.camera.near = 0.5;
+        dirLight.shadow.camera.far = 25;
+        dirLight.shadow.camera.left = -10;
+        dirLight.shadow.camera.right = 10;
+        dirLight.shadow.camera.top = 10;
+        dirLight.shadow.camera.bottom = -10;
+        dirLight.shadow.bias = -0.001;
+        scene.add(dirLight);
+
+        // Geometry
+        const groundGeo = new THREE.PlaneGeometry(30, 30);
+        const groundMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.9 });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        const boxMat = new THREE.MeshStandardMaterial({ color: 0xcc6644, roughness: 0.7 });
+        const boxesData = [
+            { pos: [0, 0.5, 0], size: [2, 1, 2] },
+            { pos: [1.5, 1.5, 0.5], size: [1, 2, 1] },
+            { pos: [-1, 1, 1], size: [1.5, 2, 1.5] },
+            { pos: [0.5, 0.5, 2], size: [1, 1, 1] },
+            { pos: [-0.5, 2.5, 0], size: [2, 1, 2] }
+        ];
+
+        boxesData.forEach(data => {
+            const geo = new THREE.BoxGeometry(...data.size);
+            const mesh = new THREE.Mesh(geo, boxMat);
+            mesh.position.set(...data.pos);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            scene.add(mesh);
+        });
+
+        const sphereGeo = new THREE.SphereGeometry(1, 32, 32);
+        const sphereMat = new THREE.MeshStandardMaterial({ color: 0x4466cc, roughness: 0.5, metalness: 0.3 });
+        const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+        sphere.position.set(4, 1, -2);
+        sphere.castShadow = true;
+        sphere.receiveShadow = true;
+        scene.add(sphere);
+
+        const torusGeo = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+        const torusMat = new THREE.MeshStandardMaterial({ color: 0x44cc66, roughness: 0.6 });
+        const torus = new THREE.Mesh(torusGeo, torusMat);
+        torus.position.set(-4, 1.5, -2);
+        torus.castShadow = true;
+        torus.receiveShadow = true;
+        scene.add(torus);
+
+        // Update object count state
+        let meshCount = 0;
+        scene.traverse((child) => { if (child.isMesh) meshCount++; });
+        window.__3D_STATE__.sceneObjectCount = meshCount;
+
+        // --- SSAO Setup ---
+
+        // 1. Render Targets
+        const size = renderer.getSize(new THREE.Vector2());
+        const pixelRatio = renderer.getPixelRatio();
+        const rtWidth = size.width * pixelRatio;
+        const rtHeight = size.height * pixelRatio;
+
+        const normalRenderTarget = new THREE.WebGLRenderTarget(rtWidth, rtHeight, {
+            minFilter: THREE.NearestFilter,
+            magFilter: THREE.NearestFilter,
+            format: THREE.RGBAFormat,
+            type: THREE.HalfFloatType
+        });
+        window.__3D_STATE__.normalTextureActive = true;
+
+        const colorSaveRenderTarget = new THREE.WebGLRenderTarget(rtWidth, rtHeight, {
+            minFilter: THREE.LinearFilter,
+            magFilter: THREE.LinearFilter,
+            format: THREE.RGBAFormat
+        });
+
+        const composerTarget = new THREE.WebGLRenderTarget(rtWidth, rtHeight, {
+            minFilter: THREE.LinearFilter,
+            magFilter: THREE.LinearFilter,
+            format: THREE.RGBAFormat,
+            depthTexture: new THREE.DepthTexture()
+        });
+        window.__3D_STATE__.depthTextureActive = true;
+
+        const normalMaterial = new THREE.MeshNormalMaterial();
+
+        // 2. Kernel & Noise Generation
+        function generateKernel(size) {
+            const kernel = [];
+            for (let i = 0; i < size; i++) {
+                const sample = new THREE.Vector3(
+                    Math.random() * 2 - 1,
+                    Math.random() * 2 - 1,
+                    Math.random() // Hemisphere z >= 0
+                ).normalize();
+                
+                let scale = i / size;
+                scale = THREE.MathUtils.lerp(0.1, 1.0, scale * scale); // Accelerating function
+                sample.multiplyScalar(scale);
+                kernel.push(sample);
+            }
+            return kernel;
+        }
+
+        function generateNoise() {
+            const size = 4;
+            const data = new Float32Array(size * size * 4);
+            for (let i = 0; i < size * size; i++) {
+                data[i * 4] = Math.random() * 2 - 1;
+                data[i * 4 + 1] = Math.random() * 2 - 1;
+                data[i * 4 + 2] = 0;
+                data[i * 4 + 3] = 1;
+            }
+            const noiseTexture = new THREE.DataTexture(data, size, size, THREE.RGBAFormat, THREE.FloatType);
+            noiseTexture.wrapS = THREE.RepeatWrapping;
+            noiseTexture.wrapT = THREE.RepeatWrapping;
+            noiseTexture.minFilter = THREE.NearestFilter;
+            noiseTexture.magFilter = THREE.NearestFilter;
+            noiseTexture.needsUpdate = true;
+            return noiseTexture;
+        }
+
+        const noiseTexture = generateNoise();
+        const maxKernelSize = 64;
+        let currentKernel = generateKernel(maxKernelSize);
+
+        // 3. Custom Passes & Shaders
+
+        // Custom Pass to save the color buffer
+        class SaveColorPass extends Pass {
+            constructor(target) {
+                super();
+                this.target = target;
+                this.fsQuad = new FullScreenQuad(new THREE.ShaderMaterial({
+                    uniforms: { tDiffuse: { value: null } },
+                    vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position, 1.0); }`,
+                    fragmentShader: `uniform sampler2D tDiffuse; varying vec2 vUv; void main() { gl_FragColor = texture2D(tDiffuse, vUv); }`
+                }));
+            }
+            render(renderer, writeBuffer, readBuffer) {
+                this.fsQuad.material.uniforms.tDiffuse.value = readBuffer.texture;
+                renderer.setRenderTarget(this.target);
+                this.fsQuad.render(renderer);
+            }
+        }
+
+        const SSAOGenerateShader = {
+            uniforms: {
+                tDepth: { value: null },
+                tNormal: { value: null },
+                tNoise: { value: noiseTexture },
+                kernel: { value: currentKernel },
+                cameraProjectionMatrix: { value: camera.projectionMatrix },
+                cameraInverseProjectionMatrix: { value: camera.projectionMatrixInverse },
+                resolution: { value: new THREE.Vector2(rtWidth, rtHeight) },
+                radius: { value: 1.5 },
+                bias: { value: 0.025 },
+                kernelSize: { value: 32 },
+                intensity: { value: 1.0 }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D tDepth;
+                uniform sampler2D tNormal;
+                uniform sampler2D tNoise;
+                uniform vec3 kernel[64];
+                uniform mat4 cameraProjectionMatrix;
+                uniform mat4 cameraInverseProjectionMatrix;
+                uniform vec2 resolution;
+                uniform float radius;
+                uniform float bias;
+                uniform int kernelSize;
+                uniform float intensity;
+
+                varying vec2 vUv;
+
+                vec3 getViewPosition(vec2 uv, float depth) {
+                    vec4 clipSpace = vec4(uv * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
+                    vec4 viewSpace = cameraInverseProjectionMatrix * clipSpace;
+                    return viewSpace.xyz / viewSpace.w;
+                }
+
+                void main() {
+                    float depth = texture2D(tDepth, vUv).r;
+                    if (depth == 1.0) {
+                        gl_FragColor = vec4(1.0);
+                        return;
+                    }
+
+                    vec3 viewPos = getViewPosition(vUv, depth);
+                    // Normal from MeshNormalMaterial is (normal_view + 1)/2
+                    vec3 normal = normalize(texture2D(tNormal, vUv).xyz * 2.0 - 1.0);
+
+                    vec2 noiseScale = resolution / 4.0;
+                    vec3 randomVec = normalize(texture2D(tNoise, vUv * noiseScale).xyz);
+
+                    vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
+                    vec3 bitangent = cross(normal, tangent);
+                    mat3 tbn = mat3(tangent, bitangent, normal);
+
+                    float occlusion = 0.0;
+                    for (int i = 0; i < 64; i++) {
+                        if (i >= kernelSize) break;
+
+                        vec3 samplePos = tbn * kernel[i];
+                        samplePos = viewPos + samplePos * radius;
+
+                        vec4 offset = vec4(samplePos, 1.0);
+                        offset = cameraProjectionMatrix * offset;
+                        offset.xyz /= offset.w;
+                        offset.xyz = offset.xyz * 0.5 + 0.5;
+
+                        float sampleDepth = texture2D(tDepth, offset.xy).r;
+                        vec3 sampleViewPos = getViewPosition(offset.xy, sampleDepth);
+
+                        // Range check to prevent haloing
+                        float rangeCheck = smoothstep(0.0, 1.0, 1.0 - abs(viewPos.z - sampleViewPos.z) / radius);
+                        
+                        // In Three.js view space, Z is negative. Closer objects have greater Z (e.g. -5 > -10).
+                        occlusion += (sampleViewPos.z >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;
+                    }
+
+                    occlusion = 1.0 - (occlusion / float(kernelSize)) * intensity;
+                    gl_FragColor = vec4(vec3(clamp(occlusion, 0.0, 1.0)), 1.0);
+                }
+            `
+        };
+
+        const SSAOBlurShader = {
+            uniforms: {
+                tDiffuse: { value: null },
+                resolution: { value: new THREE.Vector2(rtWidth, rtHeight) },
+                blurEnabled: { value: true }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D tDiffuse;
+                uniform vec2 resolution;
+                uniform bool blurEnabled;
+                varying vec2 vUv;
+
+                void main() {
+                    if (!blurEnabled) {
+                        gl_FragColor = texture2D(tDiffuse, vUv);
+                        return;
+                    }
+                    vec2 texelSize = 1.0 / resolution;
+                    float result = 0.0;
+                    for (int x = -2; x < 2; ++x) {
+                        for (int y = -2; y < 2; ++y) {
+                            vec2 offset = vec2(float(x), float(y)) * texelSize;
+                            result += texture2D(tDiffuse, vUv + offset).r;
+                        }
+                    }
+                    gl_FragColor = vec4(vec3(result / 16.0), 1.0);
+                }
+            `
+        };
+
+        const CompositeShader = {
+            uniforms: {
+                tColor: { value: null },
+                tAO: { value: null },
+                tDepth: { value: null },
+                tNormal: { value: null },
+                viewMode: { value: 0 } // 0: Combined, 1: AO, 2: Depth, 3: Normal
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D tColor;
+                uniform sampler2D tAO;
+                uniform sampler2D tDepth;
+                uniform sampler2D tNormal;
+                uniform int viewMode;
+                varying vec2 vUv;
+
+                float linearizeDepth(float depth) {
+                    float zNear = 0.1;
+                    float zFar = 50.0;
+                    return (2.0 * zNear) / (zFar + zNear - depth * (zFar - zNear));
+                }
+
+                void main() {
+                    if (viewMode == 0) {
+                        vec4 color = texture2D(tColor, vUv);
+                        float ao = texture2D(tAO, vUv).r;
+                        gl_FragColor = vec4(color.rgb * ao, color.a);
+                    } else if (viewMode == 1) {
+                        float ao = texture2D(tAO, vUv).r;
+                        gl_FragColor = vec4(vec3(ao), 1.0);
+                    } else if (viewMode == 2) {
+                        float depth = texture2D(tDepth, vUv).r;
+                        float linDepth = linearizeDepth(depth);
+                        // Enhance contrast for visualization
+                        gl_FragColor = vec4(vec3(pow(linDepth, 0.5)), 1.0);
+                    } else if (viewMode == 3) {
+                        vec3 normal = texture2D(tNormal, vUv).xyz;
+                        gl_FragColor = vec4(normal, 1.0);
+                    }
+                }
+            `
+        };
+
+        // 4. Composer Setup
+        const composer = new EffectComposer(renderer, composerTarget);
+
+        const renderPass = new RenderPass(scene, camera);
+        composer.addPass(renderPass);
+
+        const saveColorPass = new SaveColorPass(colorSaveRenderTarget);
+        composer.addPass(saveColorPass);
+
+        const ssaoPass = new ShaderPass(SSAOGenerateShader);
+        ssaoPass.material.uniforms.tDepth.value = composerTarget.depthTexture;
+        ssaoPass.material.uniforms.tNormal.value = normalRenderTarget.texture;
+        composer.addPass(ssaoPass);
+
+        const blurPass = new ShaderPass(SSAOBlurShader);
+        composer.addPass(blurPass);
+
+        const compositePass = new ShaderPass(CompositeShader);
+        compositePass.material.uniforms.tColor.value = colorSaveRenderTarget.texture;
+        compositePass.material.uniforms.tAO.value = blurPass.renderTarget ? blurPass.renderTarget.texture : null; // Handled by composer chain
+        compositePass.material.uniforms.tDepth.value = composerTarget.depthTexture;
+        compositePass.material.uniforms.tNormal.value = normalRenderTarget.texture;
+        composer.addPass(compositePass);
+
+        window.__3D_STATE__.composerPassCount = composer.passes.length;
+
+        // --- UI & Interaction ---
+
+        function updateKernelUniform(size) {
+            const newKernel = generateKernel(size);
+            const paddedKernel = [...newKernel];
+            while(paddedKernel.length < 64) paddedKernel.push(new THREE.Vector3());
+            
+            ssaoPass.material.uniforms.kernel.value = paddedKernel;
+            ssaoPass.material.uniforms.kernelSize.value = size;
+            
+            window.__3D_STATE__.kernelSize = size;
+            window.__3D_STATE__.kernelSamples = newKernel.map(v => ({x: v.x, y: v.y, z: v.z}));
+        }
+        
+        // Initialize state kernel
+        updateKernelUniform(32);
+
+        const elKernel = document.getElementById('slider-kernel');
+        const elRadius = document.getElementById('slider-radius');
+        const elBias = document.getElementById('slider-bias');
+        const elIntensity = document.getElementById('slider-intensity');
+        const elBlur = document.getElementById('checkbox-blur');
+        const elViewMode = document.getElementById('select-viewmode');
+        const elReset = document.getElementById('btn-reset');
+
+        elKernel.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            document.getElementById('val-kernel').innerText = val;
+            updateKernelUniform(val);
+        });
+
+        elRadius.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            document.getElementById('val-radius').innerText = val.toFixed(1);
+            ssaoPass.material.uniforms.radius.value = val;
+            window.__3D_STATE__.radius = val;
+        });
+
+        elBias.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            document.getElementById('val-bias').innerText = val.toFixed(3);
+            ssaoPass.material.uniforms.bias.value = val;
+            window.__3D_STATE__.bias = val;
+        });
+
+        elIntensity.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            document.getElementById('val-intensity').innerText = val.toFixed(1);
+            ssaoPass.material.uniforms.intensity.value = val;
+            window.__3D_STATE__.aoIntensity = val;
+        });
+
+        elBlur.addEventListener('change', (e) => {
+            const val = e.target.checked;
+            blurPass.material.uniforms.blurEnabled.value = val;
+            window.__3D_STATE__.blurEnabled = val;
+        });
+
+        elViewMode.addEventListener('change', (e) => {
+            const val = e.target.value;
+            const modeMap = { 'combined': 0, 'ao_only': 1, 'depth_only': 2, 'normals_only': 3 };
+            compositePass.material.uniforms.viewMode.value = modeMap[val];
+            window.__3D_STATE__.viewMode = val;
+        });
+
+        function resetParams() {
+            elKernel.value = 32;
+            elRadius.value = 1.5;
+            elBias.value = 0.025;
+            elIntensity.value = 1.0;
+            elBlur.checked = true;
+            elViewMode.value = 'combined';
+
+            [elKernel, elRadius, elBias, elIntensity].forEach(el => el.dispatchEvent(new Event('input')));
+            elBlur.dispatchEvent(new Event('change'));
+            elViewMode.dispatchEvent(new Event('change'));
+
+            window.__3D_STATE__.lastResetFrame = window.__3D_STATE__.frameCount;
+        }
+
+        elReset.addEventListener('click', resetParams);
+
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if (key === '1') { elViewMode.value = 'combined'; elViewMode.dispatchEvent(new Event('change')); }
+            if (key === '2') { elViewMode.value = 'ao_only'; elViewMode.dispatchEvent(new Event('change')); }
+            if (key === '3') { elViewMode.value = 'depth_only'; elViewMode.dispatchEvent(new Event('change')); }
+            if (key === '4') { elViewMode.value = 'normals_only'; elViewMode.dispatchEvent(new Event('change')); }
+            if (key === 'b') { elBlur.checked = !elBlur.checked; elBlur.dispatchEvent(new Event('change')); }
+            if (key === 'r') { resetParams(); }
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const pr = renderer.getPixelRatio();
+            
+            renderer.setSize(w, h);
+            composer.setSize(w, h);
+            
+            const rw = w * pr;
+            const rh = h * pr;
+            
+            normalRenderTarget.setSize(rw, rh);
+            colorSaveRenderTarget.setSize(rw, rh);
+            
+            ssaoPass.material.uniforms.resolution.value.set(rw, rh);
+            blurPass.material.uniforms.resolution.value.set(rw, rh);
+            ssaoPass.material.uniforms.cameraProjectionMatrix.value.copy(camera.projectionMatrix);
+            ssaoPass.material.uniforms.cameraInverseProjectionMatrix.value.copy(camera.projectionMatrixInverse);
+        });
+
+        // --- Render Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            // Render Normals
+            scene.overrideMaterial = normalMaterial;
+            renderer.setRenderTarget(normalRenderTarget);
+            renderer.render(scene, camera);
+            scene.overrideMaterial = null;
+
+            // Render Composer Chain
+            // 1. RenderPass (Color -> readBuffer, Depth -> depthTexture)
+            // 2. SaveColorPass (readBuffer -> colorSaveRenderTarget)
+            // 3. SSAOPass (depthTexture + normalTexture -> writeBuffer)
+            // 4. BlurPass (readBuffer -> writeBuffer)
+            // 5. CompositePass (readBuffer + colorSaveRenderTarget -> screen)
+            
+            // Note: ShaderPass automatically handles read/write buffer swapping.
+            // For CompositePass, tAO is automatically bound to the readBuffer by EffectComposer.
+            compositePass.material.uniforms.tAO.value = composer.readBuffer.texture;
+            
+            composer.render();
+
+            // Update State
+            window.__3D_STATE__.frameCount++;
+            window.__3D_STATE__.cameraPosition.x = camera.position.x;
+            window.__3D_STATE__.cameraPosition.y = camera.position.y;
+            window.__3D_STATE__.cameraPosition.z = camera.position.z;
+        }
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Glitch RGB Post Processing</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111111;
+    }
+    canvas {
+      display: block;
+    }
+    #hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      font-family: monospace;
+      padding: 12px;
+      white-space: pre-line;
+      line-height: 1.4;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud"></div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/RenderPass.js';
+    import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/ShaderPass.js';
+
+    const hud = document.getElementById('hud');
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x111111, 1);
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 6);
+    camera.lookAt(0, 0, 0);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(5, 8, 5);
+    scene.add(directionalLight);
+
+    const objects = [];
+    const radius = 2.5;
+
+    const geometries = [
+      new THREE.TorusKnotGeometry(0.6, 0.2, 120, 16),
+      new THREE.BoxGeometry(0.9, 0.9, 0.9),
+      new THREE.IcosahedronGeometry(0.6),
+      new THREE.CylinderGeometry(0.4, 0.4, 1.0, 32),
+      new THREE.ConeGeometry(0.5, 1.0, 32)
+    ];
+
+    const materials = [
+      new THREE.MeshStandardMaterial({ color: '#ff4488', roughness: 0.4, metalness: 0.2 }),
+      new THREE.MeshStandardMaterial({ color: '#44ff88', roughness: 0.4, metalness: 0.2 }),
+      new THREE.MeshStandardMaterial({ color: '#4488ff', roughness: 0.4, metalness: 0.2 }),
+      new THREE.MeshStandardMaterial({ color: '#ffff44', roughness: 0.4, metalness: 0.2 }),
+      new THREE.MeshStandardMaterial({ color: '#ff8844', roughness: 0.4, metalness: 0.2 })
+    ];
+
+    const rotationSpeeds = [0.004, 0.006, 0.005, 0.007, 0.0035];
+
+    for (let i = 0; i < 5; i++) {
+      const mesh = new THREE.Mesh(geometries[i], materials[i]);
+      const angle = (i / 5) * Math.PI * 2;
+      mesh.position.set(Math.cos(angle) * radius, 0.25 * Math.sin(angle * 2.0), Math.sin(angle) * radius);
+      mesh.rotation.x = 0.3 + i * 0.15;
+      scene.add(mesh);
+      objects.push(mesh);
+    }
+
+    const renderPass = new RenderPass(scene, camera);
+
+    const GlitchRGBShader = {
+      uniforms: {
+        tDiffuse: { value: null },
+        uRedOffset: { value: new THREE.Vector2(0.0, 0.0) },
+        uGreenOffset: { value: new THREE.Vector2(0.0, 0.0) },
+        uBlueOffset: { value: new THREE.Vector2(0.0, 0.0) },
+        uIntensity: { value: 0.0 },
+        uScanlineStrength: { value: 0.0 },
+        uNoiseAmount: { value: 0.0 },
+        uBlockGlitchEnabled: { value: false },
+        uTime: { value: 0.0 }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        uniform vec2 uRedOffset;
+        uniform vec2 uGreenOffset;
+        uniform vec2 uBlueOffset;
+        uniform float uIntensity;
+        uniform float uScanlineStrength;
+        uniform float uNoiseAmount;
+        uniform bool uBlockGlitchEnabled;
+        uniform float uTime;
+        varying vec2 vUv;
+
+        float rand(vec2 co) {
+          return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+        }
+
+        void main() {
+          vec2 uv = vUv;
+
+          if (uBlockGlitchEnabled) {
+            float blockY = floor(uv.y * 20.0);
+            float blockRand = rand(vec2(blockY, floor(uTime * 12.0)));
+            float shift = (blockRand - 0.5) * 0.08 * uIntensity;
+            float activate = step(0.65, rand(vec2(blockY * 1.37, floor(uTime * 8.0) + 3.1)));
+            uv.x += shift * activate;
+          }
+
+          vec2 redUV = uv + uRedOffset * uIntensity;
+          vec2 greenUV = uv + uGreenOffset * uIntensity;
+          vec2 blueUV = uv + uBlueOffset * uIntensity;
+
+          vec4 rSample = texture2D(tDiffuse, redUV);
+          vec4 gSample = texture2D(tDiffuse, greenUV);
+          vec4 bSample = texture2D(tDiffuse, blueUV);
+
+          vec3 color = vec3(rSample.r, gSample.g, bSample.b);
+
+          float scan = sin(gl_FragCoord.y * 1.5) * 0.5 + 0.5;
+          color *= 1.0 - (scan * uScanlineStrength * 0.35);
+
+          float grain = (rand(vUv * vec2(123.4, 567.8) + vec2(uTime * 3.17, uTime * 1.91)) - 0.5) * 2.0;
+          color += grain * uNoiseAmount;
+
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `
+    };
+
+    const glitchPass = new ShaderPass(GlitchRGBShader);
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(renderPass);
+    composer.addPass(glitchPass);
+
+    const scanlineValues = [0.0, 0.1, 0.3, 0.6, 1.0];
+    const noiseValues = [0.0, 0.02, 0.08, 0.15, 0.3];
+
+    const presets = [
+      {
+        number: 0,
+        name: 'Clean',
+        redOffset: { x: 0.0, y: 0.0 },
+        greenOffset: { x: 0.0, y: 0.0 },
+        blueOffset: { x: 0.0, y: 0.0 },
+        intensity: 0.0,
+        scanlineStrength: 0.0,
+        noiseAmount: 0.0,
+        blockGlitchEnabled: false
+      },
+      {
+        number: 1,
+        name: 'Subtle',
+        redOffset: { x: 0.003, y: 0.0 },
+        greenOffset: { x: 0.0, y: 0.002 },
+        blueOffset: { x: -0.003, y: 0.0 },
+        intensity: 1.0,
+        scanlineStrength: 0.1,
+        noiseAmount: 0.02,
+        blockGlitchEnabled: false
+      },
+      {
+        number: 2,
+        name: 'Medium',
+        redOffset: { x: 0.008, y: 0.003 },
+        greenOffset: { x: -0.004, y: 0.006 },
+        blueOffset: { x: 0.005, y: -0.008 },
+        intensity: 1.0,
+        scanlineStrength: 0.3,
+        noiseAmount: 0.08,
+        blockGlitchEnabled: false
+      },
+      {
+        number: 3,
+        name: 'Extreme',
+        redOffset: { x: 0.02, y: 0.01 },
+        greenOffset: { x: -0.015, y: 0.02 },
+        blueOffset: { x: 0.01, y: -0.02 },
+        intensity: 1.0,
+        scanlineStrength: 0.6,
+        noiseAmount: 0.15,
+        blockGlitchEnabled: true
+      }
+    ];
+
+    let currentPreset = 0;
+    let frameCount = 0;
+    const clock = new THREE.Clock();
+
+    function findCycleIndex(values, value) {
+      const epsilon = 1e-6;
+      const idx = values.findIndex(v => Math.abs(v - value) < epsilon);
+      return idx >= 0 ? idx : 0;
+    }
+
+    let scanlineCycleIndex = 0;
+    let noiseCycleIndex = 0;
+
+    function applyPreset(index) {
+      const preset = presets[index];
+      currentPreset = index;
+
+      glitchPass.uniforms.uRedOffset.value.set(preset.redOffset.x, preset.redOffset.y);
+      glitchPass.uniforms.uGreenOffset.value.set(preset.greenOffset.x, preset.greenOffset.y);
+      glitchPass.uniforms.uBlueOffset.value.set(preset.blueOffset.x, preset.blueOffset.y);
+      glitchPass.uniforms.uIntensity.value = preset.intensity;
+      glitchPass.uniforms.uScanlineStrength.value = preset.scanlineStrength;
+      glitchPass.uniforms.uNoiseAmount.value = preset.noiseAmount;
+      glitchPass.uniforms.uBlockGlitchEnabled.value = preset.blockGlitchEnabled;
+
+      scanlineCycleIndex = findCycleIndex(scanlineValues, preset.scanlineStrength);
+      noiseCycleIndex = findCycleIndex(noiseValues, preset.noiseAmount);
+    }
+
+    function randomOffset() {
+      return (Math.random() * 0.05) - 0.025;
+    }
+
+    function updateHUDAndState(elapsed) {
+      const preset = presets[currentPreset];
+      const red = glitchPass.uniforms.uRedOffset.value;
+      const green = glitchPass.uniforms.uGreenOffset.value;
+      const blue = glitchPass.uniforms.uBlueOffset.value;
+      const intensity = glitchPass.uniforms.uIntensity.value;
+      const scanlineStrength = glitchPass.uniforms.uScanlineStrength.value;
+      const noiseAmount = glitchPass.uniforms.uNoiseAmount.value;
+      const blockGlitchEnabled = glitchPass.uniforms.uBlockGlitchEnabled.value;
+
+      hud.textContent =
+`Preset: ${preset.number} - ${preset.name}
+Intensity: ${intensity.toFixed(2)}
+Red Offset: (${red.x.toFixed(3)}, ${red.y.toFixed(3)})
+Green Offset: (${green.x.toFixed(3)}, ${green.y.toFixed(3)})
+Blue Offset: (${blue.x.toFixed(3)}, ${blue.y.toFixed(3)})
+Scanline Strength: ${scanlineStrength.toFixed(2)}
+Noise Amount: ${noiseAmount.toFixed(2)}
+Block Glitch: ${blockGlitchEnabled ? 'ON' : 'OFF'}
+
+Keys:
+0-3 Presets
+I Toggle Intensity
+S Cycle Scanlines
+N Cycle Noise
+B Toggle Block Glitch
+R Randomize RGB Offsets
+↑/↓ Intensity`;
+
+      window.__3D_STATE__ = {
+        preset: preset.number,
+        presetName: preset.name,
+        intensity: intensity,
+        redOffset: { x: red.x, y: red.y },
+        greenOffset: { x: green.x, y: green.y },
+        blueOffset: { x: blue.x, y: blue.y },
+        scanlineStrength: scanlineStrength,
+        noiseAmount: noiseAmount,
+        blockGlitchEnabled: blockGlitchEnabled,
+        objectCount: objects.length,
+        composerPassCount: composer.passes.length,
+        frameCount: frameCount,
+        elapsedTime: elapsed,
+        scanlineCycleIndex: scanlineCycleIndex,
+        noiseCycleIndex: noiseCycleIndex,
+        rendererSize: {
+          width: renderer.domElement.width,
+          height: renderer.domElement.height
+        }
+      };
+    }
+
+    window.addEventListener('keydown', (event) => {
+      const key = event.key;
+
+      if (key === '0' || key === '1' || key === '2' || key === '3') {
+        applyPreset(parseInt(key, 10));
+        return;
+      }
+
+      if (key === 'i' || key === 'I') {
+        const current = glitchPass.uniforms.uIntensity.value;
+        glitchPass.uniforms.uIntensity.value = current > 0 ? 0.0 : 1.0;
+        return;
+      }
+
+      if (key === 's' || key === 'S') {
+        scanlineCycleIndex = (scanlineCycleIndex + 1) % scanlineValues.length;
+        glitchPass.uniforms.uScanlineStrength.value = scanlineValues[scanlineCycleIndex];
+        return;
+      }
+
+      if (key === 'n' || key === 'N') {
+        noiseCycleIndex = (noiseCycleIndex + 1) % noiseValues.length;
+        glitchPass.uniforms.uNoiseAmount.value = noiseValues[noiseCycleIndex];
+        return;
+      }
+
+      if (key === 'b' || key === 'B') {
+        glitchPass.uniforms.uBlockGlitchEnabled.value = !glitchPass.uniforms.uBlockGlitchEnabled.value;
+        return;
+      }
+
+      if (key === 'r' || key === 'R') {
+        glitchPass.uniforms.uRedOffset.value.set(randomOffset(), randomOffset());
+        glitchPass.uniforms.uGreenOffset.value.set(randomOffset(), randomOffset());
+        glitchPass.uniforms.uBlueOffset.value.set(randomOffset(), randomOffset());
+        glitchPass.uniforms.uIntensity.value = 1.0;
+        return;
+      }
+
+      if (key === 'ArrowUp') {
+        glitchPass.uniforms.uIntensity.value = Math.min(3.0, glitchPass.uniforms.uIntensity.value + 0.25);
+        return;
+      }
+
+      if (key === 'ArrowDown') {
+        glitchPass.uniforms.uIntensity.value = Math.max(0.0, glitchPass.uniforms.uIntensity.value - 0.25);
+        return;
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    applyPreset(0);
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const elapsed = clock.getElapsedTime();
+      glitchPass.uniforms.uTime.value = elapsed;
+
+      for (let i = 0; i < objects.length; i++) {
+        objects[i].rotation.y += rotationSpeeds[i];
+      }
+
+      frameCount++;
+      updateHUDAndState(elapsed);
+      composer.render();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

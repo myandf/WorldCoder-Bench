@@ -1,0 +1,1035 @@
+{
+  "task_id": "P1216_morph_target_face_expression_blender_wit",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:26:20.197Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 12,
+      "total": 13,
+      "percent": 92.3
+    },
+    "sCov": {
+      "reached": 11,
+      "total": 11,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 54,
+      "total": 54,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 92.3,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 54,
+    "total": 54,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "FaceMesh",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "SliderHappy",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "SliderSad",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "SliderAngry",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "SliderSurprised",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "SliderSquint",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "PresetSmirkBtn",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "PresetShockBtn",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "ResetBtn",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "UndoBtn",
+      "found": true
+    },
+    {
+      "id": "A11",
+      "name": "RedoBtn",
+      "found": true
+    },
+    {
+      "id": "A12",
+      "name": "TotalWeightDisplay",
+      "found": true
+    },
+    {
+      "id": "A13",
+      "name": "AnimateToggleBtn",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshExists === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshExists === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphTargetCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphTargetCount === 5"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.morphWeights === 'object' && window.__3D_STATE__.morphWeights !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.morphWeights === 'object' && window.__3D_STATE__.morphWeights !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0 && window.__3D_STATE__.morphWeights.sad === 0 && window.__3D_STATE__.morphWeights.angry === 0 && window.__3D_STATE__.morphWeights.surprised === 0 && window.__3D_STATE__.morphWeights.squint === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0 && window.__3D_STATE__.morphWeights.sad === 0 && window.__3D_STATE__.morphWeights.angry === 0 && window.__3D_STATE__.morphWeights.surprised === 0 && window.__3D_STATE__.morphWeights.squint === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.undoStackSize === 0 && window.__3D_STATE__.redoStackSize === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.undoStackSize === 0 && window.__3D_STATE__.redoStackSize === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.75) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.75) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalWeight === 0.75 || Math.abs(window.__3D_STATE__.totalWeight - 0.75) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeight === 0.75 || Math.abs(window.__3D_STATE__.totalWeight - 0.75) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.undoStackSize === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.undoStackSize === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.redoStackSize === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.redoStackSize === 0"
+        },
+        {
+          "expression": "document.getElementById('slider-happy').value === '0.75' || Math.abs(parseFloat(document.getElementById('slider-happy').value) - 0.75) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('slider-happy').value === '0.75' || Math.abs(parseFloat(document.getElementById('slider-happy').value) - 0.75) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.angry === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.angry === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'smirk'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'smirk'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.squint === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.squint === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'shock'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'shock'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.redoStackSize >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.redoStackSize >= 1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'smirk' || window.__3D_STATE__.activePreset !== 'shock'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'smirk' || window.__3D_STATE__.activePreset !== 'shock'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.redoStackSize === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.redoStackSize === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalWeight > 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeight > 1.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalWeightWarning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeightWarning === true"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.8) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.7) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.7) < 0.02"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.totalWeight)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.totalWeight)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.sad === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.sad === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.angry === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.angry === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.squint === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.squint === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalWeight === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeight === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.morphWeights.happy)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.morphWeights.happy)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.morphWeights.surprised)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.morphWeights.surprised)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.morphWeights.happy === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.morphWeights.happy === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.totalWeight)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.totalWeight)"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshExists === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshExists === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphTargetCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphTargetCount === 5"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.morphWeights === 'object' && window.__3D_STATE__.morphWeights !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.morphWeights === 'object' && window.__3D_STATE__.morphWeights !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0 && window.__3D_STATE__.morphWeights.sad === 0 && window.__3D_STATE__.morphWeights.angry === 0 && window.__3D_STATE__.morphWeights.surprised === 0 && window.__3D_STATE__.morphWeights.squint === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0 && window.__3D_STATE__.morphWeights.sad === 0 && window.__3D_STATE__.morphWeights.angry === 0 && window.__3D_STATE__.morphWeights.surprised === 0 && window.__3D_STATE__.morphWeights.squint === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.undoStackSize === 0 && window.__3D_STATE__.redoStackSize === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.undoStackSize === 0 && window.__3D_STATE__.redoStackSize === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.75) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.75) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalWeight === 0.75 || Math.abs(window.__3D_STATE__.totalWeight - 0.75) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeight === 0.75 || Math.abs(window.__3D_STATE__.totalWeight - 0.75) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.undoStackSize === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.undoStackSize === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.redoStackSize === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.redoStackSize === 0"
+        },
+        {
+          "expression": "document.getElementById('slider-happy').value === '0.75' || Math.abs(parseFloat(document.getElementById('slider-happy').value) - 0.75) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('slider-happy').value === '0.75' || Math.abs(parseFloat(document.getElementById('slider-happy').value) - 0.75) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.angry === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.angry === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'smirk'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'smirk'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.squint === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.squint === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'shock'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'shock'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.redoStackSize >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.redoStackSize >= 1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.6) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.squint - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'smirk' || window.__3D_STATE__.activePreset !== 'shock'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'smirk' || window.__3D_STATE__.activePreset !== 'shock'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.surprised - 0.9) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.angry - 0.2) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.redoStackSize === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.redoStackSize === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.totalWeight - 1.1) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalWeight > 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeight > 1.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalWeightWarning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeightWarning === true"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.happy - 0.8) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.7) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.morphWeights.sad - 0.7) < 0.02"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.totalWeight)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.totalWeight)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.sad === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.sad === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.angry === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.angry === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.squint === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.squint === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalWeight === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalWeight === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.morphWeights.happy)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.morphWeights.happy)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.morphWeights.surprised)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.morphWeights.surprised)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.morphWeights.happy === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.morphWeights.happy === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.happy >= 0 && window.__3D_STATE__.morphWeights.happy <= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.morphWeights.surprised >= 0 && window.__3D_STATE__.morphWeights.surprised <= 0.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.totalWeight)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.totalWeight)"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 12,
+    "total": 13,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      },
+      {
+        "id": "A11",
+        "pass": true
+      },
+      {
+        "id": "A12",
+        "pass": true
+      },
+      {
+        "id": "A13",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 11,
+    "total": 11
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 3,
+      "total": 3
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 51,
+      "total": 51
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 15806
+}

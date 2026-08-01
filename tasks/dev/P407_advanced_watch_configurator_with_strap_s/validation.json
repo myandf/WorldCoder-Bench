@@ -1,0 +1,1068 @@
+{
+  "task_id": "P407_advanced_watch_configurator_with_strap_s",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:32:31.695Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 8,
+      "total": 10,
+      "percent": 80
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 59,
+      "total": 59,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 80,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 59,
+    "total": 59,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "WatchModel",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "WatchStrap",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "NextStrapButton",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "PrevStrapButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "NextDialButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "PrevDialButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ToggleRotateButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "ZoomFitButton",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "HUDPanel",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.strapName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapName !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialName !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.strapName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapName !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialName !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.strapName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapName !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialName !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.strapName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapName !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialName !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.strapName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapName !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialName !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== before.strapIndex || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number' && !isNaN(window.__3D_STATE__.strapIndex)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number' && !isNaN(window.__3D_STATE__.dialIndex)"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.strapIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.strapName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.strapName !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialIndex !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialIndex !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.dialName !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dialName !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strapIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strapIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.dialIndex === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.dialIndex === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.autoRotate === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.autoRotate === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.styleScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.styleScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 8,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 42,
+      "total": 42
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 17,
+      "total": 17
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 43808
+}

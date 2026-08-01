@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js POM Demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+    }
+    canvas { display: block; }
+    #controlPanel {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(20,20,20,0.78);
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      min-width: 260px;
+      z-index: 10;
+      user-select: none;
+    }
+    #controlPanel .row {
+      margin: 8px 0;
+    }
+    #controlPanel label, #controlPanel button {
+      font-size: 14px;
+    }
+    #controlPanel input[type="range"] {
+      width: 100%;
+    }
+    #controlPanel .buttonRow {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    #controlPanel button {
+      background: #222;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    #controlPanel button.active {
+      background: #4b2cff;
+      border-color: #9b8cff;
+    }
+    #fpsDisplay {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(20,20,20,0.7);
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 14px;
+      z-index: 10;
+    }
+    #patternDisplay {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(20,20,20,0.72);
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      z-index: 10;
+      text-transform: capitalize;
+    }
+    .hint {
+      opacity: 0.8;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div id="controlPanel">
+    <div class="row">
+      <label id="layerLabel" for="layerSlider">Depth Layers: 32</label>
+      <input id="layerSlider" type="range" min="4" max="128" step="1" value="32" />
+    </div>
+    <div class="row">
+      <label id="heightLabel" for="heightSlider">Height Scale: 0.15</label>
+      <input id="heightSlider" type="range" min="0" max="50" step="1" value="15" />
+    </div>
+    <div class="row">
+      <label><input id="debugCheckbox" type="checkbox" /> Show Depth Debug</label>
+    </div>
+    <div class="row">
+      <label><input id="shadowCheckbox" type="checkbox" checked /> Self-Shadowing</label>
+    </div>
+    <div class="row buttonRow">
+      <button id="selectBricks" class="active">Bricks</button>
+      <button id="selectWaves">Waves</button>
+      <button id="selectCraters">Craters</button>
+    </div>
+    <div class="hint">Keys: <b>L</b> toggle light orbit, <b>R</b> reset</div>
+  </div>
+
+  <div id="fpsDisplay">FPS: 0</div>
+  <div id="patternDisplay">Selected: bricks</div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 4);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0, 0);
+    controls.enableDamping = true;
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 1.5, 100);
+    pointLight.position.set(2, 3, 2);
+    scene.add(pointLight);
+
+    const lightMarker = new THREE.Mesh(
+      new THREE.SphereGeometry(0.06, 16, 16),
+      new THREE.MeshBasicMaterial({ color: 0xffffff })
+    );
+    pointLight.add(lightMarker);
+
+    const patterns = ['bricks', 'waves', 'craters'];
+    const materials = [];
+    const planes = [];
+    const borders = [];
+
+    const defaultState = {
+      layerCount: 32,
+      heightScale: 0.15,
+      debugMode: false,
+      selfShadow: true,
+      selectedPlane: 0,
+      lightOrbiting: false
+    };
+
+    window.__3D_STATE__ = {
+      layerCount: defaultState.layerCount,
+      heightScale: defaultState.heightScale,
+      debugMode: defaultState.debugMode,
+      selfShadow: defaultState.selfShadow,
+      selectedPlane: defaultState.selectedPlane,
+      lightOrbiting: defaultState.lightOrbiting,
+      lightPosition: { x: pointLight.position.x, y: pointLight.position.y, z: pointLight.position.z },
+      planePatterns: [...patterns],
+      fps: 0,
+      frameCount: 0,
+      pomRaySteps: defaultState.layerCount,
+      materialCount: 0
+    };
+
+    const vertexShader = `
+      varying vec2 vUv;
+      varying vec3 vWorldPos;
+      varying vec3 vNormalW;
+      varying vec3 vTangentViewDir;
+      varying vec3 vTangentLightDir;
+      varying mat3 vTBN;
+
+      uniform vec3 uLightPos;
+
+      void main() {
+        vUv = uv;
+
+        vec3 posW = (modelMatrix * vec4(position, 1.0)).xyz;
+        vWorldPos = posW;
+
+        vec3 N = normalize(mat3(modelMatrix) * normal);
+        vec3 T = normalize(mat3(modelMatrix) * tangent.xyz);
+        vec3 B = normalize(cross(N, T) * tangent.w);
+        vTBN = mat3(T, B, N);
+        vNormalW = N;
+
+        vec3 viewDirW = cameraPosition - posW;
+        vec3 lightDirW = uLightPos - posW;
+
+        vTangentViewDir = transpose(vTBN) * viewDirW;
+        vTangentLightDir = transpose(vTBN) * lightDirW;
+
+        gl_Position = projectionMatrix * viewMatrix * vec4(posW, 1.0);
+      }
+    `;
+
+    const fragmentShader = `
+      precision highp float;
+
+      varying vec2 vUv;
+      varying vec3 vWorldPos;
+      varying vec3 vNormalW;
+      varying vec3 vTangentViewDir;
+      varying vec3 vTangentLightDir;
+      varying mat3 vTBN;
+
+      uniform int uPatternType;
+      uniform float uHeightScale;
+      uniform int uLayerCount;
+      uniform vec3 uLightPos;
+      uniform bool uShowDebugDepth;
+      uniform bool uSelfShadow;
+      uniform vec3 uBaseColor;
+      uniform vec3 uAccentColor;
+
+      float hash21(vec2 p) {
+        p = fract(p * vec2(123.34, 456.21));
+        p += dot(p, p + 45.32);
+        return fract(p.x * p.y);
+      }
+
+      float sdBox(vec2 p, vec2 b) {
+        vec2 d = abs(p) - b;
+        return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+      }
+
+      float heightBricks(vec2 uv) {
+        vec2 grid = uv * vec2(4.0, 4.0);
+        vec2 id = floor(grid);
+        vec2 gv = fract(grid);
+        if (mod(id.y, 2.0) > 0.5) gv.x = fract(gv.x + 0.5);
+
+        float mortar = 0.08;
+        float inBrick = step(mortar, gv.x) * step(mortar, gv.y) * step(gv.x, 1.0 - mortar) * step(gv.y, 1.0 - mortar);
+        vec2 p = gv - 0.5;
+        float edgeSoft = 1.0 - smoothstep(0.38, 0.47, max(abs(p.x), abs(p.y)));
+        float bump = 0.55 + 0.45 * edgeSoft;
+        return mix(0.02, bump, inBrick);
+      }
+
+      float heightWaves(vec2 uv) {
+        float h = 0.5 + 0.25 * sin(uv.x * 18.0) + 0.25 * sin(uv.y * 16.0 + uv.x * 4.0);
+        h += 0.1 * sin((uv.x + uv.y) * 24.0);
+        return clamp(h, 0.0, 1.0);
+      }
+
+      float craterCell(vec2 uv, vec2 scale) {
+        vec2 p = uv * scale;
+        vec2 id = floor(p);
+        vec2 f = fract(p);
+        float rnd = hash21(id);
+        vec2 c = vec2(fract(rnd * 7.13), fract(rnd * 13.71));
+        float r = 0.18 + 0.22 * fract(rnd * 19.37);
+        float d = distance(f, c);
+        float crater = smoothstep(r, r * 0.25, d);
+        float rim = smoothstep(r * 1.2, r * 0.9, d) * 0.35;
+        return -crater * 0.75 + rim;
+      }
+
+      float heightCraters(vec2 uv) {
+        float h = 0.75;
+        h += craterCell(uv, vec2(5.0, 5.0));
+        h += 0.5 * craterCell(uv + 0.37, vec2(8.0, 8.0));
+        return clamp(h, 0.0, 1.0);
+      }
+
+      float getHeight(vec2 uv) {
+        uv = fract(uv);
+        if (uPatternType == 0) return heightBricks(uv);
+        if (uPatternType == 1) return heightWaves(uv);
+        return heightCraters(uv);
+      }
+
+      vec3 getAlbedo(vec2 uv, float h) {
+        uv = fract(uv);
+        if (uPatternType == 0) {
+          vec2 grid = uv * vec2(4.0, 4.0);
+          vec2 id = floor(grid);
+          vec2 gv = fract(grid);
+          if (mod(id.y, 2.0) > 0.5) gv.x = fract(gv.x + 0.5);
+          float mortar = 0.08;
+          float inBrick = step(mortar, gv.x) * step(mortar, gv.y) * step(gv.x, 1.0 - mortar) * step(gv.y, 1.0 - mortar);
+          vec3 brick = mix(vec3(0.45, 0.12, 0.08), vec3(0.8, 0.32, 0.18), h);
+          vec3 mortarCol = vec3(0.18);
+          return mix(mortarCol, brick, inBrick);
+        }
+        if (uPatternType == 1) {
+          return mix(vec3(0.05, 0.2, 0.55), vec3(0.25, 0.85, 0.95), h);
+        }
+        return mix(vec3(0.18, 0.16, 0.14), vec3(0.62, 0.58, 0.5), h);
+      }
+
+      vec3 computeNormalTS(vec2 uv) {
+        float e = 0.0025;
+        float h = getHeight(uv);
+        float hx = getHeight(uv + vec2(e, 0.0));
+        float hy = getHeight(uv + vec2(0.0, e));
+        vec3 n = normalize(vec3((h - hx) * uHeightScale / e, (h - hy) * uHeightScale / e, 1.0));
+        return n;
+      }
+
+      vec3 parallaxUV(vec2 uv, vec3 viewDirTS, out float outDepth) {
+        vec3 V = normalize(viewDirTS);
+        float numLayers = float(uLayerCount);
+        float layerDepth = 1.0 / numLayers;
+        float currentLayerDepth = 0.0;
+
+        vec2 P = (V.xy / max(V.z, 0.0001)) * uHeightScale;
+        vec2 deltaUV = P / numLayers;
+
+        vec2 currentUV = uv;
+        float currentHeight = getHeight(currentUV);
+
+        for (int i = 0; i < 128; i++) {
+          if (i >= uLayerCount) break;
+          currentUV -= deltaUV;
+          currentLayerDepth += layerDepth;
+          currentHeight = getHeight(currentUV);
+          if (currentLayerDepth >= currentHeight) {
+            vec2 prevUV = currentUV + deltaUV;
+            float afterDepth = currentHeight - currentLayerDepth;
+            float beforeHeight = getHeight(prevUV);
+            float beforeDepth = beforeHeight - (currentLayerDepth - layerDepth);
+            float weight = beforeDepth / max(beforeDepth - afterDepth, 0.00001);
+            vec2 finalUV = mix(currentUV, prevUV, clamp(weight, 0.0, 1.0));
+            outDepth = clamp(currentLayerDepth, 0.0, 1.0);
+            return vec3(finalUV, outDepth);
+          }
+        }
+        outDepth = currentLayerDepth;
+        return vec3(currentUV, outDepth);
+      }
+
+      float selfShadowFactor(vec2 uv, float surfDepth, vec3 lightDirTS) {
+        if (!uSelfShadow) return 1.0;
+
+        vec3 L = normalize(lightDirTS);
+        if (L.z <= 0.001) return 1.0;
+
+        vec2 deltaUV = (L.xy / L.z) * uHeightScale / float(uLayerCount);
+        float deltaDepth = 1.0 / float(uLayerCount);
+        vec2 testUV = uv + deltaUV * 2.0;
+        float rayDepth = surfDepth - deltaDepth * 2.0;
+
+        for (int i = 0; i < 128; i++) {
+          if (i >= uLayerCount) break;
+          if (rayDepth <= 0.0) break;
+          float h = getHeight(testUV);
+          if (h > rayDepth + 0.01) {
+            return 0.5;
+          }
+          testUV += deltaUV;
+          rayDepth -= deltaDepth;
+        }
+        return 1.0;
+      }
+
+      void main() {
+        float pomDepth;
+        vec3 parallaxData = parallaxUV(vUv, vTangentViewDir, pomDepth);
+        vec2 uv = parallaxData.xy;
+
+        if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) discard;
+
+        float h = getHeight(uv);
+        if (uShowDebugDepth) {
+          gl_FragColor = vec4(vec3(h), 1.0);
+          return;
+        }
+
+        vec3 normalTS = computeNormalTS(uv);
+        vec3 normalW = normalize(vTBN * normalTS);
+
+        vec3 lightDirW = normalize(uLightPos - vWorldPos);
+        vec3 viewDirW = normalize(cameraPosition - vWorldPos);
+
+        float diff = max(dot(normalW, lightDirW), 0.0);
+        vec3 halfDir = normalize(lightDirW + viewDirW);
+        float spec = pow(max(dot(normalW, halfDir), 0.0), 32.0);
+
+        float shadow = selfShadowFactor(uv, h, vTangentLightDir);
+
+        vec3 albedo = getAlbedo(uv, h);
+        vec3 ambient = albedo * 0.2;
+        vec3 color = ambient + (albedo * diff + vec3(spec) * 0.35) * shadow;
+
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `;
+
+    function createPOMMaterial(patternType, baseColor, accentColor) {
+      const mat = new THREE.ShaderMaterial({
+        vertexShader,
+        fragmentShader,
+        uniforms: {
+          uPatternType: { value: patternType },
+          uHeightScale: { value: defaultState.heightScale },
+          uLayerCount: { value: defaultState.layerCount },
+          uLightPos: { value: pointLight.position.clone() },
+          uShowDebugDepth: { value: defaultState.debugMode },
+          uSelfShadow: { value: defaultState.selfShadow },
+          uBaseColor: { value: new THREE.Color(baseColor) },
+          uAccentColor: { value: new THREE.Color(accentColor) }
+        },
+        side: THREE.DoubleSide
+      });
+      materials.push(mat);
+      return mat;
+    }
+
+    function createPlane(index, x, patternName, patternType, colorA, colorB) {
+      const geo = new THREE.PlaneGeometry(2, 2, 1, 1);
+      const tangent = new Float32Array(geo.attributes.position.count * 4);
+      for (let i = 0; i < geo.attributes.position.count; i++) {
+        tangent[i * 4 + 0] = 1;
+        tangent[i * 4 + 1] = 0;
+        tangent[i * 4 + 2] = 0;
+        tangent[i * 4 + 3] = 1;
+      }
+      geo.setAttribute('tangent', new THREE.BufferAttribute(tangent, 4));
+
+      const mat = createPOMMaterial(patternType, colorA, colorB);
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(x, 0, 0);
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.rotation.z = 0;
+      mesh.rotation.x += Math.PI / 6;
+      mesh.userData.planeIndex = index;
+      mesh.userData.pattern = patternName;
+      scene.add(mesh);
+
+      const edges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(geo),
+        new THREE.LineBasicMaterial({ color: 0xffcc00, transparent: true, opacity: index === 0 ? 1 : 0 })
+      );
+      edges.position.copy(mesh.position);
+      edges.rotation.copy(mesh.rotation);
+      edges.scale.set(1.03, 1.03, 1.03);
+      scene.add(edges);
+
+      planes.push(mesh);
+      borders.push(edges);
+    }
+
+    createPlane(0, -3, 'bricks', 0, '#a13d2a', '#d66345');
+    createPlane(1, 0, 'waves', 1, '#0b5ca8', '#53ddff');
+    createPlane(2, 3, 'craters', 2, '#5c554c', '#b4a894');
+
+    window.__3D_STATE__.materialCount = materials.length;
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    const layerSlider = document.getElementById('layerSlider');
+    const heightSlider = document.getElementById('heightSlider');
+    const debugCheckbox = document.getElementById('debugCheckbox');
+    const shadowCheckbox = document.getElementById('shadowCheckbox');
+    const layerLabel = document.getElementById('layerLabel');
+    const heightLabel = document.getElementById('heightLabel');
+    const fpsDisplay = document.getElementById('fpsDisplay');
+    const patternDisplay = document.getElementById('patternDisplay');
+
+    const selectButtons = [
+      document.getElementById('selectBricks'),
+      document.getElementById('selectWaves'),
+      document.getElementById('selectCraters')
+    ];
+
+    function syncUniforms() {
+      for (const mat of materials) {
+        mat.uniforms.uLayerCount.value = window.__3D_STATE__.layerCount;
+        mat.uniforms.uHeightScale.value = window.__3D_STATE__.heightScale;
+        mat.uniforms.uShowDebugDepth.value = window.__3D_STATE__.debugMode;
+        mat.uniforms.uSelfShadow.value = window.__3D_STATE__.selfShadow;
+        mat.uniforms.uLightPos.value.copy(pointLight.position);
+      }
+    }
+
+    function setSelectedPlane(index) {
+      window.__3D_STATE__.selectedPlane = index;
+      borders.forEach((b, i) => {
+        b.material.opacity = i === index ? 1.0 : 0.0;
+        b.material.color.set(i === index ? 0xffcc00 : 0xffffff);
+      });
+      selectButtons.forEach((btn, i) => btn.classList.toggle('active', i === index));
+      patternDisplay.textContent = 'Selected: ' + patterns[index];
+    }
+
+    function applyUIToState() {
+      window.__3D_STATE__.layerCount = parseInt(layerSlider.value, 10);
+      window.__3D_STATE__.heightScale = parseInt(heightSlider.value, 10) / 100;
+      window.__3D_STATE__.debugMode = debugCheckbox.checked;
+      window.__3D_STATE__.selfShadow = shadowCheckbox.checked;
+      window.__3D_STATE__.pomRaySteps = window.__3D_STATE__.layerCount;
+
+      layerLabel.textContent = 'Depth Layers: ' + window.__3D_STATE__.layerCount;
+      heightLabel.textContent = 'Height Scale: ' + window.__3D_STATE__.heightScale.toFixed(2);
+
+      syncUniforms();
+    }
+
+    function resetAll() {
+      layerSlider.value = defaultState.layerCount;
+      heightSlider.value = Math.round(defaultState.heightScale * 100);
+      debugCheckbox.checked = defaultState.debugMode;
+      shadowCheckbox.checked = defaultState.selfShadow;
+      window.__3D_STATE__.lightOrbiting = defaultState.lightOrbiting;
+      pointLight.position.set(2, 3, 2);
+      applyUIToState();
+      setSelectedPlane(defaultState.selectedPlane);
+    }
+
+    layerSlider.addEventListener('input', applyUIToState);
+    heightSlider.addEventListener('input', applyUIToState);
+    debugCheckbox.addEventListener('change', applyUIToState);
+    shadowCheckbox.addEventListener('change', applyUIToState);
+
+    selectButtons[0].addEventListener('click', () => setSelectedPlane(0));
+    selectButtons[1].addEventListener('click', () => setSelectedPlane(1));
+    selectButtons[2].addEventListener('click', () => setSelectedPlane(2));
+
+    renderer.domElement.addEventListener('pointerdown', (event) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(planes, false);
+      if (hits.length > 0) {
+        setSelectedPlane(hits[0].object.userData.planeIndex);
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      if (key === 'l') {
+        window.__3D_STATE__.lightOrbiting = !window.__3D_STATE__.lightOrbiting;
+      } else if (key === 'r') {
+        resetAll();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    applyUIToState();
+    setSelectedPlane(0);
+
+    const clock = new THREE.Clock();
+    let fpsAccum = 0;
+    let fpsFrames = 0;
+    let fps = 0;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = clock.getDelta();
+      const elapsed = clock.elapsedTime;
+
+      if (window.__3D_STATE__.lightOrbiting) {
+        pointLight.position.set(Math.cos(elapsed) * 3.0, 3.0, Math.sin(elapsed) * 3.0);
+      }
+
+      controls.update();
+      syncUniforms();
+      renderer.render(scene, camera);
+
+      fpsAccum += dt;
+      fpsFrames++;
+      if (fpsAccum >= 0.5) {
+        fps = fpsFrames / fpsAccum;
+        fpsAccum = 0;
+        fpsFrames = 0;
+        fpsDisplay.textContent = 'FPS: ' + fps.toFixed(1);
+      }
+
+      window.__3D_STATE__.frameCount += 1;
+      window.__3D_STATE__.fps = Number(fps.toFixed(2));
+      window.__3D_STATE__.lightPosition = {
+        x: Number(pointLight.position.x.toFixed(4)),
+        y: Number(pointLight.position.y.toFixed(4)),
+        z: Number(pointLight.position.z.toFixed(4))
+      };
+      window.__3D_STATE__.pomRaySteps = window.__3D_STATE__.layerCount;
+      window.__3D_STATE__.materialCount = materials.length;
+    }
+
+    animate();
+  </script>
+</body>
+</html>

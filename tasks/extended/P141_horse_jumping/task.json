@@ -1,0 +1,29 @@
+{
+  "id": "P141_horse_jumping",
+  "title": "Equestrian Show Jumping",
+  "domain": "game",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement an equestrian show jumping game. The horse automatically runs forward, and the player controls the timing of jumps.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules inside <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/Fox.glb;\n(2) Play the running animation on the horse model;\n\n[Track and Obstacles]\n(3) A straight track (60m long, visualized with ground stripes);\n(4) 6 rail obstacles (BoxGeometry) with different heights (0.5m, 0.8m, 1.0m, 1.2m, 1.0m, 1.5m);\n(5) Distribute the obstacles evenly along the track;\n\n[Automatic Running]\n(6) The horse automatically runs forward at 6 m/s (no manual forward movement is required);\n\n[Jumping]\n(7) Press the Space key to jump;\n(8) Jump effect: the horse moves upward along a parabolic trajectory (initial vy=8, g=15);\n(9) Good timing: jumping when the distance to a rail is < 1m results in a clear jump and +10 points (the rail remains in place);\n(10) Poor timing: if the horse jumps but does not reach sufficient height, it knocks down the rail and receives -5 points (with a rail-falling animation);\n(11) No jump: directly colliding with a rail causes the horse to stop and receive -10 points, then continue after 2 seconds;\n\n[HUD Display]\n(12) HUD in the upper-left corner:\n  - Score (id=\"score\")\n  - Number of obstacles cleared (id=\"cleared\")\n  - Number of faults (id=\"faults\")\n  - Current speed (id=\"speed\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - score: number\n  - hurdlesCleared: number\n  - faults: number\n  - speed: number\n  - position: number (progress along the track in m)\n  - isJumping: boolean\n\nOutput a single standalone HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [
+    "../../../assets/shared/Fox.glb"
+  ],
+  "tags": [
+    "game",
+    "sport",
+    "GLTFLoader",
+    "animation",
+    "physics"
+  ],
+  "estimated_human_time_minutes": 120,
+  "physics_constraints": [
+    "jump timing window: within 1m of hurdle",
+    "clean jump: +10 pts",
+    "knocked bar: -5 pts",
+    "crash: -10 pts"
+  ],
+  "difficulty_analysis": "L4: Loading an animated model with GLTFLoader, automatic running plus manual jump-timing evaluation, collision detection (rail-falling physics), and scoring logic."
+}

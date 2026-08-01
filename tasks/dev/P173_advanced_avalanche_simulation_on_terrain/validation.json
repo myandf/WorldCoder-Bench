@@ -1,0 +1,868 @@
+{
+  "task_id": "P173_advanced_avalanche_simulation_on_terrain",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:17:55.705Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 3,
+      "total": 6,
+      "percent": 50
+    },
+    "sCov": {
+      "reached": 6,
+      "total": 6,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 5,
+      "total": 5,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 52,
+      "total": 52,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 50,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 52,
+    "total": 52,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 5,
+  "total": 5,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "Ferrari",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "Boulders",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "Terrain",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "StartButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "HUD",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationStarted !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.score !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.ferrarLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ferrarLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives === 3"
+        },
+        {
+          "expression": "document.getElementById('status-display').textContent.toLowerCase().includes('running')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('status-display').textContent.toLowerCase().includes('running')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationStarted !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.score !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.bouldersSpawned >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bouldersSpawned >= 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.bouldersActive >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bouldersActive >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.elapsedTime > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.elapsedTime > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.elapsedTime)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.elapsedTime)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.ferrariX < 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ferrariX < 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.ferrariX >= -15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ferrariX >= -15"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.ferrariX)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.ferrariX)"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.bouldersSpawned === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bouldersSpawned === 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationStarted !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.score !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.ferrarLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ferrarLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives === 3"
+        },
+        {
+          "expression": "document.getElementById('status-display').textContent.toLowerCase().includes('running')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('status-display').textContent.toLowerCase().includes('running')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationStarted !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.score !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.bouldersSpawned >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bouldersSpawned >= 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.bouldersActive >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bouldersActive >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.elapsedTime > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.elapsedTime > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.elapsedTime)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.elapsedTime)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.ferrariX < 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ferrariX < 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.ferrariX >= -15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ferrariX >= -15"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.ferrariX)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.ferrariX)"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score !== before.score || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.score === 'number' && !isNaN(window.__3D_STATE__.score)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lives === 'number' && !isNaN(window.__3D_STATE__.lives)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.simulationStarted === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.simulationStarted === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationStarted === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationStarted === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.lives === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lives === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.gameOver === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.gameOver === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.bouldersSpawned === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bouldersSpawned === 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 3,
+    "total": 6,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 6,
+    "total": 6
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 23,
+      "total": 23
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 29,
+      "total": 29
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 137707
+}

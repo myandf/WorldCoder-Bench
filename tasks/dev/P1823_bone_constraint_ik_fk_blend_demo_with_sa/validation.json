@@ -1,0 +1,945 @@
+{
+  "task_id": "P1823_bone_constraint_ik_fk_blend_demo_with_sa",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:35:04.003Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 3,
+      "total": 7,
+      "percent": 42.9
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 51,
+      "total": 51,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 42.9,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 51,
+    "total": 51,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "BoneChain",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "IKTarget",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "BlendSlider",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "SaveButtons",
+      "found": false
+    },
+    {
+      "id": "A5",
+      "name": "LoadButtons",
+      "found": false
+    },
+    {
+      "id": "A6",
+      "name": "HUD",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "JointSpheres",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.boneCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.boneCount === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.fkAngles) && window.__3D_STATE__.fkAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.fkAngles) && window.__3D_STATE__.fkAngles.length === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.ikAngles) && window.__3D_STATE__.ikAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.ikAngles) && window.__3D_STATE__.ikAngles.length === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.finalAngles) && window.__3D_STATE__.finalAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.finalAngles) && window.__3D_STATE__.finalAngles.length === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.blendWeight === 0 && window.__3D_STATE__.selectedBone === 0 && window.__3D_STATE__.filledSlotCount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blendWeight === 0 && window.__3D_STATE__.selectedBone === 0 && window.__3D_STATE__.filledSlotCount === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedBone === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedBone === 2"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.fkAngles[2] === 'number' && isFinite(window.__3D_STATE__.fkAngles[2])",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.fkAngles[2] === 'number' && isFinite(window.__3D_STATE__.fkAngles[2])"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength !== undefined && Math.abs(window.__3D_STATE__.chainLength - 5.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength !== undefined && Math.abs(window.__3D_STATE__.chainLength - 5.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles.every(a => isFinite(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles.every(a => isFinite(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedBone === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedBone === 2"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2 - 0.2)) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2 - 0.2)) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles[2] < window.__T3_before",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles[2] < window.__T3_before"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles[2] === window.__3D_STATE__.fkAngles[2]",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles[2] === window.__3D_STATE__.fkAngles[2]"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles.every(a => isFinite(a) && !isNaN(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles.every(a => isFinite(a) && !isNaN(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.blendWeight - 0.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.blendWeight - 0.5) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every((f, i) => { const fk = window.__3D_STATE__.fkAngles[i]; const ik = window.__3D_STATE__.ikAngles[i]; const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : window.__3D_STATE__.blendWeight; return Math.abs(f - (fk + (ik - fk) * bw)) < 0.05; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every((f, i) => { const fk = window.__3D_STATE__.fkAngles[i]; const ik = window.__3D_STATE__.ikAngles[i]; const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : window.__3D_STATE__.blendWeight; return Math.abs(f - (fk + (ik - fk) * bw)) < 0.05; })"
+        },
+        {
+          "expression": "window.__3D_STATE__.blendWeight > 0 && window.__3D_STATE__.blendWeight < 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blendWeight > 0 && window.__3D_STATE__.blendWeight < 1"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.tipToTargetDistance === 'number' && isFinite(window.__3D_STATE__.tipToTargetDistance)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.tipToTargetDistance === 'number' && isFinite(window.__3D_STATE__.tipToTargetDistance)"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every(a => isFinite(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every(a => isFinite(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.filledSlotCount >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.filledSlotCount >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.savedSlots[0] !== null && window.__3D_STATE__.savedSlots[0] !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.savedSlots[0] !== null && window.__3D_STATE__.savedSlots[0] !== undefined"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.savedSlots[0].fkAngles) && window.__3D_STATE__.savedSlots[0].fkAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.savedSlots[0].fkAngles) && window.__3D_STATE__.savedSlots[0].fkAngles.length === 5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - window.__T5_preBlend) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - window.__T5_preBlend) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.savedSlots[0].fkAngles.every((a, i) => Math.abs(a - window.__T5_preFk[i]) < 0.001)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.savedSlots[0].fkAngles.every((a, i) => Math.abs(a - window.__T5_preFk[i]) < 0.001)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.blendWeight - 1.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.blendWeight - 1.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every((f, i) => { const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : 1.0; return bw === 1.0 ? Math.abs(f - window.__3D_STATE__.ikAngles[i]) < 0.05 : true; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every((f, i) => { const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : 1.0; return bw === 1.0 ? Math.abs(f - window.__3D_STATE__.ikAngles[i]) < 0.05 : true; })"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ikConverged === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ikConverged === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.ikIterations >= 0 && window.__3D_STATE__.ikIterations <= 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ikIterations >= 0 && window.__3D_STATE__.ikIterations <= 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.tipToTargetDistance <= window.__3D_STATE__.chainLength + 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.tipToTargetDistance <= window.__3D_STATE__.chainLength + 0.1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.blendWeight - window.__3D_STATE__.savedSlots[0].blendWeight) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.blendWeight - window.__3D_STATE__.savedSlots[0].blendWeight) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.blendWeight !== window.__T7_preLoad_blend || Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blendWeight !== window.__T7_preLoad_blend || Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - 1.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles.every((a, i) => Math.abs(a - window.__3D_STATE__.savedSlots[0].fkAngles[i]) < 0.01)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles.every((a, i) => Math.abs(a - window.__3D_STATE__.savedSlots[0].fkAngles[i]) < 0.01)"
+        },
+        {
+          "expression": "window.__3D_STATE__.filledSlotCount >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.filledSlotCount >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every(a => isFinite(a) && !isNaN(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every(a => isFinite(a) && !isNaN(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedBone === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedBone === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.perBoneOverrides[1] >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.perBoneOverrides[1] >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.perBoneOverrides[1] === 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.perBoneOverrides[1] === 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.perBoneOverrides.filter(v => v >= 0).length >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.perBoneOverrides.filter(v => v >= 0).length >= 1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.finalAngles[1] - window.__3D_STATE__.fkAngles[1]) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.finalAngles[1] - window.__3D_STATE__.fkAngles[1]) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isIKTargetVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isIKTargetVisible === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ikTargetPos === 'object' && window.__3D_STATE__.ikTargetPos !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ikTargetPos === 'object' && window.__3D_STATE__.ikTargetPos !== null"
+        },
+        {
+          "expression": "isFinite(window.__3D_STATE__.ikTargetPos.x) && isFinite(window.__3D_STATE__.ikTargetPos.y) && isFinite(window.__3D_STATE__.ikTargetPos.z)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "isFinite(window.__3D_STATE__.ikTargetPos.x) && isFinite(window.__3D_STATE__.ikTargetPos.y) && isFinite(window.__3D_STATE__.ikTargetPos.z)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.chainTipPos === 'object' && isFinite(window.__3D_STATE__.chainTipPos.x)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.chainTipPos === 'object' && isFinite(window.__3D_STATE__.chainTipPos.x)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[0] - 0) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[0] - 0) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[1] - 0.3) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[1] - 0.3) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[3] - 0.5) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[3] - 0.5) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[4] - (-0.1)) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[4] - (-0.1)) < 0.001"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.boneCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.boneCount === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.fkAngles) && window.__3D_STATE__.fkAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.fkAngles) && window.__3D_STATE__.fkAngles.length === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.ikAngles) && window.__3D_STATE__.ikAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.ikAngles) && window.__3D_STATE__.ikAngles.length === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.finalAngles) && window.__3D_STATE__.finalAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.finalAngles) && window.__3D_STATE__.finalAngles.length === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.blendWeight === 0 && window.__3D_STATE__.selectedBone === 0 && window.__3D_STATE__.filledSlotCount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blendWeight === 0 && window.__3D_STATE__.selectedBone === 0 && window.__3D_STATE__.filledSlotCount === 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedBone === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedBone === 2"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.fkAngles[2] === 'number' && isFinite(window.__3D_STATE__.fkAngles[2])",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.fkAngles[2] === 'number' && isFinite(window.__3D_STATE__.fkAngles[2])"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength !== undefined && Math.abs(window.__3D_STATE__.chainLength - 5.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength !== undefined && Math.abs(window.__3D_STATE__.chainLength - 5.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles.every(a => isFinite(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles.every(a => isFinite(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedBone === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedBone === 2"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2 - 0.2)) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2 - 0.2)) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles[2] < window.__T3_before",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles[2] < window.__T3_before"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles[2] === window.__3D_STATE__.fkAngles[2]",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles[2] === window.__3D_STATE__.fkAngles[2]"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles.every(a => isFinite(a) && !isNaN(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles.every(a => isFinite(a) && !isNaN(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.blendWeight - 0.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.blendWeight - 0.5) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every((f, i) => { const fk = window.__3D_STATE__.fkAngles[i]; const ik = window.__3D_STATE__.ikAngles[i]; const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : window.__3D_STATE__.blendWeight; return Math.abs(f - (fk + (ik - fk) * bw)) < 0.05; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every((f, i) => { const fk = window.__3D_STATE__.fkAngles[i]; const ik = window.__3D_STATE__.ikAngles[i]; const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : window.__3D_STATE__.blendWeight; return Math.abs(f - (fk + (ik - fk) * bw)) < 0.05; })"
+        },
+        {
+          "expression": "window.__3D_STATE__.blendWeight > 0 && window.__3D_STATE__.blendWeight < 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blendWeight > 0 && window.__3D_STATE__.blendWeight < 1"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.tipToTargetDistance === 'number' && isFinite(window.__3D_STATE__.tipToTargetDistance)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.tipToTargetDistance === 'number' && isFinite(window.__3D_STATE__.tipToTargetDistance)"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every(a => isFinite(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every(a => isFinite(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.filledSlotCount >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.filledSlotCount >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.savedSlots[0] !== null && window.__3D_STATE__.savedSlots[0] !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.savedSlots[0] !== null && window.__3D_STATE__.savedSlots[0] !== undefined"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.savedSlots[0].fkAngles) && window.__3D_STATE__.savedSlots[0].fkAngles.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.savedSlots[0].fkAngles) && window.__3D_STATE__.savedSlots[0].fkAngles.length === 5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - window.__T5_preBlend) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - window.__T5_preBlend) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.savedSlots[0].fkAngles.every((a, i) => Math.abs(a - window.__T5_preFk[i]) < 0.001)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.savedSlots[0].fkAngles.every((a, i) => Math.abs(a - window.__T5_preFk[i]) < 0.001)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.blendWeight - 1.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.blendWeight - 1.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every((f, i) => { const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : 1.0; return bw === 1.0 ? Math.abs(f - window.__3D_STATE__.ikAngles[i]) < 0.05 : true; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every((f, i) => { const ov = window.__3D_STATE__.perBoneOverrides[i]; const bw = ov >= 0 ? ov : 1.0; return bw === 1.0 ? Math.abs(f - window.__3D_STATE__.ikAngles[i]) < 0.05 : true; })"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ikConverged === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ikConverged === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.ikIterations >= 0 && window.__3D_STATE__.ikIterations <= 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ikIterations >= 0 && window.__3D_STATE__.ikIterations <= 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.tipToTargetDistance <= window.__3D_STATE__.chainLength + 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.tipToTargetDistance <= window.__3D_STATE__.chainLength + 0.1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.blendWeight - window.__3D_STATE__.savedSlots[0].blendWeight) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.blendWeight - window.__3D_STATE__.savedSlots[0].blendWeight) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.blendWeight !== window.__T7_preLoad_blend || Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blendWeight !== window.__T7_preLoad_blend || Math.abs(window.__3D_STATE__.savedSlots[0].blendWeight - 1.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.fkAngles.every((a, i) => Math.abs(a - window.__3D_STATE__.savedSlots[0].fkAngles[i]) < 0.01)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fkAngles.every((a, i) => Math.abs(a - window.__3D_STATE__.savedSlots[0].fkAngles[i]) < 0.01)"
+        },
+        {
+          "expression": "window.__3D_STATE__.filledSlotCount >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.filledSlotCount >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.finalAngles.every(a => isFinite(a) && !isNaN(a))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.finalAngles.every(a => isFinite(a) && !isNaN(a))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedBone === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedBone === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.perBoneOverrides[1] >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.perBoneOverrides[1] >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.perBoneOverrides[1] === 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.perBoneOverrides[1] === 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.perBoneOverrides.filter(v => v >= 0).length >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.perBoneOverrides.filter(v => v >= 0).length >= 1"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.finalAngles[1] - window.__3D_STATE__.fkAngles[1]) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.finalAngles[1] - window.__3D_STATE__.fkAngles[1]) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isIKTargetVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isIKTargetVisible === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ikTargetPos === 'object' && window.__3D_STATE__.ikTargetPos !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ikTargetPos === 'object' && window.__3D_STATE__.ikTargetPos !== null"
+        },
+        {
+          "expression": "isFinite(window.__3D_STATE__.ikTargetPos.x) && isFinite(window.__3D_STATE__.ikTargetPos.y) && isFinite(window.__3D_STATE__.ikTargetPos.z)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "isFinite(window.__3D_STATE__.ikTargetPos.x) && isFinite(window.__3D_STATE__.ikTargetPos.y) && isFinite(window.__3D_STATE__.ikTargetPos.z)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.chainTipPos === 'object' && isFinite(window.__3D_STATE__.chainTipPos.x)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.chainTipPos === 'object' && isFinite(window.__3D_STATE__.chainTipPos.x)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[0] - 0) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[0] - 0) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[1] - 0.3) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[1] - 0.3) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[2] - (-0.2)) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[3] - 0.5) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[3] - 0.5) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.fkAngles[4] - (-0.1)) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.fkAngles[4] - (-0.1)) < 0.001"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 3,
+    "total": 7,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": false
+      },
+      {
+        "id": "A5",
+        "pass": false
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 11,
+      "total": 11
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 40,
+      "total": 40
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 15696
+}

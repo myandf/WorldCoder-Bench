@@ -1,0 +1,31 @@
+{
+  "id": "P42_transform_controls",
+  "title": "Drag Transformations (TransformControls)",
+  "domain": "game",
+  "route": "B",
+  "difficulty": "L3",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js and TransformControls to implement a scene in which selectable objects can be translated, rotated, and scaled.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import through ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\nimport { TransformControls } from 'three/addons/controls/TransformControls.js';\n// Write your code here\n</script>\n\n[Objects]\n(1) Exactly 5 objects: box, sphere, cylinder, torus, and cone; their names must match __3D_STATE__.objects[].name;\n(2) Click an object to select it and attach TransformControls; clicking empty space must either deselect the object or retain the last selected object (the behavior must be fixed and documented in a comment);\n\n[Mode Buttons]\n(3) id=\"translateBtn\" → translate; (4) id=\"rotateBtn\" → rotate; (5) id=\"scaleBtn\" → scale;\n\n[Snapping]\n(6) id=\"snapToggle\": when enabled, translation snaps to a 0.5 grid and rotation snaps to 15° (π/12); when disabled, transformations are continuous;\n\n[Information Panel]\n(7) Display the currently selected object's position, rotation (using the same unit as __3D_STATE__: degrees or radians must be consistent), and scale;\n\n[Undo and Redo]\n(8) id=\"undoBtn\" and id=\"redoBtn\": undo and redo transformations step by step (position/rotation/scale history stacks);\n\n[State Exposure (Required)]\n(9) Update window.__3D_STATE__ every frame:\n  - objectCount (always 5)\n  - selectedObject: string|null\n  - mode: 'translate'|'rotate'|'scale'\n  - snapEnabled: boolean\n  - objects:[{name,x,y,z,rx,ry,rz,sx,sy,sz}] (consistent with the scene)\n\n[Evaluation Helpers (Recommended)]\n(10) window.__STATEPROBE_select__(name), window.__STATEPROBE_nudge__(dx,dy,dz).\n\nOutput a single HTML file that runs when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "three.js",
+    "TransformControls",
+    "OrbitControls",
+    "gizmo",
+    "undo",
+    "snap",
+    "interactive"
+  ],
+  "estimated_human_time_minutes": 130,
+  "physics_constraints": [
+    "5 primitives box sphere cylinder torus cone",
+    "TransformControls from three/addons",
+    "translateBtn rotateBtn scaleBtn",
+    "snapToggle 0.5 translate 15deg rotate",
+    "undoBtn redoBtn",
+    "info panel selected transform"
+  ],
+  "difficulty_analysis": "L3: Conflicts between TransformControls and OrbitControls, snapping, undo history stack, five objects, and __3D_STATE__."
+}

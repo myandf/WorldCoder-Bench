@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Vignette Post-Processing - CesiumMilkTruck</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
+      color: white;
+    }
+
+    #canvas-container {
+      width: 960px;
+      height: 600px;
+      margin: 0;
+      position: relative;
+    }
+
+    #controls-panel {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      width: 280px;
+      background: rgba(20, 20, 20, 0.78);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 10px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    #controls-panel h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .control-group {
+      margin-bottom: 12px;
+    }
+
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+    }
+
+    .control-group input[type="color"],
+    .control-group select,
+    .control-group button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 7px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    .control-group select option {
+      color: black;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 11px;
+      opacity: 0.8;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <div id="controls-panel">
+    <h3>Vignette Controls</h3>
+
+    <div class="control-group">
+      <label for="select-preset">
+        <span>Preset</span>
+      </label>
+      <select id="select-preset">
+        <option>Custom</option>
+        <option>Cinematic</option>
+        <option>Warm Glow</option>
+        <option>Cold Fade</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-radius">
+        <span>Radius</span>
+        <span id="label-radius">0.75</span>
+      </label>
+      <input id="slider-radius" type="range" min="0.1" max="1.5" step="0.05" value="0.75" />
+    </div>
+
+    <div class="control-group">
+      <label for="slider-softness">
+        <span>Softness</span>
+        <span id="label-softness">0.45</span>
+      </label>
+      <input id="slider-softness" type="range" min="0.05" max="1.0" step="0.05" value="0.45" />
+    </div>
+
+    <div class="control-group">
+      <label for="slider-intensity">
+        <span>Intensity</span>
+        <span id="label-intensity">1.0</span>
+      </label>
+      <input id="slider-intensity" type="range" min="0.0" max="2.0" step="0.1" value="1.0" />
+    </div>
+
+    <div class="control-group">
+      <label for="picker-color">
+        <span>Tint Color</span>
+      </label>
+      <input id="picker-color" type="color" value="#000000" />
+    </div>
+
+    <div class="control-group button-row">
+      <button id="btn-toggle">Disable Vignette</button>
+      <button id="btn-reset">Reset Defaults</button>
+    </div>
+
+    <div class="hint">
+      Shortcuts: V toggle, R reset, 1 Cinematic, 2 Warm Glow, 3 Cold Fade
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/RenderPass.js';
+    import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/ShaderPass.js';
+
+    const WIDTH = 960;
+    const HEIGHT = 600;
+
+    const defaults = {
+      radius: 0.75,
+      softness: 0.45,
+      intensity: 1.0,
+      color: '#000000'
+    };
+
+    const presets = {
+      'Custom': null,
+      'Cinematic': { radius: 0.6, softness: 0.3, intensity: 1.4, color: '#000000' },
+      'Warm Glow': { radius: 1.0, softness: 0.7, intensity: 0.8, color: '#331100' },
+      'Cold Fade': { radius: 0.5, softness: 0.5, intensity: 1.2, color: '#001133' }
+    };
+
+    window.__3D_STATE__ = {
+      modelLoaded: false,
+      vignetteEnabled: true,
+      radius: defaults.radius,
+      softness: defaults.softness,
+      intensity: defaults.intensity,
+      tintColor: defaults.color,
+      activePreset: 'Custom',
+      frameCount: 0,
+      composerPassCount: 0,
+      cameraPosition: { x: 5.00, y: 4.00, z: 8.00 },
+      uniformsSynced: true
+    };
+
+    const container = document.getElementById('canvas-container');
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(WIDTH, HEIGHT);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    container.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xbfd1e5);
+
+    const camera = new THREE.PerspectiveCamera(50, WIDTH / HEIGHT, 0.1, 100);
+    camera.position.set(5, 4, 8);
+    camera.lookAt(0, 0, 0);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 1, 0);
+    controls.update();
+    camera.lookAt(0, 0, 0);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(5, 10, 7);
+    scene.add(dirLight);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({ color: '#888888' })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = 0;
+    scene.add(ground);
+
+    const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x666666);
+    gridHelper.position.y = 0.001;
+    scene.add(gridHelper);
+
+    let milkTruck = null;
+
+    const loader = new GLTFLoader();
+    loader.load(
+      'CesiumMilkTruck.glb',
+      (gltf) => {
+        milkTruck = gltf.scene;
+        milkTruck.position.set(0, 0, 0);
+        scene.add(milkTruck);
+        window.__3D_STATE__.modelLoaded = true;
+      },
+      undefined,
+      (error) => {
+        console.error('Failed to load CesiumMilkTruck.glb:', error);
+      }
+    );
+
+    const VignetteShader = {
+      uniforms: {
+        tDiffuse: { value: null },
+        uRadius: { value: defaults.radius },
+        uSoftness: { value: defaults.softness },
+        uIntensity: { value: defaults.intensity },
+        uColor: { value: new THREE.Color(defaults.color) }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        uniform float uRadius;
+        uniform float uSoftness;
+        uniform float uIntensity;
+        uniform vec3 uColor;
+        varying vec2 vUv;
+
+        void main() {
+          float dist = distance(vUv, vec2(0.5));
+          float vig = smoothstep(uRadius, uRadius - uSoftness, dist);
+          vec4 texel = texture2D(tDiffuse, vUv);
+          gl_FragColor = vec4(mix(uColor, texel.rgb, mix(vig, 1.0, 1.0 - uIntensity)), texel.a);
+        }
+      `
+    };
+
+    const composer = new EffectComposer(renderer);
+    composer.setSize(WIDTH, HEIGHT);
+
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    const vignettePass = new ShaderPass(VignetteShader);
+    vignettePass.enabled = true;
+    composer.addPass(vignettePass);
+
+    window.__3D_STATE__.composerPassCount = composer.passes.length;
+
+    const sliderRadius = document.getElementById('slider-radius');
+    const sliderSoftness = document.getElementById('slider-softness');
+    const sliderIntensity = document.getElementById('slider-intensity');
+    const pickerColor = document.getElementById('picker-color');
+    const btnToggle = document.getElementById('btn-toggle');
+    const btnReset = document.getElementById('btn-reset');
+    const selectPreset = document.getElementById('select-preset');
+
+    const labelRadius = document.getElementById('label-radius');
+    const labelSoftness = document.getElementById('label-softness');
+    const labelIntensity = document.getElementById('label-intensity');
+
+    function round2(n) {
+      return Math.round(n * 100) / 100;
+    }
+
+    function syncLabels() {
+      labelRadius.textContent = Number(sliderRadius.value).toFixed(2);
+      labelSoftness.textContent = Number(sliderSoftness.value).toFixed(2);
+      labelIntensity.textContent = Number(sliderIntensity.value).toFixed(1);
+    }
+
+    function syncUniformsFromUI() {
+      const radius = parseFloat(sliderRadius.value);
+      const softness = parseFloat(sliderSoftness.value);
+      const intensity = parseFloat(sliderIntensity.value);
+      const color = pickerColor.value;
+
+      vignettePass.uniforms.uRadius.value = radius;
+      vignettePass.uniforms.uSoftness.value = softness;
+      vignettePass.uniforms.uIntensity.value = intensity;
+      vignettePass.uniforms.uColor.value.set(color);
+
+      window.__3D_STATE__.radius = radius;
+      window.__3D_STATE__.softness = softness;
+      window.__3D_STATE__.intensity = intensity;
+      window.__3D_STATE__.tintColor = color;
+
+      syncLabels();
+    }
+
+    function updateToggleButton() {
+      btnToggle.textContent = vignettePass.enabled ? 'Disable Vignette' : 'Enable Vignette';
+      window.__3D_STATE__.vignetteEnabled = vignettePass.enabled;
+    }
+
+    function setPreset(name) {
+      if (name === 'Custom') {
+        window.__3D_STATE__.activePreset = 'Custom';
+        selectPreset.value = 'Custom';
+        syncUniformsFromUI();
+        return;
+      }
+
+      const preset = presets[name];
+      if (!preset) return;
+
+      sliderRadius.value = preset.radius;
+      sliderSoftness.value = preset.softness;
+      sliderIntensity.value = preset.intensity;
+      pickerColor.value = preset.color;
+      selectPreset.value = name;
+
+      vignettePass.enabled = true;
+      updateToggleButton();
+      syncUniformsFromUI();
+      window.__3D_STATE__.activePreset = name;
+    }
+
+    function setCustomFromManualChange() {
+      selectPreset.value = 'Custom';
+      window.__3D_STATE__.activePreset = 'Custom';
+      syncUniformsFromUI();
+    }
+
+    function resetDefaults() {
+      sliderRadius.value = defaults.radius;
+      sliderSoftness.value = defaults.softness;
+      sliderIntensity.value = defaults.intensity;
+      pickerColor.value = defaults.color;
+      selectPreset.value = 'Custom';
+      vignettePass.enabled = true;
+      updateToggleButton();
+      window.__3D_STATE__.activePreset = 'Custom';
+      syncUniformsFromUI();
+    }
+
+    sliderRadius.addEventListener('input', setCustomFromManualChange);
+    sliderSoftness.addEventListener('input', setCustomFromManualChange);
+    sliderIntensity.addEventListener('input', setCustomFromManualChange);
+    pickerColor.addEventListener('input', setCustomFromManualChange);
+
+    selectPreset.addEventListener('change', (e) => {
+      setPreset(e.target.value);
+    });
+
+    btnToggle.addEventListener('click', () => {
+      vignettePass.enabled = !vignettePass.enabled;
+      updateToggleButton();
+    });
+
+    btnReset.addEventListener('click', () => {
+      resetDefaults();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+
+      if (key === 'r') {
+        resetDefaults();
+      } else if (key === 'v') {
+        vignettePass.enabled = !vignettePass.enabled;
+        updateToggleButton();
+      } else if (e.key === '1') {
+        setPreset('Cinematic');
+      } else if (e.key === '2') {
+        setPreset('Warm Glow');
+      } else if (e.key === '3') {
+        setPreset('Cold Fade');
+      }
+    });
+
+    function updateStatePerFrame() {
+      window.__3D_STATE__.frameCount += 1;
+      window.__3D_STATE__.composerPassCount = composer.passes.length;
+      window.__3D_STATE__.cameraPosition = {
+        x: round2(camera.position.x),
+        y: round2(camera.position.y),
+        z: round2(camera.position.z)
+      };
+      window.__3D_STATE__.vignetteEnabled = vignettePass.enabled;
+
+      const uniformsSynced =
+        Math.abs(vignettePass.uniforms.uRadius.value - window.__3D_STATE__.radius) < 1e-6 &&
+        Math.abs(vignettePass.uniforms.uSoftness.value - window.__3D_STATE__.softness) < 1e-6 &&
+        Math.abs(vignettePass.uniforms.uIntensity.value - window.__3D_STATE__.intensity) < 1e-6;
+
+      window.__3D_STATE__.uniformsSynced = uniformsSynced;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      updateStatePerFrame();
+      composer.render();
+    }
+
+    resetDefaults();
+    animate();
+  </script>
+</body>
+</html>

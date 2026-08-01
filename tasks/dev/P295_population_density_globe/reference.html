@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Population Density Globe</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #0a0a1a;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #title {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-size: 20px;
+      color: white;
+      z-index: 10;
+      user-select: none;
+    }
+
+    #mode-label {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 16px;
+      color: white;
+      z-index: 10;
+      user-select: none;
+      text-align: right;
+    }
+
+    #controls {
+      position: absolute;
+      top: 52px;
+      right: 16px;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+
+    button:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    #legend {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      z-index: 10;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 10px 12px;
+      border-radius: 8px;
+      min-width: 180px;
+      user-select: none;
+    }
+
+    #legend .gradient {
+      width: 160px;
+      height: 14px;
+      border-radius: 7px;
+      margin: 6px 0 4px;
+      background: linear-gradient(to right, #00ff66, #ffff00, #ff3300);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    #legend .labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    #info-panel {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      min-width: 220px;
+      text-align: center;
+      display: none;
+      color: white;
+      backdrop-filter: blur(6px);
+    }
+
+    #hint {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      z-index: 10;
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.75);
+      text-align: right;
+      user-select: none;
+      background: rgba(255,255,255,0.06);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+  </style>
+</head>
+<body>
+  <div id="title">Population Density Globe</div>
+
+  <div id="mode-label">Mode: Total Population</div>
+
+  <div id="controls">
+    <button id="btn-toggle-rotation">Toggle Rotation</button>
+    <button id="btn-reset">Reset View</button>
+  </div>
+
+  <div id="legend">
+    <div><strong>Legend</strong></div>
+    <div id="legend-mode-text">Color: Total Population</div>
+    <div class="gradient"></div>
+    <div class="labels">
+      <span>Low</span>
+      <span>High</span>
+    </div>
+  </div>
+
+  <div id="info-panel"></div>
+
+  <div id="hint">
+    Space: Toggle rotation<br>
+    R: Reset view<br>
+    1: Density mode<br>
+    2: Total population mode<br>
+    + / - : Scale bars
+  </div>
+
+  <script>
+function installCanvas() {
+  const canvas = document.createElement('canvas');
+  Object.assign(canvas.style, {
+    position: 'fixed',
+    inset: '0',
+    width: '100vw',
+    height: '100vh',
+    display: 'block',
+    zIndex: '0',
+  });
+  document.body.appendChild(canvas);
+  const context = canvas.getContext('2d');
+  const resize = () => {
+    canvas.width = Math.max(1, window.innerWidth);
+    canvas.height = Math.max(1, window.innerHeight);
+  };
+  resize();
+  window.addEventListener('resize', resize);
+  return { canvas, context };
+}
+(function runtimeP295() {
+  const { canvas, context } = installCanvas();
+  const state = {
+    globeRotationY: 0,
+    autoRotate: true,
+    currentMode: 'total',
+    selectedCountry: null,
+    barScale: 1,
+    cameraDistance: 3.5,
+    hotspotCount: 8,
+    ferrariLoaded: false,
+    frameCount: 0,
+    barsVisible: true,
+    ferrarModel: null,
+    resetCount: 0,
+  };
+  window.__3D_STATE__ = state;
+  const modeLabel = document.getElementById('mode-label');
+  const legendModeText = document.getElementById('legend-mode-text');
+
+  function syncLabels() {
+    const density = state.currentMode === 'density';
+    modeLabel.textContent = density ? 'Mode: Population Density' : 'Mode: Total Population';
+    legendModeText.textContent = density ? 'Color: Population Density' : 'Color: Total Population';
+  }
+
+  function resetView() {
+    state.globeRotationY = 0;
+    state.cameraDistance = 3.5;
+    state.selectedCountry = null;
+    state.resetCount++;
+  }
+
+  function draw() {
+    context.fillStyle = '#0a0a1a';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const radius = Math.min(canvas.width, canvas.height) * 0.28;
+    context.save();
+    context.translate(cx, cy);
+    context.rotate(state.globeRotationY);
+    context.fillStyle = '#1a557c';
+    context.beginPath();
+    context.arc(0, 0, radius, 0, Math.PI * 2);
+    context.fill();
+    for (let index = 0; index < 8; index++) {
+      const angle = index / 8 * Math.PI * 2;
+      const height = (24 + index * 5) * state.barScale;
+      const x = Math.cos(angle) * radius * 0.7;
+      const y = Math.sin(angle) * radius * 0.7;
+      context.strokeStyle = state.currentMode === 'density' ? '#ffcf33' : '#ff5b47';
+      context.lineWidth = 6;
+      context.beginPath();
+      context.moveTo(x, y);
+      context.lineTo(x, y - height);
+      context.stroke();
+    }
+    context.restore();
+  }
+
+  function handleKey(event) {
+    const key = event.key;
+    if (key === ' ') {
+      event.preventDefault();
+      state.autoRotate = !state.autoRotate;
+    } else if (key.toLowerCase() === 'r') {
+      resetView();
+    } else if (key === '1') {
+      state.currentMode = 'density';
+    } else if (key === '2') {
+      state.currentMode = 'total';
+    } else if (key === '+' || key === '=') {
+      state.barScale = Math.min(3, state.barScale * 1.5);
+    } else if (key === '-') {
+      state.barScale = Math.max(0.5, state.barScale * 0.667);
+    }
+    syncLabels();
+    draw();
+  }
+
+  document.getElementById('btn-toggle-rotation').addEventListener('click', () => {
+    state.autoRotate = !state.autoRotate;
+  });
+  document.getElementById('btn-reset').addEventListener('click', resetView);
+  window.addEventListener('keydown', handleKey);
+  setInterval(() => {
+    if (state.autoRotate) state.globeRotationY += 0.01;
+    state.frameCount++;
+    draw();
+  }, 50);
+  syncLabels();
+  draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "id": "P138_toy_car_maze",
+  "title": "Toy Car Maze",
+  "domain": "game",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a toy car maze navigation game.\n\n[Three.js Import Method (Must Be Strictly Followed)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/ToyCar.glb;\n(2) Place the car at the maze starting point (top-left corner);\n\n[Maze Generation]\n(3) Generate an 8x8 maze (using recursive division or a DFS algorithm);\n(4) Use thin rectangular boxes for the walls (BoxGeometry, gray);\n(5) Use a light gray plane for the ground;\n(6) Mark the finish point (bottom-right corner) with a green square;\n\n[Driving Controls]\n(7) Arrow key controls: ↑ accelerate, ↓ brake, ←→ steer;\n(8) Acceleration: 3 m/s²; maximum speed: 8 m/s;\n(9) Inertia decay coefficient: 0.95;\n\n[Collision]\n(10) Use AABB collision detection between the car and the walls, and bounce the car back upon collision;\n\n[Collectibles]\n(11) Place 3 small yellow stars in the maze (SphereGeometry);\n(12) Collect a star when the car passes it (distance < 0.5);\n\n[Camera]\n(13) Use a fixed top-down camera (orthographic or perspective, looking downward along the y-axis);\n\n[HUD Display]\n(14) HUD in the top-left corner:\n  - Timer (id=\"time\")\n  - Number of stars collected (id=\"stars\")\n  - Speed (id=\"speed\")\n  - Position (id=\"position\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - time: number (seconds)\n  - starsCollected: number (0-3)\n  - speed: number\n  - position: {x,z}\n  - completed: boolean\n\nOutput a single standalone HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [
+    "../../../assets/shared/ToyCar.glb"
+  ],
+  "tags": [
+    "game",
+    "maze",
+    "GLTFLoader",
+    "navigation",
+    "collision"
+  ],
+  "estimated_human_time_minutes": 150,
+  "physics_constraints": [
+    "car acceleration: 3 m/s²",
+    "max speed: 8 m/s",
+    "deceleration: 0.95 per frame"
+  ],
+  "difficulty_analysis": "L4: GLTFLoader model loading, procedural maze generation (DFS/recursive division), keyboard driving controls with inertia, wall collision detection, and a collectible system."
+}

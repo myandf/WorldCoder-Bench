@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Bloom Controls Demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0a;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #controls {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      background: rgba(20, 20, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 14px;
+      width: 280px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    #controls h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .control-group {
+      margin-bottom: 12px;
+    }
+
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .value {
+      color: #8fd3ff;
+      font-weight: 700;
+      min-width: 42px;
+      text-align: right;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    button {
+      background: #1f1f1f;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    button:hover {
+      background: #2a2a2a;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    #hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #c8c8c8;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <h2>Bloom Controls</h2>
+
+    <div class="control-group">
+      <label for="thresholdSlider">
+        <span>Threshold</span>
+        <span id="thresholdValue" class="value">0.50</span>
+      </label>
+      <input type="range" id="thresholdSlider" min="0" max="1" step="0.01" value="0.5" />
+    </div>
+
+    <div class="control-group">
+      <label for="intensitySlider">
+        <span>Intensity</span>
+        <span id="intensityValue" class="value">1.00</span>
+      </label>
+      <input type="range" id="intensitySlider" min="0" max="3" step="0.1" value="1.0" />
+    </div>
+
+    <div class="control-group">
+      <label for="radiusSlider">
+        <span>Radius</span>
+        <span id="radiusValue" class="value">0.40</span>
+      </label>
+      <input type="range" id="radiusSlider" min="0" max="1" step="0.01" value="0.4" />
+    </div>
+
+    <div class="button-row">
+      <button id="bloomToggle">Bloom: ON</button>
+      <button id="presetSubtle">Subtle</button>
+      <button id="presetIntense">Intense</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div id="hint">
+      Keyboard: T / Shift+T for threshold, I / Shift+I for intensity
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+
+    const INITIALS = {
+      threshold: 0.5,
+      strength: 1.0,
+      radius: 0.4
+    };
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0a0a);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 8);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 2);
+    pointLight.position.set(3, 5, 3);
+    scene.add(pointLight);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.9, metalness: 0.05 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -1;
+    scene.add(floor);
+
+    const sphereColors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
+    const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const spheres = [];
+
+    for (let i = 0; i < 5; i++) {
+      const x = -4 + i * 2;
+      const color = sphereColors[i];
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x111111,
+        emissive: color,
+        emissiveIntensity: 1.5,
+        roughness: 0.35,
+        metalness: 0.05
+      });
+      const sphere = new THREE.Mesh(sphereGeometry, material);
+      sphere.position.set(x, 0, 0);
+      scene.add(sphere);
+      spheres.push(sphere);
+    }
+
+    const renderPass = new RenderPass(scene, camera);
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      INITIALS.strength,
+      INITIALS.radius,
+      INITIALS.threshold
+    );
+    bloomPass.threshold = INITIALS.threshold;
+    bloomPass.strength = INITIALS.strength;
+    bloomPass.radius = INITIALS.radius;
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(renderPass);
+    composer.addPass(bloomPass);
+
+    const thresholdSlider = document.getElementById('thresholdSlider');
+    const intensitySlider = document.getElementById('intensitySlider');
+    const radiusSlider = document.getElementById('radiusSlider');
+
+    const thresholdValue = document.getElementById('thresholdValue');
+    const intensityValue = document.getElementById('intensityValue');
+    const radiusValue = document.getElementById('radiusValue');
+
+    const bloomToggle = document.getElementById('bloomToggle');
+    const presetSubtle = document.getElementById('presetSubtle');
+    const presetIntense = document.getElementById('presetIntense');
+    const resetBtn = document.getElementById('resetBtn');
+
+    let bloomEnabled = true;
+    let frameCount = 0;
+    let lastAction = 'init';
+
+    window.__3D_STATE__ = {
+      bloomEnabled,
+      threshold: INITIALS.threshold,
+      strength: INITIALS.strength,
+      radius: INITIALS.radius,
+      sphereCount: spheres.length,
+      frameCount,
+      composerActive: bloomEnabled,
+      lastAction,
+      bloomPassExists: !!bloomPass,
+      renderPassExists: !!renderPass
+    };
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function updateValueLabels() {
+      thresholdValue.textContent = Number(thresholdSlider.value).toFixed(2);
+      intensityValue.textContent = Number(intensitySlider.value).toFixed(2);
+      radiusValue.textContent = Number(radiusSlider.value).toFixed(2);
+    }
+
+    function updateBloomPass() {
+      bloomPass.threshold = Number(thresholdSlider.value);
+      bloomPass.strength = Number(intensitySlider.value);
+      bloomPass.radius = Number(radiusSlider.value);
+      updateValueLabels();
+      updateState();
+    }
+
+    function setControls(threshold, strength, radius, action) {
+      thresholdSlider.value = clamp(threshold, 0, 1).toFixed(2);
+      intensitySlider.value = clamp(strength, 0, 3).toFixed(1);
+      radiusSlider.value = clamp(radius, 0, 1).toFixed(2);
+      lastAction = action;
+      updateBloomPass();
+    }
+
+    function updateToggleButton() {
+      bloomToggle.textContent = bloomEnabled ? 'Bloom: ON' : 'Bloom: OFF';
+    }
+
+    function updateState() {
+      window.__3D_STATE__.bloomEnabled = bloomEnabled;
+      window.__3D_STATE__.threshold = Number(thresholdSlider.value);
+      window.__3D_STATE__.strength = Number(intensitySlider.value);
+      window.__3D_STATE__.radius = Number(radiusSlider.value);
+      window.__3D_STATE__.sphereCount = spheres.length;
+      window.__3D_STATE__.frameCount = frameCount;
+      window.__3D_STATE__.composerActive = bloomEnabled;
+      window.__3D_STATE__.lastAction = lastAction;
+      window.__3D_STATE__.bloomPassExists = !!bloomPass;
+      window.__3D_STATE__.renderPassExists = !!renderPass;
+    }
+
+    thresholdSlider.addEventListener('input', () => {
+      lastAction = 'slider_threshold';
+      updateBloomPass();
+    });
+
+    intensitySlider.addEventListener('input', () => {
+      lastAction = 'slider_intensity';
+      updateBloomPass();
+    });
+
+    radiusSlider.addEventListener('input', () => {
+      lastAction = 'slider_radius';
+      updateBloomPass();
+    });
+
+    bloomToggle.addEventListener('click', () => {
+      bloomEnabled = !bloomEnabled;
+      lastAction = 'toggle_bloom';
+      updateToggleButton();
+      updateState();
+    });
+
+    presetSubtle.addEventListener('click', () => {
+      setControls(0.8, 0.3, 0.2, 'preset_subtle');
+    });
+
+    presetIntense.addEventListener('click', () => {
+      setControls(0.1, 2.5, 0.8, 'preset_intense');
+    });
+
+    resetBtn.addEventListener('click', () => {
+      setControls(INITIALS.threshold, INITIALS.strength, INITIALS.radius, 'reset');
+    });
+
+    window.addEventListener('keydown', (event) => {
+      const key = event.key.toLowerCase();
+
+      if (key === 't') {
+        const current = Number(thresholdSlider.value);
+        const next = event.shiftKey ? current - 0.1 : current + 0.1;
+        thresholdSlider.value = clamp(next, 0, 1).toFixed(2);
+        lastAction = event.shiftKey ? 'key_threshold_down' : 'key_threshold_up';
+        updateBloomPass();
+      }
+
+      if (key === 'i') {
+        const current = Number(intensitySlider.value);
+        const next = event.shiftKey ? current - 0.5 : current + 0.5;
+        intensitySlider.value = clamp(next, 0, 3).toFixed(1);
+        lastAction = event.shiftKey ? 'key_intensity_down' : 'key_intensity_up';
+        updateBloomPass();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+      bloomPass.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+
+    updateValueLabels();
+    updateToggleButton();
+    updateState();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const t = clock.getElapsedTime();
+
+      for (let i = 0; i < spheres.length; i++) {
+        const phase = i * 0.65;
+        spheres[i].position.y = Math.sin(t * 1.5 + phase) * 0.3;
+      }
+
+      frameCount += 1;
+      updateState();
+
+      if (bloomEnabled) {
+        composer.render();
+      } else {
+        renderer.render(scene, camera);
+      }
+    }
+
+    animate();
+  </script>
+</body>
+</html>

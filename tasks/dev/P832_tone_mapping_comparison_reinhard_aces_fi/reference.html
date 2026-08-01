@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Three.js Tone Mapping Comparison</title>
+  <style>
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    canvas {
+      display: block;
+    }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1000;
+      color: #fff;
+      background: rgba(0,0,0,0.6);
+      padding: 12px 14px;
+      border-radius: 8px;
+      min-width: 320px;
+      line-height: 1.4;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    }
+    #hud .row {
+      margin: 6px 0;
+    }
+    #controls {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    button, input[type="range"] {
+      cursor: pointer;
+    }
+    button {
+      background: #2d2d2d;
+      color: white;
+      border: 1px solid #666;
+      border-radius: 6px;
+      padding: 6px 10px;
+    }
+    button.active {
+      background: #4f7cff;
+      border-color: #9bb3ff;
+    }
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 6px;
+    }
+    #slider-exposure {
+      width: 180px;
+    }
+    .mono {
+      font-family: Consolas, Monaco, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="row"><strong>Tone Mapping:</strong> <span id="hud-tm">Reinhard</span></div>
+    <div class="row"><strong>Exposure:</strong> <span id="hud-exposure">1.0</span></div>
+    <div class="row"><strong>Difficulty:</strong> <span id="hud-difficulty">1</span></div>
+    <div class="row"><strong>Center Pixel:</strong> <span id="hud-pixel" class="mono">[0, 0, 0, 255]</span></div>
+    <div class="row"><strong>Brightness:</strong> <span id="hud-brightness">0.00</span></div>
+
+    <div id="controls">
+      <button id="btn-easy">Easy</button>
+      <button id="btn-medium">Medium</button>
+      <button id="btn-hard">Hard</button>
+      <button id="btn-cycle-tm">Cycle Tone Mapping</button>
+      <div class="slider-wrap">
+        <label for="slider-exposure">Exposure</label>
+        <input id="slider-exposure" type="range" min="0.1" max="5.0" step="0.1" value="1.0" />
+        <span id="label-exposure">1.0</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const TONE_MODES = [
+      { name: 'Reinhard', value: THREE.ReinhardToneMapping },
+      { name: 'ACES', value: THREE.ACESFilmicToneMapping },
+      { name: 'Filmic', value: THREE.CineonToneMapping }
+    ];
+
+    const baseSphereIntensities = [0.5, 2.0, 5.0, 15.0, 50.0, 200.0];
+    const sphereColors = ['#ff2222', '#ff8800', '#ffee00', '#ffffff', '#00ffff', '#2266ff'];
+
+    const state = window.__3D_STATE__ = {
+      toneMappingMode: 0,
+      toneMappingName: 'Reinhard',
+      exposure: 1.0,
+      difficultyLevel: 1,
+      visibleSphereCount: 0,
+      directionalLightIntensity: 1.0,
+      pointLightVisible: false,
+      pointLightIntensity: 0.0,
+      centerPixel: [0, 0, 0, 255],
+      centerBrightness: 0,
+      materialsUpdatedCount: 0,
+      frameCount: 0,
+      sphereIntensities: [...baseSphereIntensities]
+    };
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x101216);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 8);
+    camera.lookAt(0, 0, 0);
+
+    const allMaterials = [];
+    const emissiveSpheres = [];
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8, metalness: 0.0 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = 0;
+    scene.add(ground);
+    allMaterials.push(ground.material);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    dirLight.position.set(5, 10, 5);
+    scene.add(dirLight);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambient);
+
+    const pointLight = new THREE.PointLight(0xffffff, 5.0, 50);
+    pointLight.position.set(0, 3, 0);
+    pointLight.visible = false;
+    scene.add(pointLight);
+
+    const sphereGeo = new THREE.SphereGeometry(0.55, 32, 24);
+    const radius = 5.0;
+    for (let i = 0; i < 6; i++) {
+      const t = i / 5;
+      const angle = -Math.PI * 0.5 + t * Math.PI;
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const color = new THREE.Color(sphereColors[i]);
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0x111111,
+        emissive: color,
+        emissiveIntensity: baseSphereIntensities[i],
+        roughness: 0.3,
+        metalness: 0.0
+      });
+      const mesh = new THREE.Mesh(sphereGeo, mat);
+      mesh.position.set(x, 1, z);
+      scene.add(mesh);
+      emissiveSpheres.push(mesh);
+      allMaterials.push(mat);
+    }
+
+    const hudTm = document.getElementById('hud-tm');
+    const hudExposure = document.getElementById('hud-exposure');
+    const hudDifficulty = document.getElementById('hud-difficulty');
+    const hudPixel = document.getElementById('hud-pixel');
+    const hudBrightness = document.getElementById('hud-brightness');
+
+    const btnEasy = document.getElementById('btn-easy');
+    const btnMedium = document.getElementById('btn-medium');
+    const btnHard = document.getElementById('btn-hard');
+    const btnCycleTM = document.getElementById('btn-cycle-tm');
+    const sliderExposure = document.getElementById('slider-exposure');
+    const labelExposure = document.getElementById('label-exposure');
+
+    function updateAllMaterialsForToneMapping() {
+      scene.traverse((obj) => {
+        if (!obj.material) return;
+        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+        for (const m of mats) {
+          if (m) m.needsUpdate = true;
+        }
+      });
+      state.materialsUpdatedCount++;
+    }
+
+    function setToneMappingMode(mode) {
+      state.toneMappingMode = ((mode % 3) + 3) % 3;
+      const tm = TONE_MODES[state.toneMappingMode];
+      renderer.toneMapping = tm.value;
+      state.toneMappingName = tm.name;
+      updateAllMaterialsForToneMapping();
+      updateHUD();
+    }
+
+    function cycleToneMapping() {
+      setToneMappingMode(state.toneMappingMode + 1);
+    }
+
+    function setExposure(value) {
+      const v = Math.max(0.1, Math.min(5.0, Number(value)));
+      renderer.toneMappingExposure = v;
+      state.exposure = v;
+      sliderExposure.value = v.toFixed(1);
+      labelExposure.textContent = v.toFixed(1);
+      updateHUD();
+    }
+
+    function setDifficulty(level) {
+      state.difficultyLevel = level;
+
+      emissiveSpheres.forEach((s, i) => {
+        s.visible = level === 1 ? i < 3 : true;
+      });
+
+      emissiveSpheres.forEach((s, i) => {
+        s.material.emissiveIntensity = baseSphereIntensities[i];
+      });
+
+      if (level === 1) {
+        dirLight.intensity = 1.0;
+        pointLight.visible = false;
+        pointLight.intensity = 5.0;
+      } else if (level === 2) {
+        dirLight.intensity = 2.0;
+        pointLight.visible = true;
+        pointLight.intensity = 5.0;
+      } else if (level === 3) {
+        dirLight.intensity = 4.0;
+        pointLight.visible = true;
+        pointLight.intensity = 20.0;
+        emissiveSpheres[4].material.emissiveIntensity = 100.0;
+        emissiveSpheres[5].material.emissiveIntensity = 500.0;
+      }
+
+      btnEasy.classList.toggle('active', level === 1);
+      btnMedium.classList.toggle('active', level === 2);
+      btnHard.classList.toggle('active', level === 3);
+
+      updateHUD();
+    }
+
+    function updateHUD() {
+      hudTm.textContent = state.toneMappingName;
+      hudExposure.textContent = state.exposure.toFixed(1);
+      hudDifficulty.textContent = String(state.difficultyLevel);
+      hudPixel.textContent = `[${state.centerPixel.join(', ')}]`;
+      hudBrightness.textContent = state.centerBrightness.toFixed(2);
+      labelExposure.textContent = state.exposure.toFixed(1);
+    }
+
+    btnEasy.addEventListener('click', () => setDifficulty(1));
+    btnMedium.addEventListener('click', () => setDifficulty(2));
+    btnHard.addEventListener('click', () => setDifficulty(3));
+    btnCycleTM.addEventListener('click', cycleToneMapping);
+    sliderExposure.addEventListener('input', (e) => setExposure(e.target.value));
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 't' || e.key === 'T') cycleToneMapping();
+      if (e.key === 'e' || e.key === 'E') setExposure(1.0);
+      if (e.key === '1') setDifficulty(1);
+      if (e.key === '2') setDifficulty(2);
+      if (e.key === '3') setDifficulty(3);
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const pixelBuffer = new Uint8Array(4);
+    const clock = new THREE.Clock();
+
+    function readCenterPixel() {
+      const gl = renderer.getContext();
+      const canvas = renderer.domElement;
+      const x = Math.floor(canvas.width / 2);
+      const y = Math.floor(canvas.height / 2);
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixelBuffer);
+      state.centerPixel = [
+        pixelBuffer[0] | 0,
+        pixelBuffer[1] | 0,
+        pixelBuffer[2] | 0,
+        pixelBuffer[3] | 0
+      ];
+      state.centerBrightness = (state.centerPixel[0] + state.centerPixel[1] + state.centerPixel[2]) / 3.0;
+    }
+
+    function updateStatePerFrame() {
+      state.visibleSphereCount = emissiveSpheres.filter(s => s.visible).length;
+      state.directionalLightIntensity = dirLight.intensity;
+      state.pointLightVisible = pointLight.visible;
+      state.pointLightIntensity = pointLight.intensity;
+      state.sphereIntensities = emissiveSpheres.map(s => s.material.emissiveIntensity);
+      state.exposure = renderer.toneMappingExposure;
+      state.toneMappingName = TONE_MODES[state.toneMappingMode].name;
+      updateHUD();
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      const radius = 8.0;
+      camera.position.x = Math.sin(t * 0.1) * radius;
+      camera.position.z = Math.cos(t * 0.1) * radius;
+      camera.position.y = 2;
+      camera.lookAt(0, 1, 0);
+
+      renderer.render(scene, camera);
+      readCenterPixel();
+
+      state.frameCount++;
+      updateStatePerFrame();
+    }
+
+    setToneMappingMode(0);
+    setExposure(1.0);
+    setDifficulty(1);
+    updateHUD();
+    animate();
+  </script>
+</body>
+</html>

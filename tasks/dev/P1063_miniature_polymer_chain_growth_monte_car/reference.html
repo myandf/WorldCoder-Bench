@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Monte Carlo Polymer Chain Growth</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; background: #1a1a2e; font-family: 'Courier New', monospace; }
+canvas { display: block; }
+
+#hud-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(10, 10, 30, 0.85);
+  border: 1px solid rgba(100, 140, 255, 0.3);
+  border-radius: 8px;
+  padding: 16px 20px;
+  color: #c0d0ff;
+  font-size: 13px;
+  line-height: 1.8;
+  min-width: 260px;
+  backdrop-filter: blur(6px);
+  z-index: 10;
+}
+
+#hud-panel h2 {
+  color: #70a0ff;
+  font-size: 14px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+  padding-bottom: 6px;
+}
+
+#hud-panel .row { display: flex; justify-content: space-between; }
+#hud-panel .label { color: #8090b0; }
+#hud-panel .value { color: #e0e8ff; font-weight: bold; }
+#hud-panel .trapped-true { color: #ff6060; }
+#hud-panel .trapped-false { color: #60ff90; }
+
+#selected-info {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(100, 140, 255, 0.2);
+  color: #ffd080;
+  font-size: 12px;
+  min-height: 20px;
+}
+
+#bottom-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+#bottom-bar button {
+  background: rgba(20, 20, 50, 0.85);
+  border: 1px solid rgba(100, 140, 255, 0.4);
+  color: #b0c0ff;
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(6px);
+}
+
+#bottom-bar button:hover {
+  background: rgba(60, 60, 120, 0.85);
+  border-color: rgba(140, 180, 255, 0.6);
+  color: #e0e8ff;
+}
+
+#bottom-bar button:active {
+  background: rgba(80, 80, 160, 0.85);
+}
+
+#keyhints {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(10, 10, 30, 0.7);
+  border: 1px solid rgba(100, 140, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #6080a0;
+  font-size: 11px;
+  line-height: 1.9;
+  z-index: 10;
+}
+#keyhints span { color: #90b0e0; }
+</style>
+</head>
+<body>
+
+<div id="hud-panel">
+  <h2>Polymer Chain Stats</h2>
+  <div class="row"><span class="label">Chain Length (N):</span><span class="value" id="hud-chain-length">1</span></div>
+  <div class="row"><span class="label">End-to-End Dist:</span><span class="value" id="hud-end-distance">0.000</span></div>
+  <div class="row"><span class="label">Radius of Gyration:</span><span class="value" id="hud-rg">0.000</span></div>
+  <div class="row"><span class="label">Total Energy:</span><span class="value" id="hud-energy">0.000</span></div>
+  <div class="row"><span class="label">Steps Attempted:</span><span class="value" id="hud-steps">0</span></div>
+  <div class="row"><span class="label">Steps Accepted:</span><span class="value" id="hud-accepted">0</span></div>
+  <div class="row"><span class="label">Acceptance Ratio:</span><span class="value" id="hud-acceptance-ratio">0.000</span></div>
+  <div class="row"><span class="label">Trapped:</span><span class="value" id="hud-trapped">false</span></div>
+  <div id="selected-info"></div>
+</div>
+
+<div id="keyhints">
+  <span>G</span> Grow one step<br>
+  <span>R</span> Run continuous<br>
+  <span>P</span> Pause<br>
+  <span>X</span> Reset<br>
+  <span>T</span> Pivot move
+</div>
+
+<div id="bottom-bar">
+  <button id="btn-grow">Grow (G)</button>
+  <button id="btn-run">Run (R)</button>
+  <button id="btn-pause">Pause (P)</button>
+  <button id="btn-reset">Reset (X)</button>
+  <button id="btn-pivot">Pivot (T)</button>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const BOUNDARY = 10;
+const EPSILON = 1.0;
+const KT = 1.0;
+const DIRECTIONS = [
+  {x:1,y:0,z:0},{x:-1,y:0,z:0},
+  {x:0,y:1,z:0},{x:0,y:-1,z:0},
+  {x:0,y:0,z:1},{x:0,y:0,z:-1}
+];
+
+// Scene
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1a2e);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(20, 15, 20);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(5, 5, 5);
+controls.update();
+
+// Lights
+const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+scene.add(ambient);
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+dirLight.position.set(10, 20, 10);
+scene.add(dirLight);
+
+// Grid / ground
+const gridHelper = new THREE.GridHelper(20, 20, 0x2a2a4e, 0x1a1a3e);
+gridHelper.position.set(5, -0.01, 5);
+scene.add(gridHelper);
+
+// Lattice wireframe
+const latticeGeo = new THREE.BoxGeometry(BOUNDARY, BOUNDARY, BOUNDARY);
+const latticeMat = new THREE.MeshBasicMaterial({
+  color: 0x4060a0,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.15
+});
+const latticeMesh = new THREE.Mesh(latticeGeo, latticeMat);
+latticeMesh.position.set(5, 5, 5);
+scene.add(latticeMesh);
+
+// Shared geometries
+const monomerGeo = new THREE.SphereGeometry(0.3, 16, 12);
+const bondGeo = new THREE.CylinderGeometry(0.08, 0.08, 1, 8);
+
+// Simulation state
+let chain = [];
+let occupiedSet = new Set();
+let monomerMeshes = [];
+let bondMeshes = [];
+let stepsAttempted = 0;
+let stepsAccepted = 0;
+let isTrapped = false;
+let isRunning = false;
+let runInterval = null;
+let selectedMonomerIndex = null;
+let lastPivotAccepted = null;
+let highlightMesh = null;
+
+function posKey(x, y, z) { return `${x},${y},${z}`; }
+
+function colorForIndex(i, total) {
+  const t = total <= 1 ? 0 : i / (total - 1);
+  const r = t;
+  const g = 0.1 * (1 - Math.abs(2 * t - 1));
+  const b = 1 - t;
+  return new THREE.Color(r, g, b);
+}
+
+function initChain() {
+  // Clear
+  monomerMeshes.forEach(m => scene.remove(m));
+  bondMeshes.forEach(b => scene.remove(b));
+  if (highlightMesh) { scene.remove(highlightMesh); highlightMesh = null; }
+  monomerMeshes = [];
+  bondMeshes = [];
+  chain = [{ x: 5, y: 5, z: 5 }];
+  occupiedSet = new Set();
+  occupiedSet.add(posKey(5, 5, 5));
+  stepsAttempted = 0;
+  stepsAccepted = 0;
+  isTrapped = false;
+  isRunning = false;
+  selectedMonomerIndex = null;
+  lastPivotAccepted = null;
+  if (runInterval) { clearInterval(runInterval); runInterval = null; }
+  addMonomerMesh(0);
+  updateHUD();
+  updateState();
+}
+
+function addMonomerMesh(index) {
+  const pos = chain[index];
+  const col = colorForIndex(index, chain.length);
+  const mat = new THREE.MeshPhongMaterial({ color: col, shininess: 60 });
+  const mesh = new THREE.Mesh(monomerGeo, mat);
+  mesh.position.set(pos.x, pos.y, pos.z);
+  mesh.userData.monomerIndex = index;
+  scene.add(mesh);
+  monomerMeshes.push(mesh);
+
+  if (index > 0) {
+    const prev = chain[index - 1];
+    addBondMesh(prev, pos, index);
+  }
+}
+
+function addBondMesh(p1, p2, index) {
+  const col1 = colorForIndex(index - 1, chain.length);
+  const col2 = colorForIndex(index, chain.length);
+  const avg = new THREE.Color().addColors(col1, col2).multiplyScalar(0.5);
+  const mat = new THREE.MeshPhongMaterial({ color: avg, shininess: 40 });
+  const mesh = new THREE.Mesh(bondGeo, mat);
+
+  const start = new THREE.Vector3(p1.x, p1.y, p1.z);
+  const end = new THREE.Vector3(p2.x, p2.y, p2.z);
+  const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+  const dir = new THREE.Vector3().subVectors(end, start);
+  const len = dir.length();
+
+  mesh.position.copy(mid);
+  mesh.scale.set(1, len, 1);
+
+  if (Math.abs(dir.y) > 0.999 * len) {
+    if (dir.y < 0) mesh.rotation.z = Math.PI;
+  } else {
+    const axis = new THREE.Vector3(0, 1, 0).cross(dir.clone().normalize()).normalize();
+    const angle = Math.acos(THREE.MathUtils.clamp(dir.clone().normalize().y, -1, 1));
+    mesh.setRotationFromAxisAngle(axis, angle);
+  }
+
+  scene.add(mesh);
+  bondMeshes.push(mesh);
+}
+
+function rebuildVisuals() {
+  monomerMeshes.forEach(m => scene.remove(m));
+  bondMeshes.forEach(b => scene.remove(b));
+  if (highlightMesh) { scene.remove(highlightMesh); highlightMesh = null; }
+  monomerMeshes = [];
+  bondMeshes = [];
+
+  for (let i = 0; i < chain.length; i++) {
+    const pos = chain[i];
+    const col = colorForIndex(i, chain.length);
+    const mat = new THREE.MeshPhongMaterial({ color: col, shininess: 60 });
+    const mesh = new THREE.Mesh(monomerGeo, mat);
+    mesh.position.set(pos.x, pos.y, pos.z);
+    mesh.userData.monomerIndex = i;
+    scene.add(mesh);
+    monomerMeshes.push(mesh);
+
+    if (i > 0) {
+      const prev = chain[i - 1];
+      addBondMeshDirect(prev, pos, i);
+    }
+  }
+
+  if (selectedMonomerIndex !== null && selectedMonomerIndex < chain.length) {
+    showHighlight(selectedMonomerIndex);
+  }
+}
+
+function addBondMeshDirect(p1, p2, index) {
+  const col1 = colorForIndex(index - 1, chain.length);
+  const col2 = colorForIndex(index, chain.length);
+  const avg = new THREE.Color().addColors(col1, col2).multiplyScalar(0.5);
+  const mat = new THREE.MeshPhongMaterial({ color: avg, shininess: 40 });
+  const mesh = new THREE.Mesh(bondGeo, mat);
+
+  const start = new THREE.Vector3(p1.x, p1.y, p1.z);
+  const end = new THREE.Vector3(p2.x, p2.y, p2.z);
+  const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+  const dir = new THREE.Vector3().subVectors(end, start);
+  const len = dir.length();
+
+  mesh.position.copy(mid);
+  mesh.scale.set(1, len, 1);
+
+  if (Math.abs(dir.y) > 0.999 * len) {
+    if (dir.y < 0) mesh.rotation.z = Math.PI;
+  } else {
+    const axis = new THREE.Vector3(0, 1, 0).cross(dir.clone().normalize()).normalize();
+    const angle = Math.acos(THREE.MathUtils.clamp(dir.clone().normalize().y, -1, 1));
+    mesh.setRotationFromAxisAngle(axis, angle);
+  }
+
+  scene.add(mesh);
+  bondMeshes.push(mesh);
+}
+
+function inBounds(x, y, z) {
+  return x >= 0 && x <= BOUNDARY && y >= 0 && y <= BOUNDARY && z >= 0 && z <= BOUNDARY;
+}
+
+function growStep() {
+  if (isTrapped) return false;
+
+  const last = chain[chain.length - 1];
+  const available = [];
+  for (const d of DIRECTIONS) {
+    const nx = last.x + d.x, ny = last.y + d.y, nz = last.z + d.z;
+    if (inBounds(nx, ny, nz) && !occupiedSet.has(posKey(nx, ny, nz))) {
+      available.push({ x: nx, y: ny, z: nz });
+    }
+  }
+
+  stepsAttempted++;
+
+  if (available.length === 0) {
+    isTrapped = true;
+    updateHUD();
+    updateState();
+    return false;
+  }
+
+  const chosen = available[Math.floor(Math.random() * available.length)];
+  chain.push(chosen);
+  occupiedSet.add(posKey(chosen.x, chosen.y, chosen.z));
+  stepsAccepted++;
+
+  // Recolor existing monomers for gradient update
+  rebuildVisuals();
+
+  updateHUD();
+  updateState();
+  return true;
+}
+
+function computeEndToEnd() {
+  if (chain.length < 2) return 0;
+  const f = chain[0], l = chain[chain.length - 1];
+  return Math.sqrt((f.x - l.x) ** 2 + (f.y - l.y) ** 2 + (f.z - l.z) ** 2);
+}
+
+function computeRg() {
+  const N = chain.length;
+  if (N < 2) return 0;
+  let cx = 0, cy = 0, cz = 0;
+  for (const m of chain) { cx += m.x; cy += m.y; cz += m.z; }
+  cx /= N; cy /= N; cz /= N;
+  let sum = 0;
+  for (const m of chain) {
+    sum += (m.x - cx) ** 2 + (m.y - cy) ** 2 + (m.z - cz) ** 2;
+  }
+  return Math.sqrt(sum / N);
+}
+
+function computeEnergy() {
+  let energy = 0;
+  const chainSet = new Set(chain.map((m, i) => `${posKey(m.x, m.y, m.z)}:${i}`));
+  const posToIndex = {};
+  chain.forEach((m, i) => { posToIndex[posKey(m.x, m.y, m.z)] = i; });
+
+  for (let i = 0; i < chain.length; i++) {
+    const m = chain[i];
+    for (const d of DIRECTIONS) {
+      const nk = posKey(m.x + d.x, m.y + d.y, m.z + d.z);
+      if (nk in posToIndex) {
+        const j = posToIndex[nk];
+        if (Math.abs(j - i) > 1 && j > i) {
+          energy -= EPSILON;
+        }
+      }
+    }
+  }
+  return energy;
+}
+
+function pivotMove() {
+  if (chain.length < 3) {
+    lastPivotAccepted = null;
+    updateState();
+    return;
+  }
+
+  const pivotIdx = 1 + Math.floor(Math.random() * (chain.length - 2));
+  const axes = [
+    { x: 1, y: 0, z: 0 }, { x: 0, y: 1, z: 0 }, { x: 0, y: 0, z: 1 }
+  ];
+  const axis = axes[Math.floor(Math.random() * 3)];
+  const angles = [1, 2, 3]; // multiples of 90 degrees
+  const nRot = angles[Math.floor(Math.random() * 3)];
+
+  const pivot = chain[pivotIdx];
+  const newTail = [];
+  let valid = true;
+
+  const tempOccupied = new Set();
+  for (let i = 0; i <= pivotIdx; i++) {
+    tempOccupied.add(posKey(chain[i].x, chain[i].y, chain[i].z));
+  }
+
+  for (let i = pivotIdx + 1; i < chain.length; i++) {
+    let dx = chain[i].x - pivot.x;
+    let dy = chain[i].y - pivot.y;
+    let dz = chain[i].z - pivot.z;
+
+    for (let r = 0; r < nRot; r++) {
+      if (axis.x === 1) {
+        const tmp = dy; dy = -dz; dz = tmp;
+      } else if (axis.y === 1) {
+        const tmp = dx; dx = dz; dz = -tmp;
+      } else {
+        const tmp = dx; dx = -dy; dy = tmp;
+      }
+    }
+
+    const nx = pivot.x + dx, ny = pivot.y + dy, nz = pivot.z + dz;
+
+    if (!inBounds(nx, ny, nz) || tempOccupied.has(posKey(nx, ny, nz))) {
+      valid = false;
+      break;
+    }
+    tempOccupied.add(posKey(nx, ny, nz));
+    newTail.push({ x: nx, y: ny, z: nz });
+  }
+
+  if (!valid) {
+    lastPivotAccepted = false;
+    stepsAttempted++;
+    updateHUD();
+    updateState();
+    return;
+  }
+
+  // Check lattice connectivity (each consecutive pair must be neighbors)
+  // Check bond between pivotIdx and pivotIdx+1
+  if (newTail.length > 0) {
+    const p = chain[pivotIdx];
+    const n = newTail[0];
+    const dist = Math.abs(p.x - n.x) + Math.abs(p.y - n.y) + Math.abs(p.z - n.z);
+    if (dist !== 1) {
+      lastPivotAccepted = false;
+      stepsAttempted++;
+      updateHUD();
+      updateState();
+      return;
+    }
+    for (let i = 1; i < newTail.length; i++) {
+      const a = newTail[i - 1], b = newTail[i];
+      const d = Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
+      if (d !== 1) {
+        lastPivotAccepted = false;
+        stepsAttempted++;
+        updateHUD();
+        updateState();
+        return;
+      }
+    }
+  }
+
+  // Metropolis criterion
+  const oldEnergy = computeEnergy();
+
+  // Temporarily apply
+  const oldTail = chain.slice(pivotIdx + 1);
+  for (let i = pivotIdx + 1; i < chain.length; i++) {
+    occupiedSet.delete(posKey(chain[i].x, chain[i].y, chain[i].z));
+  }
+  for (let i = 0; i < newTail.length; i++) {
+    chain[pivotIdx + 1 + i] = newTail[i];
+    occupiedSet.add(posKey(newTail[i].x, newTail[i].y, newTail[i].z));
+  }
+
+  const newEnergy = computeEnergy();
+  const dE = newEnergy - oldEnergy;
+
+  const accept = dE <= 0 || Math.random() < Math.exp(-dE / KT);
+
+  stepsAttempted++;
+
+  if (accept) {
+    stepsAccepted++;
+    lastPivotAccepted = true;
+    // Check if now trapped
+    const last = chain[chain.length - 1];
+    let hasAvail = false;
+    for (const d of DIRECTIONS) {
+      const nx = last.x + d.x, ny = last.y + d.y, nz = last.z + d.z;
+      if (inBounds(nx, ny, nz) && !occupiedSet.has(posKey(nx, ny, nz))) {
+        hasAvail = true;
+        break;
+      }
+    }
+    if (!hasAvail) isTrapped = true; else isTrapped = false;
+  } else {
+    lastPivotAccepted = false;
+    // Revert
+    for (let i = 0; i < newTail.length; i++) {
+      occupiedSet.delete(posKey(newTail[i].x, newTail[i].y, newTail[i].z));
+    }
+    for (let i = 0; i < oldTail.length; i++) {
+      chain[pivotIdx + 1 + i] = oldTail[i];
+      occupiedSet.add(posKey(oldTail[i].x, oldTail[i].y, oldTail[i].z));
+    }
+  }
+
+  rebuildVisuals();
+  updateHUD();
+  updateState();
+}
+
+function showHighlight(idx) {
+  if (highlightMesh) { scene.remove(highlightMesh); highlightMesh = null; }
+  if (idx === null || idx >= chain.length) return;
+  const geo = new THREE.SphereGeometry(0.45, 16, 12);
+  const mat = new THREE.MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.4, wireframe: true });
+  highlightMesh = new THREE.Mesh(geo, mat);
+  const p = chain[idx];
+  highlightMesh.position.set(p.x, p.y, p.z);
+  scene.add(highlightMesh);
+}
+
+function updateHUD() {
+  const ete = computeEndToEnd();
+  const rg = computeRg();
+  const energy = computeEnergy();
+  const ar = stepsAttempted > 0 ? stepsAccepted / stepsAttempted : 0;
+
+  document.getElementById('hud-chain-length').textContent = chain.length;
+  document.getElementById('hud-end-distance').textContent = ete.toFixed(3);
+  document.getElementById('hud-rg').textContent = rg.toFixed(3);
+  document.getElementById('hud-energy').textContent = energy.toFixed(3);
+  document.getElementById('hud-steps').textContent = stepsAttempted;
+  document.getElementById('hud-accepted').textContent = stepsAccepted;
+  document.getElementById('hud-acceptance-ratio').textContent = ar.toFixed(3);
+
+  const trappedEl = document.getElementById('hud-trapped');
+  trappedEl.textContent = isTrapped ? 'true' : 'false';
+  trappedEl.className = 'value ' + (isTrapped ? 'trapped-true' : 'trapped-false');
+
+  const selInfo = document.getElementById('selected-info');
+  if (selectedMonomerIndex !== null && selectedMonomerIndex < chain.length) {
+    const m = chain[selectedMonomerIndex];
+    selInfo.textContent = `Selected: #${selectedMonomerIndex} (${m.x}, ${m.y}, ${m.z})`;
+  } else {
+    selInfo.textContent = '';
+  }
+}
+
+function updateState() {
+  const ete = computeEndToEnd();
+  const rg = computeRg();
+  const energy = computeEnergy();
+  const ar = stepsAttempted > 0 ? stepsAccepted / stepsAttempted : 0;
+
+  window.__3D_STATE__ = {
+    chainLength: chain.length,
+    monomerPositions: chain.map(m => ({ x: m.x, y: m.y, z: m.z })),
+    endToEndDistance: ete,
+    radiusOfGyration: rg,
+    totalEnergy: energy,
+    stepsAttempted: stepsAttempted,
+    stepsAccepted: stepsAccepted,
+    acceptanceRatio: ar,
+    isTrapped: isTrapped,
+    isRunning: isRunning,
+    occupiedSites: occupiedSet.size,
+    selectedMonomerIndex: selectedMonomerIndex,
+    lastPivotAccepted: lastPivotAccepted,
+    boundarySize: BOUNDARY,
+    epsilon: EPSILON,
+    kT: KT
+  };
+}
+
+function startRun() {
+  if (isRunning || isTrapped) return;
+  isRunning = true;
+  updateState();
+  runInterval = setInterval(() => {
+    if (isTrapped) {
+      stopRun();
+      return;
+    }
+    const success = growStep();
+    if (!success) {
+      stopRun();
+    }
+  }, 300);
+}
+
+function stopRun() {
+  isRunning = false;
+  if (runInterval) { clearInterval(runInterval); runInterval = null; }
+  updateState();
+}
+
+// Raycaster for clicking
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+renderer.domElement.addEventListener('click', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(monomerMeshes);
+  if (intersects.length > 0) {
+    selectedMonomerIndex = intersects[0].object.userData.monomerIndex;
+    showHighlight(selectedMonomerIndex);
+  } else {
+    selectedMonomerIndex = null;
+    if (highlightMesh) { scene.remove(highlightMesh); highlightMesh = null; }
+  }
+  updateHUD();
+  updateState();
+});
+
+// Key bindings
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toUpperCase();
+  if (key === 'G') growStep();
+  else if (key === 'R') startRun();
+  else if (key === 'P') stopRun();
+  else if (key === 'X') { stopRun(); initChain(); }
+  else if (key === 'T') pivotMove();
+});
+
+// Button bindings
+document.getElementById('btn-grow').addEventListener('click', () => growStep());
+document.getElementById('btn-run').addEventListener('click', () => startRun());
+document.getElementById('btn-pause').addEventListener('click', () => stopRun());
+document.getElementById('btn-reset').addEventListener('click', () => { stopRun(); initChain(); });
+document.getElementById('btn-pivot').addEventListener('click', () => pivotMove());
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Animation loop
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  if (highlightMesh) {
+    highlightMesh.rotation.y += 0.03;
+    highlightMesh.rotation.x += 0.01;
+  }
+  renderer.render(scene, camera);
+}
+
+initChain();
+animate();
+</script>
+</body>
+</html>

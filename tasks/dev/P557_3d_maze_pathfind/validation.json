@@ -1,0 +1,452 @@
+{
+  "task_id": "P557_3d_maze_pathfind",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:48:34.984Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 2,
+      "total": 6,
+      "percent": 33.3
+    },
+    "sCov": {
+      "reached": 5,
+      "total": 5,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 6,
+      "total": 6,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 16,
+      "total": 16,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 33.3,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 16,
+    "total": 16,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 6,
+  "total": 6,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "MazeWalls",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "Player",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "PathOverlay",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "Minimap",
+      "found": false
+    },
+    {
+      "id": "A5",
+      "name": "ExitMarker",
+      "found": false
+    },
+    {
+      "id": "A6",
+      "name": "HUD",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__ !== undefined && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__ !== undefined && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeSize === 15",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeSize === 15"
+        },
+        {
+          "expression": "window.__3D_STATE__.status === 'Playing'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.status === 'Playing'"
+        },
+        {
+          "expression": "window.__3D_STATE__.playerValid === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerValid === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.distToExit > 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distToExit > 0"
+        },
+        {
+          "expression": "(function(){ const s = window.__3D_STATE__; return Object.values(s).every(v => { if(typeof v === 'number') return isFinite(v) && !isNaN(v); if(typeof v === 'object' && v !== null) return Object.values(v).every(x => typeof x !== 'number' || (isFinite(x) && !isNaN(x))); return true; }); })()",
+          "tier": "L0",
+          "passed": true,
+          "detail": "(function(){ const s = window.__3D_STATE__; return Object.values(s).every(v => { if(typeof v === 'number') return isFinite(v) && !isNaN(v); if(typeof v === 'object' && v !== null) return Object.values(v).every(x => typeof x !== 'number' || (isFinite(x) && !isNaN(x))); return true; }); })()"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.pathfindingEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pathfindingEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.pathLength > 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pathLength > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.playerValid === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerValid === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.wallCollisions >= 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wallCollisions >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.playerValid === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerValid === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeSize === 15",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeSize === 15"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.playerCell.x === 0 && window.__3D_STATE__.playerCell.y === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerCell.x === 0 && window.__3D_STATE__.playerCell.y === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.status === 'Playing'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.status === 'Playing'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.minimapEnabled !== before.minimapEnabled",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minimapEnabled !== before.minimapEnabled"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__ !== undefined && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__ !== undefined && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeSize === 15",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeSize === 15"
+        },
+        {
+          "expression": "window.__3D_STATE__.status === 'Playing'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.status === 'Playing'"
+        },
+        {
+          "expression": "window.__3D_STATE__.playerValid === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerValid === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.distToExit > 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distToExit > 0"
+        },
+        {
+          "expression": "(function(){ const s = window.__3D_STATE__; return Object.values(s).every(v => { if(typeof v === 'number') return isFinite(v) && !isNaN(v); if(typeof v === 'object' && v !== null) return Object.values(v).every(x => typeof x !== 'number' || (isFinite(x) && !isNaN(x))); return true; }); })()",
+          "tier": "L0",
+          "passed": true,
+          "detail": "(function(){ const s = window.__3D_STATE__; return Object.values(s).every(v => { if(typeof v === 'number') return isFinite(v) && !isNaN(v); if(typeof v === 'object' && v !== null) return Object.values(v).every(x => typeof x !== 'number' || (isFinite(x) && !isNaN(x))); return true; }); })()"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.pathfindingEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pathfindingEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.pathLength > 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pathLength > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.playerValid === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerValid === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.wallCollisions >= 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wallCollisions >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.playerValid === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerValid === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeSize === 15",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeSize === 15"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.playerCell.x === 0 && window.__3D_STATE__.playerCell.y === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.playerCell.x === 0 && window.__3D_STATE__.playerCell.y === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.status === 'Playing'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.status === 'Playing'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.minimapEnabled !== before.minimapEnabled",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minimapEnabled !== before.minimapEnabled"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 2,
+    "total": 6,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": false
+      },
+      {
+        "id": "A5",
+        "pass": false
+      },
+      {
+        "id": "A6",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 5,
+    "total": 5
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 6,
+      "total": 6
+    },
+    "L1": {
+      "pass": 5,
+      "total": 5
+    },
+    "L2": {
+      "pass": 5,
+      "total": 5
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": false,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": false,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 20219
+}

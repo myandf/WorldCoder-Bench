@@ -1,0 +1,30 @@
+{
+  "id": "P25_rapier_stack",
+  "title": "Rapier.js Rigid-Body Stacking and Shooting",
+  "domain": "physics",
+  "route": "C",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js rendering + the Rapier 3D physics engine to implement a rigid-body stacking scene with mouse shooting.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nPlace the following import map in <head> (included verbatim), and import via ES Modules in <script type=\"module\">:\n\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n\n[Rapier Loading]\nUse the CDN:\nhttps://cdn.jsdelivr.net/npm/@dimforge/rapier3d-compat@0.14.0/rapier.js\nCall RAPIER.init() before creating the World (in accordance with the official documentation).\n\n[Scene]\n(1) A static ground (an infinite or large planar rigid body), with its normal pointing upward;\n(2) 10 dynamic cubic rigid bodies, each with dimensions 1×1×1, stacked vertically, with center heights at y = 0.5, 1.5, …, 9.5, respectively;\n(3) Gravity (0, -9.81, 0);\n\n[Shooting Interaction]\n(4) Mouse click: launch a spherical rigid body from the current camera position toward the intersection point between the ray and the scene (radius may be chosen freely, mass = 5.0), with an initial speed of 20 m/s (along the ray direction);\n(5) The sphere must collide with the boxes and the ground;\n\n[HUD (Required)]\n(6) id=\"boxCount\" displays the current number of boxes (initially 10);\n(7) id=\"fallenCount\" displays the number of boxes that have \"fallen/left the stack\" (the implementation must provide an explicit criterion, such as the center of mass falling below a certain height or the horizontal displacement exceeding a threshold);\n(8) id=\"fps\" displays the frame rate;\n(9) id=\"resetBtn\" button: after reset, restack 10 boxes, clear or recycle the spheres, and reset fallenCount to zero;\n\n[State Exposure (Required, Updated Every Frame)]\nwindow.__3D_STATE__:\n  - boxCount: number\n  - fallenCount: number\n  - boxes: array, each item { x, y, z } representing the center-of-mass or center world coordinates of each box\n  - sphereCount: current number of active launched spheres\n  - fps: number (consistent with the HUD)\n\n[Camera]\n(10) OrbitControls or an equivalent viewpoint control, making it easy to aim at the stacked tower.\n\nOutput a single HTML file that can run when opened directly in a browser (network access is required to load the CDN resources).",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "physics",
+    "rapier",
+    "rigid-body",
+    "stacking",
+    "three.js",
+    "CDN",
+    "interactive"
+  ],
+  "estimated_human_time_minutes": 150,
+  "physics_constraints": [
+    "Rapier3d-compat 0.14.0 from jsDelivr",
+    "10 boxes 1x1x1 stacked at y=0.5..9.5, static ground",
+    "Click shoot sphere m=5, speed 20 toward click",
+    "Gravity (0,-9.81,0)",
+    "HUD: boxCount, fallenCount, fps, resetBtn",
+    "Expose __3D_STATE__: boxCount, fallenCount, boxes[], sphereCount, fps"
+  ]
+}

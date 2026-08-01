@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "target_split": "extended",
+  "count": 7,
+  "entries": [
+    {
+      "task_id": "P15_solar_system",
+      "target_split": "extended",
+      "status": "excluded_from_release_contract_missing",
+      "reason": "corrupt_legacy_contract",
+      "evidence": "The legacy task payload is readable, but its original behavioral contract contains only a newline.",
+      "release_resolution": "replaced_by_controlled_augmentation"
+    },
+    {
+      "task_id": "P19_racing_game",
+      "target_split": "extended",
+      "status": "excluded_from_release_contract_missing",
+      "reason": "corrupt_legacy_contract",
+      "evidence": "The legacy task payload is readable, but its original behavioral contract contains only a newline.",
+      "release_resolution": "replaced_by_controlled_augmentation"
+    },
+    {
+      "task_id": "P29_wave_equation",
+      "target_split": "extended",
+      "status": "excluded_from_release_contract_missing",
+      "reason": "corrupt_legacy_contract",
+      "evidence": "The legacy task payload is readable, but its original behavioral contract contains only a newline.",
+      "release_resolution": "replaced_by_controlled_augmentation"
+    },
+    {
+      "task_id": "P41_fishing_sim",
+      "target_split": "extended",
+      "status": "excluded_from_release_contract_missing",
+      "reason": "corrupt_legacy_contract",
+      "evidence": "The legacy task payload is readable, but its original behavioral contract contains only a newline.",
+      "release_resolution": "replaced_by_controlled_augmentation"
+    },
+    {
+      "task_id": "P44_escape_room",
+      "target_split": "extended",
+      "status": "excluded_from_release_contract_missing",
+      "reason": "corrupt_legacy_contract",
+      "evidence": "The legacy task payload is readable, but its original behavioral contract contains only a newline.",
+      "release_resolution": "replaced_by_controlled_augmentation"
+    },
+    {
+      "task_id": "P65_decal_system",
+      "target_split": "extended",
+      "status": "excluded_from_release_contract_missing",
+      "reason": "corrupt_legacy_contract",
+      "evidence": "The legacy task payload is readable, but its original behavioral contract contains only a newline.",
+      "release_resolution": "replaced_by_controlled_augmentation"
+    },
+    {
+      "task_id": "P67_jewelry_caustic",
+      "target_split": "extended",
+      "status": "excluded_from_release_contract_missing",
+      "reason": "corrupt_legacy_contract",
+      "evidence": "The legacy task payload is readable, but its original behavioral contract contains only a newline.",
+      "release_resolution": "replaced_by_controlled_augmentation"
+    }
+  ]
+}

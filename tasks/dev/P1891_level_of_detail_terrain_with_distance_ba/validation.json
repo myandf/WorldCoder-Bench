@@ -1,0 +1,990 @@
+{
+  "task_id": "P1891_level_of_detail_terrain_with_distance_ba",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:40:14.575Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 5,
+      "total": 8,
+      "percent": 62.5
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 54,
+      "total": 54,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 62.5,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 54,
+    "total": 54,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "TerrainChunks",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "HUDPanel",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "EasyButton",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "MediumButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "HardButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "WireframeToggle",
+      "found": false
+    },
+    {
+      "id": "A7",
+      "name": "FreezeLODToggle",
+      "found": false
+    },
+    {
+      "id": "A8",
+      "name": "ColorModeToggle",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.chunks) && window.__3D_STATE__.chunks.length === 16",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.chunks) && window.__3D_STATE__.chunks.length === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'medium' && window.__3D_STATE__.heightMultiplier === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'medium' && window.__3D_STATE__.heightMultiplier === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.totalTriangles)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.totalTriangles)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.wireframe === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframe === true"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('true') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('on')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('true') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('on')"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles > 0 && !isNaN(window.__3D_STATE__.totalTriangles)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles > 0 && !isNaN(window.__3D_STATE__.totalTriangles)"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'medium'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'medium'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'hard'"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightMultiplier === 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightMultiplier === 1.5"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([40, 80, 140])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([40, 80, 140])"
+        },
+        {
+          "expression": "window.__3D_STATE__.geometryRebuilds >= 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.geometryRebuilds >= 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => [0,1,2,3].includes(c.lodLevel))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => [0,1,2,3].includes(c.lodLevel))"
+        },
+        {
+          "expression": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('hard')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('hard')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lodFrozen === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodFrozen === true"
+        },
+        {
+          "expression": "document.getElementById('hud-frozen') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-frozen') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-frozen').textContent.toLowerCase().includes('true') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('on') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('frozen')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-frozen').textContent.toLowerCase().includes('true') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('on') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('frozen')"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'hard'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => typeof c.lodLevel === 'number' && c.lodLevel >= 0 && c.lodLevel <= 3)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => typeof c.lodLevel === 'number' && c.lodLevel >= 0 && c.lodLevel <= 3)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lodFrozen === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodFrozen === true"
+        },
+        {
+          "expression": "typeof window.__frozenLodSnapshot !== 'undefined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "typeof window.__frozenLodSnapshot !== 'undefined'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every((c, i) => c.lodLevel === window.__frozenLodSnapshot[i])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every((c, i) => c.lodLevel === window.__frozenLodSnapshot[i])"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.length === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.length === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.colorMode === 'lod'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.colorMode === 'lod'"
+        },
+        {
+          "expression": "document.getElementById('hud-colormode') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-colormode') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('lod')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('lod')"
+        },
+        {
+          "expression": "window.__3D_STATE__.lodFrozen === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodFrozen === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'hard'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'easy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'easy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightMultiplier === 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightMultiplier === 0.5"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([80, 160, 260])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([80, 160, 260])"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => c.segments <= 32)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => c.segments <= 32)"
+        },
+        {
+          "expression": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('easy')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('easy')"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframe === false"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('false') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('off')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('false') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('off')"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'easy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'easy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => !isNaN(c.distance) && c.distance >= 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => !isNaN(c.distance) && c.distance >= 0)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.colorMode === 'flat'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.colorMode === 'flat'"
+        },
+        {
+          "expression": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('flat')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('flat')"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'easy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'easy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.lodCounts.lod0 + window.__3D_STATE__.lodCounts.lod1 + window.__3D_STATE__.lodCounts.lod2 + window.__3D_STATE__.lodCounts.lod3 === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodCounts.lod0 + window.__3D_STATE__.lodCounts.lod1 + window.__3D_STATE__.lodCounts.lod2 + window.__3D_STATE__.lodCounts.lod3 === 16"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'medium'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'medium'"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightMultiplier === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightMultiplier === 1.0"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([60, 120, 200])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([60, 120, 200])"
+        },
+        {
+          "expression": "window.__3D_STATE__.geometryRebuilds >= 48",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.geometryRebuilds >= 48"
+        },
+        {
+          "expression": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('medium')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('medium')"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments && !isNaN(c.triangleCount))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments && !isNaN(c.triangleCount))"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.chunks) && window.__3D_STATE__.chunks.length === 16",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.chunks) && window.__3D_STATE__.chunks.length === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'medium' && window.__3D_STATE__.heightMultiplier === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'medium' && window.__3D_STATE__.heightMultiplier === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.totalTriangles)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.totalTriangles)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.wireframe === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframe === true"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('true') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('on')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('true') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('on')"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles > 0 && !isNaN(window.__3D_STATE__.totalTriangles)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles > 0 && !isNaN(window.__3D_STATE__.totalTriangles)"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'medium'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'medium'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'hard'"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightMultiplier === 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightMultiplier === 1.5"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([40, 80, 140])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([40, 80, 140])"
+        },
+        {
+          "expression": "window.__3D_STATE__.geometryRebuilds >= 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.geometryRebuilds >= 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => [0,1,2,3].includes(c.lodLevel))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => [0,1,2,3].includes(c.lodLevel))"
+        },
+        {
+          "expression": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('hard')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('hard')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lodFrozen === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodFrozen === true"
+        },
+        {
+          "expression": "document.getElementById('hud-frozen') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-frozen') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-frozen').textContent.toLowerCase().includes('true') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('on') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('frozen')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-frozen').textContent.toLowerCase().includes('true') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('on') || document.getElementById('hud-frozen').textContent.toLowerCase().includes('frozen')"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'hard'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => typeof c.lodLevel === 'number' && c.lodLevel >= 0 && c.lodLevel <= 3)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => typeof c.lodLevel === 'number' && c.lodLevel >= 0 && c.lodLevel <= 3)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lodFrozen === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodFrozen === true"
+        },
+        {
+          "expression": "typeof window.__frozenLodSnapshot !== 'undefined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "typeof window.__frozenLodSnapshot !== 'undefined'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every((c, i) => c.lodLevel === window.__frozenLodSnapshot[i])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every((c, i) => c.lodLevel === window.__frozenLodSnapshot[i])"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.length === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.length === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.colorMode === 'lod'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.colorMode === 'lod'"
+        },
+        {
+          "expression": "document.getElementById('hud-colormode') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-colormode') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('lod')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('lod')"
+        },
+        {
+          "expression": "window.__3D_STATE__.lodFrozen === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodFrozen === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'hard'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'easy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'easy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightMultiplier === 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightMultiplier === 0.5"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([80, 160, 260])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([80, 160, 260])"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => c.segments <= 32)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => c.segments <= 32)"
+        },
+        {
+          "expression": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('easy')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('easy')"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles === window.__3D_STATE__.chunks.reduce((s,c) => s + c.triangleCount, 0)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframe === false"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('false') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('off')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-wireframe').textContent.toLowerCase().includes('false') || document.getElementById('hud-wireframe').textContent.toLowerCase().includes('off')"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'easy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'easy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => !isNaN(c.distance) && c.distance >= 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => !isNaN(c.distance) && c.distance >= 0)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.colorMode === 'flat'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.colorMode === 'flat'"
+        },
+        {
+          "expression": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('flat')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-colormode').textContent.toLowerCase().includes('flat')"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'easy'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'easy'"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalTriangles > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalTriangles > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.lodCounts.lod0 + window.__3D_STATE__.lodCounts.lod1 + window.__3D_STATE__.lodCounts.lod2 + window.__3D_STATE__.lodCounts.lod3 === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lodCounts.lod0 + window.__3D_STATE__.lodCounts.lod1 + window.__3D_STATE__.lodCounts.lod2 + window.__3D_STATE__.lodCounts.lod3 === 16"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficulty === 'medium'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficulty === 'medium'"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightMultiplier === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightMultiplier === 1.0"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([60, 120, 200])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.lodDistances) === JSON.stringify([60, 120, 200])"
+        },
+        {
+          "expression": "window.__3D_STATE__.geometryRebuilds >= 48",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.geometryRebuilds >= 48"
+        },
+        {
+          "expression": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('medium')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-difficulty').textContent.toLowerCase().includes('medium')"
+        },
+        {
+          "expression": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments && !isNaN(c.triangleCount))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chunks.every(c => c.triangleCount === 2 * c.segments * c.segments && !isNaN(c.triangleCount))"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 5,
+    "total": 8,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": false
+      },
+      {
+        "id": "A7",
+        "pass": false
+      },
+      {
+        "id": "A8",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 6,
+      "total": 6
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 48,
+      "total": 48
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 33575
+}

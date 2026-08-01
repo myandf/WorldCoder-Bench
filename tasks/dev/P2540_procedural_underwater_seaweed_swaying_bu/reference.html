@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Underwater Seaweed Soft-Body Scene</title>
+  <style>
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      background: #0a2a3a;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #e6f7ff;
+    }
+    canvas { display: block; }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      line-height: 1.5;
+      font-size: 14px;
+      pointer-events: none;
+      z-index: 10;
+      min-width: 180px;
+    }
+    #controls {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      z-index: 11;
+      color: #e6f7ff;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 220px;
+      font-size: 13px;
+    }
+    .control-group input[type="range"] {
+      width: 220px;
+    }
+    .hint {
+      position: fixed;
+      right: 12px;
+      top: 12px;
+      padding: 8px 10px;
+      background: rgba(0,0,0,0.25);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #cfefff;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div id="hud-strands">Strands: 5</div>
+    <div id="hud-current">Current: 1.0</div>
+    <div id="hud-frequency">Frequency: 0.8</div>
+    <div id="hud-burst">Burst: OFF</div>
+    <div id="hud-time">Sim Time: 0.0</div>
+  </div>
+
+  <div class="hint">Keys: <b>B</b> burst, <b>R</b> reset &nbsp;•&nbsp; Click seaweed to push</div>
+
+  <div id="controls">
+    <div class="control-group">
+      <label for="currentStrength">Current Strength: <span id="currentStrengthVal">1.0</span></label>
+      <input id="currentStrength" type="range" min="0" max="3" step="0.1" value="1.0" />
+    </div>
+    <div class="control-group">
+      <label for="currentFrequency">Current Frequency: <span id="currentFrequencyVal">0.8</span></label>
+      <input id="currentFrequency" type="range" min="0.1" max="3" step="0.1" value="0.8" />
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0a2a3a');
+    scene.fog = new THREE.FogExp2('#0a2a3a', 0.045);
+
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 4, 12);
+    camera.lookAt(0, 2, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const ambient = new THREE.AmbientLight('#2266aa', 0.5);
+    scene.add(ambient);
+
+    const dir = new THREE.DirectionalLight('#88ccff', 0.8);
+    dir.position.set(5, 10, 5);
+    scene.add(dir);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshPhongMaterial({ color: '#8b7d5e', shininess: 8 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = 0;
+    scene.add(ground);
+
+    const groundOverlay = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshBasicMaterial({
+        color: '#6d8f7a',
+        transparent: true,
+        opacity: 0.06
+      })
+    );
+    groundOverlay.rotation.x = -Math.PI / 2;
+    groundOverlay.position.y = 0.002;
+    scene.add(groundOverlay);
+
+    // Particles
+    const PARTICLE_COUNT = 80;
+    const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
+    const particleSpeeds = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particlePositions[i * 3 + 0] = THREE.MathUtils.randFloatSpread(16);
+      particlePositions[i * 3 + 1] = Math.random() * 10;
+      particlePositions[i * 3 + 2] = THREE.MathUtils.randFloatSpread(16);
+      particleSpeeds.push(THREE.MathUtils.randFloat(0.02, 0.05));
+    }
+    const particleGeo = new THREE.BufferGeometry();
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particleMat = new THREE.PointsMaterial({
+      color: '#ffffff',
+      size: 0.06,
+      transparent: true,
+      opacity: 0.5,
+      depthWrite: false
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    scene.add(particles);
+
+    // Seaweed
+    const strandCount = 5;
+    const segmentsPerStrand = 8;
+    const segmentLength = 0.5;
+    const strandXs = [-3, -1.5, 0, 1.5, 3];
+    const dragCoefficient = 0.04;
+    const gravityY = -2.0;
+    const buoyancyY = 3.0;
+    const iterations = 3;
+
+    let currentStrength = 1.0;
+    let currentFrequency = 0.8;
+    let simTime = 0;
+    let resetCount = 0;
+    let clickPushCount = 0;
+
+    let burstActive = false;
+    let burstDisplayUntil = 0;
+
+    const up = new THREE.Vector3(0, 1, 0);
+    const tempVec = new THREE.Vector3();
+    const tempVec2 = new THREE.Vector3();
+    const raycaster = new THREE.Raycaster();
+    const mouseNdc = new THREE.Vector2();
+    const clickPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const clickPoint = new THREE.Vector3();
+
+    function varyGreen(hex, amt) {
+      const c = new THREE.Color(hex);
+      c.offsetHSL(THREE.MathUtils.randFloatSpread(0.03), THREE.MathUtils.randFloatSpread(0.05), amt);
+      return c;
+    }
+
+    function makeNode(x, y, z) {
+      return {
+        pos: new THREE.Vector3(x, y, z),
+        prev: new THREE.Vector3(x, y, z),
+        pinned: false
+      };
+    }
+
+    const seaweedMaterialBase = new THREE.MeshPhongMaterial({
+      color: '#1a8a2a',
+      shininess: 18,
+      side: THREE.DoubleSide
+    });
+
+    const strands = [];
+    const strandMeshes = [];
+
+    function createSeaweedStrand(baseX, idx) {
+      const nodes = [];
+      for (let i = 0; i < segmentsPerStrand; i++) {
+        const node = makeNode(baseX, i * segmentLength, 0);
+        if (i === 0) node.pinned = true;
+        nodes.push(node);
+      }
+
+      const curvePoints = nodes.map(n => n.pos.clone());
+      const curve = new THREE.CatmullRomCurve3(curvePoints);
+      const tubeGeo = new THREE.TubeGeometry(curve, 48, 0.09, 8, false);
+      const mat = seaweedMaterialBase.clone();
+      mat.color = varyGreen('#1a8a2a', THREE.MathUtils.randFloatSpread(0.06));
+      const mesh = new THREE.Mesh(tubeGeo, mat);
+      scene.add(mesh);
+
+      strands.push({
+        baseX,
+        nodes,
+        curve,
+        mesh
+      });
+      strandMeshes.push(mesh);
+    }
+
+    for (let i = 0; i < strandCount; i++) createSeaweedStrand(strandXs[i], i);
+
+    function resetStrands() {
+      for (const strand of strands) {
+        for (let i = 0; i < strand.nodes.length; i++) {
+          const n = strand.nodes[i];
+          n.pos.set(strand.baseX, i * segmentLength, 0);
+          n.prev.copy(n.pos);
+        }
+      }
+    }
+
+    function updateStrandGeometry(strand) {
+      const pts = strand.nodes.map(n => n.pos.clone());
+      strand.curve.points = pts;
+      const newGeo = new THREE.TubeGeometry(strand.curve, 48, 0.09, 8, false);
+      strand.mesh.geometry.dispose();
+      strand.mesh.geometry = newGeo;
+    }
+
+    function integrateStrand(strand, dt, currentForceX, applyBurst) {
+      for (let i = 1; i < strand.nodes.length; i++) {
+        const n = strand.nodes[i];
+        tempVec.copy(n.pos).sub(n.prev);
+        tempVec.multiplyScalar(1 - dragCoefficient);
+
+        const accelX = currentForceX + (applyBurst ? 4.0 : 0.0);
+        const accelY = gravityY + buoyancyY;
+
+        tempVec2.set(accelX * dt * dt, accelY * dt * dt, 0);
+
+        const next = n.pos.clone().add(tempVec).add(tempVec2);
+        n.prev.copy(n.pos);
+        n.pos.copy(next);
+
+        if (n.pos.y < 0.02) n.pos.y = 0.02;
+      }
+
+      for (let iter = 0; iter < iterations; iter++) {
+        strand.nodes[0].pos.set(strand.baseX, 0, 0);
+        strand.nodes[0].prev.set(strand.baseX, 0, 0);
+
+        for (let i = 0; i < strand.nodes.length - 1; i++) {
+          const a = strand.nodes[i];
+          const b = strand.nodes[i + 1];
+
+          tempVec.subVectors(b.pos, a.pos);
+          let dist = tempVec.length();
+          if (!isFinite(dist) || dist === 0) {
+            tempVec.set(0, segmentLength, 0);
+            dist = segmentLength;
+          }
+
+          const diff = (dist - segmentLength) / dist;
+
+          if (a.pinned && !b.pinned) {
+            b.pos.addScaledVector(tempVec, -diff);
+          } else if (!a.pinned && !b.pinned) {
+            a.pos.addScaledVector(tempVec, 0.5 * diff);
+            b.pos.addScaledVector(tempVec, -0.5 * diff);
+          }
+
+          if (b.pos.y < 0.02) b.pos.y = 0.02;
+        }
+      }
+
+      strand.nodes[0].pos.set(strand.baseX, 0, 0);
+      strand.nodes[0].prev.set(strand.baseX, 0, 0);
+    }
+
+    function applyClickPushFromPoint(point) {
+      let applied = false;
+      for (const strand of strands) {
+        for (let i = 1; i < strand.nodes.length; i++) {
+          const n = strand.nodes[i];
+          const d = n.pos.distanceTo(point);
+          if (d <= 1.0) {
+            const dir = n.pos.clone().sub(point);
+            if (dir.lengthSq() < 1e-8) dir.set(1, 0, 0);
+            dir.normalize().multiplyScalar(2.0 * (1.0 - d / 1.0));
+            n.pos.add(dir);
+            applied = true;
+          }
+        }
+      }
+      if (applied) clickPushCount++;
+    }
+
+    // UI
+    const hudCurrent = document.getElementById('hud-current');
+    const hudFrequency = document.getElementById('hud-frequency');
+    const hudBurst = document.getElementById('hud-burst');
+    const hudTime = document.getElementById('hud-time');
+    const currentStrengthSlider = document.getElementById('currentStrength');
+    const currentFrequencySlider = document.getElementById('currentFrequency');
+    const currentStrengthVal = document.getElementById('currentStrengthVal');
+    const currentFrequencyVal = document.getElementById('currentFrequencyVal');
+
+    currentStrengthSlider.addEventListener('input', () => {
+      currentStrength = parseFloat(currentStrengthSlider.value);
+      currentStrengthVal.textContent = currentStrength.toFixed(1);
+    });
+
+    currentFrequencySlider.addEventListener('input', () => {
+      currentFrequency = parseFloat(currentFrequencySlider.value);
+      currentFrequencyVal.textContent = currentFrequency.toFixed(1);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'b' || e.key === 'B') {
+        burstActive = true;
+        burstDisplayUntil = performance.now() / 1000 + 0.5;
+      }
+      if (e.key === 'r' || e.key === 'R') {
+        resetStrands();
+        resetCount++;
+      }
+    });
+
+    renderer.domElement.addEventListener('click', (e) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouseNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseNdc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouseNdc, camera);
+      if (raycaster.ray.intersectPlane(clickPlane, clickPoint)) {
+        applyClickPushFromPoint(clickPoint);
+      } else {
+        const fallback = raycaster.ray.origin.clone().add(raycaster.ray.direction.clone().multiplyScalar(8));
+        applyClickPushFromPoint(fallback);
+      }
+    });
+
+    window.__3D_STATE__ = {
+      strandCount,
+      segmentsPerStrand,
+      currentStrength,
+      currentFrequency,
+      burstActive,
+      simTime: 0,
+      strandTips: [],
+      strandBases: [],
+      avgTipY: 0,
+      maxTipDisplacementX: 0,
+      particleCount: PARTICLE_COUNT,
+      dragCoefficient,
+      resetCount,
+      clickPushCount,
+      nodesAreFinite: true
+    };
+
+    const clock = new THREE.Clock();
+
+    function updateParticles(dt) {
+      const arr = particleGeo.attributes.position.array;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        arr[i * 3 + 1] += particleSpeeds[i] * dt * 4.0;
+        arr[i * 3 + 0] += Math.sin(simTime * 0.3 + i) * 0.0008;
+        arr[i * 3 + 2] += Math.cos(simTime * 0.2 + i * 1.7) * 0.0006;
+
+        if (arr[i * 3 + 1] > 10) {
+          arr[i * 3 + 1] = 0;
+          arr[i * 3 + 0] = THREE.MathUtils.randFloatSpread(16);
+          arr[i * 3 + 2] = THREE.MathUtils.randFloatSpread(16);
+        }
+      }
+      particleGeo.attributes.position.needsUpdate = true;
+    }
+
+    function updateState() {
+      const tips = [];
+      const bases = [];
+      let avgTipY = 0;
+      let maxTipDisplacementX = 0;
+      let finite = true;
+
+      for (const strand of strands) {
+        const base = strand.nodes[0].pos;
+        const tip = strand.nodes[strand.nodes.length - 1].pos;
+
+        bases.push({ x: base.x, y: base.y, z: base.z });
+        tips.push({ x: tip.x, y: tip.y, z: tip.z });
+
+        avgTipY += tip.y;
+        maxTipDisplacementX = Math.max(maxTipDisplacementX, Math.abs(tip.x - base.x));
+
+        for (const n of strand.nodes) {
+          if (!Number.isFinite(n.pos.x) || !Number.isFinite(n.pos.y) || !Number.isFinite(n.pos.z)) {
+            finite = false;
+          }
+        }
+      }
+
+      avgTipY /= strands.length;
+
+      window.__3D_STATE__.strandCount = strandCount;
+      window.__3D_STATE__.segmentsPerStrand = segmentsPerStrand;
+      window.__3D_STATE__.currentStrength = currentStrength;
+      window.__3D_STATE__.currentFrequency = currentFrequency;
+      window.__3D_STATE__.burstActive = burstActive;
+      window.__3D_STATE__.simTime = simTime;
+      window.__3D_STATE__.strandTips = tips;
+      window.__3D_STATE__.strandBases = bases;
+      window.__3D_STATE__.avgTipY = avgTipY;
+      window.__3D_STATE__.maxTipDisplacementX = maxTipDisplacementX;
+      window.__3D_STATE__.particleCount = PARTICLE_COUNT;
+      window.__3D_STATE__.dragCoefficient = dragCoefficient;
+      window.__3D_STATE__.resetCount = resetCount;
+      window.__3D_STATE__.clickPushCount = clickPushCount;
+      window.__3D_STATE__.nodesAreFinite = finite;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      let dt = clock.getDelta();
+      dt = Math.min(dt, 1 / 30);
+      simTime += dt;
+
+      const currentForceX = currentStrength * Math.sin(simTime * currentFrequency);
+      const applyBurstThisFrame = burstActive;
+
+      updateParticles(dt);
+
+      for (const strand of strands) {
+        integrateStrand(strand, dt, currentForceX, applyBurstThisFrame);
+        updateStrandGeometry(strand);
+      }
+
+      if (burstActive) burstActive = false;
+
+      hudCurrent.textContent = `Current: ${currentStrength.toFixed(1)}`;
+      hudFrequency.textContent = `Frequency: ${currentFrequency.toFixed(1)}`;
+      hudBurst.textContent = `Burst: ${(performance.now() / 1000) < burstDisplayUntil ? 'ON' : 'OFF'}`;
+      hudTime.textContent = `Sim Time: ${simTime.toFixed(1)}`;
+
+      updateState();
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    resetStrands();
+    updateState();
+    animate();
+  </script>
+</body>
+</html>

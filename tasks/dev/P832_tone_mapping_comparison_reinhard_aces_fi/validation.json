@@ -1,0 +1,978 @@
+{
+  "task_id": "P832_tone_mapping_comparison_reinhard_aces_fi",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:40:09.879Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 5,
+      "total": 8,
+      "percent": 62.5
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 53,
+      "total": 53,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 62.5,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 53,
+    "total": 53,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "EmissiveSpheres",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "GroundPlane",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "CycleTMButton",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "ExposureSlider",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "EasyButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "MediumButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "HardButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "HUDPanel",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.toneMappingMode === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.toneMappingMode === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.exposure === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.exposure === 'number'"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.sphereIntensities) && window.__3D_STATE__.sphereIntensities.length === 6",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.sphereIntensities) && window.__3D_STATE__.sphereIntensities.length === 6"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.centerPixel) && window.__3D_STATE__.centerPixel.length === 4",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.centerPixel) && window.__3D_STATE__.centerPixel.length === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingName === 'ACES'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingName === 'ACES'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialsUpdatedCount >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialsUpdatedCount >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerPixel.every(v => v >= 0 && v <= 255 && !isNaN(v))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerPixel.every(v => v >= 0 && v <= 255 && !isNaN(v))"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.centerBrightness === 'number' && !isNaN(window.__3D_STATE__.centerBrightness)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.centerBrightness === 'number' && !isNaN(window.__3D_STATE__.centerBrightness)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingName === 'Filmic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingName === 'Filmic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialsUpdatedCount >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialsUpdatedCount >= 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.exposure - 3.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.exposure - 3.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerBrightness === (window.__3D_STATE__.centerPixel[0] + window.__3D_STATE__.centerPixel[1] + window.__3D_STATE__.centerPixel[2]) / 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerBrightness === (window.__3D_STATE__.centerPixel[0] + window.__3D_STATE__.centerPixel[1] + window.__3D_STATE__.centerPixel[2]) / 3.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerPixel[0] >= 0 && window.__3D_STATE__.centerPixel[1] >= 0 && window.__3D_STATE__.centerPixel[2] >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerPixel[0] >= 0 && window.__3D_STATE__.centerPixel[1] >= 0 && window.__3D_STATE__.centerPixel[2] >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.exposure === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure === 1.0"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('slider-exposure').value) - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('slider-exposure').value) - 1.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 3"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 6",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 6"
+        },
+        {
+          "expression": "window.__3D_STATE__.directionalLightIntensity === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.directionalLightIntensity === 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightIntensity === 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightIntensity === 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 6",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 6"
+        },
+        {
+          "expression": "window.__3D_STATE__.directionalLightIntensity === 4.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.directionalLightIntensity === 4.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightIntensity === 20.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightIntensity === 20.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphereIntensities[4] === 100.0 && window.__3D_STATE__.sphereIntensities[5] === 500.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphereIntensities[4] === 100.0 && window.__3D_STATE__.sphereIntensities[5] === 500.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.directionalLightIntensity === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.directionalLightIntensity === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingName === 'Reinhard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingName === 'Reinhard'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialsUpdatedCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialsUpdatedCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 3"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.exposure - 0.3) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.exposure - 0.3) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightIntensity === 20.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightIntensity === 20.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerBrightness >= 0 && window.__3D_STATE__.centerBrightness <= 255 && !isNaN(window.__3D_STATE__.centerBrightness)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerBrightness >= 0 && window.__3D_STATE__.centerBrightness <= 255 && !isNaN(window.__3D_STATE__.centerBrightness)"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.toneMappingMode === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.toneMappingMode === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.exposure === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.exposure === 'number'"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.sphereIntensities) && window.__3D_STATE__.sphereIntensities.length === 6",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.sphereIntensities) && window.__3D_STATE__.sphereIntensities.length === 6"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.centerPixel) && window.__3D_STATE__.centerPixel.length === 4",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.centerPixel) && window.__3D_STATE__.centerPixel.length === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingName === 'ACES'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingName === 'ACES'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialsUpdatedCount >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialsUpdatedCount >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerPixel.every(v => v >= 0 && v <= 255 && !isNaN(v))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerPixel.every(v => v >= 0 && v <= 255 && !isNaN(v))"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.centerBrightness === 'number' && !isNaN(window.__3D_STATE__.centerBrightness)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.centerBrightness === 'number' && !isNaN(window.__3D_STATE__.centerBrightness)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingName === 'Filmic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingName === 'Filmic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialsUpdatedCount >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialsUpdatedCount >= 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.exposure - 3.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.exposure - 3.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerBrightness === (window.__3D_STATE__.centerPixel[0] + window.__3D_STATE__.centerPixel[1] + window.__3D_STATE__.centerPixel[2]) / 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerBrightness === (window.__3D_STATE__.centerPixel[0] + window.__3D_STATE__.centerPixel[1] + window.__3D_STATE__.centerPixel[2]) / 3.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerPixel[0] >= 0 && window.__3D_STATE__.centerPixel[1] >= 0 && window.__3D_STATE__.centerPixel[2] >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerPixel[0] >= 0 && window.__3D_STATE__.centerPixel[1] >= 0 && window.__3D_STATE__.centerPixel[2] >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.exposure === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure === 1.0"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('slider-exposure').value) - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('slider-exposure').value) - 1.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 3"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 6",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 6"
+        },
+        {
+          "expression": "window.__3D_STATE__.directionalLightIntensity === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.directionalLightIntensity === 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightIntensity === 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightIntensity === 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 6",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 6"
+        },
+        {
+          "expression": "window.__3D_STATE__.directionalLightIntensity === 4.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.directionalLightIntensity === 4.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightIntensity === 20.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightIntensity === 20.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphereIntensities[4] === 100.0 && window.__3D_STATE__.sphereIntensities[5] === 500.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphereIntensities[4] === 100.0 && window.__3D_STATE__.sphereIntensities[5] === 500.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleSphereCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleSphereCount === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.directionalLightIntensity === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.directionalLightIntensity === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphereIntensities[4] === 50.0 && window.__3D_STATE__.sphereIntensities[5] === 200.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.toneMappingMode === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingMode === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.toneMappingName === 'Reinhard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.toneMappingName === 'Reinhard'"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialsUpdatedCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialsUpdatedCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.difficultyLevel === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.difficultyLevel === 3"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.exposure - 0.3) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.exposure - 0.3) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.exposure >= 0.1 && window.__3D_STATE__.exposure <= 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointLightIntensity === 20.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightIntensity === 20.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.centerBrightness >= 0 && window.__3D_STATE__.centerBrightness <= 255 && !isNaN(window.__3D_STATE__.centerBrightness)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.centerBrightness >= 0 && window.__3D_STATE__.centerBrightness <= 255 && !isNaN(window.__3D_STATE__.centerBrightness)"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 5,
+    "total": 8,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 6,
+      "total": 6
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 47,
+      "total": 47
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 23282
+}

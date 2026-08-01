@@ -1,0 +1,844 @@
+{
+  "task_id": "P333_weather_radar_3d_with_time_control",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:22:10.202Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 7,
+      "total": 10,
+      "percent": 70
+    },
+    "sCov": {
+      "reached": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 43,
+      "total": 43,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 70,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 43,
+    "total": 43,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 8,
+  "total": 8,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "RadarGrid",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "RadarSweep",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "WeatherParticles",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "FaceCapModel",
+      "found": false
+    },
+    {
+      "id": "A5",
+      "name": "PlayPauseBtn",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "TimeSlider",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "PrevBtn",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "NextBtn",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "TimeLabel",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "LegendPanel",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.isPlaying !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isPlaying !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.radarSweepAngle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radarSweepAngle !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.isPlaying !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isPlaying !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.radarSweepAngle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radarSweepAngle !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentTimeStep !== before.currentTimeStep || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.currentTimeStep === 'number' && !isNaN(window.__3D_STATE__.currentTimeStep)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.particleCount === 'number' && !isNaN(window.__3D_STATE__.particleCount)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPlaying === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPlaying === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 7,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": false
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 8,
+    "total": 8
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 28,
+      "total": 28
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 15,
+      "total": 15
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 25279
+}

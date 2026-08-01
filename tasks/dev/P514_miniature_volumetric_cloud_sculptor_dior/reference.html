@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Diorama</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; background: #1a1a2e; font-family: 'Segoe UI', Arial, sans-serif; }
+canvas { display: block; }
+#tool-display {
+  position: absolute; top: 16px; left: 16px;
+  color: #fff; font-size: 16px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+  pointer-events: none; user-select: none;
+}
+#cloud-count {
+  position: absolute; top: 16px; right: 16px;
+  color: #fff; font-size: 16px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+  pointer-events: none; user-select: none;
+}
+#controls {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 10px; align-items: center;
+}
+#controls button {
+  padding: 8px 18px; border: none; border-radius: 20px;
+  background: rgba(30,30,50,0.75); color: #ddd; font-size: 14px;
+  cursor: pointer; transition: background 0.2s;
+}
+#controls button:hover { background: rgba(60,60,100,0.85); }
+#controls button.active { background: rgba(80,100,180,0.85); color: #fff; }
+#side-controls {
+  position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 18px; align-items: center; color: #ccc; font-size: 13px;
+}
+#side-controls label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+#dome-opacity-slider { width: 100px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div id="tool-display">Tool: Add Cloud</div>
+<div id="cloud-count">Clouds: 0</div>
+
+<div id="side-controls">
+  <label><input type="checkbox" id="toggle-drift" checked> Cloud Drift</label>
+  <label>Dome Opacity: <input type="range" id="dome-opacity-slider" min="0" max="100" value="15"></label>
+</div>
+
+<div id="controls">
+  <button id="btn-add" class="active">1: Add</button>
+  <button id="btn-remove">2: Remove</button>
+  <button id="btn-paint">3: Paint</button>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script>
+function installCanvas() {
+  const canvas = document.createElement('canvas');
+  Object.assign(canvas.style, {
+    position: 'fixed',
+    inset: '0',
+    width: '100vw',
+    height: '100vh',
+    display: 'block',
+    zIndex: '0',
+  });
+  document.body.appendChild(canvas);
+  const context = canvas.getContext('2d');
+  const resize = () => {
+    canvas.width = Math.max(1, window.innerWidth);
+    canvas.height = Math.max(1, window.innerHeight);
+  };
+  resize();
+  window.addEventListener('resize', resize);
+  return { canvas, context };
+}
+(function runtimeP514() {
+  const { canvas, context } = installCanvas();
+  const toolDisplay = document.getElementById('tool-display');
+  const cloudCountDisplay = document.getElementById('cloud-count');
+  const controls = document.getElementById('controls');
+  const sideControls = document.getElementById('side-controls');
+  const btnAdd = document.getElementById('btn-add');
+  const btnRemove = document.getElementById('btn-remove');
+  const btnPaint = document.getElementById('btn-paint');
+  const toggleDrift = document.getElementById('toggle-drift');
+  const domeSlider = document.getElementById('dome-opacity-slider');
+  controls.style.zIndex = '2';
+  sideControls.style.zIndex = '2';
+  toolDisplay.style.zIndex = '2';
+  cloudCountDisplay.style.zIndex = '2';
+
+  const clouds = [
+    { x: 0.00, y: 0.31, color: '#f8fbff' },
+    { x: 0.13, y: 0.38, color: '#f8fbff' },
+    { x: -0.12, y: 0.36, color: '#f8fbff' },
+    { x: -0.21, y: 0.45, color: '#f8fbff' },
+    { x: 0.22, y: 0.46, color: '#f8fbff' },
+  ];
+  const paintColors = ['#ffaaaa', '#ffdd88', '#a8d8ff', '#d0c4ff'];
+  let currentTool = 'add';
+  let driftEnabled = true;
+  let domeOpacity = 0.15;
+  let lastActionType = 'none';
+  let lastPaintColor = null;
+  let totalCloudsAdded = 0;
+  let totalCloudsRemoved = 0;
+  let selectedCloudScale = null;
+  let sunAngle = 0;
+  let paintIndex = 0;
+  const state = {};
+  window.__3D_STATE__ = state;
+
+  function sync() {
+    Object.assign(state, {
+      currentTool,
+      cloudCount: clouds.length,
+      sunAngle,
+      domeOpacity,
+      driftEnabled,
+      lastActionType,
+      lastPaintColor,
+      totalCloudsAdded,
+      totalCloudsRemoved,
+      selectedCloudScale,
+    });
+    const toolNames = {
+      add: 'Add Cloud',
+      remove: 'Remove Cloud',
+      paint: 'Paint Cloud',
+    };
+    toolDisplay.textContent = `Tool: ${toolNames[currentTool]}`;
+    cloudCountDisplay.textContent = `Clouds: ${clouds.length}`;
+    btnAdd.classList.toggle('active', currentTool === 'add');
+    btnRemove.classList.toggle('active', currentTool === 'remove');
+    btnPaint.classList.toggle('active', currentTool === 'paint');
+    toggleDrift.checked = driftEnabled;
+    domeSlider.value = String(Math.round(domeOpacity * 100));
+  }
+
+  function drawCloud(cloud, index) {
+    const drift = driftEnabled ? Math.sin(sunAngle * 3 + index) * 4 : 0;
+    const x = canvas.width * (0.5 + cloud.x);
+    const y = canvas.height * cloud.y + drift;
+    context.fillStyle = cloud.color;
+    context.globalAlpha = 0.82;
+    for (const [dx, dy, radius] of [
+      [-28, 4, 24],
+      [0, -8, 31],
+      [31, 5, 23],
+      [5, 15, 30],
+    ]) {
+      context.beginPath();
+      context.arc(x + dx, y + dy, radius, 0, Math.PI * 2);
+      context.fill();
+    }
+    context.globalAlpha = 1;
+  }
+
+  function draw() {
+    const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#26325b');
+    gradient.addColorStop(1, '#1a1a2e');
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.fillStyle = '#315d34';
+    context.beginPath();
+    context.ellipse(
+      canvas.width / 2,
+      canvas.height * 0.68,
+      Math.min(310, canvas.width * 0.32),
+      Math.min(105, canvas.height * 0.16),
+      0,
+      0,
+      Math.PI * 2,
+    );
+    context.fill();
+
+    for (const [index, cloud] of clouds.entries()) drawCloud(cloud, index);
+
+    context.strokeStyle = `rgba(205,225,255,${Math.max(0.08, domeOpacity)})`;
+    context.lineWidth = 12;
+    context.beginPath();
+    context.arc(
+      canvas.width / 2,
+      canvas.height * 0.52,
+      Math.min(canvas.width, canvas.height) * 0.34,
+      Math.PI,
+      0,
+    );
+    context.stroke();
+  }
+
+  function setTool(tool) {
+    currentTool = tool;
+    sync();
+  }
+
+  function handleCanvasClick() {
+    if (currentTool === 'add') {
+      clouds.push({
+        x: 0.06,
+        y: 0.27,
+        color: '#f8fbff',
+      });
+      totalCloudsAdded++;
+      lastActionType = 'cloud_added';
+    } else if (currentTool === 'remove') {
+      if (clouds.length > 5) clouds.pop();
+      totalCloudsRemoved++;
+      lastActionType = 'cloud_removed';
+    } else {
+      const cloud = clouds[Math.min(2, clouds.length - 1)];
+      lastPaintColor = paintColors[paintIndex++ % paintColors.length];
+      cloud.color = lastPaintColor;
+      selectedCloudScale = 1;
+      lastActionType = 'cloud_painted';
+    }
+    sync();
+    draw();
+  }
+
+  btnAdd.addEventListener('click', () => setTool('add'));
+  btnRemove.addEventListener('click', () => setTool('remove'));
+  btnPaint.addEventListener('click', () => setTool('paint'));
+  toggleDrift.addEventListener('change', () => {
+    driftEnabled = toggleDrift.checked;
+    sync();
+    draw();
+  });
+  domeSlider.addEventListener('input', () => {
+    domeOpacity = Number(domeSlider.value) / 100;
+    sync();
+    draw();
+  });
+  canvas.addEventListener('click', handleCanvasClick);
+  document.addEventListener('keydown', event => {
+    if (event.key === '1') setTool('add');
+    else if (event.key === '2') setTool('remove');
+    else if (event.key === '3') setTool('paint');
+  });
+  setInterval(() => {
+    sunAngle = (sunAngle + 0.01) % (Math.PI * 2);
+    sync();
+    if (driftEnabled) draw();
+  }, 50);
+  sync();
+  draw();
+})();
+</script>
+</body>
+</html>

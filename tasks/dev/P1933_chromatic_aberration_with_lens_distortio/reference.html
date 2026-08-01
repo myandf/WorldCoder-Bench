@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Chromatic Aberration + Lens Distortion</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+    }
+    canvas {
+      display: block;
+    }
+    #ui {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      width: 320px;
+      padding: 14px 14px 12px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+    #ui h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0;
+    }
+    .row label {
+      flex: 1 1 auto;
+      font-size: 13px;
+      line-height: 1.2;
+    }
+    .row input[type="range"] {
+      flex: 1 1 140px;
+    }
+    .row input[type="checkbox"] {
+      transform: scale(1.05);
+    }
+    .value {
+      min-width: 58px;
+      text-align: right;
+      font-size: 12px;
+      color: #9fd3ff;
+      font-variant-numeric: tabular-nums;
+    }
+    select, button, input[type="range"] {
+      cursor: pointer;
+    }
+    select, button {
+      background: #1d1d1d;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 13px;
+    }
+    button:hover, select:hover {
+      background: #2a2a2a;
+    }
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div id="ui">
+    <h2>Chromatic Aberration + Lens Distortion</h2>
+
+    <div class="row">
+      <label for="toggleEffect">Enable Effect</label>
+      <input id="toggleEffect" type="checkbox" checked />
+    </div>
+
+    <div class="row">
+      <label for="presetSelect">Preset</label>
+      <select id="presetSelect">
+        <option value="None">None</option>
+        <option value="Subtle">Subtle</option>
+        <option value="Heavy Barrel">Heavy Barrel</option>
+        <option value="Pincushion">Pincushion</option>
+        <option value="Psychedelic">Psychedelic</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <label for="chromaticStrength">Chromatic Strength</label>
+      <input id="chromaticStrength" type="range" min="0" max="50" step="1" value="10" />
+      <span class="value" id="chromaticStrengthValue">0.010</span>
+    </div>
+
+    <div class="row">
+      <label for="chromaticAngle">Chromatic Angle</label>
+      <input id="chromaticAngle" type="range" min="0" max="360" step="1" value="0" />
+      <span class="value" id="chromaticAngleValue">0°</span>
+    </div>
+
+    <div class="row">
+      <label for="distortionK1">Distortion K1</label>
+      <input id="distortionK1" type="range" min="-100" max="100" step="1" value="0" />
+      <span class="value" id="distortionK1Value">0.000</span>
+    </div>
+
+    <div class="row">
+      <label for="distortionK2">Distortion K2</label>
+      <input id="distortionK2" type="range" min="-50" max="50" step="1" value="0" />
+      <span class="value" id="distortionK2Value">0.000</span>
+    </div>
+
+    <div class="row">
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="hint">
+      Keys: <strong>E</strong> toggle effect, <strong>R</strong> reset,
+      <strong>1-5</strong> presets.
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/RenderPass.js';
+    import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/ShaderPass.js';
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x101217);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 5);
+    camera.lookAt(0, 0, 0);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(5, 10, 7);
+    scene.add(directionalLight);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(10, 10),
+      new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.85, metalness: 0.1 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1;
+    scene.add(ground);
+
+    const torus = new THREE.Mesh(
+      new THREE.TorusKnotGeometry(1, 0.3, 160, 24),
+      new THREE.MeshStandardMaterial({ color: 0xff6633, roughness: 0.35, metalness: 0.2 })
+    );
+    torus.position.set(0, 0.3, 0);
+    scene.add(torus);
+
+    const spherePositions = [
+      [-2, 0, -2],
+      [ 2, 0, -2],
+      [-2, 0,  2],
+      [ 2, 0,  2],
+    ];
+
+    const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0x3366ff, roughness: 0.4, metalness: 0.15 });
+    const sphereGeometry = new THREE.SphereGeometry(0.3, 32, 24);
+    spherePositions.forEach(([x, y, z]) => {
+      const s = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      s.position.set(x, y, z);
+      scene.add(s);
+    });
+
+    const gridHelper = new THREE.GridHelper(10, 10, 0x666666, 0x333333);
+    gridHelper.position.y = -0.999;
+    scene.add(gridHelper);
+
+    const lensChromaticShader = {
+      uniforms: {
+        tDiffuse: { value: null },
+        uEnabled: { value: true },
+        uChromaticStrength: { value: 0.01 },
+        uChromaticAngle: { value: 0.0 },
+        uDistortionK1: { value: 0.0 },
+        uDistortionK2: { value: 0.0 }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        uniform bool uEnabled;
+        uniform float uChromaticStrength;
+        uniform float uChromaticAngle;
+        uniform float uDistortionK1;
+        uniform float uDistortionK2;
+        varying vec2 vUv;
+
+        vec2 distortUV(vec2 uv) {
+          vec2 p = uv * 2.0 - 1.0;
+          float r2 = dot(p, p);
+          float factor = 1.0 + uDistortionK1 * r2 + uDistortionK2 * r2 * r2;
+          vec2 distorted = p * factor;
+          return distorted * 0.5 + 0.5;
+        }
+
+        vec4 safeSample(vec2 uv) {
+          return texture2D(tDiffuse, clamp(uv, 0.0, 1.0));
+        }
+
+        void main() {
+          if (!uEnabled) {
+            gl_FragColor = texture2D(tDiffuse, vUv);
+            return;
+          }
+
+          vec2 baseUV = distortUV(vUv);
+          vec2 dir = vec2(cos(uChromaticAngle), sin(uChromaticAngle)) * uChromaticStrength;
+
+          vec2 uvR = distortUV(vUv + dir);
+          vec2 uvB = distortUV(vUv - dir);
+          vec2 uvG = baseUV;
+
+          float r = safeSample(uvR).r;
+          float g = safeSample(uvG).g;
+          float b = safeSample(uvB).b;
+          float a = safeSample(uvG).a;
+
+          gl_FragColor = vec4(r, g, b, a);
+        }
+      `
+    };
+
+    const composer = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    const shaderPass = new ShaderPass(lensChromaticShader);
+    composer.addPass(renderPass);
+    composer.addPass(shaderPass);
+
+    const presets = {
+      'None':         { strength: 0.000, angleDeg:   0, k1:  0.0, k2:  0.0 },
+      'Subtle':       { strength: 0.005, angleDeg:  45, k1:  0.1, k2:  0.0 },
+      'Heavy Barrel': { strength: 0.020, angleDeg:   0, k1:  0.6, k2:  0.1 },
+      'Pincushion':   { strength: 0.015, angleDeg: 180, k1: -0.4, k2: -0.1 },
+      'Psychedelic':  { strength: 0.040, angleDeg:  90, k1:  0.8, k2:  0.3 }
+    };
+
+    const defaults = {
+      enabled: true,
+      strength: 0.01,
+      angleDeg: 0,
+      k1: 0.0,
+      k2: 0.0,
+      preset: 'Custom'
+    };
+
+    const ui = {
+      toggleEffect: document.getElementById('toggleEffect'),
+      chromaticStrength: document.getElementById('chromaticStrength'),
+      chromaticAngle: document.getElementById('chromaticAngle'),
+      distortionK1: document.getElementById('distortionK1'),
+      distortionK2: document.getElementById('distortionK2'),
+      resetBtn: document.getElementById('resetBtn'),
+      presetSelect: document.getElementById('presetSelect'),
+      chromaticStrengthValue: document.getElementById('chromaticStrengthValue'),
+      chromaticAngleValue: document.getElementById('chromaticAngleValue'),
+      distortionK1Value: document.getElementById('distortionK1Value'),
+      distortionK2Value: document.getElementById('distortionK2Value')
+    };
+
+    const state = {
+      effectEnabled: true,
+      chromaticStrength: defaults.strength,
+      chromaticAngle: defaults.angleDeg,
+      distortionK1: defaults.k1,
+      distortionK2: defaults.k2,
+      activePreset: defaults.preset,
+      torusRotationY: torus.rotation.y,
+      frameCount: 0,
+      composerPassCount: composer.passes.length,
+      uniformsSync: true
+    };
+
+    window.__3D_STATE__ = state;
+
+    function approxEqual(a, b, eps = 1e-6) {
+      return Math.abs(a - b) <= eps;
+    }
+
+    function strengthToSlider(v) {
+      return Math.round(v * 1000);
+    }
+
+    function sliderToStrength(v) {
+      return Number(v) / 1000;
+    }
+
+    function k1ToSlider(v) {
+      return Math.round(v * 100);
+    }
+
+    function sliderToK1(v) {
+      return Number(v) / 100;
+    }
+
+    function k2ToSlider(v) {
+      return Math.round(v * 100);
+    }
+
+    function sliderToK2(v) {
+      return Number(v) / 100;
+    }
+
+    function degToRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    function updateValueLabels() {
+      ui.chromaticStrengthValue.textContent = state.chromaticStrength.toFixed(3);
+      ui.chromaticAngleValue.textContent = `${Math.round(state.chromaticAngle)}°`;
+      ui.distortionK1Value.textContent = state.distortionK1.toFixed(3);
+      ui.distortionK2Value.textContent = state.distortionK2.toFixed(3);
+    }
+
+    function syncUniformsFromState() {
+      shaderPass.uniforms.uEnabled.value = state.effectEnabled;
+      shaderPass.uniforms.uChromaticStrength.value = state.chromaticStrength;
+      shaderPass.uniforms.uChromaticAngle.value = degToRad(state.chromaticAngle);
+      shaderPass.uniforms.uDistortionK1.value = state.distortionK1;
+      shaderPass.uniforms.uDistortionK2.value = state.distortionK2;
+    }
+
+    function syncUIFromState() {
+      ui.toggleEffect.checked = state.effectEnabled;
+      ui.chromaticStrength.value = String(strengthToSlider(state.chromaticStrength));
+      ui.chromaticAngle.value = String(Math.round(state.chromaticAngle));
+      ui.distortionK1.value = String(k1ToSlider(state.distortionK1));
+      ui.distortionK2.value = String(k2ToSlider(state.distortionK2));
+      if (presets[state.activePreset]) {
+        ui.presetSelect.value = state.activePreset;
+      }
+      updateValueLabels();
+    }
+
+    function updateUniformSyncFlag() {
+      state.uniformsSync =
+        shaderPass.uniforms.uEnabled.value === state.effectEnabled &&
+        approxEqual(shaderPass.uniforms.uChromaticStrength.value, state.chromaticStrength) &&
+        approxEqual(shaderPass.uniforms.uChromaticAngle.value, degToRad(state.chromaticAngle)) &&
+        approxEqual(shaderPass.uniforms.uDistortionK1.value, state.distortionK1) &&
+        approxEqual(shaderPass.uniforms.uDistortionK2.value, state.distortionK2);
+    }
+
+    function applyStateAtomically(nextState) {
+      state.effectEnabled = nextState.effectEnabled;
+      state.chromaticStrength = nextState.chromaticStrength;
+      state.chromaticAngle = nextState.chromaticAngle;
+      state.distortionK1 = nextState.distortionK1;
+      state.distortionK2 = nextState.distortionK2;
+      state.activePreset = nextState.activePreset;
+      syncUniformsFromState();
+      syncUIFromState();
+      updateUniformSyncFlag();
+    }
+
+    function resetDefaults() {
+      applyStateAtomically({
+        effectEnabled: defaults.enabled,
+        chromaticStrength: defaults.strength,
+        chromaticAngle: defaults.angleDeg,
+        distortionK1: defaults.k1,
+        distortionK2: defaults.k2,
+        activePreset: defaults.preset
+      });
+    }
+
+    function applyPreset(name) {
+      const p = presets[name];
+      if (!p) return;
+      applyStateAtomically({
+        effectEnabled: state.effectEnabled,
+        chromaticStrength: p.strength,
+        chromaticAngle: p.angleDeg,
+        distortionK1: p.k1,
+        distortionK2: p.k2,
+        activePreset: name
+      });
+    }
+
+    function markCustomIfNeeded() {
+      if (!presets[state.activePreset]) {
+        state.activePreset = 'Custom';
+        return;
+      }
+      const p = presets[state.activePreset];
+      const matchesCurrent =
+        approxEqual(state.chromaticStrength, p.strength) &&
+        approxEqual(state.chromaticAngle, p.angleDeg) &&
+        approxEqual(state.distortionK1, p.k1) &&
+        approxEqual(state.distortionK2, p.k2);
+
+      if (!matchesCurrent) {
+        state.activePreset = 'Custom';
+      }
+    }
+
+    function handleManualControlChange() {
+      state.effectEnabled = ui.toggleEffect.checked;
+      state.chromaticStrength = sliderToStrength(ui.chromaticStrength.value);
+      state.chromaticAngle = Number(ui.chromaticAngle.value);
+      state.distortionK1 = sliderToK1(ui.distortionK1.value);
+      state.distortionK2 = sliderToK2(ui.distortionK2.value);
+      markCustomIfNeeded();
+      syncUniformsFromState();
+      updateValueLabels();
+      updateUniformSyncFlag();
+    }
+
+    ui.toggleEffect.addEventListener('change', () => {
+      state.effectEnabled = ui.toggleEffect.checked;
+      syncUniformsFromState();
+      updateUniformSyncFlag();
+    });
+
+    ui.chromaticStrength.addEventListener('input', handleManualControlChange);
+    ui.chromaticAngle.addEventListener('input', handleManualControlChange);
+    ui.distortionK1.addEventListener('input', handleManualControlChange);
+    ui.distortionK2.addEventListener('input', handleManualControlChange);
+
+    ui.resetBtn.addEventListener('click', resetDefaults);
+
+    ui.presetSelect.addEventListener('change', () => {
+      applyPreset(ui.presetSelect.value);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+      const key = e.key.toLowerCase();
+
+      if (key === 'e') {
+        state.effectEnabled = !state.effectEnabled;
+        ui.toggleEffect.checked = state.effectEnabled;
+        syncUniformsFromState();
+        updateUniformSyncFlag();
+        return;
+      }
+
+      if (key === 'r') {
+        resetDefaults();
+        return;
+      }
+
+      if (key >= '1' && key <= '5') {
+        const mapping = {
+          '1': 'None',
+          '2': 'Subtle',
+          '3': 'Heavy Barrel',
+          '4': 'Pincushion',
+          '5': 'Psychedelic'
+        };
+        applyPreset(mapping[key]);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    syncUIFromState();
+    syncUniformsFromState();
+    updateUniformSyncFlag();
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const dt = clock.getDelta();
+      torus.rotation.y += 0.5 * dt;
+
+      state.torusRotationY = torus.rotation.y;
+      state.frameCount += 1;
+      state.composerPassCount = composer.passes.length;
+      updateUniformSyncFlag();
+
+      composer.render();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "id": "P132_animated_box_puzzle",
+  "title": "3D Sliding Puzzle",
+  "domain": "game",
+  "route": "B",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Implement a 3D sliding puzzle game using Three.js. A duck is hidden among 9 animated boxes.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/BoxAnimated.glb and assets/Duck.glb;\n(2) Create 8 box instances (numbered 1-8) arranged in a 3x3 grid, leaving one empty slot;\n(3) The box numbered 5 contains the hidden Duck model (not visible);\n\n[Puzzle Interaction]\n(4) When a box adjacent to the empty slot is clicked, that box slides into the empty slot (0.3-second animation);\n(5) Only boxes adjacent to the empty slot horizontally or vertically can move;\n(6) While moving, the box plays the opening-and-closing animation from BoxAnimated;\n\n[Solution Detection]\n(7) The puzzle is complete when the 8 boxes are arranged in the order 1-8;\n(8) After completion, box number 5 opens, the Duck rises out of it with an animation, and then performs a rotating showcase;\n\n[Shuffle]\n(9) Randomly shuffle the initial state by performing 30-50 legal moves;\n(10) A \"Shuffle Again\" button (id=\"shuffleBtn\");\n\n[HUD Display]\n(11) HUD in the upper-left corner:\n  - Move count (id=\"moves\")\n  - Whether the puzzle is solved (id=\"solved\", true/false)\n  - Whether the duck has been revealed (id=\"duckRevealed\")\n  - Elapsed time (id=\"elapsed\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - moveCount: number\n  - solved: boolean\n  - duckRevealed: boolean\n  - elapsed: number (seconds)\n  - emptySlot: {row, col}\n\nOutput a standalone HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [
+    "../../../assets/shared/BoxAnimated.glb",
+    "../../../assets/shared/Duck.glb"
+  ],
+  "tags": [
+    "game",
+    "puzzle",
+    "GLTFLoader",
+    "animation",
+    "logic"
+  ],
+  "estimated_human_time_minutes": 240,
+  "physics_constraints": [],
+  "difficulty_analysis": "L5: Load two GLB models, implement 3x3 sliding-puzzle logic (adjacency detection and legal moves), solution detection, and the hidden Duck reveal animation."
+}

@@ -1,0 +1,27 @@
+{
+  "id": "P63_transmission_pbr",
+  "title": "PBR Transmission Material (Transmission)",
+  "domain": "materials",
+  "route": "C",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js MeshPhysicalMaterial to implement a scene containing 5 glass/transparent objects, supporting real-time adjustment of parameters including transmission, index of refraction (ior), thickness, and roughness, as well as object selection.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\nimport { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';\n</script>\n\n[Scene]\n(1) Exactly 5 objects: they may use different shapes such as spheres, tori, and icosahedra. All must use MeshPhysicalMaterial, with low metalness and transmission>0 to convey a glass-like appearance.\n(2) Use PMREM + RoomEnvironment (or an equivalent environment map) to display transmission and reflections.\n(3) id=\"objectSelect\": <select> options correspond to the names of the 5 objects (consistent with their internal userData.name values or agreed-upon ids).\n(4) id=\"transmissionSlider\", id=\"iorSlider\", id=\"thicknessSlider\", id=\"roughnessSlider\": type=\"range\", with reasonable min/max/step values; changing a slider updates the corresponding material property of the currently selected object.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  selectedObject: string,   // Name or id of the currently selected object\n  transmission: number,\n  ior: number,\n  thickness: number,\n  roughness: number,\n  objectCount: number       // Always 5\n}\n\nOutput a single HTML file that can run when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "three.js",
+    "PBR",
+    "MeshPhysicalMaterial",
+    "transmission",
+    "ior",
+    "glass"
+  ],
+  "estimated_human_time_minutes": 200,
+  "physics_constraints": [
+    "5 glass meshes MeshPhysicalMaterial",
+    "objectSelect + transmission ior thickness roughness sliders",
+    "Environment map for transmission",
+    "__3D_STATE__ matches selected mesh material"
+  ]
+}

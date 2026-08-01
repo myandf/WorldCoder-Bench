@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Snow Accumulation Shader Demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1a2e;
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+    canvas {
+      display: block;
+    }
+    #uiPanel {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 280px;
+      padding: 14px;
+      background: rgba(10, 14, 24, 0.75);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
+      z-index: 10;
+      box-sizing: border-box;
+    }
+    #uiPanel h2 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .control-group {
+      margin-bottom: 12px;
+    }
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+    .control-group input[type="range"],
+    .control-group select,
+    .control-group button {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .control-group select,
+    .control-group button {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+    .control-group button {
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .control-group button:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    #snowCoverageDisplay {
+      font-size: 14px;
+      font-weight: bold;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      text-align: center;
+    }
+    #status {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      padding: 8px 10px;
+      background: rgba(10, 14, 24, 0.65);
+      border-radius: 6px;
+      font-size: 12px;
+      color: #dbe7ff;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="uiPanel">
+    <h2>Snow Accumulation Controls</h2>
+
+    <div class="control-group">
+      <label for="snowAmountSlider">
+        <span>Snow Amount</span>
+        <span id="snowAmountValue">0%</span>
+      </label>
+      <input id="snowAmountSlider" type="range" min="0" max="100" step="1" value="0" />
+    </div>
+
+    <div class="control-group">
+      <label for="snowThresholdSlider">
+        <span>Snow Threshold</span>
+        <span id="snowThresholdValue">30%</span>
+      </label>
+      <input id="snowThresholdSlider" type="range" min="0" max="100" step="1" value="30" />
+    </div>
+
+    <div class="control-group">
+      <label for="windStrengthSlider">
+        <span>Wind Strength</span>
+        <span id="windStrengthValue">0%</span>
+      </label>
+      <input id="windStrengthSlider" type="range" min="0" max="100" step="1" value="0" />
+    </div>
+
+    <div class="control-group">
+      <label for="windDirectionSelect">Wind Direction</label>
+      <select id="windDirectionSelect">
+        <option value="None" selected>None</option>
+        <option value="North">North</option>
+        <option value="South">South</option>
+        <option value="East">East</option>
+        <option value="West">West</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <button id="resetBtn">Reset Snow</button>
+    </div>
+
+    <div class="control-group">
+      <button id="blizzardBtn">Blizzard Mode</button>
+    </div>
+
+    <div class="control-group">
+      <div id="snowCoverageDisplay">Snow Coverage: 0%</div>
+    </div>
+  </div>
+
+  <div id="status">Loading model...</div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1a2e);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 5);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 1, 0);
+
+    const ambientLight = new THREE.AmbientLight(0x8899bb, 0.3);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xcce0ff, 1.2);
+    directionalLight.position.set(3, 5, 2);
+    scene.add(directionalLight);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({
+        color: 0xe8e8e8,
+        roughness: 0.95,
+        metalness: 0.0
+      })
+    );
+    ground.rotation.x = -Math.PI * 0.5;
+    ground.position.y = 0;
+    scene.add(ground);
+
+    const windMap = {
+      None: [0, 0],
+      North: [0, -1],
+      South: [0, 1],
+      East: [1, 0],
+      West: [-1, 0]
+    };
+
+    const shaderUniforms = {
+      uSnowAmount: { value: 0.0 },
+      uSnowThreshold: { value: 0.3 },
+      uWindDirection: { value: new THREE.Vector2(0, 0) },
+      uWindStrength: { value: 0.0 },
+      uBaseColor: { value: new THREE.Color(0x888888) },
+      uSnowColor: { value: new THREE.Color(0xffffff) }
+    };
+
+    const vertexShader = `
+      uniform float uSnowAmount;
+      uniform float uSnowThreshold;
+      uniform vec2 uWindDirection;
+      uniform float uWindStrength;
+
+      varying float vSnowFactor;
+
+      void main() {
+        vec3 worldNormal = normalize(mat3(modelMatrix) * normal);
+
+        vec3 effectiveUp = normalize(vec3(
+          uWindDirection.x * uWindStrength,
+          1.0,
+          uWindDirection.y * uWindStrength
+        ));
+
+        float exposure = dot(worldNormal, effectiveUp);
+        float snowFactor = smoothstep(uSnowThreshold, 1.0, exposure);
+        vSnowFactor = snowFactor * uSnowAmount;
+
+        float displacement = uSnowAmount * 0.15 * snowFactor;
+        vec3 displacedPosition = position + normal * displacement;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
+      }
+    `;
+
+    const fragmentShader = `
+      uniform vec3 uBaseColor;
+      uniform vec3 uSnowColor;
+      varying float vSnowFactor;
+
+      void main() {
+        vec3 color = mix(uBaseColor, uSnowColor, clamp(vSnowFactor, 0.0, 1.0));
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `;
+
+    let modelRoot = null;
+    let shaderApplied = false;
+
+    function createSnowShaderMaterial() {
+      return new THREE.ShaderMaterial({
+        uniforms: shaderUniforms,
+        vertexShader,
+        fragmentShader
+      });
+    }
+
+    const loader = new GLTFLoader();
+    const statusEl = document.getElementById('status');
+
+    loader.load(
+      'PrimaryIonDrive.glb',
+      (gltf) => {
+        modelRoot = gltf.scene;
+        modelRoot.position.set(0, 0, 0);
+
+        const box = new THREE.Box3().setFromObject(modelRoot);
+        const size = new THREE.Vector3();
+        const center = new THREE.Vector3();
+        box.getSize(size);
+        box.getCenter(center);
+
+        modelRoot.position.sub(center);
+        modelRoot.position.y += size.y * 0.5;
+
+        modelRoot.traverse((child) => {
+          if (child.isMesh) {
+            child.material = createSnowShaderMaterial();
+            child.castShadow = false;
+            child.receiveShadow = false;
+          }
+        });
+
+        scene.add(modelRoot);
+        shaderApplied = true;
+        window.__3D_STATE__.modelLoaded = true;
+        window.__3D_STATE__.shaderUniformsApplied = true;
+        statusEl.textContent = 'Model loaded. Keyboard: 1-5 snow, R reset, B blizzard, P particles.';
+      },
+      undefined,
+      (error) => {
+        console.error('Error loading GLB:', error);
+        statusEl.textContent = 'Failed to load PrimaryIonDrive.glb';
+      }
+    );
+
+    const particleCount = 3000;
+    const particleGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount);
+    const drift = new Float32Array(particleCount * 2);
+
+    function resetParticle(i, initial = false) {
+      const i3 = i * 3;
+      positions[i3 + 0] = (Math.random() - 0.5) * 18;
+      positions[i3 + 1] = initial ? (8 + Math.random() * 7) : (12 + Math.random() * 3);
+      positions[i3 + 2] = (Math.random() - 0.5) * 18;
+      velocities[i] = 0.015 + Math.random() * 0.03;
+      drift[i * 2 + 0] = (Math.random() - 0.5) * 0.006;
+      drift[i * 2 + 1] = (Math.random() - 0.5) * 0.006;
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      resetParticle(i, true);
+    }
+
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const particleMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.06,
+      transparent: true,
+      opacity: 0.9,
+      depthWrite: false
+    });
+
+    const snowParticles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(snowParticles);
+
+    const snowAmountSlider = document.getElementById('snowAmountSlider');
+    const snowThresholdSlider = document.getElementById('snowThresholdSlider');
+    const windStrengthSlider = document.getElementById('windStrengthSlider');
+    const windDirectionSelect = document.getElementById('windDirectionSelect');
+    const resetBtn = document.getElementById('resetBtn');
+    const blizzardBtn = document.getElementById('blizzardBtn');
+    const snowCoverageDisplay = document.getElementById('snowCoverageDisplay');
+
+    const snowAmountValue = document.getElementById('snowAmountValue');
+    const snowThresholdValue = document.getElementById('snowThresholdValue');
+    const windStrengthValue = document.getElementById('windStrengthValue');
+
+    let currentWindDirectionName = 'None';
+    let blizzardActive = false;
+    let blizzardStartAmount = 0;
+    let blizzardStartTime = 0;
+    const blizzardDuration = 2000;
+
+    function clamp01(v) {
+      return Math.max(0, Math.min(1, v));
+    }
+
+    function updateWindUniformFromSelect() {
+      currentWindDirectionName = windDirectionSelect.value;
+      const vec = windMap[currentWindDirectionName] || [0, 0];
+      shaderUniforms.uWindDirection.value.set(vec[0], vec[1]);
+    }
+
+    function setSnowAmount(value01) {
+      shaderUniforms.uSnowAmount.value = clamp01(value01);
+      snowAmountSlider.value = Math.round(shaderUniforms.uSnowAmount.value * 100);
+      snowAmountValue.textContent = `${Math.round(shaderUniforms.uSnowAmount.value * 100)}%`;
+    }
+
+    function setSnowThreshold(value01) {
+      shaderUniforms.uSnowThreshold.value = clamp01(value01);
+      snowThresholdSlider.value = Math.round(shaderUniforms.uSnowThreshold.value * 100);
+      snowThresholdValue.textContent = `${Math.round(shaderUniforms.uSnowThreshold.value * 100)}%`;
+    }
+
+    function setWindStrength(value01) {
+      shaderUniforms.uWindStrength.value = clamp01(value01);
+      windStrengthSlider.value = Math.round(shaderUniforms.uWindStrength.value * 100);
+      windStrengthValue.textContent = `${Math.round(shaderUniforms.uWindStrength.value * 100)}%`;
+    }
+
+    function setWindDirection(name) {
+      windDirectionSelect.value = name;
+      updateWindUniformFromSelect();
+    }
+
+    function computeSnowCoverage() {
+      const pct = clamp01(shaderUniforms.uSnowAmount.value * (1.0 - shaderUniforms.uSnowThreshold.value)) * 100;
+      return Math.round(pct);
+    }
+
+    function updateCoverageDisplay() {
+      const coverage = computeSnowCoverage();
+      snowCoverageDisplay.textContent = `Snow Coverage: ${coverage}%`;
+    }
+
+    function resetSnow() {
+      blizzardActive = false;
+      setSnowAmount(0.0);
+      setSnowThreshold(0.3);
+      setWindStrength(0.0);
+      setWindDirection('None');
+      updateCoverageDisplay();
+    }
+
+    function startBlizzard() {
+      blizzardStartAmount = shaderUniforms.uSnowAmount.value;
+      blizzardStartTime = performance.now();
+      blizzardActive = true;
+      setWindStrength(0.8);
+      setWindDirection('North');
+    }
+
+    snowAmountSlider.addEventListener('input', () => {
+      blizzardActive = false;
+      setSnowAmount(parseInt(snowAmountSlider.value, 10) / 100);
+      updateCoverageDisplay();
+    });
+
+    snowThresholdSlider.addEventListener('input', () => {
+      setSnowThreshold(parseInt(snowThresholdSlider.value, 10) / 100);
+      updateCoverageDisplay();
+    });
+
+    windStrengthSlider.addEventListener('input', () => {
+      setWindStrength(parseInt(windStrengthSlider.value, 10) / 100);
+    });
+
+    windDirectionSelect.addEventListener('change', () => {
+      updateWindUniformFromSelect();
+    });
+
+    resetBtn.addEventListener('click', resetSnow);
+    blizzardBtn.addEventListener('click', startBlizzard);
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+
+      if (key === '1') {
+        blizzardActive = false;
+        setSnowAmount(0.0);
+      } else if (key === '2') {
+        blizzardActive = false;
+        setSnowAmount(0.25);
+      } else if (key === '3') {
+        blizzardActive = false;
+        setSnowAmount(0.5);
+      } else if (key === '4') {
+        blizzardActive = false;
+        setSnowAmount(0.75);
+      } else if (key === '5') {
+        blizzardActive = false;
+        setSnowAmount(1.0);
+      } else if (key === 'r') {
+        resetSnow();
+      } else if (key === 'b') {
+        startBlizzard();
+      } else if (key === 'p') {
+        snowParticles.visible = !snowParticles.visible;
+      } else {
+        return;
+      }
+
+      updateCoverageDisplay();
+    });
+
+    window.__3D_STATE__ = {
+      modelLoaded: false,
+      snowAmount: 0.0,
+      snowThreshold: 0.3,
+      windStrength: 0.0,
+      windDirection: 'None',
+      windVector: [0, 0],
+      snowCoverage: 0,
+      particlesVisible: true,
+      blizzardActive: false,
+      vertexDisplacementMax: 0.0,
+      shaderUniformsApplied: false,
+      particleCount: particleCount,
+      frameCount: 0
+    };
+
+    setSnowAmount(0.0);
+    setSnowThreshold(0.3);
+    setWindStrength(0.0);
+    setWindDirection('None');
+    updateCoverageDisplay();
+
+    function updateParticles() {
+      if (!snowParticles.visible) return;
+
+      const posAttr = particleGeometry.attributes.position;
+      const arr = posAttr.array;
+
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        arr[i3 + 1] -= velocities[i];
+        arr[i3 + 0] += drift[i * 2 + 0];
+        arr[i3 + 2] += drift[i * 2 + 1];
+
+        if (arr[i3 + 1] < 0) {
+          resetParticle(i, false);
+          arr[i3 + 0] = positions[i3 + 0];
+          arr[i3 + 1] = positions[i3 + 1];
+          arr[i3 + 2] = positions[i3 + 2];
+        }
+      }
+
+      posAttr.needsUpdate = true;
+    }
+
+    function updateBlizzard(now) {
+      if (!blizzardActive) return;
+      const t = Math.min((now - blizzardStartTime) / blizzardDuration, 1);
+      const amount = THREE.MathUtils.lerp(blizzardStartAmount, 1.0, t);
+      setSnowAmount(amount);
+      updateCoverageDisplay();
+      if (t >= 1) {
+        blizzardActive = false;
+      }
+    }
+
+    function updateState() {
+      const coverage = computeSnowCoverage();
+      const vec = shaderUniforms.uWindDirection.value;
+      window.__3D_STATE__.modelLoaded = !!modelRoot && shaderApplied;
+      window.__3D_STATE__.snowAmount = shaderUniforms.uSnowAmount.value;
+      window.__3D_STATE__.snowThreshold = shaderUniforms.uSnowThreshold.value;
+      window.__3D_STATE__.windStrength = shaderUniforms.uWindStrength.value;
+      window.__3D_STATE__.windDirection = currentWindDirectionName;
+      window.__3D_STATE__.windVector = [vec.x, vec.y];
+      window.__3D_STATE__.snowCoverage = coverage;
+      window.__3D_STATE__.particlesVisible = snowParticles.visible;
+      window.__3D_STATE__.blizzardActive = blizzardActive;
+      window.__3D_STATE__.vertexDisplacementMax = shaderUniforms.uSnowAmount.value * 0.15;
+      window.__3D_STATE__.shaderUniformsApplied = shaderApplied;
+      window.__3D_STATE__.particleCount = particleCount;
+      window.__3D_STATE__.frameCount += 1;
+    }
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      updateBlizzard(now);
+      updateParticles();
+      controls.update();
+      updateState();
+      renderer.render(scene, camera);
+    }
+
+    requestAnimationFrame(animate);
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

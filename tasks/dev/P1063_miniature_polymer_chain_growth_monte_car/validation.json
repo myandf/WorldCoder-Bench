@@ -1,0 +1,963 @@
+{
+  "task_id": "P1063_miniature_polymer_chain_growth_monte_car",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:41:31.597Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 7,
+      "total": 9,
+      "percent": 77.8
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 51,
+      "total": 51,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 77.8,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 51,
+    "total": 51,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "PolymerChain",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "LatticeBoundary",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "HUDPanel",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "GrowButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "RunButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "PauseButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "PivotButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "MonomerSpheres",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__.chainLength === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.chainLength === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.stepsAttempted >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.stepsAttempted >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.stepsAccepted === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.stepsAccepted === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.occupiedSites === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.occupiedSites === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.endToEndDistance === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.endToEndDistance === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.stepsAttempted >= 11",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.stepsAttempted >= 11"
+        },
+        {
+          "expression": "window.__3D_STATE__.acceptanceRatio > 0 && window.__3D_STATE__.acceptanceRatio <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.acceptanceRatio > 0 && window.__3D_STATE__.acceptanceRatio <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "window.__3D_STATE__.occupiedSites === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.occupiedSites === window.__3D_STATE__.chainLength"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isRunning === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.chainLength === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.chainLength === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.endToEndDistance)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.endToEndDistance)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.radiusOfGyration)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.radiusOfGyration)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength > 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength > 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.endToEndDistance >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.endToEndDistance >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.radiusOfGyration > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radiusOfGyration > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.every(p => p.x >= 0 && p.x <= 10 && p.y >= 0 && p.y <= 10 && p.z >= 0 && p.z <= 10)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.every(p => p.x >= 0 && p.x <= 10 && p.y >= 0 && p.y <= 10 && p.z >= 0 && p.z <= 10)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lastPivotAccepted === true || window.__3D_STATE__.lastPivotAccepted === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lastPivotAccepted === true || window.__3D_STATE__.lastPivotAccepted === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength === window.__3D_STATE__.occupiedSites",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength === window.__3D_STATE__.occupiedSites"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.radiusOfGyration)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.radiusOfGyration)"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 15"
+        },
+        {
+          "expression": "window.__3D_STATE__.endToEndDistance <= window.__3D_STATE__.chainLength - 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.endToEndDistance <= window.__3D_STATE__.chainLength - 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.radiusOfGyration > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radiusOfGyration > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.radiusOfGyration < window.__3D_STATE__.boundarySize",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radiusOfGyration < window.__3D_STATE__.boundarySize"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.endToEndDistance - Math.sqrt(Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].x - window.__3D_STATE__.monomerPositions[0].x, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].y - window.__3D_STATE__.monomerPositions[0].y, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].z - window.__3D_STATE__.monomerPositions[0].z, 2))) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.endToEndDistance - Math.sqrt(Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].x - window.__3D_STATE__.monomerPositions[0].x, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].y - window.__3D_STATE__.monomerPositions[0].y, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].z - window.__3D_STATE__.monomerPositions[0].z, 2))) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__.totalEnergy === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalEnergy === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.totalEnergy)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.totalEnergy)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalEnergy <= 0 || window.__3D_STATE__.chainLength < 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalEnergy <= 0 || window.__3D_STATE__.chainLength < 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.epsilon === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.epsilon === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.kT === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kT === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.length === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.length === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions[0].x === 5 && window.__3D_STATE__.monomerPositions[0].y === 5 && window.__3D_STATE__.monomerPositions[0].z === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions[0].x === 5 && window.__3D_STATE__.monomerPositions[0].y === 5 && window.__3D_STATE__.monomerPositions[0].z === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.occupiedSites === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.occupiedSites === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.isRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.isTrapped === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isTrapped === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.acceptanceRatio === window.__3D_STATE__.stepsAccepted / window.__3D_STATE__.stepsAttempted",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.acceptanceRatio === window.__3D_STATE__.stepsAccepted / window.__3D_STATE__.stepsAttempted"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))"
+        },
+        {
+          "expression": "new Set(window.__3D_STATE__.monomerPositions.map(p => p.x+','+p.y+','+p.z)).size === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "new Set(window.__3D_STATE__.monomerPositions.map(p => p.x+','+p.y+','+p.z)).size === window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "window.__3D_STATE__.boundarySize === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.boundarySize === 10"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedMonomerIndex !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedMonomerIndex !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedMonomerIndex >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedMonomerIndex >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedMonomerIndex < window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedMonomerIndex < window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.monomerPositions[window.__3D_STATE__.selectedMonomerIndex] === 'object'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.monomerPositions[window.__3D_STATE__.selectedMonomerIndex] === 'object'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__.chainLength === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.chainLength === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.stepsAttempted >= 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.stepsAttempted >= 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.stepsAccepted === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.stepsAccepted === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.occupiedSites === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.occupiedSites === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.endToEndDistance === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.endToEndDistance === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.stepsAttempted >= 11",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.stepsAttempted >= 11"
+        },
+        {
+          "expression": "window.__3D_STATE__.acceptanceRatio > 0 && window.__3D_STATE__.acceptanceRatio <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.acceptanceRatio > 0 && window.__3D_STATE__.acceptanceRatio <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "window.__3D_STATE__.occupiedSites === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.occupiedSites === window.__3D_STATE__.chainLength"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isRunning === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.chainLength === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.chainLength === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.endToEndDistance)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.endToEndDistance)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.radiusOfGyration)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.radiusOfGyration)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength > 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength > 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.endToEndDistance >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.endToEndDistance >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.radiusOfGyration > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radiusOfGyration > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.every(p => p.x >= 0 && p.x <= 10 && p.y >= 0 && p.y <= 10 && p.z >= 0 && p.z <= 10)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.every(p => p.x >= 0 && p.x <= 10 && p.y >= 0 && p.y <= 10 && p.z >= 0 && p.z <= 10)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lastPivotAccepted === true || window.__3D_STATE__.lastPivotAccepted === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lastPivotAccepted === true || window.__3D_STATE__.lastPivotAccepted === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.chainLength === window.__3D_STATE__.occupiedSites",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength === window.__3D_STATE__.occupiedSites"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.length === window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.radiusOfGyration)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.radiusOfGyration)"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 15"
+        },
+        {
+          "expression": "window.__3D_STATE__.endToEndDistance <= window.__3D_STATE__.chainLength - 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.endToEndDistance <= window.__3D_STATE__.chainLength - 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.radiusOfGyration > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radiusOfGyration > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.radiusOfGyration < window.__3D_STATE__.boundarySize",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radiusOfGyration < window.__3D_STATE__.boundarySize"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.endToEndDistance - Math.sqrt(Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].x - window.__3D_STATE__.monomerPositions[0].x, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].y - window.__3D_STATE__.monomerPositions[0].y, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].z - window.__3D_STATE__.monomerPositions[0].z, 2))) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.endToEndDistance - Math.sqrt(Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].x - window.__3D_STATE__.monomerPositions[0].x, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].y - window.__3D_STATE__.monomerPositions[0].y, 2) + Math.pow(window.__3D_STATE__.monomerPositions[window.__3D_STATE__.chainLength-1].z - window.__3D_STATE__.monomerPositions[0].z, 2))) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__.totalEnergy === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalEnergy === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.totalEnergy)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.totalEnergy)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalEnergy <= 0 || window.__3D_STATE__.chainLength < 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalEnergy <= 0 || window.__3D_STATE__.chainLength < 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.epsilon === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.epsilon === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.kT === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kT === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.length === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.length === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions[0].x === 5 && window.__3D_STATE__.monomerPositions[0].y === 5 && window.__3D_STATE__.monomerPositions[0].z === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions[0].x === 5 && window.__3D_STATE__.monomerPositions[0].y === 5 && window.__3D_STATE__.monomerPositions[0].z === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.occupiedSites === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.occupiedSites === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.isRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.isTrapped === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isTrapped === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.chainLength >= 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.chainLength >= 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.acceptanceRatio === window.__3D_STATE__.stepsAccepted / window.__3D_STATE__.stepsAttempted",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.acceptanceRatio === window.__3D_STATE__.stepsAccepted / window.__3D_STATE__.stepsAttempted"
+        },
+        {
+          "expression": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.monomerPositions.every(p => Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z))"
+        },
+        {
+          "expression": "new Set(window.__3D_STATE__.monomerPositions.map(p => p.x+','+p.y+','+p.z)).size === window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "new Set(window.__3D_STATE__.monomerPositions.map(p => p.x+','+p.y+','+p.z)).size === window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "window.__3D_STATE__.boundarySize === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.boundarySize === 10"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedMonomerIndex !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedMonomerIndex !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedMonomerIndex >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedMonomerIndex >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedMonomerIndex < window.__3D_STATE__.chainLength",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedMonomerIndex < window.__3D_STATE__.chainLength"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.monomerPositions[window.__3D_STATE__.selectedMonomerIndex] === 'object'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.monomerPositions[window.__3D_STATE__.selectedMonomerIndex] === 'object'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 7,
+    "total": 9,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 5,
+      "total": 5
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 46,
+      "total": 46
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 16489
+}

@@ -1,0 +1,31 @@
+{
+  "id": "P22_ammo_rope",
+  "title": "Rope Physics (Verlet Integration)",
+  "domain": "physics",
+  "route": "C",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a 3D rope physics demonstration based on Verlet integration and distance constraints (do not use Ammo.js; this task retains the directory name P22_ammo_rope).\n\n[Three.js Import Method (Must Be Followed Strictly)]\nPlace the following import map in <head> (include it verbatim), and import via ES Modules in <script type=\"module\">:\n\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Rope Model]\n(1) Use a total of 30 particle segments (segmentCount=30), with adjacent segments connected by distance constraints;\n(2) Integration: Verlet; solve the distance constraints iteratively through relaxation each frame, with constraintIterations >= 5;\n(3) Gravitational acceleration g=9.81, in the direction (0,-1,0) (world units only need to be consistent with the display);\n(4) The top particle is fixed at the ceiling position topPin, with coordinates approximately (0, 5, 0) (very small numerical errors are allowed); the bottom end is free;\n(5) Stiffness slider: id=\"stiffness\", type=\"range\", with a value range of 0.5–1.0, representing the constraint relaxation coefficient or stiffness weight (1.0 is the stiffest); the implementation must actually use this value in the simulation to affect the degree of constraint satisfaction;\n(6) Wind toggle: id=\"windToggle\" (a button or checkbox may be used); when enabled, apply a horizontal wind force to the rope particles (such as +X or a world-space horizontal vector); when disabled, apply no wind force;\n\n[Interaction]\n(7) Use mouse clicking to pick and grab a particle/segment on the rope. While dragging, constrain that point to the intersection of the mouse ray with a plane (or use an equivalent 3D dragging method); cancel the grab when the mouse button is released;\n(8) Use OrbitControls to rotate the view, avoiding conflicts with the dragging logic (for example, by distinguishing mouse buttons or modifier keys);\n\n[Rendering]\n(9) Represent each particle with a small SphereGeometry sphere; connect adjacent particles using CylinderGeometry (or thin cylinders) to create the appearance of a continuous rope;\n(10) Provide simple lighting and a ground/sky or reference grid to make observation easier;\n\n[State Exposure (Required, Updated Every Frame)]\nwindow.__3D_STATE__ must contain:\n  - segmentCount: number (30)\n  - topPin: { x, y, z }\n  - bottomPos: { x, y, z } (world coordinates of the bottommost particle)\n  - avgStretch: number, defined as the average of \"current length / rest length\" across all adjacent segments (use a single restLength when all rest lengths are identical)\n  - windEnabled: boolean\n  - stiffness: number (matching the current value of #stiffness)\n  - simTime: number (accumulated simulation time, in seconds)\n\n[Numerical Stability]\n(11) NaN/Infinity must not occur during long-running execution; particle coordinates must remain finite.\n\nOutput a single HTML file that can run by being opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "physics",
+    "rope",
+    "verlet",
+    "constraints",
+    "three.js",
+    "interactive",
+    "wind"
+  ],
+  "estimated_human_time_minutes": 180,
+  "physics_constraints": [
+    "Verlet integration with >=5 constraint relaxation iterations per frame",
+    "30 segments, top pinned near (0,5,0), bottom free, g=9.81",
+    "Distance constraints between consecutive particles; stiffness slider 0.5-1.0 affects relaxation",
+    "Click-drag grab/release on rope; wind toggle applies horizontal force",
+    "Render: SphereGeometry nodes + CylinderGeometry links",
+    "Expose window.__3D_STATE__ with segmentCount, topPin, bottomPos, avgStretch, windEnabled, stiffness, simTime",
+    "No NaN/Infinity in positions over long runs"
+  ]
+}

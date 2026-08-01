@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Cross-Hatch Pencil Sketch</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #f5f0e8;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .ui-panel {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 280px;
+      padding: 14px 14px 10px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+      color: #222;
+    }
+
+    .ui-panel h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .control {
+      margin-bottom: 10px;
+    }
+
+    .control label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .control input[type="range"],
+    .control select,
+    .control button {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .control input[type="checkbox"] {
+      transform: translateY(1px);
+    }
+
+    .value {
+      min-width: 48px;
+      text-align: right;
+      color: #444;
+      font-variant-numeric: tabular-nums;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      border-radius: 8px;
+      background: #f7f7f7;
+      padding: 8px 10px;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: #efefef;
+    }
+  </style>
+</head>
+<body>
+  <div class="ui-panel">
+    <h2>Cross-Hatch Controls</h2>
+
+    <div class="control">
+      <label for="density">
+        <span>Hatch Density</span>
+        <span class="value" id="densityValue">1.0</span>
+      </label>
+      <input id="density" type="range" min="0.5" max="3.0" step="0.1" value="1.0" />
+    </div>
+
+    <div class="control">
+      <label for="thickness">
+        <span>Line Thickness</span>
+        <span class="value" id="thicknessValue">1.5</span>
+      </label>
+      <input id="thickness" type="range" min="0.5" max="4.0" step="0.1" value="1.5" />
+    </div>
+
+    <div class="control">
+      <label for="rotationSpeed">
+        <span>Rotation Speed</span>
+        <span class="value" id="rotationSpeedValue">0.15</span>
+      </label>
+      <input id="rotationSpeed" type="range" min="0.0" max="1.0" step="0.05" value="0.15" />
+    </div>
+
+    <div class="control">
+      <label for="hatchingEnabled">
+        <span>Enable Hatching</span>
+        <span class="value"><input id="hatchingEnabled" type="checkbox" checked /></span>
+      </label>
+    </div>
+
+    <div class="control">
+      <label for="hatchStyle">
+        <span>Hatch Style</span>
+      </label>
+      <select id="hatchStyle">
+        <option value="Classic" selected>Classic</option>
+        <option value="Minimal">Minimal</option>
+        <option value="Dense">Dense</option>
+      </select>
+    </div>
+
+    <div class="control">
+      <button id="resetBtn">Reset Defaults</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const PAPER_COLOR_HEX = '#f5f0e8';
+    const DEFAULTS = {
+      hatchDensity: 1.0,
+      lineThickness: 1.5,
+      rotationSpeed: 0.15,
+      hatchingEnabled: true,
+      hatchStyle: 'Classic'
+    };
+
+    const densityEl = document.getElementById('density');
+    const thicknessEl = document.getElementById('thickness');
+    const rotationSpeedEl = document.getElementById('rotationSpeed');
+    const hatchingEnabledEl = document.getElementById('hatchingEnabled');
+    const hatchStyleEl = document.getElementById('hatchStyle');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const densityValueEl = document.getElementById('densityValue');
+    const thicknessValueEl = document.getElementById('thicknessValue');
+    const rotationSpeedValueEl = document.getElementById('rotationSpeedValue');
+
+    function syncLabels() {
+      densityValueEl.textContent = Number(densityEl.value).toFixed(1);
+      thicknessValueEl.textContent = Number(thicknessEl.value).toFixed(1);
+      rotationSpeedValueEl.textContent = Number(rotationSpeedEl.value).toFixed(2);
+    }
+
+    function resetDefaults() {
+      densityEl.value = DEFAULTS.hatchDensity;
+      thicknessEl.value = DEFAULTS.lineThickness;
+      rotationSpeedEl.value = DEFAULTS.rotationSpeed;
+      hatchingEnabledEl.checked = DEFAULTS.hatchingEnabled;
+      hatchStyleEl.value = DEFAULTS.hatchStyle;
+      syncLabels();
+    }
+
+    densityEl.addEventListener('input', syncLabels);
+    thicknessEl.addEventListener('input', syncLabels);
+    rotationSpeedEl.addEventListener('input', syncLabels);
+    resetBtn.addEventListener('click', resetDefaults);
+    syncLabels();
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.setClearColor(PAPER_COLOR_HEX, 1);
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(PAPER_COLOR_HEX);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 3, 8);
+    camera.lookAt(0, 0, 0);
+
+    const rotatingGroup = new THREE.Group();
+    scene.add(rotatingGroup);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(5, 10, 7);
+    scene.add(directionalLight);
+
+    const grayMaterial = new THREE.MeshStandardMaterial({ color: '#888888', roughness: 0.85, metalness: 0.0 });
+    const groundMaterial = new THREE.MeshStandardMaterial({ color: '#aaaaaa', roughness: 1.0, metalness: 0.0 });
+
+    const sphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1.2, 48, 32),
+      grayMaterial.clone()
+    );
+    sphere.position.set(-3, 1.2, 0);
+    rotatingGroup.add(sphere);
+
+    const torusKnot = new THREE.Mesh(
+      new THREE.TorusKnotGeometry(0.8, 0.3, 160, 24),
+      grayMaterial.clone()
+    );
+    torusKnot.position.set(0, 1.5, 0);
+    rotatingGroup.add(torusKnot);
+
+    const cube = new THREE.Mesh(
+      new THREE.BoxGeometry(2, 2, 2),
+      grayMaterial.clone()
+    );
+    cube.position.set(3, 1, 0);
+    rotatingGroup.add(cube);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(30, 30),
+      groundMaterial
+    );
+    ground.rotation.x = -Math.PI * 0.5;
+    ground.position.y = 0;
+    rotatingGroup.add(ground);
+
+    const renderTarget = new THREE.WebGLRenderTarget(1, 1, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      depthBuffer: true,
+      stencilBuffer: false
+    });
+    renderTarget.texture.colorSpace = THREE.SRGBColorSpace;
+
+    const postScene = new THREE.Scene();
+    const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const postGeo = new THREE.PlaneGeometry(2, 2);
+
+    const postMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        tDiffuse: { value: renderTarget.texture },
+        uResolution: { value: new THREE.Vector2(1, 1) },
+        uDensity: { value: DEFAULTS.hatchDensity },
+        uThickness: { value: DEFAULTS.lineThickness },
+        uStyle: { value: 0 },
+        uPaperColor: { value: new THREE.Color(PAPER_COLOR_HEX) }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position.xy, 0.0, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec2 vUv;
+
+        uniform sampler2D tDiffuse;
+        uniform vec2 uResolution;
+        uniform float uDensity;
+        uniform float uThickness;
+        uniform int uStyle;
+        uniform vec3 uPaperColor;
+
+        float luminance(vec3 c) {
+          return dot(c, vec3(0.299, 0.587, 0.114));
+        }
+
+        vec2 rotate2D(vec2 p, float a) {
+          float s = sin(a);
+          float c = cos(a);
+          return mat2(c, -s, s, c) * p;
+        }
+
+        float hatchSinLine(vec2 pixelCoord, float spacing, float angle, float thicknessPx) {
+          vec2 rp = rotate2D(pixelCoord, angle);
+          float wave = abs(sin(rp.x * 3.14159265359 / spacing));
+          float threshold = clamp(thicknessPx / spacing, 0.001, 0.95);
+          float aa = fwidth(wave) * 1.5 + 0.0001;
+          float line = 1.0 - smoothstep(threshold - aa, threshold + aa, wave);
+          return line;
+        }
+
+        void main() {
+          vec4 src = texture2D(tDiffuse, vUv);
+          float lum = clamp(luminance(src.rgb), 0.0, 1.0);
+
+          if (lum > 0.95) {
+            gl_FragColor = vec4(uPaperColor, 1.0);
+            return;
+          }
+
+          float styleScale = (uStyle == 2) ? 2.0 : 1.0; // Dense halves spacing -> doubles frequency
+          float density = max(uDensity, 0.001) * styleScale;
+          float thicknessPx = max(uThickness, 0.001);
+
+          vec2 pixelCoord = gl_FragCoord.xy * density;
+
+          float ink = 0.0;
+
+          // Layer 1: darkest, -45 degrees, spacing 4px
+          if (lum < 0.25) {
+            ink = max(ink, hatchSinLine(pixelCoord, 4.0, -0.78539816339, thicknessPx));
+          }
+
+          // Layer 2: medium, +45 degrees, spacing 6px
+          if (lum < 0.50) {
+            ink = max(ink, hatchSinLine(pixelCoord, 6.0, 0.78539816339, thicknessPx));
+          }
+
+          bool allowLightLayers = (uStyle != 1); // Minimal = only layers 1 and 2
+
+          // Layer 3: light horizontal, spacing 8px
+          if (allowLightLayers && lum < 0.75) {
+            ink = max(ink, hatchSinLine(pixelCoord, 8.0, 1.57079632679, thicknessPx));
+          }
+
+          // Layer 4: very light vertical, spacing 12px
+          if (allowLightLayers && lum < 1.0) {
+            ink = max(ink, hatchSinLine(pixelCoord, 12.0, 0.0, thicknessPx));
+          }
+
+          float tonalShade = mix(0.12, 0.9, lum);
+          vec3 basePaper = uPaperColor;
+          vec3 graphite = vec3(tonalShade);
+          vec3 color = mix(basePaper, graphite, ink);
+
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `
+    });
+
+    const postQuad = new THREE.Mesh(postGeo, postMaterial);
+    postScene.add(postQuad);
+
+    function getStyleIndex(style) {
+      if (style === 'Minimal') return 1;
+      if (style === 'Dense') return 2;
+      return 0;
+    }
+
+    function currentControls() {
+      return {
+        hatchDensity: Number(densityEl.value),
+        lineThickness: Number(thicknessEl.value),
+        rotationSpeed: Number(rotationSpeedEl.value),
+        hatchingEnabled: Boolean(hatchingEnabledEl.checked),
+        hatchStyle: hatchStyleEl.value
+      };
+    }
+
+    function countSceneMeshes(root) {
+      let count = 0;
+      root.traverse((obj) => {
+        if (obj.isMesh && obj !== postQuad) count++;
+      });
+      return count;
+    }
+
+    function shaderUniformsValid() {
+      const u = postMaterial.uniforms;
+      const vals = [
+        u.tDiffuse?.value,
+        u.uResolution?.value?.x,
+        u.uResolution?.value?.y,
+        u.uDensity?.value,
+        u.uThickness?.value,
+        u.uStyle?.value,
+        u.uPaperColor?.value?.r,
+        u.uPaperColor?.value?.g,
+        u.uPaperColor?.value?.b
+      ];
+      return vals.every(v => {
+        if (v && typeof v === 'object') return true;
+        return Number.isFinite(v);
+      });
+    }
+
+    window.__3D_STATE__ = {
+      hatchDensity: DEFAULTS.hatchDensity,
+      lineThickness: DEFAULTS.lineThickness,
+      rotationSpeed: DEFAULTS.rotationSpeed,
+      hatchingEnabled: DEFAULTS.hatchingEnabled,
+      hatchStyle: DEFAULTS.hatchStyle,
+      sceneRotationY: 0,
+      objectCount: 4,
+      frameCount: 0,
+      lightIntensity: directionalLight.intensity,
+      shaderUniformsValid: true,
+      paperColor: PAPER_COLOR_HEX,
+      renderTargetWidth: 1,
+      renderTargetHeight: 1
+    };
+
+    function resize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(width, height);
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+
+      const rtWidth = Math.max(1, Math.floor(width * dpr));
+      const rtHeight = Math.max(1, Math.floor(height * dpr));
+      renderTarget.setSize(rtWidth, rtHeight);
+      postMaterial.uniforms.uResolution.value.set(rtWidth, rtHeight);
+
+      window.__3D_STATE__.renderTargetWidth = rtWidth;
+      window.__3D_STATE__.renderTargetHeight = rtHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const dt = clock.getDelta();
+      const controls = currentControls();
+
+      rotatingGroup.rotation.y += controls.rotationSpeed * dt;
+
+      sphere.rotation.y += 0.25 * dt;
+      torusKnot.rotation.x += 0.35 * dt;
+      torusKnot.rotation.y += 0.5 * dt;
+      cube.rotation.x += 0.2 * dt;
+      cube.rotation.y += 0.3 * dt;
+
+      postMaterial.uniforms.tDiffuse.value = renderTarget.texture;
+      postMaterial.uniforms.uDensity.value = controls.hatchDensity;
+      postMaterial.uniforms.uThickness.value = controls.lineThickness;
+      postMaterial.uniforms.uStyle.value = getStyleIndex(controls.hatchStyle);
+      postMaterial.uniforms.uPaperColor.value.set(PAPER_COLOR_HEX);
+
+      if (controls.hatchingEnabled) {
+        renderer.setRenderTarget(renderTarget);
+        renderer.clear();
+        renderer.render(scene, camera);
+
+        renderer.setRenderTarget(null);
+        renderer.clear();
+        renderer.render(postScene, postCamera);
+      } else {
+        renderer.setRenderTarget(null);
+        renderer.clear();
+        renderer.render(scene, camera);
+      }
+
+      window.__3D_STATE__.hatchDensity = controls.hatchDensity;
+      window.__3D_STATE__.lineThickness = controls.lineThickness;
+      window.__3D_STATE__.rotationSpeed = controls.rotationSpeed;
+      window.__3D_STATE__.hatchingEnabled = controls.hatchingEnabled;
+      window.__3D_STATE__.hatchStyle = controls.hatchStyle;
+      window.__3D_STATE__.sceneRotationY = rotatingGroup.rotation.y;
+      window.__3D_STATE__.objectCount = countSceneMeshes(rotatingGroup);
+      window.__3D_STATE__.frameCount += 1;
+      window.__3D_STATE__.lightIntensity = directionalLight.intensity;
+      window.__3D_STATE__.shaderUniformsValid = shaderUniformsValid();
+      window.__3D_STATE__.paperColor = PAPER_COLOR_HEX;
+      window.__3D_STATE__.renderTargetWidth = renderTarget.width;
+      window.__3D_STATE__.renderTargetHeight = renderTarget.height;
+    }
+
+    animate();
+  </script>
+</body>
+</html>

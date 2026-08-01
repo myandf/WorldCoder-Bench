@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Snake Slithering - Three.js</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { overflow: hidden; background: #000; }
+  canvas { display: block; }
+  #hud {
+    position: fixed; top: 12px; left: 12px;
+    background: rgba(0,0,0,0.65); color: #fff;
+    font: 14px/1.7 monospace; padding: 10px 14px;
+    border-radius: 6px; pointer-events: none;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+</style>
+</head>
+<body>
+<div id="hud"></div>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/GLTFLoader.js';
+
+// ── Renderer ──────────────────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+// ── Scene / Camera ────────────────────────────────────────────────────────────
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#0a1a0a');
+scene.fog = new THREE.Fog('#0a1a0a', 40, 80);
+
+const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 200);
+camera.position.set(0, 12, 18);
+camera.lookAt(0, 0, 0);
+
+// ── Lights ────────────────────────────────────────────────────────────────────
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+dirLight.position.set(5, 15, 10);
+dirLight.castShadow = true;
+scene.add(dirLight);
+scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+// ── Controls ──────────────────────────────────────────────────────────────────
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// ── Ground ────────────────────────────────────────────────────────────────────
+const groundGeo = new THREE.PlaneGeometry(60, 60);
+const groundMat = new THREE.MeshLambertMaterial({ color: '#2a5a1a' });
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// Grid overlay
+const grid = new THREE.GridHelper(60, 30, 0x1a3a0a, 0x1a3a0a);
+grid.position.y = 0.01;
+scene.add(grid);
+
+// ── Amber artifact ────────────────────────────────────────────────────────────
+let amberModel = null;
+let amberVisible = true;
+let modelLoaded = false;
+let collectCount = 0;
+let respawnTimer = 0;
+let respawning = false;
+
+const amberPos = new THREE.Vector3(8, 0.5, 5);
+
+const amberLight = new THREE.PointLight(0xffcc44, 2, 5);
+amberLight.position.copy(amberPos);
+scene.add(amberLight);
+
+// Placeholder while GLB loads
+const placeholderGeo = new THREE.OctahedronGeometry(0.75);
+const placeholderMat = new THREE.MeshStandardMaterial({ color: 0xffaa22, emissive: 0x442200 });
+const placeholder = new THREE.Mesh(placeholderGeo, placeholderMat);
+placeholder.position.copy(amberPos);
+scene.add(placeholder);
+
+const loader = new GLTFLoader();
+loader.load(
+  'MosquitoInAmber.glb',
+  (gltf) => {
+    amberModel = gltf.scene;
+    // Scale to ~1.5 units
+    const box = new THREE.Box3().setFromObject(amberModel);
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    amberModel.scale.setScalar(1.5 / maxDim);
+    amberModel.position.copy(amberPos);
+    scene.add(amberModel);
+    scene.remove(placeholder);
+    modelLoaded = true;
+  },
+  undefined,
+  () => {
+    // Keep placeholder on error
+    modelLoaded = false;
+  }
+);
+
+function getAmberObject() { return amberModel || placeholder; }
+
+function setAmberPosition(x, y, z) {
+  amberPos.set(x, y, z);
+  getAmberObject().position.copy(amberPos);
+  amberLight.position.copy(amberPos);
+}
+
+function setAmberVisible(v) {
+  amberVisible = v;
+  getAmberObject().visible = v;
+  amberLight.visible = v;
+}
+
+// ── Snake construction ────────────────────────────────────────────────────────
+const SEGMENT_COUNT = 20;
+const SEGMENT_SPACING = 0.7;
+
+const segments = [];
+const segmentGroup = new THREE.Group();
+scene.add(segmentGroup);
+
+for (let i = 0; i < SEGMENT_COUNT; i++) {
+  const t = i / (SEGMENT_COUNT - 1);
+  const radius = 0.45 - t * 0.25; // 0.45 → 0.2
+
+  let color;
+  if (i === 0) color = '#8b0000';
+  else if (i >= SEGMENT_COUNT - 3) color = '#4a8a38';
+  else color = i % 2 === 0 ? '#2d5a1e' : '#3a7a28';
+
+  const geo = new THREE.SphereGeometry(radius, 12, 8);
+  const mat = new THREE.MeshLambertMaterial({ color });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true;
+  mesh.position.set(-i * SEGMENT_SPACING, radius, 0);
+  segmentGroup.add(mesh);
+
+  segments.push({ mesh, radius, pos: new THREE.Vector3(-i * SEGMENT_SPACING, radius, 0) });
+}
+
+// Eyes on head
+const eyeGeo = new THREE.SphereGeometry(0.08, 8, 6);
+const eyeMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+const pupilGeo = new THREE.SphereGeometry(0.045, 6, 4);
+const pupilMat = new THREE.MeshLambertMaterial({ color: 0x000000 });
+
+function makeEye(ox, oy, oz) {
+  const eye = new THREE.Mesh(eyeGeo, eyeMat);
+  eye.position.set(ox, oy, oz);
+  const pupil = new THREE.Mesh(pupilGeo, pupilMat);
+  pupil.position.set(0, 0, 0.05);
+  eye.add(pupil);
+  segments[0].mesh.add(eye);
+}
+makeEye( 0.22, 0.18,  0.3);
+makeEye(-0.22, 0.18,  0.3);
+
+// ── Snake state ───────────────────────────────────────────────────────────────
+let heading = 0;       // radians, 0 = +X
+let speed = 3.0;
+let amplitude = 1.5;
+let wavePhase = 0;
+const frequency = 0.6;
+let waveSpeed = 4.0;
+let paused = false;
+let frameCount = 0;
+
+// History buffer for follow-the-leader
+const HISTORY_SIZE = 600;
+const posHistory = [];
+// Seed history with initial positions
+for (let i = 0; i < HISTORY_SIZE; i++) {
+  posHistory.push(new THREE.Vector3(-i * (SEGMENT_SPACING / 10), 0, 0));
+}
+
+// ── Input ─────────────────────────────────────────────────────────────────────
+const keys = {};
+window.addEventListener('keydown', e => {
+  const k = e.key;
+  if (!keys[k]) {
+    keys[k] = true;
+    if (k === ' ') { paused = !paused; e.preventDefault(); }
+    if (k === 'w' || k === 'W') amplitude = amplitude === 1.5 ? 3.0 : 1.5;
+    if (k === 'r' || k === 'R') resetSnake();
+    if (k === 'ArrowUp')   { speed = Math.min(8.0, speed + 0.5); e.preventDefault(); }
+    if (k === 'ArrowDown') { speed = Math.max(0.5, speed - 0.5); e.preventDefault(); }
+  }
+});
+window.addEventListener('keyup', e => { keys[e.key] = false; });
+
+function resetSnake() {
+  heading = 0; speed = 3.0; amplitude = 1.5; wavePhase = 0; frameCount = 0;
+  for (let i = 0; i < SEGMENT_COUNT; i++) {
+    segments[i].pos.set(-i * SEGMENT_SPACING, segments[i].radius, 0);
+    segments[i].mesh.position.copy(segments[i].pos);
+  }
+  posHistory.length = 0;
+  for (let i = 0; i < HISTORY_SIZE; i++) {
+    posHistory.push(new THREE.Vector3(-i * (SEGMENT_SPACING / 10), 0, 0));
+  }
+}
+
+// ── HUD ───────────────────────────────────────────────────────────────────────
+const hud = document.getElementById('hud');
+function updateHUD() {
+  const head = segments[0].pos;
+  const dist = head.distanceTo(amberPos);
+  hud.innerHTML =
+    `Speed:       ${speed.toFixed(1)}<br>` +
+    `Heading:     ${(heading * 180 / Math.PI).toFixed(1)}°<br>` +
+    `Amplitude:   ${amplitude.toFixed(1)}<br>` +
+    `Paused:      ${paused ? 'YES' : 'NO'}<br>` +
+    `Dist→Amber:  ${dist.toFixed(1)}<br>` +
+    `Segments:    ${SEGMENT_COUNT}<br>` +
+    `Frame:       ${frameCount}<br>` +
+    `Collected:   ${collectCount}<br>` +
+    `Model:       ${modelLoaded ? 'loaded' : 'placeholder'}`;
+}
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// ── Animation loop ────────────────────────────────────────────────────────────
+const clock = new THREE.Clock();
+const TURN_RATE = 2.0;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  if (!paused) {
+    frameCount++;
+
+    // Steering
+    if (keys['ArrowLeft'])  heading += TURN_RATE * dt;
+    if (keys['ArrowRight']) heading -= TURN_RATE * dt;
+
+    // Advance wave phase
+    wavePhase += waveSpeed * dt;
+
+    // Move head forward
+    const headDir = new THREE.Vector3(Math.cos(heading), 0, -Math.sin(heading));
+    const headPos = segments[0].pos;
+    headPos.addScaledVector(headDir, speed * dt);
+    headPos.y = segments[0].radius; // keep on ground
+
+    // Push head position into history (front)
+    posHistory.unshift(headPos.clone());
+    if (posHistory.length > HISTORY_SIZE) posHistory.pop();
+
+    // Place each segment along history at spacing intervals
+    // Segment 0 is already placed; segments 1..N follow history
+    const stepDist = SEGMENT_SPACING;
+    let histIdx = 0;
+    let accumulated = 0;
+
+    for (let s = 1; s < SEGMENT_COUNT; s++) {
+      const target = stepDist * s;
+      // Walk history until we've accumulated enough distance
+      while (histIdx + 1 < posHistory.length) {
+        const d = posHistory[histIdx].distanceTo(posHistory[histIdx + 1]);
+        if (accumulated + d >= target) break;
+        accumulated += d;
+        histIdx++;
+      }
+      // Interpolate
+      if (histIdx + 1 < posHistory.length) {
+        const d = posHistory[histIdx].distanceTo(posHistory[histIdx + 1]);
+        const remaining = target - accumulated;
+        const frac = d > 0 ? remaining / d : 0;
+        segments[s].pos.lerpVectors(posHistory[histIdx], posHistory[histIdx + 1], frac);
+      } else {
+        segments[s].pos.copy(posHistory[posHistory.length - 1]);
+      }
+
+      // Apply lateral sine wave offset perpendicular to local direction
+      const prev = s > 0 ? segments[s - 1].pos : headPos;
+      const localDir = new THREE.Vector3().subVectors(prev, segments[s].pos);
+      if (localDir.lengthSq() > 0.0001) {
+        localDir.normalize();
+        const perp = new THREE.Vector3(-localDir.z, 0, localDir.x);
+        const wave = amplitude * Math.sin(frequency * s - wavePhase);
+        segments[s].pos.addScaledVector(perp, wave * dt * 2.5);
+      }
+      segments[s].pos.y = segments[s].radius;
+    }
+
+    // Apply lateral wave to head too for visual continuity
+    {
+      const perp = new THREE.Vector3(Math.sin(heading), 0, Math.cos(heading));
+      const wave = amplitude * Math.sin(-wavePhase);
+      headPos.addScaledVector(perp, wave * dt * 1.2);
+      headPos.y = segments[0].radius;
+    }
+
+    // Sync mesh positions & orient each segment toward previous
+    for (let s = 0; s < SEGMENT_COUNT; s++) {
+      segments[s].mesh.position.copy(segments[s].pos);
+      if (s === 0) {
+        segments[0].mesh.rotation.y = -heading;
+      } else {
+        const prev = segments[s - 1].pos;
+        const curr = segments[s].pos;
+        const dx = prev.x - curr.x, dz = prev.z - curr.z;
+        if (Math.abs(dx) + Math.abs(dz) > 0.001) {
+          segments[s].mesh.rotation.y = -Math.atan2(dz, dx) + Math.PI / 2;
+        }
+      }
+    }
+
+    // Amber rotation
+    getAmberObject().rotation.y += dt * 0.8;
+
+    // Collection check
+    if (amberVisible && !respawning) {
+      const dist = segments[0].pos.distanceTo(amberPos);
+      if (dist < 2.0) {
+        collectCount++;
+        setAmberVisible(false);
+        respawning = true;
+        respawnTimer = 2.0;
+      }
+    }
+
+    if (respawning) {
+      respawnTimer -= dt;
+      if (respawnTimer <= 0) {
+        const nx = (Math.random() * 40) - 20;
+        const nz = (Math.random() * 40) - 20;
+        setAmberPosition(nx, 0.5, nz);
+        setAmberVisible(true);
+        respawning = false;
+      }
+    }
+  }
+
+  controls.update();
+  updateHUD();
+
+  // ── State export ────────────────────────────────────────────────────────────
+  window.__3D_STATE__ = {
+    segmentCount: SEGMENT_COUNT,
+    headPosition: { x: segments[0].pos.x, y: segments[0].pos.y, z: segments[0].pos.z },
+    heading,
+    headingDegrees: heading * 180 / Math.PI,
+    speed,
+    amplitude,
+    paused,
+    frameCount,
+    segmentPositions: segments.map(s => ({ x: s.pos.x, y: s.pos.y, z: s.pos.z })),
+    amberPosition: { x: amberPos.x, y: amberPos.y, z: amberPos.z },
+    amberVisible,
+    distanceToAmber: segments[0].pos.distanceTo(amberPos),
+    collectCount,
+    wavePhase,
+    initialized: true,
+    modelLoaded
+  };
+
+  renderer.render(scene, camera);
+}
+
+animate();
+</script>
+</body>
+</html>

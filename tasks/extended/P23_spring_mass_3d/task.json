@@ -1,0 +1,31 @@
+{
+  "id": "P23_spring_mass_3d",
+  "title": "3D Spring-Mass Grid",
+  "domain": "physics",
+  "route": "C",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a 10×10×10 spring-mass grid (1000 mass points in total) as a 3D soft-body block simulation under gravity and ground collisions.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nPlace the following importmap in <head> (include it verbatim), and import via ES Modules inside <script type=\"module\">:\n\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Discrete Model]\n(1) Grid indices i,j,k ∈ [0,9], with 1000 mass points in total; the initial arrangement is a regular cubic lattice, and the rest distance between adjacent mass points is restLength = 1.0;\n(2) Springs:\n    - Structural springs: 6-neighbor (±X,±Y,±Z) edges;\n    - Diagonal springs: face diagonals and body diagonals within each voxel cell (the implementation must include both body diagonals and face diagonals so that shear is constrained; at minimum, include all within-cell diagonal springs with lengths sqrt(2) and sqrt(3));\n(3) Spring force: Hooke's law + damping; stiffness stiffness = 500, damping coefficient damping = 5.0 (linear damping based on velocity difference or relative velocity; units only need to be consistent with the simulation);\n\n[Integration and External Forces]\n(4) Update positions using Verlet integration;\n(5) Gravity (0, -9.81, 0);\n(6) Ground: plane y=0; when a mass point has y<0, it must collide and rebound (use a reasonable coefficient of restitution between 0 and 1; the rebound must be clearly visible rather than sticking to the ground);\n\n[Boundary Conditions]\n(7) Pin the four top corner points: (0,9,0), (9,9,0), (0,9,9), and (9,9,9) correspond to the four top-corner mass points in the grid coordinate system, namely the four corners of the top face (k=9), so that their world positions remain fixed after the entire grid undergoes rigid-body translation (equivalent description: the four corner mass points of the top face are pinned and are not moved by integration);\n(8) Release the entire structure from a suspended height of approximately 5 (the initial center-of-mass y-coordinate is approximately 5 above the ground plane y=0);\n\n[Wind]\n(9) Provide a button or toggle with id=\"windBtn\"; initially windEnabled=false. When enabled, apply an additional constant force in the +Z direction to the mass points (or use a wind field that varies slightly with position); when disabled, apply no wind force;\n\n[Rendering]\n(10) Use InstancedMesh or merged geometry to render the mass-point spheres and/or spring line segments, ensuring that the simulation can be observed interactively; use OrbitControls;\n\n[State Exposure (Required, Updated Every Frame)]\nwindow.__3D_STATE__:\n  - nodeCount: 1000\n  - springCount: number (actual number of springs)\n  - centerOfMass: { x, y, z }\n  - maxStretch: number, max(current length/rest length) across all springs\n  - groundContacts: number, the count of mass points currently in contact with the ground or undergoing penetration correction during the current frame (the number of mass points with y near 0 that are constrained)\n  - windEnabled: boolean\n  - simTime: number (seconds)\n\nOutput a single HTML file that runs when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "physics",
+    "springs",
+    "mass-spring",
+    "verlet",
+    "3d-grid",
+    "collision",
+    "wind",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 240,
+  "physics_constraints": [
+    "10x10x10 nodes, structural 6-neighbor + diagonal springs, restLength=1, k=500, damping=5",
+    "Verlet + gravity -9.81, ground y=0 bounce",
+    "Four top face corners pinned, drop from height ~5",
+    "Wind +Z toggle via #windBtn",
+    "Expose nodeCount, springCount, centerOfMass, maxStretch, groundContacts, windEnabled, simTime",
+    "No NaN over long runs"
+  ]
+}

@@ -1,0 +1,996 @@
+{
+  "task_id": "P2226_procedural_wood_grain_lathe_shader",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:41:14.898Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 53,
+      "total": 53,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 100,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 53,
+    "total": 53,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "WoodGrainModel",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "HUDPanel",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "LatheStatusDisplay",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "OakPresetButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "PinePresetButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "SpeedDisplay",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "GrainFreqDisplay",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "CuttingDepthDisplay",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "TurbulenceScaleDisplay",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.shaderCompiled === 'boolean' && window.__3D_STATE__.shaderCompiled === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.shaderCompiled === 'boolean' && window.__3D_STATE__.shaderCompiled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 12"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationAngle === 0 || window.__3D_STATE__.rotationAngle < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationAngle === 0 || window.__3D_STATE__.rotationAngle < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.latheRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === window.__3D_STATE__.targetSpeed",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === window.__3D_STATE__.targetSpeed"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === 2.0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)"
+        },
+        {
+          "expression": "document.getElementById('hud-lathe-status').textContent.includes('ON')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-lathe-status').textContent.includes('ON')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 13",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 13"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency >= 1 && window.__3D_STATE__.grainFrequency <= 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency >= 1 && window.__3D_STATE__.grainFrequency <= 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.latheRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationAngle > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationAngle > 0"
+        },
+        {
+          "expression": "document.getElementById('hud-grain-freq').textContent.includes('13')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-grain-freq').textContent.includes('13')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.cuttingDepth - 0.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.cuttingDepth - 0.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.cuttingDepth >= 0 && window.__3D_STATE__.cuttingDepth <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cuttingDepth >= 0 && window.__3D_STATE__.cuttingDepth <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceAmount <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceAmount <= 0.5"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.cuttingDepth === 'number' && !isNaN(window.__3D_STATE__.cuttingDepth)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.cuttingDepth === 'number' && !isNaN(window.__3D_STATE__.cuttingDepth)"
+        },
+        {
+          "expression": "document.getElementById('hud-cutting-depth').textContent.includes('0.1')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-cutting-depth').textContent.includes('0.1')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScaleIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScaleIndex === 2"
+        },
+        {
+          "expression": "[1.0, 3.0, 5.0, 8.0].includes(window.__3D_STATE__.turbulenceScale)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "[1.0, 3.0, 5.0, 8.0].includes(window.__3D_STATE__.turbulenceScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.turbulenceScale === 'number' && !isNaN(window.__3D_STATE__.turbulenceScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.turbulenceScale === 'number' && !isNaN(window.__3D_STATE__.turbulenceScale)"
+        },
+        {
+          "expression": "document.getElementById('hud-turbulence-scale').textContent.includes('5')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-turbulence-scale').textContent.includes('5')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.targetSpeed === 3.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.targetSpeed === 3.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedIndex === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === 3.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === 3.5"
+        },
+        {
+          "expression": "[1.0, 2.0, 3.5, 5.0].includes(window.__3D_STATE__.targetSpeed)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "[1.0, 2.0, 3.5, 5.0].includes(window.__3D_STATE__.targetSpeed)"
+        },
+        {
+          "expression": "document.getElementById('hud-speed').textContent.includes('3.5')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-speed').textContent.includes('3.5')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'oak'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'oak'"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 18",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 18"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.55) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.55) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.3) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.3) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 5"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'pine'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'pine'"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 8",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 8"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.75) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.75) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.ringColor[1] - 0.4) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.ringColor[1] - 0.4) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.7) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.7) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'default'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'default'"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 12"
+        },
+        {
+          "expression": "window.__3D_STATE__.cuttingDepth === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cuttingDepth === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.latheRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 3.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.6) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.latheRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)"
+        },
+        {
+          "expression": "window.__3D_STATE__.targetSpeed === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.targetSpeed === 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedIndex === 0 || window.__3D_STATE__.speedIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedIndex === 0 || window.__3D_STATE__.speedIndex === 1"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.shaderCompiled === 'boolean' && window.__3D_STATE__.shaderCompiled === true",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.shaderCompiled === 'boolean' && window.__3D_STATE__.shaderCompiled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 12"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationAngle === 0 || window.__3D_STATE__.rotationAngle < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationAngle === 0 || window.__3D_STATE__.rotationAngle < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.latheRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === window.__3D_STATE__.targetSpeed",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === window.__3D_STATE__.targetSpeed"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === 2.0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)"
+        },
+        {
+          "expression": "document.getElementById('hud-lathe-status').textContent.includes('ON')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-lathe-status').textContent.includes('ON')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 13",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 13"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency >= 1 && window.__3D_STATE__.grainFrequency <= 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency >= 1 && window.__3D_STATE__.grainFrequency <= 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.latheRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationAngle > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationAngle > 0"
+        },
+        {
+          "expression": "document.getElementById('hud-grain-freq').textContent.includes('13')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-grain-freq').textContent.includes('13')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.cuttingDepth - 0.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.cuttingDepth - 0.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.cuttingDepth >= 0 && window.__3D_STATE__.cuttingDepth <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cuttingDepth >= 0 && window.__3D_STATE__.cuttingDepth <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceAmount <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceAmount <= 0.5"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.cuttingDepth === 'number' && !isNaN(window.__3D_STATE__.cuttingDepth)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.cuttingDepth === 'number' && !isNaN(window.__3D_STATE__.cuttingDepth)"
+        },
+        {
+          "expression": "document.getElementById('hud-cutting-depth').textContent.includes('0.1')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-cutting-depth').textContent.includes('0.1')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 5.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 5.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScaleIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScaleIndex === 2"
+        },
+        {
+          "expression": "[1.0, 3.0, 5.0, 8.0].includes(window.__3D_STATE__.turbulenceScale)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "[1.0, 3.0, 5.0, 8.0].includes(window.__3D_STATE__.turbulenceScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.turbulenceScale === 'number' && !isNaN(window.__3D_STATE__.turbulenceScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.turbulenceScale === 'number' && !isNaN(window.__3D_STATE__.turbulenceScale)"
+        },
+        {
+          "expression": "document.getElementById('hud-turbulence-scale').textContent.includes('5')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-turbulence-scale').textContent.includes('5')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.targetSpeed === 3.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.targetSpeed === 3.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedIndex === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedIndex === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === 3.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === 3.5"
+        },
+        {
+          "expression": "[1.0, 2.0, 3.5, 5.0].includes(window.__3D_STATE__.targetSpeed)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "[1.0, 2.0, 3.5, 5.0].includes(window.__3D_STATE__.targetSpeed)"
+        },
+        {
+          "expression": "document.getElementById('hud-speed').textContent.includes('3.5')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-speed').textContent.includes('3.5')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'oak'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'oak'"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 18",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 18"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.55) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.55) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.3) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.3) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 5"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'pine'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'pine'"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 8",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 8"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.75) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.75) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.ringColor[1] - 0.4) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.ringColor[1] - 0.4) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.7) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.turbulenceAmount - 0.7) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activePreset === 'default'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activePreset === 'default'"
+        },
+        {
+          "expression": "window.__3D_STATE__.grainFrequency === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.grainFrequency === 12"
+        },
+        {
+          "expression": "window.__3D_STATE__.cuttingDepth === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cuttingDepth === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.latheRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.turbulenceScale === 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.turbulenceScale === 3.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.baseColor[0] - 0.6) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.latheRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.latheRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.rotationSpeed === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rotationSpeed === 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.rotationAngle === 'number' && !isNaN(window.__3D_STATE__.rotationAngle)"
+        },
+        {
+          "expression": "window.__3D_STATE__.targetSpeed === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.targetSpeed === 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedIndex === 0 || window.__3D_STATE__.speedIndex === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedIndex === 0 || window.__3D_STATE__.speedIndex === 1"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 10,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 5,
+      "total": 5
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 48,
+      "total": 48
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 77190
+}

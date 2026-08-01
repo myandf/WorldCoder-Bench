@@ -1,0 +1,28 @@
+{
+  "id": "P30_ballistic_calc",
+  "title": "Ballistic Trajectory Calculator (Air Resistance and Coriolis Effect)",
+  "domain": "physics",
+  "route": "C",
+  "difficulty": "L3",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement 3D ballistic trajectory visualization and numerical integration, accounting for air resistance and optionally the Coriolis effect.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nPlace the following importmap in <head> (include it verbatim), and import via ES Modules inside <script type=\"module\">:\n\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Input Controls (Required)]\n(1) Launch elevation angle (degrees), id=\"angle\", range 0–90, recommended default value=\"30\";\n(2) Initial speed, id=\"speed\", range 10–100 (unit: m/s), recommended default value=\"95\";\n(3) Mass, id=\"mass\", range 0.1–10 kg;\n(4) id=\"coriolisToggle\": toggle whether Coriolis acceleration is included (the implementation may use the Northern Hemisphere approximation in the form ω×v, with latitude set to a default constant such as 45°);\n(5) id=\"fireBtn\" to launch; id=\"clearBtn\" to clear all drawn trajectories;\n\n[Physics Model]\n(6) Gravity g=9.81, directed downward;\n(7) Air resistance: F_drag = 0.5 * Cd * rho * A * |v|², directed opposite to the velocity; Cd=0.47, rho=1.225 kg/m³; A = π * r²; approximate r from the mass by treating the projectile as a sphere of fixed density: for example, set the sphere density ρ_body=1000 kg/m³ and solve for r from m = (4/3)π r³ ρ_body;\n(8) Numerical integration: update velocity and position using a fixed time step or an adaptive small time step until the projectile returns to the ground (y≤0) or execution stops due to a timeout;\n\n[Visualization]\n(9) Draw each trajectory as a 3D polyline using THREE.Line or LineSegments, with different colors for different trajectories;\n(10) A ground grid or plane at y=0; OrbitControls;\n(11) Multiple launches are allowed, and trajectories coexist until cleared;\n\n[HUD (Required)]\n(12) id=\"range\": horizontal range (the distance on the XZ plane from the launch point to the landing point);\n(13) id=\"maxHeight\": maximum height;\n(14) id=\"flightTime\": flight time (seconds);\nThe three items above must correspond to the most recently completed launch results and be synchronized with __3D_STATE__.\n\n[State Exposure (Required, After Launch and on Every Frame)]\nwindow.__3D_STATE__:\n  - trajectoryCount: number of trajectories currently retained\n  - angle, speed, mass: consistent with the current parsed control values (number)\n  - lastRange, lastMaxHeight, lastFlightTime: results of the most recent launch\n  - coriolisEnabled: boolean\n\nOutput a single HTML file that runs when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "physics",
+    "ballistics",
+    "drag",
+    "coriolis",
+    "trajectory",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 90,
+  "physics_constraints": [
+    "F_drag = 0.5*Cd*rho*A*v^2, Cd=0.47, rho=1.225, A=pi*r^2, r from mass via fixed density sphere",
+    "Optional Coriolis via coriolisToggle",
+    "Inputs: angle 0-90, speed 10-100, mass 0.1-10",
+    "HUD: range, maxHeight, flightTime; fireBtn, clearBtn",
+    "Expose trajectoryCount, angle, speed, mass, lastRange, lastMaxHeight, lastFlightTime, coriolisEnabled"
+  ]
+}

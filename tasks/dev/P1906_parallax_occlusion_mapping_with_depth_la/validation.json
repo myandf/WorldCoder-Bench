@@ -1,0 +1,1015 @@
+{
+  "task_id": "P1906_parallax_occlusion_mapping_with_depth_la",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:31:13.910Z",
+  "html": "reference.html",
+  "consoleErrors": [
+    "THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false\n\nMaterial Name: \nMaterial Type: ShaderMaterial\n\nProgram Info Log: Vertex shader is not compiled.\n\u0000\nVERTEX\n\nERROR: 0:86: 'tangent' : undeclared identifier\nERROR: 0:86: 'xyz' :  field selection requires structure, vector, or interface block on left hand side\nERROR: 0:86: 'normalize' : no matching overloaded function found\nERROR: 0:86: '=' : dimension mismatch\nERROR: 0:86: '=' : cannot convert from 'const mediump float' to 'highp 3-component vector of float'\nERROR: 0:87: 'tangent' : undeclared identifier\nERROR: 0:87: 'w' :  field selection requires structure, vector, or interface block on left hand side\n\u0000\n\n  81: \n  82:         vec3 posW = (modelMatrix * vec4(position, 1.0)).xyz;\n  83:         vWorldPos = posW;\n  84: \n  85:         vec3 N = normalize(mat3(modelMatrix) * normal);\n> 86:         vec3 T = normalize(mat3(modelMatrix) * tangent.xyz);\n  87:         vec3 B = normalize(cross(N, T) * tangent.w);\n  88:         vTBN = mat3(T, B, N);\n  89:         vNormalW = N;\n  90: \n  91:         vec3 viewDirW = cameraPosition - posW;\n  92:         vec3 lightDirW = uLightPos - posW;\n"
+  ],
+  "console_errors": [
+    "THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false\n\nMaterial Name: \nMaterial Type: ShaderMaterial\n\nProgram Info Log: Vertex shader is not compiled.\n\u0000\nVERTEX\n\nERROR: 0:86: 'tangent' : undeclared identifier\nERROR: 0:86: 'xyz' :  field selection requires structure, vector, or interface block on left hand side\nERROR: 0:86: 'normalize' : no matching overloaded function found\nERROR: 0:86: '=' : dimension mismatch\nERROR: 0:86: '=' : cannot convert from 'const mediump float' to 'highp 3-component vector of float'\nERROR: 0:87: 'tangent' : undeclared identifier\nERROR: 0:87: 'w' :  field selection requires structure, vector, or interface block on left hand side\n\u0000\n\n  81: \n  82:         vec3 posW = (modelMatrix * vec4(position, 1.0)).xyz;\n  83:         vWorldPos = posW;\n  84: \n  85:         vec3 N = normalize(mat3(modelMatrix) * normal);\n> 86:         vec3 T = normalize(mat3(modelMatrix) * tangent.xyz);\n  87:         vec3 B = normalize(cross(N, T) * tangent.w);\n  88:         vTBN = mat3(T, B, N);\n  89:         vNormalW = N;\n  90: \n  91:         vec3 viewDirW = cameraPosition - posW;\n  92:         vec3 lightDirW = uLightPos - posW;\n"
+  ],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 13,
+      "total": 13,
+      "percent": 100
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 52,
+      "total": 52,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 100,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 52,
+    "total": 52,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "BricksPlane",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "WavesPlane",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "CratersPlane",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "LayerSlider",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "HeightSlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "DebugCheckbox",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ShadowCheckbox",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "SelectBricksBtn",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "SelectWavesBtn",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "SelectCratersBtn",
+      "found": true
+    },
+    {
+      "id": "A11",
+      "name": "ControlPanel",
+      "found": true
+    },
+    {
+      "id": "A12",
+      "name": "FPSDisplay",
+      "found": true
+    },
+    {
+      "id": "A13",
+      "name": "PatternDisplay",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialCount === 3"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.planePatterns) && window.__3D_STATE__.planePatterns.length === 3",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.planePatterns) && window.__3D_STATE__.planePatterns.length === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.planePatterns[0] === 'bricks' && window.__3D_STATE__.planePatterns[1] === 'waves' && window.__3D_STATE__.planePatterns[2] === 'craters'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.planePatterns[0] === 'bricks' && window.__3D_STATE__.planePatterns[1] === 'waves' && window.__3D_STATE__.planePatterns[2] === 'craters'"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount === 32 && window.__3D_STATE__.pomRaySteps === 32",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 32 && window.__3D_STATE__.pomRaySteps === 32"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.fps === 'number' && !isNaN(window.__3D_STATE__.fps)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.fps === 'number' && !isNaN(window.__3D_STATE__.fps)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.layerCount === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 64"
+        },
+        {
+          "expression": "window.__3D_STATE__.pomRaySteps === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pomRaySteps === 64"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount >= 4 && window.__3D_STATE__.layerCount <= 128",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount >= 4 && window.__3D_STATE__.layerCount <= 128"
+        },
+        {
+          "expression": "document.getElementById('layerSlider') !== null && Number(document.getElementById('layerSlider').value) === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('layerSlider') !== null && Number(document.getElementById('layerSlider').value) === 64"
+        },
+        {
+          "expression": "document.getElementById('layerLabel') !== null && document.getElementById('layerLabel').textContent.includes('64')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('layerLabel') !== null && document.getElementById('layerLabel').textContent.includes('64')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightScale >= 0.0 && window.__3D_STATE__.heightScale <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightScale >= 0.0 && window.__3D_STATE__.heightScale <= 0.5"
+        },
+        {
+          "expression": "Number(document.getElementById('heightSlider').value) === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Number(document.getElementById('heightSlider').value) === 35"
+        },
+        {
+          "expression": "document.getElementById('heightLabel') !== null && document.getElementById('heightLabel').textContent.includes('0.35')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('heightLabel') !== null && document.getElementById('heightLabel').textContent.includes('0.35')"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 64"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.debugMode === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.debugMode === true"
+        },
+        {
+          "expression": "document.getElementById('debugCheckbox').checked === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('debugCheckbox').checked === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.debugMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.debugMode === 'boolean'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 64"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'waves'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'waves'"
+        },
+        {
+          "expression": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('waves')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('waves')"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.selectedPlane === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.selectedPlane === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.debugMode === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.debugMode === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'craters'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'craters'"
+        },
+        {
+          "expression": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('crater')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('crater')"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedPlane !== 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane !== 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialCount === 3"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition === 'object' && window.__3D_STATE__.lightPosition !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition === 'object' && window.__3D_STATE__.lightPosition !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition.x === 'number' && !isNaN(window.__3D_STATE__.lightPosition.x)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition.x === 'number' && !isNaN(window.__3D_STATE__.lightPosition.x)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition.y === 'number' && !isNaN(window.__3D_STATE__.lightPosition.y)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition.y === 'number' && !isNaN(window.__3D_STATE__.lightPosition.y)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition.z === 'number' && !isNaN(window.__3D_STATE__.lightPosition.z)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition.z === 'number' && !isNaN(window.__3D_STATE__.lightPosition.z)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === true"
+        },
+        {
+          "expression": "Math.abs(Math.sqrt(window.__3D_STATE__.lightPosition.x * window.__3D_STATE__.lightPosition.x + window.__3D_STATE__.lightPosition.z * window.__3D_STATE__.lightPosition.z) - 3.0) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(Math.sqrt(window.__3D_STATE__.lightPosition.x * window.__3D_STATE__.lightPosition.x + window.__3D_STATE__.lightPosition.z * window.__3D_STATE__.lightPosition.z) - 3.0) < 0.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.lightPosition.y - 3.0) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.lightPosition.y - 3.0) < 0.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.lightPosition.x) && !isNaN(window.__3D_STATE__.lightPosition.y) && !isNaN(window.__3D_STATE__.lightPosition.z)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.lightPosition.x) && !isNaN(window.__3D_STATE__.lightPosition.y) && !isNaN(window.__3D_STATE__.lightPosition.z)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 30"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selfShadow === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selfShadow === false"
+        },
+        {
+          "expression": "document.getElementById('shadowCheckbox').checked === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('shadowCheckbox').checked === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.selfShadow === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.selfShadow === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.layerCount === 32",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 32"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heightScale - 0.15) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heightScale - 0.15) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.debugMode === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.debugMode === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.selfShadow === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selfShadow === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === false"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialCount === 3"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.planePatterns) && window.__3D_STATE__.planePatterns.length === 3",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.planePatterns) && window.__3D_STATE__.planePatterns.length === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.planePatterns[0] === 'bricks' && window.__3D_STATE__.planePatterns[1] === 'waves' && window.__3D_STATE__.planePatterns[2] === 'craters'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.planePatterns[0] === 'bricks' && window.__3D_STATE__.planePatterns[1] === 'waves' && window.__3D_STATE__.planePatterns[2] === 'craters'"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount === 32 && window.__3D_STATE__.pomRaySteps === 32",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 32 && window.__3D_STATE__.pomRaySteps === 32"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.fps === 'number' && !isNaN(window.__3D_STATE__.fps)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.fps === 'number' && !isNaN(window.__3D_STATE__.fps)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.layerCount === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 64"
+        },
+        {
+          "expression": "window.__3D_STATE__.pomRaySteps === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pomRaySteps === 64"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount >= 4 && window.__3D_STATE__.layerCount <= 128",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount >= 4 && window.__3D_STATE__.layerCount <= 128"
+        },
+        {
+          "expression": "document.getElementById('layerSlider') !== null && Number(document.getElementById('layerSlider').value) === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('layerSlider') !== null && Number(document.getElementById('layerSlider').value) === 64"
+        },
+        {
+          "expression": "document.getElementById('layerLabel') !== null && document.getElementById('layerLabel').textContent.includes('64')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('layerLabel') !== null && document.getElementById('layerLabel').textContent.includes('64')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.heightScale >= 0.0 && window.__3D_STATE__.heightScale <= 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heightScale >= 0.0 && window.__3D_STATE__.heightScale <= 0.5"
+        },
+        {
+          "expression": "Number(document.getElementById('heightSlider').value) === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Number(document.getElementById('heightSlider').value) === 35"
+        },
+        {
+          "expression": "document.getElementById('heightLabel') !== null && document.getElementById('heightLabel').textContent.includes('0.35')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('heightLabel') !== null && document.getElementById('heightLabel').textContent.includes('0.35')"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 64"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.debugMode === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.debugMode === true"
+        },
+        {
+          "expression": "document.getElementById('debugCheckbox').checked === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('debugCheckbox').checked === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.debugMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.debugMode === 'boolean'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heightScale - 0.35) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.layerCount === 64",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 64"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'waves'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'waves'"
+        },
+        {
+          "expression": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('waves')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('waves')"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.selectedPlane === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.selectedPlane === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.debugMode === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.debugMode === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'craters'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.planePatterns[window.__3D_STATE__.selectedPlane] === 'craters'"
+        },
+        {
+          "expression": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('crater')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('patternDisplay') !== null && document.getElementById('patternDisplay').textContent.toLowerCase().includes('crater')"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedPlane !== 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane !== 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.materialCount === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.materialCount === 3"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition === 'object' && window.__3D_STATE__.lightPosition !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition === 'object' && window.__3D_STATE__.lightPosition !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition.x === 'number' && !isNaN(window.__3D_STATE__.lightPosition.x)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition.x === 'number' && !isNaN(window.__3D_STATE__.lightPosition.x)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition.y === 'number' && !isNaN(window.__3D_STATE__.lightPosition.y)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition.y === 'number' && !isNaN(window.__3D_STATE__.lightPosition.y)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition.z === 'number' && !isNaN(window.__3D_STATE__.lightPosition.z)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition.z === 'number' && !isNaN(window.__3D_STATE__.lightPosition.z)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === true"
+        },
+        {
+          "expression": "Math.abs(Math.sqrt(window.__3D_STATE__.lightPosition.x * window.__3D_STATE__.lightPosition.x + window.__3D_STATE__.lightPosition.z * window.__3D_STATE__.lightPosition.z) - 3.0) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(Math.sqrt(window.__3D_STATE__.lightPosition.x * window.__3D_STATE__.lightPosition.x + window.__3D_STATE__.lightPosition.z * window.__3D_STATE__.lightPosition.z) - 3.0) < 0.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.lightPosition.y - 3.0) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.lightPosition.y - 3.0) < 0.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.lightPosition.x) && !isNaN(window.__3D_STATE__.lightPosition.y) && !isNaN(window.__3D_STATE__.lightPosition.z)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.lightPosition.x) && !isNaN(window.__3D_STATE__.lightPosition.y) && !isNaN(window.__3D_STATE__.lightPosition.z)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 30"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selfShadow === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selfShadow === false"
+        },
+        {
+          "expression": "document.getElementById('shadowCheckbox').checked === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('shadowCheckbox').checked === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.selfShadow === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.selfShadow === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.layerCount === 32",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.layerCount === 32"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heightScale - 0.15) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heightScale - 0.15) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.debugMode === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.debugMode === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.selfShadow === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selfShadow === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.selectedPlane === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedPlane === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbiting === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbiting === false"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 13,
+    "total": 13,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      },
+      {
+        "id": "A11",
+        "pass": true
+      },
+      {
+        "id": "A12",
+        "pass": true
+      },
+      {
+        "id": "A13",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 9,
+      "total": 9
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 43,
+      "total": 43
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 15593
+}

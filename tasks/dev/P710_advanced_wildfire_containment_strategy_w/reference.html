@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wildfire Containment Strategy Game</title>
+  <style>
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+    }
+    canvas {
+      display: block;
+    }
+    #hud {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.65);
+      padding: 12px 14px;
+      border-radius: 8px;
+      line-height: 1.5;
+      min-width: 240px;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    #hud strong {
+      color: #ffd166;
+    }
+    #resetBtn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 6px;
+      background: #2d89ef;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #resetBtn:hover {
+      background: #1b6fca;
+    }
+    #help {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.12);
+      max-width: 280px;
+      line-height: 1.4;
+    }
+    #finalMessage {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 12;
+      background: rgba(0,0,0,0.75);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 16px;
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div>Tool: <strong id="currentTool">FIREBREAK</strong></div>
+    <div>Resources: <strong id="resources">200</strong></div>
+    <div>Score: <strong id="score">0</strong></div>
+    <div>Wind: <strong id="windDir">north</strong></div>
+    <div>Status: <strong id="simStatus">Paused</strong></div>
+    <div>Ticks: <strong id="tickCount">0</strong></div>
+    <div>On Fire: <strong id="fireCount">0</strong></div>
+    <div>Grass Remaining: <strong id="grassCount">400</strong></div>
+    <button id="resetBtn">Reset</button>
+  </div>
+
+  <div id="help">
+    <div><strong>Controls</strong></div>
+    <div>1 = Firebreak (5)</div>
+    <div>2 = Water (15)</div>
+    <div>SPACE = Pause/Resume</div>
+    <div>W = Cycle Wind</div>
+    <div>R = Reset</div>
+    <div>Click tiles to place selected tool</div>
+  </div>
+
+  <div id="finalMessage"></div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const GRID_SIZE = 20;
+    const TILE_SIZE = 1;
+    const TILE_HEIGHT = 0.15;
+    const HALF_TILE_HEIGHT = TILE_HEIGHT / 2;
+    const TICK_MS = 500;
+    const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
+
+    const TILE_TYPES = {
+      GRASS: 'GRASS',
+      FIRE: 'FIRE',
+      BURNED: 'BURNED',
+      FIREBREAK: 'FIREBREAK',
+      WATER: 'WATER'
+    };
+
+    const COLORS = {
+      GRASS: 0x228B22,
+      FIRE: 0xFF4500,
+      BURNED: 0x333333,
+      FIREBREAK: 0xC2B280,
+      WATER: 0x1E90FF
+    };
+
+    const TOOL_COSTS = {
+      FIREBREAK: 5,
+      WATER: 15
+    };
+
+    const WIND_ORDER = ['north', 'east', 'south', 'west'];
+
+    let scene, camera, renderer, raycaster, mouse;
+    let grid = [];
+    let tileMeshes = [];
+    let hoveredTile = null;
+    let currentTool = TILE_TYPES.FIREBREAK;
+    let paused = true;
+    let resources = 200;
+    let score = 0;
+    let windDirection = 'north';
+    let tickCount = 0;
+    let containmentBonus = false;
+    let gameOver = false;
+    let tickInterval = null;
+
+    const initialFireSources = [
+      { x: 5, z: 5 },
+      { x: 14, z: 3 },
+      { x: 10, z: 15 }
+    ];
+
+    const hud = {
+      currentTool: document.getElementById('currentTool'),
+      resources: document.getElementById('resources'),
+      score: document.getElementById('score'),
+      windDir: document.getElementById('windDir'),
+      simStatus: document.getElementById('simStatus'),
+      tickCount: document.getElementById('tickCount'),
+      fireCount: document.getElementById('fireCount'),
+      grassCount: document.getElementById('grassCount'),
+      resetBtn: document.getElementById('resetBtn'),
+      finalMessage: document.getElementById('finalMessage')
+    };
+
+    function createStateObject() {
+      const counts = computeCounts();
+      window.__3D_STATE__ = {
+        grid: grid.map(row => row.map(cell => cell.type)),
+        paused,
+        score: Number(score.toFixed(2)),
+        resources,
+        currentTool,
+        windDirection,
+        tickCount,
+        fireCount: counts.fireCount,
+        grassCount: counts.grassCount,
+        burnedCount: counts.burnedCount,
+        firebreakCount: counts.firebreakCount,
+        waterCount: counts.waterCount,
+        containmentBonus,
+        gameOver,
+        totalTiles: TOTAL_TILES
+      };
+    }
+
+    function computeCounts() {
+      let fireCount = 0;
+      let grassCount = 0;
+      let burnedCount = 0;
+      let firebreakCount = 0;
+      let waterCount = 0;
+
+      for (let z = 0; z < GRID_SIZE; z++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          const type = grid[z][x].type;
+          if (type === TILE_TYPES.FIRE) fireCount++;
+          else if (type === TILE_TYPES.GRASS) grassCount++;
+          else if (type === TILE_TYPES.BURNED) burnedCount++;
+          else if (type === TILE_TYPES.FIREBREAK) firebreakCount++;
+          else if (type === TILE_TYPES.WATER) waterCount++;
+        }
+      }
+
+      return { fireCount, grassCount, burnedCount, firebreakCount, waterCount };
+    }
+
+    function updateHUD() {
+      const counts = computeCounts();
+      hud.currentTool.textContent = currentTool;
+      hud.resources.textContent = resources;
+      hud.score.textContent = Number(score.toFixed(2));
+      hud.windDir.textContent = windDirection;
+      hud.simStatus.textContent = paused ? 'Paused' : 'Running';
+      hud.tickCount.textContent = tickCount;
+      hud.fireCount.textContent = counts.fireCount;
+      hud.grassCount.textContent = counts.grassCount;
+    }
+
+    function showFinalMessage(message) {
+      hud.finalMessage.style.display = 'block';
+      hud.finalMessage.textContent = message;
+    }
+
+    function hideFinalMessage() {
+      hud.finalMessage.style.display = 'none';
+      hud.finalMessage.textContent = '';
+    }
+
+    function createScene() {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x87a7c4);
+
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 25, 20);
+      camera.lookAt(10, 0, 10);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      document.body.appendChild(renderer.domElement);
+
+      const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambient);
+
+      const directional = new THREE.DirectionalLight(0xffffff, 1.0);
+      directional.position.set(10, 20, 10);
+      scene.add(directional);
+
+      const ground = new THREE.Mesh(
+        new THREE.PlaneGeometry(40, 40),
+        new THREE.MeshStandardMaterial({ color: 0x4d5d53, side: THREE.DoubleSide })
+      );
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.set(9.5, -0.08, 9.5);
+      scene.add(ground);
+
+      raycaster = new THREE.Raycaster();
+      mouse = new THREE.Vector2();
+    }
+
+    function createGrid() {
+      const geometry = new THREE.BoxGeometry(TILE_SIZE, TILE_HEIGHT, TILE_SIZE);
+
+      for (let z = 0; z < GRID_SIZE; z++) {
+        grid[z] = [];
+        tileMeshes[z] = [];
+        for (let x = 0; x < GRID_SIZE; x++) {
+          const material = new THREE.MeshStandardMaterial({
+            color: COLORS.GRASS,
+            emissive: 0x000000
+          });
+
+          const mesh = new THREE.Mesh(geometry, material);
+          mesh.position.set(x, HALF_TILE_HEIGHT, z);
+          mesh.userData = { x, z };
+          scene.add(mesh);
+
+          grid[z][x] = {
+            type: TILE_TYPES.GRASS,
+            burnTicks: 0
+          };
+          tileMeshes[z][x] = mesh;
+        }
+      }
+    }
+
+    function setTileType(x, z, type) {
+      const cell = grid[z][x];
+      cell.type = type;
+      if (type !== TILE_TYPES.FIRE) {
+        cell.burnTicks = 0;
+      }
+      const mesh = tileMeshes[z][x];
+      mesh.material.color.setHex(COLORS[type]);
+    }
+
+    function igniteTile(x, z) {
+      const cell = grid[z][x];
+      if (cell.type === TILE_TYPES.GRASS) {
+        cell.type = TILE_TYPES.FIRE;
+        cell.burnTicks = 0;
+        tileMeshes[z][x].material.color.setHex(COLORS.FIRE);
+      }
+    }
+
+    function initializeState() {
+      resources = 200;
+      score = 0;
+      currentTool = TILE_TYPES.FIREBREAK;
+      paused = true;
+      windDirection = 'north';
+      tickCount = 0;
+      containmentBonus = false;
+      gameOver = false;
+      hideFinalMessage();
+
+      for (let z = 0; z < GRID_SIZE; z++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          grid[z][x].type = TILE_TYPES.GRASS;
+          grid[z][x].burnTicks = 0;
+          tileMeshes[z][x].material.color.setHex(COLORS.GRASS);
+          tileMeshes[z][x].material.emissive.setHex(0x000000);
+        }
+      }
+
+      initialFireSources.forEach(({ x, z }) => igniteTile(x, z));
+      hoveredTile = null;
+
+      updateHUD();
+      createStateObject();
+    }
+
+    function resetSimulation() {
+      initializeState();
+    }
+
+    function getNeighbors(x, z) {
+      const neighbors = [];
+      if (z > 0) neighbors.push({ x, z: z - 1, dir: 'north' });
+      if (x < GRID_SIZE - 1) neighbors.push({ x: x + 1, z, dir: 'east' });
+      if (z < GRID_SIZE - 1) neighbors.push({ x, z: z + 1, dir: 'south' });
+      if (x > 0) neighbors.push({ x: x - 1, z, dir: 'west' });
+      return neighbors;
+    }
+
+    function attemptPlaceTool(x, z) {
+      if (gameOver) return;
+
+      const cost = TOOL_COSTS[currentTool];
+      if (resources < cost) {
+        updateHUD();
+        createStateObject();
+        return;
+      }
+
+      const cell = grid[z][x];
+      if (cell.type === currentTool) {
+        updateHUD();
+        createStateObject();
+        return;
+      }
+      if (cell.type === TILE_TYPES.BURNED) {
+        updateHUD();
+        createStateObject();
+        return;
+      }
+
+      resources -= cost;
+
+      if (currentTool === TILE_TYPES.FIREBREAK) {
+        setTileType(x, z, TILE_TYPES.FIREBREAK);
+      } else if (currentTool === TILE_TYPES.WATER) {
+        setTileType(x, z, TILE_TYPES.WATER);
+      }
+
+      updateHUD();
+      evaluateGameOver();
+      createStateObject();
+    }
+
+    function simulationTick() {
+      if (paused || gameOver) return;
+
+      tickCount++;
+
+      const toIgnite = new Set();
+      const burningTiles = [];
+
+      for (let z = 0; z < GRID_SIZE; z++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          if (grid[z][x].type === TILE_TYPES.FIRE) {
+            burningTiles.push({ x, z });
+          }
+        }
+      }
+
+      for (const { x, z } of burningTiles) {
+        const neighbors = getNeighbors(x, z);
+        for (const n of neighbors) {
+          const neighbor = grid[n.z][n.x];
+          if (neighbor.type !== TILE_TYPES.GRASS) continue;
+
+          const chance = n.dir === windDirection ? 0.7 : 0.4;
+          if (Math.random() < chance) {
+            toIgnite.add(`${n.x},${n.z}`);
+          }
+        }
+      }
+
+      for (const { x, z } of burningTiles) {
+        grid[z][x].burnTicks += 1;
+      }
+
+      for (const key of toIgnite) {
+        const [x, z] = key.split(',').map(Number);
+        if (grid[z][x].type === TILE_TYPES.GRASS) {
+          igniteTile(x, z);
+        }
+      }
+
+      for (const { x, z } of burningTiles) {
+        if (grid[z][x].type === TILE_TYPES.FIRE && grid[z][x].burnTicks >= 3) {
+          setTileType(x, z, TILE_TYPES.BURNED);
+        }
+      }
+
+      const counts = computeCounts();
+      score += counts.grassCount * 0.1;
+
+      evaluateGameOver();
+      updateHUD();
+      createStateObject();
+    }
+
+    function evaluateGameOver() {
+      const counts = computeCounts();
+
+      if (counts.fireCount === 0 || counts.grassCount === 0) {
+        if (!gameOver) {
+          if (counts.fireCount === 0 && counts.grassCount >= TOTAL_TILES * 0.5 && !containmentBonus) {
+            score += 50;
+            containmentBonus = true;
+          }
+
+          gameOver = true;
+          paused = true;
+
+          const msg =
+            counts.fireCount === 0
+              ? `Simulation complete. Final Score: ${Number(score.toFixed(2))}${containmentBonus ? ' (+50 containment bonus)' : ''}`
+              : `All grass consumed. Final Score: ${Number(score.toFixed(2))}`;
+          showFinalMessage(msg);
+        }
+      } else {
+        gameOver = false;
+      }
+    }
+
+    function updateHover(intersections) {
+      if (hoveredTile) {
+        tileMeshes[hoveredTile.z][hoveredTile.x].material.emissive.setHex(0x000000);
+        hoveredTile = null;
+      }
+
+      if (intersections.length > 0) {
+        const obj = intersections[0].object;
+        const { x, z } = obj.userData;
+        hoveredTile = { x, z };
+        obj.material.emissive.setHex(0x444444);
+      }
+    }
+
+    function onPointerMove(event) {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const meshes = tileMeshes.flat();
+      const intersections = raycaster.intersectObjects(meshes, false);
+      updateHover(intersections);
+    }
+
+    function onPointerDown(event) {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const meshes = tileMeshes.flat();
+      const intersections = raycaster.intersectObjects(meshes, false);
+
+      if (intersections.length > 0) {
+        const { x, z } = intersections[0].object.userData;
+        attemptPlaceTool(x, z);
+      }
+    }
+
+    function onKeyDown(event) {
+      const key = event.key.toLowerCase();
+
+      if (key === '1') {
+        currentTool = TILE_TYPES.FIREBREAK;
+      } else if (key === '2') {
+        currentTool = TILE_TYPES.WATER;
+      } else if (key === ' ') {
+        event.preventDefault();
+        if (!gameOver) paused = !paused;
+      } else if (key === 'w') {
+        const idx = WIND_ORDER.indexOf(windDirection);
+        windDirection = WIND_ORDER[(idx + 1) % WIND_ORDER.length];
+      } else if (key === 'r') {
+        resetSimulation();
+      }
+
+      updateHUD();
+      createStateObject();
+    }
+
+    function onResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+
+    function setupEvents() {
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('keydown', onKeyDown);
+      window.addEventListener('resize', onResize);
+      hud.resetBtn.addEventListener('click', resetSimulation);
+    }
+
+    function startTicker() {
+      if (tickInterval) clearInterval(tickInterval);
+      tickInterval = setInterval(simulationTick, TICK_MS);
+    }
+
+    createScene();
+    createGrid();
+    initializeState();
+    setupEvents();
+    startTicker();
+    animate();
+  </script>
+</body>
+</html>

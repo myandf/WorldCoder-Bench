@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triplanar Terrain</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { overflow: hidden; background: #87CEEB; }
+  canvas { display: block; }
+  #ui {
+    position: fixed; top: 10px; left: 10px;
+    background: rgba(0,0,0,0.65); color: #fff;
+    padding: 12px 16px; border-radius: 8px;
+    font: 13px/1.6 monospace; min-width: 220px;
+    user-select: none;
+  }
+  #ui label { display: flex; flex-direction: column; margin-bottom: 8px; }
+  #ui input[type=range] { width: 100%; accent-color: #7ecfff; }
+  #ui .row { display: flex; gap: 8px; margin-bottom: 8px; }
+  #ui button {
+    flex: 1; padding: 4px 0; background: #2a4a6a;
+    border: 1px solid #7ecfff; color: #fff;
+    border-radius: 4px; cursor: pointer; font: 12px monospace;
+  }
+  #ui button.active { background: #1a7a4a; }
+  #ui select {
+    width: 100%; background: #1a2a3a; color: #fff;
+    border: 1px solid #7ecfff; border-radius: 4px;
+    padding: 3px; font: 12px monospace; margin-bottom: 8px;
+  }
+  #fps { font-size: 12px; color: #7ecfff; margin-top: 4px; }
+  #hint { font-size: 11px; color: #aaa; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div id="ui">
+  <label>Blend Sharpness: <span id="sharpVal">4.0</span>
+    <input type="range" id="sharpSlider" min="1" max="16" step="0.5" value="4">
+  </label>
+  <label>Texture Scale: <span id="scaleVal">0.15</span>
+    <input type="range" id="scaleSlider" min="0.01" max="1.0" step="0.01" value="0.15">
+  </label>
+  <label>Height Mix: <span id="heightVal">0.3</span>
+    <input type="range" id="heightSlider" min="0" max="1.0" step="0.05" value="0.3">
+  </label>
+  <label>Shading Mode:
+    <select id="shadingMode">
+      <option value="triplanar">Triplanar</option>
+      <option value="normals">Normals</option>
+      <option value="height">Height</option>
+    </select>
+  </label>
+  <div class="row">
+    <button id="wireBtn">Wireframe</button>
+    <button id="animBtn" class="active">Animate</button>
+  </div>
+  <div id="fps">FPS: --</div>
+  <div id="hint">R=Reset W=Wire Space=Pause</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+// ── State ──────────────────────────────────────────────────────────────────
+const state = {
+  sharpness: 4.0, textureScale: 0.15, heightColorMix: 0.3,
+  wireframe: false, animating: true, shadingMode: 'triplanar',
+  elapsedTime: 0, cameraModelY: 0, cameraModelRotationY: 0,
+  cameraModelLoaded: false, terrainVertexCount: 0,
+  terrainHeightRange: [0, 0], fps: 0,
+  blendWeightsAtCenter: [0, 1, 0]
+};
+window.__3D_STATE__ = state;
+
+// ── Renderer ───────────────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#87CEEB');
+
+const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+camera.position.set(0, 25, 40);
+camera.lookAt(0, 0, 0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.update();
+
+// ── Lights ─────────────────────────────────────────────────────────────────
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+dirLight.position.set(10, 30, 10);
+dirLight.castShadow = true;
+scene.add(dirLight);
+scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+
+// ── Noise helpers (JS) ─────────────────────────────────────────────────────
+function hash(n) {
+  // simple float hash
+  const x = Math.sin(n) * 43758.5453123;
+  return x - Math.floor(x);
+}
+function hash2(x, y) { return hash(x + y * 127.1); }
+
+function smoothstep(a, b, t) {
+  t = Math.max(0, Math.min(1, (t - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
+function noise2(x, y) {
+  const ix = Math.floor(x), iy = Math.floor(y);
+  const fx = x - ix, fy = y - iy;
+  const ux = fx * fx * (3 - 2 * fx);
+  const uy = fy * fy * (3 - 2 * fy);
+  const a = hash2(ix, iy);
+  const b = hash2(ix + 1, iy);
+  const c = hash2(ix, iy + 1);
+  const d = hash2(ix + 1, iy + 1);
+  return a + (b - a) * ux + (c - a) * uy + (d - a + a - b - c + b + c - d) * ux * uy;
+  // simplified: lerp
+}
+
+function fbm(x, y) {
+  let v = 0, amp = 0.5, freq = 1;
+  for (let i = 0; i < 6; i++) {
+    v += amp * noise2(x * freq, y * freq);
+    amp *= 0.5; freq *= 2.1;
+  }
+  return v;
+}
+
+// ── Terrain ────────────────────────────────────────────────────────────────
+const SEG = 128;
+const geo = new THREE.PlaneGeometry(80, 80, SEG, SEG);
+geo.rotateX(-Math.PI / 2);
+
+const pos = geo.attributes.position;
+let minY = Infinity, maxY = -Infinity;
+
+for (let i = 0; i < pos.count; i++) {
+  const x = pos.getX(i), z = pos.getZ(i);
+  const nx = x * 0.04, nz = z * 0.04;
+  let h = fbm(nx, nz) * 12 - 4;
+  // add some sharper ridges
+  h += fbm(nx * 2.5 + 3.1, nz * 2.5 + 1.7) * 3 - 1.5;
+  h = Math.max(-4, Math.min(8, h));
+  pos.setY(i, h);
+  if (h < minY) minY = h;
+  if (h > maxY) maxY = h;
+}
+pos.needsUpdate = true;
+geo.computeVertexNormals();
+
+state.terrainVertexCount = pos.count;
+state.terrainHeightRange = [minY, maxY];
+
+// ── Sample terrain height at XZ ────────────────────────────────────────────
+function sampleTerrainHeight(tx, tz) {
+  const nx = tx * 0.04, nz = tz * 0.04;
+  let h = fbm(nx, nz) * 12 - 4;
+  h += fbm(nx * 2.5 + 3.1, nz * 2.5 + 1.7) * 3 - 1.5;
+  return Math.max(-4, Math.min(8, h));
+}
+
+// ── Blend weights helper ───────────────────────────────────────────────────
+function computeBlendWeights(nx, ny, nz, sharpness) {
+  const wx = Math.pow(Math.abs(nx), sharpness);
+  const wy = Math.pow(Math.abs(ny), sharpness);
+  const wz = Math.pow(Math.abs(nz), sharpness);
+  const sum = wx + wy + wz + 1e-6;
+  return [wx / sum, wy / sum, wz / sum];
+}
+
+// ── Shaders ────────────────────────────────────────────────────────────────
+const vertexShader = /* glsl */`
+  varying vec3 vWorldPos;
+  varying vec3 vWorldNormal;
+
+  void main() {
+    vec4 worldPos4 = modelMatrix * vec4(position, 1.0);
+    vWorldPos = worldPos4.xyz;
+    vWorldNormal = normalize(mat3(modelMatrix) * normal);
+    gl_Position = projectionMatrix * viewMatrix * worldPos4;
+  }
+`;
+
+const fragmentShader = /* glsl */`
+  uniform float u_sharpness;
+  uniform float u_textureScale;
+  uniform float u_heightColorMix;
+  uniform float u_time;
+  uniform int u_shadingMode; // 0=triplanar, 1=normals, 2=height
+  uniform float u_minY;
+  uniform float u_maxY;
+
+  varying vec3 vWorldPos;
+  varying vec3 vWorldNormal;
+
+  // ── hash / noise ──────────────────────────────────────────────────────────
+  float hash1(float n) { return fract(sin(n) * 43758.5453123); }
+  float hash2(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    float a = hash2(i);
+    float b = hash2(i + vec2(1,0));
+    float c = hash2(i + vec2(0,1));
+    float d = hash2(i + vec2(1,1));
+    return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+  }
+
+  float fbm(vec2 p) {
+    float v = 0.0; float amp = 0.5; float freq = 1.0;
+    for (int i = 0; i < 5; i++) {
+      v += amp * noise(p * freq);
+      amp *= 0.5; freq *= 2.1;
+    }
+    return v;
+  }
+
+  // ── Pattern A: grass (Y-facing) ───────────────────────────────────────────
+  vec3 patternGrass(vec2 uv) {
+    vec3 base = vec3(0.290, 0.486, 0.180); // #4a7c2e
+    float n = fbm(uv + u_time * 0.02);
+    float dots = smoothstep(0.62, 0.65, n);
+    vec3 dotColor = vec3(0.18, 0.35, 0.10);
+    return mix(base, dotColor, dots * 0.6);
+  }
+
+  // ── Pattern B: rock (X-facing) ────────────────────────────────────────────
+  vec3 patternRock(vec2 uv) {
+    vec3 base = vec3(0.545, 0.451, 0.333); // #8B7355
+    float stripe = smoothstep(0.48, 0.52, fract(uv.y * 3.0 + fbm(uv * 0.5) * 0.3));
+    vec3 dark = vec3(0.35, 0.28, 0.20);
+    return mix(base, dark, stripe * 0.5);
+  }
+
+  // ── Pattern C: stone (Z-facing) ───────────────────────────────────────────
+  vec3 patternStone(vec2 uv) {
+    vec3 base = vec3(0.478, 0.478, 0.478); // #7a7a7a
+    vec2 grid = fract(uv * 2.0);
+    float crack = min(
+      smoothstep(0.0, 0.04, grid.x) * smoothstep(1.0, 0.96, grid.x),
+      smoothstep(0.0, 0.04, grid.y) * smoothstep(1.0, 0.96, grid.y)
+    );
+    vec3 crackColor = vec3(0.25, 0.25, 0.25);
+    return mix(crackColor, base, crack);
+  }
+
+  void main() {
+    vec3 N = normalize(vWorldNormal);
+
+    // ── Normals mode ──────────────────────────────────────────────────────
+    if (u_shadingMode == 1) {
+      gl_FragColor = vec4(N * 0.5 + 0.5, 1.0);
+      return;
+    }
+
+    // ── Height mode ───────────────────────────────────────────────────────
+    if (u_shadingMode == 2) {
+      float t = clamp((vWorldPos.y - u_minY) / (u_maxY - u_minY), 0.0, 1.0);
+      gl_FragColor = vec4(vec3(t), 1.0);
+      return;
+    }
+
+    // ── Triplanar blending ────────────────────────────────────────────────
+    vec3 w = pow(abs(N), vec3(u_sharpness));
+    w /= (w.x + w.y + w.z + 1e-6);
+
+    float sc = u_textureScale;
+    vec2 uvY = vWorldPos.xz * sc;
+    vec2 uvX = vWorldPos.zy * sc;
+    vec2 uvZ = vWorldPos.xy * sc;
+
+    vec3 colY = patternGrass(uvY);
+    vec3 colX = patternRock(uvX);
+    vec3 colZ = patternStone(uvZ);
+
+    vec3 triColor = colX * w.x + colY * w.y + colZ * w.z;
+
+    // ── Height color mix ──────────────────────────────────────────────────
+    vec3 snowColor = vec3(0.95, 0.97, 1.0);
+    vec3 dirtColor = vec3(0.42, 0.30, 0.18);
+    float snowT = smoothstep(5.0, 7.0, vWorldPos.y);
+    float dirtT = smoothstep(-1.0, -3.0, vWorldPos.y);
+    vec3 heightColor = mix(triColor, snowColor, snowT);
+    heightColor = mix(heightColor, dirtColor, dirtT);
+
+    vec3 finalColor = mix(triColor, heightColor, u_heightColorMix);
+
+    // simple diffuse shading hint (baked into color)
+    float diff = clamp(dot(N, normalize(vec3(10.0, 30.0, 10.0))), 0.2, 1.0);
+    finalColor *= diff;
+
+    gl_FragColor = vec4(finalColor, 1.0);
+  }
+`;
+
+const uniforms = {
+  u_sharpness:     { value: 4.0 },
+  u_textureScale:  { value: 0.15 },
+  u_heightColorMix:{ value: 0.3 },
+  u_time:          { value: 0.0 },
+  u_shadingMode:   { value: 0 },
+  u_minY:          { value: minY },
+  u_maxY:          { value: maxY },
+};
+
+const terrainMat = new THREE.ShaderMaterial({
+  vertexShader, fragmentShader, uniforms,
+  side: THREE.FrontSide,
+});
+
+const terrain = new THREE.Mesh(geo, terrainMat);
+terrain.receiveShadow = true;
+scene.add(terrain);
+
+// ── Compute center normal for state ───────────────────────────────────────
+(function updateCenterBlend() {
+  // find vertex closest to (0,0)
+  let bestDist = Infinity, bestNorm = new THREE.Vector3(0,1,0);
+  const nAttr = geo.attributes.normal;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    const d = x*x + z*z;
+    if (d < bestDist) {
+      bestDist = d;
+      bestNorm.set(nAttr.getX(i), nAttr.getY(i), nAttr.getZ(i));
+    }
+  }
+  bestNorm.normalize();
+  state.blendWeightsAtCenter = computeBlendWeights(bestNorm.x, bestNorm.y, bestNorm.z, state.sharpness);
+})();
+
+// ── GLTF Model ─────────────────────────────────────────────────────────────
+let cameraModel = null;
+const loader = new GLTFLoader();
+const modelXZ = [5, 5];
+const modelY = sampleTerrainHeight(modelXZ[0], modelXZ[1]);
+
+loader.load('AntiqueCamera.glb',
+  (gltf) => {
+    cameraModel = gltf.scene;
+    cameraModel.scale.set(2, 2, 2);
+    cameraModel.position.set(modelXZ[0], modelY, modelXZ[1]);
+    cameraModel.castShadow = true;
+    scene.add(cameraModel);
+    state.cameraModelLoaded = true;
+    state.cameraModelY = modelY;
+  },
+  undefined,
+  (err) => {
+    console.warn('AntiqueCamera.glb not found, using placeholder.', err);
+    // fallback placeholder
+    const ph = new THREE.Mesh(
+      new THREE.BoxGeometry(1, 2, 1),
+      new THREE.MeshStandardMaterial({ color: 0x886644 })
+    );
+    ph.position.set(modelXZ[0], modelY + 1, modelXZ[1]);
+    scene.add(ph);
+    cameraModel = ph;
+    state.cameraModelLoaded = true;
+    state.cameraModelY = modelY + 1;
+  }
+);
+
+// ── UI wiring ──────────────────────────────────────────────────────────────
+const sharpSlider  = document.getElementById('sharpSlider');
+const scaleSlider  = document.getElementById('scaleSlider');
+const heightSlider = document.getElementById('heightSlider');
+const sharpVal     = document.getElementById('sharpVal');
+const scaleVal     = document.getElementById('scaleVal');
+const heightVal    = document.getElementById('heightVal');
+const wireBtn      = document.getElementById('wireBtn');
+const animBtn      = document.getElementById('animBtn');
+const shadingMode  = document.getElementById('shadingMode');
+const fpsEl        = document.getElementById('fps');
+
+sharpSlider.addEventListener('input', () => {
+  const v = parseFloat(sharpSlider.value);
+  uniforms.u_sharpness.value = v;
+  state.sharpness = v;
+  sharpVal.textContent = v.toFixed(1);
+  state.blendWeightsAtCenter = computeBlendWeights(...state.blendWeightsAtCenter, v);
+});
+
+scaleSlider.addEventListener('input', () => {
+  const v = parseFloat(scaleSlider.value);
+  uniforms.u_textureScale.value = v;
+  state.textureScale = v;
+  scaleVal.textContent = v.toFixed(2);
+});
+
+heightSlider.addEventListener('input', () => {
+  const v = parseFloat(heightSlider.value);
+  uniforms.u_heightColorMix.value = v;
+  state.heightColorMix = v;
+  heightVal.textContent = v.toFixed(2);
+});
+
+wireBtn.addEventListener('click', toggleWireframe);
+animBtn.addEventListener('click', toggleAnimate);
+
+shadingMode.addEventListener('change', () => {
+  const m = shadingMode.value;
+  state.shadingMode = m;
+  uniforms.u_shadingMode.value = m === 'triplanar' ? 0 : m === 'normals' ? 1 : 2;
+});
+
+function toggleWireframe() {
+  state.wireframe = !state.wireframe;
+  terrainMat.wireframe = state.wireframe;
+  wireBtn.classList.toggle('active', state.wireframe);
+}
+
+function toggleAnimate() {
+  state.animating = !state.animating;
+  animBtn.classList.toggle('active', state.animating);
+}
+
+function resetDefaults() {
+  sharpSlider.value = 4; sharpVal.textContent = '4.0';
+  scaleSlider.value = 0.15; scaleVal.textContent = '0.15';
+  heightSlider.value = 0.3; heightVal.textContent = '0.30';
+  shadingMode.value = 'triplanar';
+  uniforms.u_sharpness.value = 4.0;
+  uniforms.u_textureScale.value = 0.15;
+  uniforms.u_heightColorMix.value = 0.3;
+  uniforms.u_shadingMode.value = 0;
+  state.sharpness = 4.0; state.textureScale = 0.15;
+  state.heightColorMix = 0.3; state.shadingMode = 'triplanar';
+}
+
+// ── Keyboard ───────────────────────────────────────────────────────────────
+window.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.key === 'r' || e.key === 'R') resetDefaults();
+  if (e.key === 'w' || e.key === 'W') toggleWireframe();
+  if (e.key === ' ') { e.preventDefault(); toggleAnimate(); }
+});
+
+// ── FPS ────────────────────────────────────────────────────────────────────
+let lastTime = performance.now(), frameCount = 0, fps = 0;
+
+// ── Resize ─────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// ── Animation loop ─────────────────────────────────────────────────────────
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const delta = clock.getDelta();
+
+  if (state.animating) {
+    uniforms.u_time.value += delta;
+    state.elapsedTime = uniforms.u_time.value;
+    if (cameraModel) {
+      cameraModel.rotation.y += 0.3 * delta;
+      state.cameraModelRotationY = cameraModel.rotation.y;
+    }
+  }
+
+  // FPS
+  frameCount++;
+  const now = performance.now();
+  if (now - lastTime >= 500) {
+    fps = Math.round(frameCount * 1000 / (now - lastTime));
+    frameCount = 0; lastTime = now;
+    state.fps = fps;
+    fpsEl.textContent = `FPS: ${fps}`;
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+animate();
+</script>
+</body>
+</html>

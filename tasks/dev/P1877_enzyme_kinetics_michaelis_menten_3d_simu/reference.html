@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Michaelis-Menten Enzyme Kinetics Simulator</title>
+  <style>
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      background: #0a0a1a;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #eef3ff;
+    }
+    #app {
+      position: fixed;
+      inset: 0;
+    }
+    .panel {
+      position: absolute;
+      background: rgba(15, 20, 40, 0.78);
+      border: 1px solid rgba(130, 170, 255, 0.25);
+      border-radius: 10px;
+      padding: 12px 14px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      z-index: 10;
+      user-select: none;
+    }
+    #controlsPanel {
+      top: 16px;
+      left: 16px;
+      width: 280px;
+    }
+    #statsPanel {
+      top: 16px;
+      right: 16px;
+      width: 280px;
+    }
+    .control-row {
+      margin-bottom: 12px;
+    }
+    .control-row label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #d9e6ff;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      background: #223a88;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    button:hover {
+      background: #2d4cae;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 10px;
+      font-size: 14px;
+    }
+    .stats-grid div:nth-child(odd) {
+      color: #b9c9ef;
+    }
+    #plotWrap {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: rgba(15, 20, 40, 0.78);
+      border: 1px solid rgba(130, 170, 255, 0.25);
+      border-radius: 10px;
+      padding: 10px;
+      backdrop-filter: blur(6px);
+    }
+    #plotCanvas {
+      display: block;
+      width: 400px;
+      height: 200px;
+    }
+    .title {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #ffffff;
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="controlsPanel" class="panel">
+    <div class="title">Kinetic Parameters</div>
+
+    <div class="control-row">
+      <label for="vmaxSlider">
+        <span>Vmax</span>
+        <span id="vmaxValue">2.0</span>
+      </label>
+      <input id="vmaxSlider" type="range" min="0.5" max="5.0" step="0.1" value="2.0" />
+    </div>
+
+    <div class="control-row">
+      <label for="kmSlider">
+        <span>Km</span>
+        <span id="kmValue">5.0</span>
+      </label>
+      <input id="kmSlider" type="range" min="1.0" max="20.0" step="0.1" value="5.0" />
+    </div>
+
+    <div class="control-row">
+      <label for="tempSlider">
+        <span>Temperature</span>
+        <span id="tempValue">1.0</span>
+      </label>
+      <input id="tempSlider" type="range" min="0.5" max="3.0" step="0.1" value="1.0" />
+    </div>
+
+    <div class="btn-row">
+      <button id="resetBtn">Reset Simulation</button>
+      <button id="addSubstrateBtn">Add Substrate (+10)</button>
+    </div>
+  </div>
+
+  <div id="statsPanel" class="panel">
+    <div class="title">Simulation Stats</div>
+    <div class="stats-grid">
+      <div>Enzyme count</div><div id="statE">0</div>
+      <div>Substrate count</div><div id="statS">0</div>
+      <div>ES Complex count</div><div id="statES">0</div>
+      <div>Product count</div><div id="statP">0</div>
+      <div>Reaction Rate</div><div id="statRate">0.00</div>
+      <div>Elapsed Time</div><div id="statTime">0.0 s</div>
+    </div>
+  </div>
+
+  <div id="plotWrap">
+    <canvas id="plotCanvas" width="400" height="200"></canvas>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+    const CHAMBER_RADIUS = 6;
+    const CHAMBER_HEIGHT = 8;
+    const HALF_HEIGHT = CHAMBER_HEIGHT / 2;
+    const INITIAL_ENZYMES = 5;
+    const INITIAL_SUBSTRATES = 20;
+
+    const app = document.getElementById('app');
+    const plotCanvas = document.getElementById('plotCanvas');
+    const plotCtx = plotCanvas.getContext('2d');
+
+    const vmaxSlider = document.getElementById('vmaxSlider');
+    const kmSlider = document.getElementById('kmSlider');
+    const tempSlider = document.getElementById('tempSlider');
+    const vmaxValue = document.getElementById('vmaxValue');
+    const kmValue = document.getElementById('kmValue');
+    const tempValue = document.getElementById('tempValue');
+    const resetBtn = document.getElementById('resetBtn');
+    const addSubstrateBtn = document.getElementById('addSubstrateBtn');
+
+    const statE = document.getElementById('statE');
+    const statS = document.getElementById('statS');
+    const statES = document.getElementById('statES');
+    const statP = document.getElementById('statP');
+    const statRate = document.getElementById('statRate');
+    const statTime = document.getElementById('statTime');
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0a1a);
+
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 8, 18);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    app.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0, 0);
+
+    const ambient = new THREE.AmbientLight(0x334466, 0.4);
+    scene.add(ambient);
+
+    const directional = new THREE.DirectionalLight(0xffffff, 0.8);
+    directional.position.set(5, 10, 7);
+    scene.add(directional);
+
+    const chamberGeometry = new THREE.CylinderGeometry(CHAMBER_RADIUS, CHAMBER_RADIUS, CHAMBER_HEIGHT, 48, 1, true);
+    const chamberMaterial = new THREE.MeshPhongMaterial({
+      color: 0x2244aa,
+      transparent: true,
+      opacity: 0.15,
+      side: THREE.DoubleSide,
+      wireframe: false,
+      emissive: 0x112266,
+      emissiveIntensity: 0.2
+    });
+    const chamber = new THREE.Mesh(chamberGeometry, chamberMaterial);
+    scene.add(chamber);
+
+    const chamberEdge = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.CylinderGeometry(CHAMBER_RADIUS, CHAMBER_RADIUS, CHAMBER_HEIGHT, 48, 1, false)),
+      new THREE.LineBasicMaterial({ color: 0x4466cc, transparent: true, opacity: 0.35 })
+    );
+    scene.add(chamberEdge);
+
+    const geometries = {
+      enzyme: new THREE.IcosahedronGeometry(0.5, 0),
+      substrate: new THREE.SphereGeometry(0.3, 20, 20),
+      complex: new THREE.DodecahedronGeometry(0.7, 0),
+      product: new THREE.TetrahedronGeometry(0.35, 0)
+    };
+
+    const materials = {
+      enzyme: new THREE.MeshPhongMaterial({ color: 0x22cc44, emissive: 0x114422, emissiveIntensity: 0.5, shininess: 80 }),
+      substrate: new THREE.MeshPhongMaterial({ color: 0xff8833, emissive: 0x552200, emissiveIntensity: 0.45, shininess: 90 }),
+      complex: new THREE.MeshPhongMaterial({ color: 0xeeee22, emissive: 0x666600, emissiveIntensity: 0.55, shininess: 100 }),
+      product: new THREE.MeshPhongMaterial({ color: 0xaa33ff, emissive: 0x331155, emissiveIntensity: 0.5, shininess: 90 })
+    };
+
+    let enzymes = [];
+    let substrates = [];
+    let complexes = [];
+    let products = [];
+
+    let totalSubstratesEverAdded = INITIAL_SUBSTRATES;
+    let simStartTime = performance.now();
+    let lastResetTime = performance.now();
+    let simRunning = true;
+    let productFormationTimes = [];
+    let measuredPoints = [];
+    let lastMeasuredRecordTime = 0;
+
+    let moleculeIdCounter = 1;
+    const tempVec = new THREE.Vector3();
+
+    function randomInChamber(margin = 0.5) {
+      const radius = (CHAMBER_RADIUS - margin) * Math.sqrt(Math.random());
+      const theta = Math.random() * Math.PI * 2;
+      const x = radius * Math.cos(theta);
+      const z = radius * Math.sin(theta);
+      const y = THREE.MathUtils.lerp(-HALF_HEIGHT + margin, HALF_HEIGHT - margin, Math.random());
+      return new THREE.Vector3(x, y, z);
+    }
+
+    function randomVelocity(scale = 0.5) {
+      return new THREE.Vector3(
+        (Math.random() - 0.5) * scale,
+        (Math.random() - 0.5) * scale,
+        (Math.random() - 0.5) * scale
+      );
+    }
+
+    function createMolecule(type, position = null) {
+      const mesh = new THREE.Mesh(geometries[type], materials[type]);
+      const pos = position ? position.clone() : randomInChamber(type === 'complex' ? 0.9 : 0.5);
+      mesh.position.copy(pos);
+      if (type === 'product') {
+        mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      }
+      scene.add(mesh);
+      return {
+        id: moleculeIdCounter++,
+        type,
+        mesh,
+        velocity: randomVelocity(type === 'complex' ? 0.28 : 0.38),
+        timer: 0
+      };
+    }
+
+    function moleculeRadius(type) {
+      if (type === 'enzyme') return 0.5;
+      if (type === 'substrate') return 0.3;
+      if (type === 'complex') return 0.7;
+      if (type === 'product') return 0.35;
+      return 0.4;
+    }
+
+    function removeMolecule(obj) {
+      scene.remove(obj.mesh);
+    }
+
+    function spawnInitial() {
+      for (let i = 0; i < INITIAL_ENZYMES; i++) enzymes.push(createMolecule('enzyme'));
+      for (let i = 0; i < INITIAL_SUBSTRATES; i++) substrates.push(createMolecule('substrate'));
+    }
+
+    function clearMolecules() {
+      [...enzymes, ...substrates, ...complexes, ...products].forEach(removeMolecule);
+      enzymes = [];
+      substrates = [];
+      complexes = [];
+      products = [];
+    }
+
+    function resetSimulation() {
+      clearMolecules();
+      totalSubstratesEverAdded = INITIAL_SUBSTRATES;
+      productFormationTimes = [];
+      measuredPoints = [];
+      lastMeasuredRecordTime = 0;
+      simStartTime = performance.now();
+      lastResetTime = performance.now();
+      simRunning = true;
+      spawnInitial();
+      updateState(0);
+    }
+
+    function addSubstrates(count = 10) {
+      for (let i = 0; i < count; i++) substrates.push(createMolecule('substrate'));
+      totalSubstratesEverAdded += count;
+    }
+
+    function applyBrownianAndBoundary(obj, dt, temperature) {
+      const jitter = 0.9 * temperature;
+      obj.velocity.x += (Math.random() - 0.5) * jitter * dt;
+      obj.velocity.y += (Math.random() - 0.5) * jitter * dt;
+      obj.velocity.z += (Math.random() - 0.5) * jitter * dt;
+
+      const maxSpeed = (obj.type === 'complex' ? 1.2 : 1.8) * temperature;
+      const speed = obj.velocity.length();
+      if (speed > maxSpeed) obj.velocity.multiplyScalar(maxSpeed / speed);
+
+      obj.mesh.position.addScaledVector(obj.velocity, dt);
+
+      const r = moleculeRadius(obj.type);
+      const p = obj.mesh.position;
+      const radial = Math.sqrt(p.x * p.x + p.z * p.z);
+      const maxRad = CHAMBER_RADIUS - r;
+
+      if (radial > maxRad) {
+        const nx = p.x / radial;
+        const nz = p.z / radial;
+        const dot = obj.velocity.x * nx + obj.velocity.z * nz;
+        if (dot > 0) {
+          obj.velocity.x -= 2 * dot * nx;
+          obj.velocity.z -= 2 * dot * nz;
+        }
+        p.x = nx * maxRad;
+        p.z = nz * maxRad;
+      }
+
+      const maxY = HALF_HEIGHT - r;
+      const minY = -HALF_HEIGHT + r;
+      if (p.y > maxY) {
+        p.y = maxY;
+        if (obj.velocity.y > 0) obj.velocity.y *= -1;
+      }
+      if (p.y < minY) {
+        p.y = minY;
+        if (obj.velocity.y < 0) obj.velocity.y *= -1;
+      }
+
+      obj.mesh.rotation.x += obj.velocity.y * dt * 0.7;
+      obj.mesh.rotation.y += obj.velocity.x * dt * 0.7;
+      obj.mesh.rotation.z += obj.velocity.z * dt * 0.7;
+    }
+
+    function getParams() {
+      return {
+        vmax: parseFloat(vmaxSlider.value),
+        km: parseFloat(kmSlider.value),
+        temperature: parseFloat(tempSlider.value)
+      };
+    }
+
+    function updateLabels() {
+      const p = getParams();
+      vmaxValue.textContent = p.vmax.toFixed(1);
+      kmValue.textContent = p.km.toFixed(1);
+      tempValue.textContent = p.temperature.toFixed(1);
+    }
+
+    function bindEnzymeSubstrate(eIndex, sIndex, kcat) {
+      const enzyme = enzymes[eIndex];
+      const substrate = substrates[sIndex];
+
+      tempVec.copy(enzyme.mesh.position).add(substrate.mesh.position).multiplyScalar(0.5);
+      removeMolecule(enzyme);
+      removeMolecule(substrate);
+
+      enzymes.splice(eIndex, 1);
+      substrates.splice(sIndex, 1);
+
+      const complex = createMolecule('complex', tempVec);
+      complex.velocity.copy(enzyme.velocity).add(substrate.velocity).multiplyScalar(0.5);
+      complex.timer = kcat > 0 ? 1 / kcat : Infinity;
+      complexes.push(complex);
+    }
+
+    function convertComplex(index) {
+      const complex = complexes[index];
+      const pos = complex.mesh.position.clone();
+      const vel = complex.velocity.clone();
+
+      removeMolecule(complex);
+      complexes.splice(index, 1);
+
+      const enzyme = createMolecule('enzyme', pos.clone().add(new THREE.Vector3(0.22, 0.05, -0.1)));
+      enzyme.velocity.copy(vel).add(randomVelocity(0.2));
+      enzymes.push(enzyme);
+
+      const product = createMolecule('product', pos.clone().add(new THREE.Vector3(-0.2, -0.04, 0.12)));
+      product.velocity.copy(vel).add(randomVelocity(0.22));
+      products.push(product);
+
+      productFormationTimes.push(performance.now());
+    }
+
+    function currentReactionRate(nowMs) {
+      const cutoff = nowMs - 3000;
+      productFormationTimes = productFormationTimes.filter(t => t >= cutoff);
+      return productFormationTimes.length / 3;
+    }
+
+    function recordMeasuredPoint(elapsed, sCount, rate) {
+      if (elapsed - lastMeasuredRecordTime >= 2 || measuredPoints.length === 0) {
+        measuredPoints.push({ s: sCount, v: rate });
+        if (measuredPoints.length > 120) measuredPoints.shift();
+        lastMeasuredRecordTime = elapsed;
+      }
+    }
+
+    function drawPlot(params, sCount, measuredRate) {
+      const w = plotCanvas.width;
+      const h = plotCanvas.height;
+      const padL = 40;
+      const padR = 14;
+      const padT = 12;
+      const padB = 28;
+
+      plotCtx.clearRect(0, 0, w, h);
+      plotCtx.fillStyle = '#0f1428';
+      plotCtx.fillRect(0, 0, w, h);
+
+      plotCtx.strokeStyle = 'rgba(160,190,255,0.35)';
+      plotCtx.lineWidth = 1;
+      plotCtx.strokeRect(0.5, 0.5, w - 1, h - 1);
+
+      const maxS = Math.max(totalSubstratesEverAdded + 5, 30);
+      const maxV = Math.max(params.vmax * 1.15, 1);
+
+      const x0 = padL;
+      const y0 = h - padB;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+
+      plotCtx.strokeStyle = 'rgba(220,230,255,0.75)';
+      plotCtx.beginPath();
+      plotCtx.moveTo(x0, padT);
+      plotCtx.lineTo(x0, y0);
+      plotCtx.lineTo(w - padR, y0);
+      plotCtx.stroke();
+
+      plotCtx.fillStyle = '#dce6ff';
+      plotCtx.font = '12px Arial';
+      plotCtx.fillText('[S]', w / 2 - 8, h - 8);
+      plotCtx.save();
+      plotCtx.translate(12, h / 2 + 14);
+      plotCtx.rotate(-Math.PI / 2);
+      plotCtx.fillText('v', 0, 0);
+      plotCtx.restore();
+
+      plotCtx.fillStyle = 'rgba(210,220,255,0.7)';
+      for (let i = 0; i <= 4; i++) {
+        const sVal = (maxS / 4) * i;
+        const x = x0 + (sVal / maxS) * plotW;
+        plotCtx.fillText(sVal.toFixed(0), x - 6, y0 + 16);
+        plotCtx.strokeStyle = 'rgba(100,130,190,0.15)';
+        plotCtx.beginPath();
+        plotCtx.moveTo(x, padT);
+        plotCtx.lineTo(x, y0);
+        plotCtx.stroke();
+      }
+      for (let i = 0; i <= 4; i++) {
+        const vVal = (maxV / 4) * i;
+        const y = y0 - (vVal / maxV) * plotH;
+        plotCtx.fillStyle = 'rgba(210,220,255,0.7)';
+        plotCtx.fillText(vVal.toFixed(1), 6, y + 4);
+        plotCtx.strokeStyle = 'rgba(100,130,190,0.15)';
+        plotCtx.beginPath();
+        plotCtx.moveTo(x0, y);
+        plotCtx.lineTo(w - padR, y);
+        plotCtx.stroke();
+      }
+
+      plotCtx.strokeStyle = '#ffffff';
+      plotCtx.lineWidth = 2;
+      plotCtx.beginPath();
+      for (let i = 0; i <= 160; i++) {
+        const S = (i / 160) * maxS;
+        const v = params.vmax * S / (params.km + S);
+        const x = x0 + (S / maxS) * plotW;
+        const y = y0 - (v / maxV) * plotH;
+        if (i === 0) plotCtx.moveTo(x, y);
+        else plotCtx.lineTo(x, y);
+      }
+      plotCtx.stroke();
+
+      const dotX = x0 + (Math.min(sCount, maxS) / maxS) * plotW;
+      const dotY = y0 - (Math.min(measuredRate, maxV) / maxV) * plotH;
+      plotCtx.fillStyle = '#ff5555';
+      plotCtx.beginPath();
+      plotCtx.arc(dotX, dotY, 5, 0, Math.PI * 2);
+      plotCtx.fill();
+
+      plotCtx.fillStyle = '#ffffff';
+      plotCtx.font = '13px Arial';
+      plotCtx.fillText('Michaelis-Menten Curve', x0 + 8, 18);
+    }
+
+    function updateStats(rate, elapsed) {
+      statE.textContent = enzymes.length;
+      statS.textContent = substrates.length;
+      statES.textContent = complexes.length;
+      statP.textContent = products.length;
+      statRate.textContent = rate.toFixed(2) + ' s⁻¹';
+      statTime.textContent = elapsed.toFixed(1) + ' s';
+    }
+
+    function updateState(elapsed) {
+      const params = getParams();
+      const reactionRate = currentReactionRate(performance.now());
+      const theoreticalRate = params.vmax * substrates.length / (params.km + substrates.length);
+      const moleculePositions = [];
+
+      enzymes.forEach(m => moleculePositions.push({ type: 'E', x: m.mesh.position.x, y: m.mesh.position.y, z: m.mesh.position.z }));
+      substrates.forEach(m => moleculePositions.push({ type: 'S', x: m.mesh.position.x, y: m.mesh.position.y, z: m.mesh.position.z }));
+      complexes.forEach(m => moleculePositions.push({ type: 'ES', x: m.mesh.position.x, y: m.mesh.position.y, z: m.mesh.position.z }));
+      products.forEach(m => moleculePositions.push({ type: 'P', x: m.mesh.position.x, y: m.mesh.position.y, z: m.mesh.position.z }));
+
+      window.__3D_STATE__ = {
+        enzymeCount: enzymes.length,
+        substrateCount: substrates.length,
+        complexCount: complexes.length,
+        productCount: products.length,
+        totalMolecules: enzymes.length + substrates.length + complexes.length * 2 + products.length,
+        vmax: params.vmax,
+        km: params.km,
+        temperature: params.temperature,
+        reactionRate,
+        theoreticalRate,
+        elapsedTime: elapsed,
+        simRunning,
+        lastResetTime,
+        conservationValid: enzymes.length + complexes.length === INITIAL_ENZYMES,
+        initialEnzymeCount: INITIAL_ENZYMES,
+        initialSubstrateCount: totalSubstratesEverAdded,
+        moleculePositions,
+        plotDataPoints: measuredPoints.map(p => ({ s: p.s, v: p.v }))
+      };
+    }
+
+    let lastFrameTime = performance.now();
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+
+      const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+      lastFrameTime = now;
+
+      const params = getParams();
+      const elapsed = simRunning ? (now - simStartTime) / 1000 : 0;
+      const kcat = params.vmax / INITIAL_ENZYMES;
+
+      for (const m of enzymes) applyBrownianAndBoundary(m, dt, params.temperature);
+      for (const m of substrates) applyBrownianAndBoundary(m, dt, params.temperature);
+      for (const m of complexes) applyBrownianAndBoundary(m, dt, params.temperature * 0.85);
+      for (const m of products) applyBrownianAndBoundary(m, dt, params.temperature * 1.05);
+
+      const sCount = substrates.length;
+      const bindBase = sCount / (params.km + sCount);
+      const dtFactor = dt * 2.0;
+      let bound = false;
+
+      for (let ei = enzymes.length - 1; ei >= 0 && !bound; ei--) {
+        const e = enzymes[ei];
+        for (let si = substrates.length - 1; si >= 0; si--) {
+          const s = substrates[si];
+          const dist = e.mesh.position.distanceTo(s.mesh.position);
+          if (dist < 1.0) {
+            const prob = Math.min(1, bindBase * dtFactor);
+            if (Math.random() < prob) {
+              bindEnzymeSubstrate(ei, si, kcat);
+              bound = true;
+              break;
+            }
+          }
+        }
+      }
+
+      for (let i = complexes.length - 1; i >= 0; i--) {
+        complexes[i].timer -= dt;
+        if (complexes[i].timer <= 0) convertComplex(i);
+      }
+
+      const rate = currentReactionRate(now);
+      recordMeasuredPoint(elapsed, substrates.length, rate);
+      updateStats(rate, elapsed);
+      drawPlot(params, substrates.length, rate);
+      updateState(elapsed);
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    vmaxSlider.addEventListener('input', updateLabels);
+    kmSlider.addEventListener('input', updateLabels);
+    tempSlider.addEventListener('input', updateLabels);
+
+    resetBtn.addEventListener('click', () => {
+      lastFrameTime = performance.now();
+      resetSimulation();
+    });
+
+    addSubstrateBtn.addEventListener('click', () => {
+      addSubstrates(10);
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    updateLabels();
+    spawnInitial();
+    updateState(0);
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

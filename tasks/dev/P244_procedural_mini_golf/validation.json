@@ -1,0 +1,1068 @@
+{
+  "task_id": "P244_procedural_mini_golf",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:49:48.393Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 4,
+      "total": 10,
+      "percent": 40
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 59,
+      "total": 59,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 40,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 59,
+    "total": 59,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "GolfBall",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "Hole",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "Ferrari",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "AimArrow",
+      "found": false
+    },
+    {
+      "id": "A5",
+      "name": "PowerBar",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "StrokesDisplay",
+      "found": false
+    },
+    {
+      "id": "A7",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "StatusMessage",
+      "found": false
+    },
+    {
+      "id": "A9",
+      "name": "CourseGround",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "NewCourseButton",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballPosition !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballPosition !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballVelocity !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballVelocity !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballMoving !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballMoving !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballPosition !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballPosition !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballVelocity !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballVelocity !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballMoving !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballMoving !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballPosition !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballPosition !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballVelocity !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballVelocity !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballMoving !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballMoving !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballPosition !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballPosition !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballVelocity !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballVelocity !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballMoving !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballMoving !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballPosition !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballPosition !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballVelocity !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballVelocity !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballMoving !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballMoving !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballPosition !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballPosition !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballVelocity !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballVelocity !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.ballMoving !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballMoving !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ballSpeed !== before.ballSpeed || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballSpeed === 'number' && !isNaN(window.__3D_STATE__.ballSpeed)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.strokes === 'number' && !isNaN(window.__3D_STATE__.strokes)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.ballMoving === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.ballMoving === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.holeComplete === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.holeComplete === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 4,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": false
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": false
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": false
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 52,
+      "total": 52
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 7,
+      "total": 7
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 208007
+}

@@ -1,0 +1,25 @@
+{
+  "id": "P75_css3d_molecules",
+  "title": "CSS3D Caffeine Molecule",
+  "domain": "molecular",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js's CSS3DRenderer to display a caffeine molecule: represent 24 atoms with CSS3DSprite (the elements may be div elements containing symbols), and represent chemical bonds with CSS3DObject (long, thin div elements); support clicking atoms to view an information panel and automatic rotation.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\nimport { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/addons/renderers/CSS3DRenderer.js';\n</script>\n\n[Structure]\n(1) Arrange 24 atoms according to caffeine's actual bonding structure (the C/H/N/O counts must match the molecular formula C8H10N4O2), together with the corresponding covalent bonds (the number of bonds and geometry only need to be reasonable; bondCount is the number of bond objects in the scene).\n(2) Atom labels: for example, \"C1\", \"N1\", etc., using the same naming scheme as __3D_STATE__.selectedAtom.\n(3) Clicking an atom: highlight it and update the information panel (element name, index, etc.); selectedAtom must be a string, and may be null or \"\" when no atom is selected.\n(4) id=\"autoRotate\": a checkbox that controls OrbitControls.autoRotate.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  atomCount: number,          // Always 24\n  bondCount: number,          // Number of bonds (provide the expected value in an implementation comment)\n  selectedAtom: string | null,\n  autoRotate: boolean,\n  moleculeName: string          // Always \"caffeine\" or \"Caffeine\"\n}\n\n[Evaluation Support (Required, for StateProbe)]\n(5) window.__STATEPROBE_selectAtom__(label: string | null): programmatically select an atom, equivalent to clicking it; pass null or an empty string to clear the selection.\n\nOutput a single HTML file that runs when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "three.js",
+    "CSS3DRenderer",
+    "molecule",
+    "caffeine",
+    "sprite"
+  ],
+  "estimated_human_time_minutes": 260,
+  "physics_constraints": [
+    "24 atoms CSS3DSprite bonds CSS3DObject",
+    "Caffeine connectivity approximate",
+    "__3D_STATE__ atomCount bondCount moleculeName"
+  ]
+}

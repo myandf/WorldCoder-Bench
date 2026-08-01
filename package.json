@@ -1,0 +1,17 @@
+{
+  "name": "worldcoder-bench-release",
+  "version": "0.2.0",
+  "description": "Streamlined WorldCoder-Bench public data and StateProbe evaluator",
+  "main": "code/evaluator/cli.mjs",
+  "scripts": {
+    "smoke": "node code/evaluator/cli.mjs --validate --split core",
+    "evaluate": "node code/evaluator/cli.mjs --split dev",
+    "validate:dev": "node scripts/validate_dev_references.mjs --resume --offline --timeout-ms 300000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "LicenseRef-WorldCoder-Bench-Research-Release-1.0",
+  "dependencies": {
+    "playwright": "1.58.2"
+  }
+}

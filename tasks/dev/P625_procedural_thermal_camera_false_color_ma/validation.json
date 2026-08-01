@@ -1,0 +1,1057 @@
+{
+  "task_id": "P625_procedural_thermal_camera_false_color_ma",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:44:58.378Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 6,
+      "total": 11,
+      "percent": 54.5
+    },
+    "sCov": {
+      "reached": 11,
+      "total": 11,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 11,
+      "total": 11,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 56,
+      "total": 56,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 54.5,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 56,
+    "total": 56,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 11,
+  "total": 11,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "ThermalPanel",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "MinTempSlider",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "MaxTempSlider",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "SensitivitySlider",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "ModeLabel",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "TempReadout",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "HotSphere",
+      "found": false
+    },
+    {
+      "id": "A8",
+      "name": "HumanBox",
+      "found": false
+    },
+    {
+      "id": "A9",
+      "name": "ColdCylinder",
+      "found": false
+    },
+    {
+      "id": "A10",
+      "name": "OverheatTorus",
+      "found": false
+    },
+    {
+      "id": "A11",
+      "name": "GroundPlane",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ !== 'undefined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ !== 'undefined'"
+        },
+        {
+          "expression": "window.__3D_STATE__.objectCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.objectCount === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'THERMAL'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'THERMAL'"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.sphere === 80",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.sphere === 80"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.box === 37",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.box === 37"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'RGB'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'RGB'"
+        },
+        {
+          "expression": "document.getElementById('mode-label').textContent.includes('RGB')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('mode-label').textContent.includes('RGB')"
+        },
+        {
+          "expression": "window.__3D_STATE__.objectCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.objectCount === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.ground === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.ground === 20"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'HYBRID'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'HYBRID'"
+        },
+        {
+          "expression": "document.getElementById('mode-label').textContent.includes('HYBRID')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('mode-label').textContent.includes('HYBRID')"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.cylinder === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.cylinder === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.torus === 120",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.torus === 120"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'THERMAL'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'THERMAL'"
+        },
+        {
+          "expression": "document.getElementById('mode-label').textContent.includes('THERMAL')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('mode-label').textContent.includes('THERMAL')"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.minTemp === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minTemp === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxTemp === 150",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxTemp === 150"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.minTemp === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minTemp === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxTemp === 150",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxTemp === 150"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.min !== undefined && !isNaN(window.__3D_STATE__.paletteRange.min)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.min !== undefined && !isNaN(window.__3D_STATE__.paletteRange.min)"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.max !== undefined && !isNaN(window.__3D_STATE__.paletteRange.max)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.max !== undefined && !isNaN(window.__3D_STATE__.paletteRange.max)"
+        },
+        {
+          "expression": "window.__3D_STATE__.sensitivity === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sensitivity === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sensitivity === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sensitivity === 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.min !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.min !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.max !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.max !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.minTemp === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minTemp === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.min !== window.__3D_STATE__.paletteRange.max",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.min !== window.__3D_STATE__.paletteRange.max"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.heatAnimationActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heatAnimationActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.temperatures.sphere)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.temperatures.sphere)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.temperatures.torus)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.temperatures.torus)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.heatAnimationActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heatAnimationActive === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.box === 37",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.box === 37"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.ground === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.ground === 20"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedObject !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedObject !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.selectedObject === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.selectedObject === 'string'"
+        },
+        {
+          "expression": "document.getElementById('temp-readout') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('temp-readout') !== null"
+        },
+        {
+          "expression": "document.getElementById('temp-readout').textContent.includes('Temp')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('temp-readout').textContent.includes('Temp')"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] !== undefined || window.__3D_STATE__.selectedObject !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] !== undefined || window.__3D_STATE__.selectedObject !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedObject !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedObject !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] === window.__beforeTemp + 5 || window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] === window.__beforeTemp + 5 || window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] >= -20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] >= -20"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200"
+        },
+        {
+          "expression": "document.getElementById('temp-readout').textContent.includes(String(window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject]))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('temp-readout').textContent.includes(String(window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject]))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T11",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.cooldownActive === true || window.__3D_STATE__.cooldownProgress >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cooldownActive === true || window.__3D_STATE__.cooldownProgress >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.cooldownProgress >= 0 && window.__3D_STATE__.cooldownProgress <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cooldownProgress >= 0 && window.__3D_STATE__.cooldownProgress <= 1.0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.cooldownProgress)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.cooldownProgress)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.cooldownActive === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.cooldownActive === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.ground >= -20 && window.__3D_STATE__.temperatures.ground <= 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.ground >= -20 && window.__3D_STATE__.temperatures.ground <= 200"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ !== 'undefined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ !== 'undefined'"
+        },
+        {
+          "expression": "window.__3D_STATE__.objectCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.objectCount === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'THERMAL'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'THERMAL'"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.sphere === 80",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.sphere === 80"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.box === 37",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.box === 37"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'RGB'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'RGB'"
+        },
+        {
+          "expression": "document.getElementById('mode-label').textContent.includes('RGB')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('mode-label').textContent.includes('RGB')"
+        },
+        {
+          "expression": "window.__3D_STATE__.objectCount === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.objectCount === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.ground === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.ground === 20"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'HYBRID'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'HYBRID'"
+        },
+        {
+          "expression": "document.getElementById('mode-label').textContent.includes('HYBRID')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('mode-label').textContent.includes('HYBRID')"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.cylinder === 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.cylinder === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.torus === 120",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.torus === 120"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'THERMAL'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'THERMAL'"
+        },
+        {
+          "expression": "document.getElementById('mode-label').textContent.includes('THERMAL')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('mode-label').textContent.includes('THERMAL')"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.minTemp === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minTemp === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxTemp === 150",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxTemp === 150"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.minTemp === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minTemp === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxTemp === 150",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxTemp === 150"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.min !== undefined && !isNaN(window.__3D_STATE__.paletteRange.min)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.min !== undefined && !isNaN(window.__3D_STATE__.paletteRange.min)"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.max !== undefined && !isNaN(window.__3D_STATE__.paletteRange.max)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.max !== undefined && !isNaN(window.__3D_STATE__.paletteRange.max)"
+        },
+        {
+          "expression": "window.__3D_STATE__.sensitivity === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sensitivity === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sensitivity === 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sensitivity === 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.min !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.min !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.max !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.max !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.minTemp === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.minTemp === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.paletteRange.min !== window.__3D_STATE__.paletteRange.max",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.paletteRange.min !== window.__3D_STATE__.paletteRange.max"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.heatAnimationActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heatAnimationActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.temperatures.sphere)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.temperatures.sphere)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.temperatures.torus)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.temperatures.torus)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.heatAnimationActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.heatAnimationActive === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.sphere >= 60 && window.__3D_STATE__.temperatures.sphere <= 120"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.torus >= 100 && window.__3D_STATE__.temperatures.torus <= 180"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.box === 37",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.box === 37"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.ground === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.ground === 20"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedObject !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedObject !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.selectedObject === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.selectedObject === 'string'"
+        },
+        {
+          "expression": "document.getElementById('temp-readout') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('temp-readout') !== null"
+        },
+        {
+          "expression": "document.getElementById('temp-readout').textContent.includes('Temp')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('temp-readout').textContent.includes('Temp')"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] !== undefined || window.__3D_STATE__.selectedObject !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] !== undefined || window.__3D_STATE__.selectedObject !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.selectedObject !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.selectedObject !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] === window.__beforeTemp + 5 || window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] === window.__beforeTemp + 5 || window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] >= -20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] >= -20"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject] <= 200"
+        },
+        {
+          "expression": "document.getElementById('temp-readout').textContent.includes(String(window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject]))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('temp-readout').textContent.includes(String(window.__3D_STATE__.temperatures[window.__3D_STATE__.selectedObject]))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T11",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.cooldownActive === true || window.__3D_STATE__.cooldownProgress >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cooldownActive === true || window.__3D_STATE__.cooldownProgress >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.cooldownProgress >= 0 && window.__3D_STATE__.cooldownProgress <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cooldownProgress >= 0 && window.__3D_STATE__.cooldownProgress <= 1.0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.cooldownProgress)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.cooldownProgress)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.cooldownActive === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.cooldownActive === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperatures.ground >= -20 && window.__3D_STATE__.temperatures.ground <= 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperatures.ground >= -20 && window.__3D_STATE__.temperatures.ground <= 200"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 6,
+    "total": 11,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": false
+      },
+      {
+        "id": "A8",
+        "pass": false
+      },
+      {
+        "id": "A9",
+        "pass": false
+      },
+      {
+        "id": "A10",
+        "pass": false
+      },
+      {
+        "id": "A11",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 11,
+    "total": 11
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 9,
+      "total": 9
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 47,
+      "total": 47
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 29236
+}

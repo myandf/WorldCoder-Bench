@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Toon Shader & State Management</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #ui-panel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 260px;
+            background: rgba(20, 20, 20, 0.85);
+            color: #f0f0f0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            border: 1px solid #444;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        #ui-panel h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .control-group {
+            margin-bottom: 12px;
+        }
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #ccc;
+        }
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+        }
+        select, input[type=color] {
+            width: 100%;
+            padding: 6px;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        input[type=color] {
+            height: 32px;
+            padding: 2px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .checkbox-group input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 8px;
+            background: #3a3a3a;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .buttons button:hover {
+            background: #4a4a4a;
+        }
+        .buttons button:active {
+            transform: scale(0.98);
+        }
+        #stateStatus {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: #4caf50;
+            padding: 5px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+        }
+    </style>
+    <!-- Import maps polyfill -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div id="ui-panel">
+        <h3>Toon Shader Controls</h3>
+        
+        <div class="control-group">
+            <label><span>Bands</span> <span id="bandsVal">4</span></label>
+            <input type="range" id="bands" min="2" max="8" step="1" value="4">
+        </div>
+
+        <div class="control-group">
+            <label><span>Specular</span> <span id="specVal">0.50</span></label>
+            <input type="range" id="specular" min="0" max="1" step="0.01" value="0.5">
+        </div>
+
+        <div class="control-group">
+            <label><span>Outline Thickness</span> <span id="outThickVal">0.030</span></label>
+            <input type="range" id="outlineThickness" min="0" max="0.1" step="0.005" value="0.03">
+        </div>
+
+        <label class="checkbox-group">
+            <input type="checkbox" id="outlinesEnabled" checked> Outlines Enabled
+        </label>
+
+        <div class="control-group">
+            <label>Active Object</label>
+            <select id="activeObject">
+                <option value="TorusKnot">TorusKnot</option>
+                <option value="Sphere">Sphere</option>
+                <option value="Cube">Cube</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>Object Color</label>
+            <input type="color" id="objectColor" value="#e53333">
+        </div>
+
+        <div class="buttons">
+            <button id="saveBtn">Save State</button>
+            <button id="loadBtn">Load State</button>
+            <button id="resetBtn">Reset Defaults</button>
+        </div>
+
+        <div id="stateStatus">Ready</div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- State Exposure Initialization ---
+        window.__3D_STATE__ = {
+            bands: 4,
+            specularStrength: 0.5,
+            outlineThickness: 0.03,
+            outlinesEnabled: true,
+            activeObject: 'TorusKnot',
+            objectColors: {},
+            cameraPosition: { x: 0, y: 0, z: 0 },
+            stateStatus: 'Ready',
+            savedStateExists: false,
+            objectCount: 0,
+            outlineObjectCount: 0,
+            frameCount: 0,
+            lightDirection: { x: 0, y: 0, z: 0 }
+        };
+
+        // --- Default State Definition ---
+        const defaultColorTorus = new THREE.Color(0.9, 0.2, 0.2).getHexString();
+        const defaultColorSphere = new THREE.Color(0.2, 0.7, 0.3).getHexString();
+        const defaultColorCube = new THREE.Color(0.3, 0.3, 0.9).getHexString();
+
+        const DEFAULT_STATE = {
+            bands: 4,
+            specularStrength: 0.5,
+            outlineThickness: 0.03,
+            outlinesEnabled: true,
+            activeObject: 'TorusKnot',
+            colors: {
+                TorusKnot: '#' + defaultColorTorus,
+                Sphere: '#' + defaultColorSphere,
+                Cube: '#' + defaultColorCube
+            },
+            cameraPosition: { x: 0, y: 3, z: 8 },
+            cameraTarget: { x: 0, y: 0, z: 0 }
+        };
+
+        let currentState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+        // --- Scene Setup ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x222222);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(currentState.cameraPosition.x, currentState.cameraPosition.y, currentState.cameraPosition.z);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.target.set(currentState.cameraTarget.x, currentState.cameraTarget.y, currentState.cameraTarget.z);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // --- Lights ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+
+        const lightDirection = new THREE.Vector3().copy(dirLight.position).normalize();
+
+        // --- Plane ---
+        const planeGeo = new THREE.PlaneGeometry(20, 20);
+        const planeMat = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.8 });
+        const plane = new THREE.Mesh(planeGeo, planeMat);
+        plane.rotation.x = -Math.PI / 2;
+        scene.add(plane);
+
+        // --- Shaders ---
+        const toonVertexShader = `
+            varying vec3 vNormal;
+            varying vec3 vViewPosition;
+            void main() {
+                vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+                vNormal = normalize(normalMatrix * normal);
+                vec4 mvPosition = viewMatrix * worldPosition;
+                vViewPosition = -mvPosition.xyz;
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+
+        const toonFragmentShader = `
+            uniform vec3 uBaseColor;
+            uniform vec3 uLightDirection;
+            uniform int uBands;
+            uniform float uSpecularStrength;
+
+            varying vec3 vNormal;
+            varying vec3 vViewPosition;
+
+            void main() {
+                vec3 normal = normalize(vNormal);
+                vec3 lightDir = normalize(uLightDirection);
+                vec3 viewDir = normalize(vViewPosition);
+
+                // Diffuse
+                float NdotL = max(dot(normal, lightDir), 0.0);
+                float bands = float(uBands);
+                float quantizedDiffuse = floor(NdotL * bands) / bands;
+                
+                // Add base ambient to prevent pitch black shadows
+                vec3 diffuse = uBaseColor * (quantizedDiffuse + 0.3);
+
+                // Specular
+                vec3 halfVector = normalize(lightDir + viewDir);
+                float NdotH = max(dot(normal, halfVector), 0.0);
+                float specular = pow(NdotH, 64.0);
+                float quantizedSpecular = step(0.5, specular) * uSpecularStrength;
+
+                vec3 finalColor = diffuse + vec3(quantizedSpecular);
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        const outlineVertexShader = `
+            uniform float uOutlineThickness;
+            void main() {
+                vec3 newPosition = position + normal * uOutlineThickness;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+            }
+        `;
+
+        const outlineFragmentShader = `
+            uniform vec3 uOutlineColor;
+            void main() {
+                gl_FragColor = vec4(uOutlineColor, 1.0);
+            }
+        `;
+
+        // --- Shared Uniforms ---
+        const toonUniforms = {
+            uLightDirection: { value: lightDirection },
+            uBands: { value: currentState.bands },
+            uSpecularStrength: { value: currentState.specularStrength }
+        };
+
+        const outlineUniforms = {
+            uOutlineThickness: { value: currentState.outlineThickness },
+            uOutlineColor: { value: new THREE.Color(0x000000) }
+        };
+
+        // --- Objects Setup ---
+        const objectsData = [
+            { name: 'TorusKnot', geo: new THREE.TorusKnotGeometry(0.7, 0.25, 128, 32), pos: [-3, 1.5, 0] },
+            { name: 'Sphere', geo: new THREE.SphereGeometry(1, 64, 64), pos: [0, 1.5, 0] },
+            { name: 'Cube', geo: new THREE.BoxGeometry(1.5, 1.5, 1.5, 10, 10, 10), pos: [3, 1.5, 0] } // Added segments for better outline normals
+        ];
+
+        const sceneObjects = {};
+
+        objectsData.forEach(data => {
+            // Main Toon Mesh
+            const mat = new THREE.ShaderMaterial({
+                vertexShader: toonVertexShader,
+                fragmentShader: toonFragmentShader,
+                uniforms: {
+                    uBaseColor: { value: new THREE.Color(currentState.colors[data.name]) },
+                    uLightDirection: toonUniforms.uLightDirection,
+                    uBands: toonUniforms.uBands,
+                    uSpecularStrength: toonUniforms.uSpecularStrength
+                }
+            });
+            const mesh = new THREE.Mesh(data.geo, mat);
+            mesh.position.set(...data.pos);
+            scene.add(mesh);
+
+            // Outline Mesh (Inverted Hull)
+            const outlineMat = new THREE.ShaderMaterial({
+                vertexShader: outlineVertexShader,
+                fragmentShader: outlineFragmentShader,
+                uniforms: outlineUniforms,
+                side: THREE.BackSide
+            });
+            const outlineMesh = new THREE.Mesh(data.geo, outlineMat);
+            mesh.add(outlineMesh); // Add as child so it follows position/rotation
+
+            sceneObjects[data.name] = { mesh, outline: outlineMesh, material: mat };
+        });
+
+        // --- Highlight Ring ---
+        const ringGeo = new THREE.RingGeometry(1.3, 1.5, 32);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
+        const highlightRing = new THREE.Mesh(ringGeo, ringMat);
+        highlightRing.rotation.x = -Math.PI / 2;
+        highlightRing.position.y = 0.02; // Slightly above plane
+        scene.add(highlightRing);
+
+        function updateHighlight() {
+            const targetMesh = sceneObjects[currentState.activeObject].mesh;
+            highlightRing.position.x = targetMesh.position.x;
+            highlightRing.position.z = targetMesh.position.z;
+        }
+        updateHighlight();
+
+        // --- UI & State Management ---
+        const ui = {
+            bands: document.getElementById('bands'),
+            bandsVal: document.getElementById('bandsVal'),
+            specular: document.getElementById('specular'),
+            specVal: document.getElementById('specVal'),
+            outlineThickness: document.getElementById('outlineThickness'),
+            outThickVal: document.getElementById('outThickVal'),
+            outlinesEnabled: document.getElementById('outlinesEnabled'),
+            activeObject: document.getElementById('activeObject'),
+            objectColor: document.getElementById('objectColor'),
+            status: document.getElementById('stateStatus')
+        };
+
+        function setStatus(msg) {
+            ui.status.innerText = msg;
+            if(msg !== 'Ready') {
+                setTimeout(() => {
+                    if(ui.status.innerText === msg) ui.status.innerText = 'Ready';
+                }, 3000);
+            }
+        }
+
+        function updateUIFromState() {
+            ui.bands.value = currentState.bands;
+            ui.bandsVal.innerText = currentState.bands;
+            
+            ui.specular.value = currentState.specularStrength;
+            ui.specVal.innerText = parseFloat(currentState.specularStrength).toFixed(2);
+            
+            ui.outlineThickness.value = currentState.outlineThickness;
+            ui.outThickVal.innerText = parseFloat(currentState.outlineThickness).toFixed(3);
+            
+            ui.outlinesEnabled.checked = currentState.outlinesEnabled;
+            ui.activeObject.value = currentState.activeObject;
+            ui.objectColor.value = currentState.colors[currentState.activeObject];
+        }
+
+        function applyStateToScene() {
+            toonUniforms.uBands.value = currentState.bands;
+            toonUniforms.uSpecularStrength.value = currentState.specularStrength;
+            outlineUniforms.uOutlineThickness.value = currentState.outlineThickness;
+
+            sceneObjects.TorusKnot.material.uniforms.uBaseColor.value.set(currentState.colors.TorusKnot);
+            sceneObjects.Sphere.material.uniforms.uBaseColor.value.set(currentState.colors.Sphere);
+            sceneObjects.Cube.material.uniforms.uBaseColor.value.set(currentState.colors.Cube);
+
+            Object.values(sceneObjects).forEach(obj => {
+                obj.outline.visible = currentState.outlinesEnabled;
+            });
+
+            updateHighlight();
+        }
+
+        function setActiveObject(name) {
+            currentState.activeObject = name;
+            ui.activeObject.value = name;
+            ui.objectColor.value = currentState.colors[name];
+            updateHighlight();
+        }
+
+        // UI Event Listeners
+        ui.bands.addEventListener('input', (e) => {
+            currentState.bands = parseInt(e.target.value);
+            ui.bandsVal.innerText = currentState.bands;
+            toonUniforms.uBands.value = currentState.bands;
+        });
+
+        ui.specular.addEventListener('input', (e) => {
+            currentState.specularStrength = parseFloat(e.target.value);
+            ui.specVal.innerText = currentState.specularStrength.toFixed(2);
+            toonUniforms.uSpecularStrength.value = currentState.specularStrength;
+        });
+
+        ui.outlineThickness.addEventListener('input', (e) => {
+            currentState.outlineThickness = parseFloat(e.target.value);
+            ui.outThickVal.innerText = currentState.outlineThickness.toFixed(3);
+            outlineUniforms.uOutlineThickness.value = currentState.outlineThickness;
+        });
+
+        ui.outlinesEnabled.addEventListener('change', (e) => {
+            currentState.outlinesEnabled = e.target.checked;
+            applyStateToScene();
+        });
+
+        ui.activeObject.addEventListener('change', (e) => {
+            setActiveObject(e.target.value);
+        });
+
+        ui.objectColor.addEventListener('input', (e) => {
+            const color = e.target.value;
+            currentState.colors[currentState.activeObject] = color;
+            sceneObjects[currentState.activeObject].material.uniforms.uBaseColor.value.set(color);
+        });
+
+        // Save / Load / Reset
+        document.getElementById('saveBtn').addEventListener('click', saveState);
+        document.getElementById('loadBtn').addEventListener('click', loadState);
+        document.getElementById('resetBtn').addEventListener('click', resetState);
+
+        function saveState() {
+            currentState.cameraPosition = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+            currentState.cameraTarget = { x: controls.target.x, y: controls.target.y, z: controls.target.z };
+            localStorage.setItem('toonShaderState', JSON.stringify(currentState));
+            setStatus('Saved');
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('toonShaderState');
+            if (saved) {
+                currentState = JSON.parse(saved);
+                updateUIFromState();
+                applyStateToScene();
+                camera.position.set(currentState.cameraPosition.x, currentState.cameraPosition.y, currentState.cameraPosition.z);
+                controls.target.set(currentState.cameraTarget.x, currentState.cameraTarget.y, currentState.cameraTarget.z);
+                controls.update();
+                setStatus('Loaded');
+            }
+        }
+
+        function resetState() {
+            currentState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+            updateUIFromState();
+            applyStateToScene();
+            camera.position.set(currentState.cameraPosition.x, currentState.cameraPosition.y, currentState.cameraPosition.z);
+            controls.target.set(currentState.cameraTarget.x, currentState.cameraTarget.y, currentState.cameraTarget.z);
+            controls.update();
+            setStatus('Ready');
+        }
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            // Ignore if typing in an input (though we only have color/range/checkbox)
+            if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+            
+            const key = e.key.toUpperCase();
+            
+            if (key === '1') setActiveObject('TorusKnot');
+            if (key === '2') setActiveObject('Sphere');
+            if (key === '3') setActiveObject('Cube');
+            if (key === 'S') saveState();
+            if (key === 'L') loadState();
+            if (key === 'R') resetState();
+            
+            if (key === '+' || key === '=') {
+                currentState.bands = Math.min(8, currentState.bands + 1);
+                updateUIFromState();
+                applyStateToScene();
+            }
+            if (key === '-') {
+                currentState.bands = Math.max(2, currentState.bands - 1);
+                updateUIFromState();
+                applyStateToScene();
+            }
+            if (key === 'O') {
+                currentState.outlinesEnabled = !currentState.outlinesEnabled;
+                updateUIFromState();
+                applyStateToScene();
+            }
+        });
+
+        // Window Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- Animation Loop & State Exposure ---
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Optional: slowly rotate objects for better view of shading
+            sceneObjects.TorusKnot.mesh.rotation.x += 0.005;
+            sceneObjects.TorusKnot.mesh.rotation.y += 0.01;
+            sceneObjects.Cube.mesh.rotation.x += 0.005;
+            sceneObjects.Cube.mesh.rotation.y += 0.01;
+
+            controls.update();
+            renderer.render(scene, camera);
+
+            // Update exposed state
+            window.__3D_STATE__.bands = currentState.bands;
+            window.__3D_STATE__.specularStrength = currentState.specularStrength;
+            window.__3D_STATE__.outlineThickness = currentState.outlineThickness;
+            window.__3D_STATE__.outlinesEnabled = currentState.outlinesEnabled;
+            window.__3D_STATE__.activeObject = currentState.activeObject;
+            window.__3D_STATE__.objectColors = { ...currentState.colors };
+            window.__3D_STATE__.cameraPosition = {
+                x: Math.round(camera.position.x * 100) / 100,
+                y: Math.round(camera.position.y * 100) / 100,
+                z: Math.round(camera.position.z * 100) / 100
+            };
+            window.__3D_STATE__.stateStatus = ui.status.innerText;
+            window.__3D_STATE__.savedStateExists = !!localStorage.getItem('toonShaderState');
+            window.__3D_STATE__.objectCount = 3;
+            window.__3D_STATE__.outlineObjectCount = currentState.outlinesEnabled ? 3 : 0;
+            window.__3D_STATE__.frameCount++;
+            window.__3D_STATE__.lightDirection = {
+                x: lightDirection.x,
+                y: lightDirection.y,
+                z: lightDirection.z
+            };
+        }
+
+        // Init
+        updateUIFromState();
+        applyStateToScene();
+        animate();
+
+    </script>
+</body>
+</html>

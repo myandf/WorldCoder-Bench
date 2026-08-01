@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Anisotropic Brushed Metal - Three.js</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111111;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #f0f0f0;
+    }
+    #app {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    canvas.webgl {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #hud {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 280px;
+      padding: 14px 14px 12px;
+      background: rgba(20, 20, 20, 0.78);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      z-index: 10;
+      user-select: none;
+    }
+    #hud h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .control {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .control label {
+      grid-column: 1 / 3;
+      font-size: 13px;
+      color: #ddd;
+    }
+    .control input[type="range"] {
+      width: 100%;
+      grid-column: 1 / 2;
+    }
+    .value {
+      font-size: 12px;
+      min-width: 44px;
+      text-align: right;
+      color: #aaa;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    .row input[type="color"] {
+      width: 48px;
+      height: 30px;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    .buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    button {
+      background: #2b2b2b;
+      color: #f2f2f2;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover {
+      background: #3a3a3a;
+    }
+    #angleDisplay {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #d7d7d7;
+    }
+    #directionWidget {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(20,20,20,0.72);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      z-index: 11;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    #hint {
+      position: absolute;
+      right: 20px;
+      bottom: 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      background: rgba(20,20,20,0.55);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 10px;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="hud">
+      <h2>Brushed Metal Controls</h2>
+
+      <div class="control">
+        <label for="anisotropySlider">Anisotropy Strength</label>
+        <input id="anisotropySlider" type="range" min="0" max="1" step="0.01" value="0.7" />
+        <div class="value" id="anisotropyValue">0.70</div>
+      </div>
+
+      <div class="control">
+        <label for="roughnessSlider">Roughness</label>
+        <input id="roughnessSlider" type="range" min="0" max="1" step="0.01" value="0.35" />
+        <div class="value" id="roughnessValue">0.35</div>
+      </div>
+
+      <div class="control">
+        <label for="metalnessSlider">Metalness</label>
+        <input id="metalnessSlider" type="range" min="0" max="1" step="0.01" value="1.0" />
+        <div class="value" id="metalnessValue">1.00</div>
+      </div>
+
+      <div class="control">
+        <label for="clearcoatSlider">Clearcoat</label>
+        <input id="clearcoatSlider" type="range" min="0" max="1" step="0.01" value="0.1" />
+        <div class="value" id="clearcoatValue">0.10</div>
+      </div>
+
+      <div class="row">
+        <label for="colorPicker">Metal Color</label>
+        <input id="colorPicker" type="color" value="#bbbbbb" />
+      </div>
+
+      <div class="row">
+        <input id="autoRotateCheckbox" type="checkbox" checked />
+        <label for="autoRotateCheckbox">Auto Rotate</label>
+      </div>
+
+      <div class="buttons">
+        <button id="saveBtn">Save State</button>
+        <button id="loadBtn">Load State</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+
+      <div id="angleDisplay">Anisotropy Angle: 0.0°</div>
+    </div>
+
+    <canvas id="directionWidget" width="100" height="100"></canvas>
+    <div id="hint">Drag widget or press A / D to rotate anisotropy</div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+    const DEFAULTS = {
+      anisotropy: 0.7,
+      anisotropyRotation: 0.0,
+      roughness: 0.35,
+      metalness: 1.0,
+      clearcoat: 0.1,
+      colorHex: '#bbbbbb',
+      autoRotate: true
+    };
+
+    const stateMeta = {
+      lastSavedAt: null,
+      frameCount: 0
+    };
+
+    const app = document.getElementById('app');
+
+    const anisotropySlider = document.getElementById('anisotropySlider');
+    const roughnessSlider = document.getElementById('roughnessSlider');
+    const metalnessSlider = document.getElementById('metalnessSlider');
+    const clearcoatSlider = document.getElementById('clearcoatSlider');
+    const colorPicker = document.getElementById('colorPicker');
+    const autoRotateCheckbox = document.getElementById('autoRotateCheckbox');
+    const saveBtn = document.getElementById('saveBtn');
+    const loadBtn = document.getElementById('loadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const angleDisplay = document.getElementById('angleDisplay');
+
+    const anisotropyValue = document.getElementById('anisotropyValue');
+    const roughnessValue = document.getElementById('roughnessValue');
+    const metalnessValue = document.getElementById('metalnessValue');
+    const clearcoatValue = document.getElementById('clearcoatValue');
+
+    const widgetCanvas = document.getElementById('directionWidget');
+    const widgetCtx = widgetCanvas.getContext('2d');
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    renderer.domElement.className = 'webgl';
+    app.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x111111);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 4);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0, 0);
+
+    const dir1 = new THREE.DirectionalLight(0xffffff, 1.5);
+    dir1.position.set(5, 5, 5);
+    scene.add(dir1);
+
+    const dir2 = new THREE.DirectionalLight(0xffffff, 0.8);
+    dir2.position.set(-3, 2, -2);
+    scene.add(dir2);
+
+    const ambient = new THREE.AmbientLight(0x333333);
+    scene.add(ambient);
+
+    function createProceduralEquirectTexture() {
+      const width = 256;
+      const height = 128;
+      const data = new Float32Array(width * height * 4);
+
+      function setPixel(x, y, r, g, b, a = 1) {
+        const i = (y * width + x) * 4;
+        data[i] = r;
+        data[i + 1] = g;
+        data[i + 2] = b;
+        data[i + 3] = a;
+      }
+
+      for (let y = 0; y < height; y++) {
+        const v = y / (height - 1);
+        for (let x = 0; x < width; x++) {
+          const u = x / (width - 1);
+
+          const skyTop = new THREE.Color(1.8, 1.9, 2.2);
+          const horizon = new THREE.Color(0.7, 0.75, 0.85);
+          const ground = new THREE.Color(0.12, 0.12, 0.14);
+
+          let col = new THREE.Color();
+          if (v < 0.55) {
+            const t = v / 0.55;
+            col.copy(skyTop).lerp(horizon, t);
+          } else {
+            const t = (v - 0.55) / 0.45;
+            col.copy(horizon).lerp(ground, t);
+          }
+
+          const stripe1 = Math.exp(-Math.pow((u - 0.25) / 0.035, 2)) * 4.0;
+          const stripe2 = Math.exp(-Math.pow((u - 0.72) / 0.05, 2)) * 2.8;
+          const overhead = Math.exp(-Math.pow((v - 0.18) / 0.08, 2)) * 1.4;
+          const sideTint = new THREE.Color(0.95, 0.98, 1.05).multiplyScalar(stripe1 + stripe2 + overhead * 0.3);
+
+          col.add(sideTint);
+
+          const warmPanel = Math.exp(-Math.pow((u - 0.52) / 0.09, 2) - Math.pow((v - 0.28) / 0.08, 2)) * 0.8;
+          col.add(new THREE.Color(1.0, 0.92, 0.82).multiplyScalar(warmPanel));
+
+          setPixel(x, y, col.r, col.g, col.b, 1);
+        }
+      }
+
+      const tex = new THREE.DataTexture(data, width, height, THREE.RGBAFormat, THREE.FloatType);
+      tex.mapping = THREE.EquirectangularReflectionMapping;
+      tex.needsUpdate = true;
+      tex.magFilter = THREE.LinearFilter;
+      tex.minFilter = THREE.LinearFilter;
+      tex.wrapS = THREE.ClampToEdgeWrapping;
+      tex.wrapT = THREE.ClampToEdgeWrapping;
+      tex.colorSpace = THREE.LinearSRGBColorSpace;
+      return tex;
+    }
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    pmrem.compileEquirectangularShader();
+
+    const equirectTex = createProceduralEquirectTexture();
+    const envRT = pmrem.fromEquirectangular(equirectTex);
+    const envMap = envRT.texture;
+    scene.environment = envMap;
+
+    const geometry = new THREE.TorusKnotGeometry(1.0, 0.35, 128, 32, 2, 3);
+    const material = new THREE.MeshPhysicalMaterial({
+      color: DEFAULTS.colorHex,
+      metalness: DEFAULTS.metalness,
+      roughness: DEFAULTS.roughness,
+      anisotropy: DEFAULTS.anisotropy,
+      anisotropyRotation: DEFAULTS.anisotropyRotation,
+      clearcoat: DEFAULTS.clearcoat,
+      clearcoatRoughness: 0.2,
+      envMap: envMap,
+      envMapIntensity: 1.4
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let autoRotate = DEFAULTS.autoRotate;
+
+    function normalizeAngle(angle) {
+      const twoPi = Math.PI * 2;
+      angle = angle % twoPi;
+      if (angle < 0) angle += twoPi;
+      return angle;
+    }
+
+    function radToDeg(rad) {
+      return rad * 180 / Math.PI;
+    }
+
+    function updateValueLabels() {
+      anisotropyValue.textContent = Number(anisotropySlider.value).toFixed(2);
+      roughnessValue.textContent = Number(roughnessSlider.value).toFixed(2);
+      metalnessValue.textContent = Number(metalnessSlider.value).toFixed(2);
+      clearcoatValue.textContent = Number(clearcoatSlider.value).toFixed(2);
+      angleDisplay.textContent = `Anisotropy Angle: ${radToDeg(material.anisotropyRotation).toFixed(1)}°`;
+    }
+
+    function drawWidget() {
+      const ctx = widgetCtx;
+      const w = widgetCanvas.width;
+      const h = widgetCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const r = 36;
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.fillStyle = 'rgba(24,24,24,0.9)';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+
+      for (let i = 0; i < 8; i++) {
+        const a = i / 8 * Math.PI * 2;
+        const x1 = cx + Math.cos(a) * (r - 4);
+        const y1 = cy + Math.sin(a) * (r - 4);
+        const x2 = cx + Math.cos(a) * (r + 4);
+        const y2 = cy + Math.sin(a) * (r + 4);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      const angle = material.anisotropyRotation;
+      const lx = cx + Math.cos(angle) * (r - 8);
+      const ly = cy + Math.sin(angle) * (r - 8);
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(lx, ly);
+      ctx.strokeStyle = '#6ec1ff';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(lx, ly, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#6ec1ff';
+      ctx.fill();
+    }
+
+    function applyStateToMaterialAndUI(state) {
+      material.anisotropy = THREE.MathUtils.clamp(Number(state.anisotropy), 0, 1);
+      material.anisotropyRotation = normalizeAngle(Number(state.anisotropyRotation));
+      material.roughness = THREE.MathUtils.clamp(Number(state.roughness), 0, 1);
+      material.metalness = THREE.MathUtils.clamp(Number(state.metalness), 0, 1);
+      material.clearcoat = THREE.MathUtils.clamp(Number(state.clearcoat), 0, 1);
+      material.color.set(state.colorHex || DEFAULTS.colorHex);
+      autoRotate = !!state.autoRotate;
+      material.needsUpdate = true;
+
+      anisotropySlider.value = material.anisotropy.toFixed(2);
+      roughnessSlider.value = material.roughness.toFixed(2);
+      metalnessSlider.value = material.metalness.toFixed(2);
+      clearcoatSlider.value = material.clearcoat.toFixed(2);
+      colorPicker.value = `#${material.color.getHexString()}`;
+      autoRotateCheckbox.checked = autoRotate;
+
+      updateValueLabels();
+      drawWidget();
+    }
+
+    function getCurrentState() {
+      return {
+        anisotropy: material.anisotropy,
+        anisotropyRotation: material.anisotropyRotation,
+        roughness: material.roughness,
+        metalness: material.metalness,
+        clearcoat: material.clearcoat,
+        colorHex: `#${material.color.getHexString()}`,
+        autoRotate: autoRotate,
+        savedAt: new Date().toISOString()
+      };
+    }
+
+    function resetToDefaults() {
+      stateMeta.lastSavedAt = null;
+      applyStateToMaterialAndUI(DEFAULTS);
+    }
+
+    anisotropySlider.addEventListener('input', () => {
+      material.anisotropy = parseFloat(anisotropySlider.value);
+      updateValueLabels();
+    });
+
+    roughnessSlider.addEventListener('input', () => {
+      material.roughness = parseFloat(roughnessSlider.value);
+      updateValueLabels();
+    });
+
+    metalnessSlider.addEventListener('input', () => {
+      material.metalness = parseFloat(metalnessSlider.value);
+      updateValueLabels();
+    });
+
+    clearcoatSlider.addEventListener('input', () => {
+      material.clearcoat = parseFloat(clearcoatSlider.value);
+      updateValueLabels();
+    });
+
+    colorPicker.addEventListener('input', () => {
+      material.color.set(colorPicker.value);
+      updateValueLabels();
+    });
+
+    autoRotateCheckbox.addEventListener('change', () => {
+      autoRotate = autoRotateCheckbox.checked;
+      updateValueLabels();
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const saved = getCurrentState();
+      localStorage.setItem('brushedMetalState', JSON.stringify(saved));
+      stateMeta.lastSavedAt = saved.savedAt;
+    });
+
+    loadBtn.addEventListener('click', () => {
+      const raw = localStorage.getItem('brushedMetalState');
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        applyStateToMaterialAndUI({
+          anisotropy: parsed.anisotropy ?? DEFAULTS.anisotropy,
+          anisotropyRotation: parsed.anisotropyRotation ?? DEFAULTS.anisotropyRotation,
+          roughness: parsed.roughness ?? DEFAULTS.roughness,
+          metalness: parsed.metalness ?? DEFAULTS.metalness,
+          clearcoat: parsed.clearcoat ?? DEFAULTS.clearcoat,
+          colorHex: parsed.colorHex ?? DEFAULTS.colorHex,
+          autoRotate: parsed.autoRotate ?? DEFAULTS.autoRotate
+        });
+        stateMeta.lastSavedAt = parsed.savedAt ?? null;
+      } catch (e) {
+        console.warn('Failed to load saved state', e);
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      resetToDefaults();
+    });
+
+    let widgetDragging = false;
+
+    function setAngleFromPointer(clientX, clientY) {
+      const rect = widgetCanvas.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      const dx = x - rect.width / 2;
+      const dy = y - rect.height / 2;
+      const angle = Math.atan2(dy, dx);
+      material.anisotropyRotation = normalizeAngle(angle);
+      updateValueLabels();
+      drawWidget();
+    }
+
+    widgetCanvas.addEventListener('pointerdown', (e) => {
+      widgetDragging = true;
+      widgetCanvas.setPointerCapture(e.pointerId);
+      setAngleFromPointer(e.clientX, e.clientY);
+    });
+
+    widgetCanvas.addEventListener('pointermove', (e) => {
+      if (!widgetDragging) return;
+      setAngleFromPointer(e.clientX, e.clientY);
+    });
+
+    widgetCanvas.addEventListener('pointerup', () => {
+      widgetDragging = false;
+    });
+
+    widgetCanvas.addEventListener('pointercancel', () => {
+      widgetDragging = false;
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+      if (e.key === 'a' || e.key === 'A') {
+        material.anisotropyRotation = normalizeAngle(material.anisotropyRotation - 0.05);
+        updateValueLabels();
+        drawWidget();
+      } else if (e.key === 'd' || e.key === 'D') {
+        material.anisotropyRotation = normalizeAngle(material.anisotropyRotation + 0.05);
+        updateValueLabels();
+        drawWidget();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    window.__3D_STATE__ = {};
+
+    function updateExposedState() {
+      const a = material.anisotropy;
+      const ar = material.anisotropyRotation;
+      const r = material.roughness;
+      const m = material.metalness;
+      const c = material.clearcoat;
+
+      window.__3D_STATE__ = {
+        anisotropy: a,
+        anisotropyRotation: ar,
+        anisotropyRotationDeg: radToDeg(ar),
+        roughness: r,
+        metalness: m,
+        clearcoat: c,
+        colorHex: `#${material.color.getHexString()}`,
+        autoRotate: autoRotate,
+        objectRotationY: mesh.rotation.y,
+        meshExists: !!mesh && scene.children.includes(mesh),
+        materialType: material.type,
+        envMapAssigned: material.envMap !== null,
+        savedStateExists: localStorage.getItem('brushedMetalState') !== null,
+        lastSavedAt: stateMeta.lastSavedAt,
+        sliderAnisotropyValue: parseFloat(anisotropySlider.value),
+        sliderRoughnessValue: parseFloat(roughnessSlider.value),
+        frameCount: stateMeta.frameCount,
+        isNaNFree: ![a, ar, r, m, c].some(v => Number.isNaN(v))
+      };
+    }
+
+    applyStateToMaterialAndUI(DEFAULTS);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      stateMeta.frameCount++;
+
+      if (autoRotate) {
+        mesh.rotation.y += 0.003;
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+      updateExposedState();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Backpack Feature Explorer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(to bottom, #1a1a2e, #16213e);
+      color: #ffffff;
+    }
+
+    body.light {
+      background: linear-gradient(to bottom, #f0f0f0, #dce7ff);
+      color: #121212;
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .topControls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4d96ff, #7b61ff);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #themeToggleBtn {
+      background: linear-gradient(135deg, #ffd93d, #ff8c42);
+      color: #111;
+    }
+
+    .panel {
+      position: fixed;
+      z-index: 20;
+      width: min(360px, calc(100vw - 32px));
+      border-radius: 18px;
+      padding: 20px;
+      background: rgba(12, 18, 38, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.38);
+      backdrop-filter: blur(14px);
+      color: #ffffff;
+    }
+
+    body.light .panel {
+      background: rgba(255, 255, 255, 0.88);
+      border-color: rgba(0, 0, 0, 0.12);
+      color: #111111;
+    }
+
+    #featurePanel {
+      left: 24px;
+      bottom: 24px;
+      display: none;
+    }
+
+    #quizPanel {
+      right: 24px;
+      top: 78px;
+      display: none;
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin: 0 0 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .panel p {
+      margin: 0 0 14px;
+      line-height: 1.45;
+      opacity: 0.92;
+    }
+
+    .meta {
+      font-size: 13px;
+      opacity: 0.75;
+      margin-bottom: 12px;
+    }
+
+    .choices {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .choiceBtn {
+      width: 100%;
+      border-radius: 12px;
+      text-align: left;
+      background: rgba(77, 150, 255, 0.95);
+      color: #fff;
+      box-shadow: none;
+    }
+
+    .choiceBtn.correct {
+      background: #36b96f;
+    }
+
+    .choiceBtn.wrong {
+      background: #e74c5b;
+    }
+
+    .smallNote {
+      position: fixed;
+      left: 16px;
+      top: 16px;
+      z-index: 10;
+      max-width: 320px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      color: rgba(255,255,255,0.82);
+      background: rgba(0,0,0,0.18);
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    body.light .smallNote {
+      color: rgba(0,0,0,0.72);
+      background: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div class="smallNote">
+    Click glowing hotspots to explore backpack features. Drag to orbit.
+  </div>
+
+  <div class="topControls">
+    <button id="themeToggleBtn">Dark/Light</button>
+    <button id="startQuizBtn">Start Quiz</button>
+  </div>
+
+  <div id="featurePanel" class="panel">
+    <h2 id="featureTitle">Feature</h2>
+    <p id="featureDescription">Description</p>
+    <button id="closeFeatureBtn">Close</button>
+  </div>
+
+  <div id="quizPanel" class="panel">
+    <h3 id="quizTitle">Feature Quiz</h3>
+    <div id="quizMeta" class="meta"></div>
+    <p id="quizQuestion"></p>
+    <div id="quizChoices" class="choices"></div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const app = document.getElementById('app');
+    const featurePanel = document.getElementById('featurePanel');
+    const featureTitle = document.getElementById('featureTitle');
+    const featureDescription = document.getElementById('featureDescription');
+    const closeFeatureBtn = document.getElementById('closeFeatureBtn');
+    const startQuizBtn = document.getElementById('startQuizBtn');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const quizPanel = document.getElementById('quizPanel');
+    const quizTitle = document.getElementById('quizTitle');
+    const quizMeta = document.getElementById('quizMeta');
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizChoices = document.getElementById('quizChoices');
+
+    const defaultCameraPosition = new THREE.Vector3(0, 1.5, 4);
+    const defaultTarget = new THREE.Vector3(0, 0.9, 0);
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+      55,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
+    camera.position.copy(defaultCameraPosition);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.setClearColor(0x000000, 0);
+    app.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.copy(defaultTarget);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(3, 5, 3);
+    scene.add(directionalLight);
+
+    const groundGeometry = new THREE.CircleGeometry(2, 96);
+    const groundMaterial = new THREE.MeshBasicMaterial({
+      color: 0x7da7ff,
+      transparent: true,
+      opacity: 0.12,
+      side: THREE.DoubleSide
+    });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.02;
+    scene.add(ground);
+
+    const modelRoot = new THREE.Group();
+    scene.add(modelRoot);
+
+    const fallbackGeometry = new THREE.CapsuleGeometry(0.45, 1.15, 8, 18);
+    const fallbackMaterial = new THREE.MeshStandardMaterial({
+      color: 0x2a6fff,
+      metalness: 0.35,
+      roughness: 0.38
+    });
+    const fallbackMesh = new THREE.Mesh(fallbackGeometry, fallbackMaterial);
+    fallbackMesh.position.y = 0.85;
+
+    const loader = new GLTFLoader();
+
+    let modelLoaded = false;
+    let autoRotateEnabled = true;
+    let activeHotspot = null;
+    let cameraAnimation = null;
+    let currentTheme = 'dark';
+    let highlightedHotspotName = null;
+
+    const featureDescriptions = {
+      'Ergonomic Straps': 'Adaptive comfort straps automatically adjust tension to balance weight and reduce shoulder fatigue.',
+      'Solar Panel': 'A flexible high-efficiency solar panel helps recharge devices and onboard smart systems while you travel.',
+      'Hidden Pocket': 'A concealed quick-access compartment protects valuables with a smart anti-theft layout.',
+      'Water Bottle Holder': 'An expandable side holder keeps hydration secure and easy to reach during any mission.',
+      'LED Safety Light': 'A bright programmable LED safety light improves visibility during night walks and commutes.'
+    };
+
+    const features = [
+      { name: 'Ergonomic Straps', position: new THREE.Vector3(-0.5, 1.2, 0.3), color: '#ff6b6b' },
+      { name: 'Solar Panel', position: new THREE.Vector3(0, 1.8, -0.2), color: '#ffd93d' },
+      { name: 'Hidden Pocket', position: new THREE.Vector3(0.5, 0.8, 0.4), color: '#6bcb77' },
+      { name: 'Water Bottle Holder', position: new THREE.Vector3(-0.6, 0.5, 0.3), color: '#4d96ff' },
+      { name: 'LED Safety Light', position: new THREE.Vector3(0, 0.3, 0.5), color: '#ff6fff' }
+    ];
+
+    const hotspotMeshes = [];
+    const hotspotByName = new Map();
+
+    function createHotspots() {
+      features.forEach((feature) => {
+        const color = new THREE.Color(feature.color);
+        const geometry = new THREE.SphereGeometry(0.08, 24, 24);
+        const material = new THREE.MeshStandardMaterial({
+          color,
+          emissive: color,
+          emissiveIntensity: 1.4,
+          metalness: 0.15,
+          roughness: 0.25
+        });
+        const sphere = new THREE.Mesh(geometry, material);
+        sphere.position.copy(feature.position);
+        sphere.userData.feature = feature;
+        sphere.userData.baseScale = 1;
+        sphere.userData.pulseOffset = Math.random() * Math.PI * 2;
+        scene.add(sphere);
+
+        const glowGeometry = new THREE.SphereGeometry(0.12, 24, 24);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity: 0.18,
+          depthWrite: false
+        });
+        const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+        sphere.add(glow);
+
+        hotspotMeshes.push(sphere);
+        hotspotByName.set(feature.name, sphere);
+      });
+    }
+
+    createHotspots();
+
+    loader.load(
+      'RobotExpressive.glb',
+      (gltf) => {
+        const object = gltf.scene;
+        const box = new THREE.Box3().setFromObject(object);
+        const size = new THREE.Vector3();
+        const center = new THREE.Vector3();
+        box.getSize(size);
+        box.getCenter(center);
+
+        object.position.sub(center);
+
+        const maxDim = Math.max(size.x, size.y, size.z) || 1;
+        const scale = 2 / maxDim;
+        object.scale.setScalar(scale);
+
+        const scaledBox = new THREE.Box3().setFromObject(object);
+        const scaledCenter = new THREE.Vector3();
+        scaledBox.getCenter(scaledCenter);
+        object.position.sub(scaledCenter);
+
+        modelRoot.add(object);
+        modelLoaded = true;
+      },
+      undefined,
+      () => {
+        modelRoot.add(fallbackMesh);
+        modelLoaded = true;
+      }
+    );
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    function setPointerFromEvent(event) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    }
+
+    function animateCameraTo(position, target, frames = 60, onComplete = null) {
+      cameraAnimation = {
+        startPosition: camera.position.clone(),
+        endPosition: position.clone(),
+        startTarget: controls.target.clone(),
+        endTarget: target.clone(),
+        frame: 0,
+        frames,
+        onComplete
+      };
+      controls.enabled = false;
+    }
+
+    function focusHotspot(feature) {
+      autoRotateEnabled = false;
+      activeHotspot = feature.name;
+      highlightedHotspotName = null;
+
+      featureTitle.textContent = feature.name;
+      featureDescription.textContent = featureDescriptions[feature.name] || '';
+      featurePanel.style.display = 'block';
+
+      const direction = camera.position.clone().sub(feature.position).normalize();
+      if (direction.lengthSq() === 0) direction.set(0, 0.35, 1).normalize();
+
+      const endPosition = feature.position.clone().add(direction.multiplyScalar(1.5));
+      endPosition.y += 0.15;
+
+      animateCameraTo(endPosition, feature.position, 60, () => {
+        controls.enabled = true;
+      });
+    }
+
+    renderer.domElement.addEventListener('pointerdown', (event) => {
+      if (cameraAnimation) return;
+
+      setPointerFromEvent(event);
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(hotspotMeshes, false);
+
+      if (hits.length > 0) {
+        const feature = hits[0].object.userData.feature;
+        focusHotspot(feature);
+      }
+    });
+
+    closeFeatureBtn.addEventListener('click', () => {
+      featurePanel.style.display = 'none';
+      activeHotspot = null;
+      autoRotateEnabled = true;
+
+      animateCameraTo(defaultCameraPosition, defaultTarget, 60, () => {
+        controls.enabled = true;
+      });
+    });
+
+    const quizState = {
+      active: false,
+      difficulty: 1,
+      score: 0,
+      streak: 0,
+      answered: 0,
+      complete: false,
+      currentQuestion: null
+    };
+
+    const allNames = features.map(f => f.name);
+
+    function choicesFor(correct, count) {
+      const shuffled = allNames.filter(name => name !== correct).sort(() => Math.random() - 0.5);
+      const result = [correct, ...shuffled.slice(0, count - 1)];
+      return result.sort(() => Math.random() - 0.5);
+    }
+
+    function makeQuestion(difficulty) {
+      const d1 = [
+        { text: 'Which feature is RED?', correct: 'Ergonomic Straps', choices: choicesFor('Ergonomic Straps', 3) },
+        { text: 'Which feature is YELLOW?', correct: 'Solar Panel', choices: choicesFor('Solar Panel', 3) },
+        { text: 'Which feature is GREEN?', correct: 'Hidden Pocket', choices: choicesFor('Hidden Pocket', 3) },
+        { text: 'Which feature is BLUE?', correct: 'Water Bottle Holder', choices: choicesFor('Water Bottle Holder', 3) },
+        { text: 'Which feature is PINK?', correct: 'LED Safety Light', choices: choicesFor('LED Safety Light', 3) }
+      ];
+
+      const d2 = [
+        { text: 'Which feature is near the top of the backpack companion?', correct: 'Solar Panel', choices: choicesFor('Solar Panel', 4) },
+        { text: 'Which feature is positioned lowest on the front?', correct: 'LED Safety Light', choices: choicesFor('LED Safety Light', 4) },
+        { text: 'Which feature sits on the left lower side?', correct: 'Water Bottle Holder', choices: choicesFor('Water Bottle Holder', 4) },
+        { text: 'Which feature is on the right middle area?', correct: 'Hidden Pocket', choices: choicesFor('Hidden Pocket', 4) },
+        { text: 'Which feature is around shoulder height on the left?', correct: 'Ergonomic Straps', choices: choicesFor('Ergonomic Straps', 4) }
+      ];
+
+      const d3 = [
+        { text: 'Which feature is both yellow and near the top/back?', correct: 'Solar Panel', choices: choicesFor('Solar Panel', 4) },
+        { text: 'Which feature is pink and located low on the front?', correct: 'LED Safety Light', choices: choicesFor('LED Safety Light', 4) },
+        { text: 'Which feature is green and on the right-middle side?', correct: 'Hidden Pocket', choices: choicesFor('Hidden Pocket', 4) },
+        { text: 'Which feature is blue and positioned on the lower left side?', correct: 'Water Bottle Holder', choices: choicesFor('Water Bottle Holder', 4) },
+        { text: 'Which feature is red and placed near the upper-left strap area?', correct: 'Ergonomic Straps', choices: choicesFor('Ergonomic Straps', 4) }
+      ];
+
+      const pool = difficulty === 1 ? d1 : difficulty === 2 ? d2 : d3;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function renderQuizQuestion() {
+      quizPanel.style.display = 'block';
+      quizTitle.textContent = 'Feature Quiz';
+      quizChoices.innerHTML = '';
+
+      if (quizState.complete) {
+        highlightedHotspotName = null;
+        quizMeta.textContent = 'Quiz complete';
+        quizQuestion.textContent = `Final score: ${quizState.score} / 5`;
+        const restart = document.createElement('button');
+        restart.textContent = 'Restart Quiz';
+        restart.className = 'choiceBtn';
+        restart.addEventListener('click', startQuiz);
+        quizChoices.appendChild(restart);
+        return;
+      }
+
+      const q = makeQuestion(quizState.difficulty);
+      quizState.currentQuestion = q;
+      highlightedHotspotName = q.correct;
+
+      quizMeta.textContent = `Question ${quizState.answered + 1} of 5 · Difficulty ${quizState.difficulty} · Score ${quizState.score} · Streak ${quizState.streak}`;
+      quizQuestion.textContent = q.text;
+
+      q.choices.forEach((choice) => {
+        const btn = document.createElement('button');
+        btn.className = 'choiceBtn';
+        btn.textContent = choice;
+        btn.addEventListener('click', () => answerQuestion(choice, btn));
+        quizChoices.appendChild(btn);
+      });
+    }
+
+    function answerQuestion(choice, clickedButton) {
+      if (!quizState.active || quizState.complete || !quizState.currentQuestion) return;
+
+      const correct = choice === quizState.currentQuestion.correct;
+
+      Array.from(quizChoices.children).forEach((button) => {
+        button.disabled = true;
+        if (button.textContent === quizState.currentQuestion.correct) {
+          button.classList.add('correct');
+        } else if (button === clickedButton && !correct) {
+          button.classList.add('wrong');
+        }
+      });
+
+      if (correct) {
+        quizState.score += 1;
+        quizState.streak += 1;
+        if (quizState.streak >= 2) {
+          quizState.difficulty = Math.min(3, quizState.difficulty + 1);
+          quizState.streak = 0;
+        }
+      } else {
+        quizState.streak = 0;
+        quizState.difficulty = Math.max(1, quizState.difficulty - 1);
+      }
+
+      quizState.answered += 1;
+
+      setTimeout(() => {
+        if (quizState.answered >= 5) {
+          quizState.complete = true;
+          quizState.active = false;
+        }
+        renderQuizQuestion();
+      }, 700);
+    }
+
+    function startQuiz() {
+      featurePanel.style.display = 'none';
+      activeHotspot = null;
+      quizState.active = true;
+      quizState.difficulty = 1;
+      quizState.score = 0;
+      quizState.streak = 0;
+      quizState.answered = 0;
+      quizState.complete = false;
+      quizState.currentQuestion = null;
+      renderQuizQuestion();
+    }
+
+    startQuizBtn.addEventListener('click', startQuiz);
+
+    themeToggleBtn.addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.body.classList.toggle('light', currentTheme === 'light');
+
+      if (currentTheme === 'light') {
+        ambientLight.intensity = 0.75;
+        directionalLight.intensity = 1.05;
+        groundMaterial.color.set('#4d96ff');
+        groundMaterial.opacity = 0.16;
+      } else {
+        ambientLight.intensity = 0.4;
+        directionalLight.intensity = 0.8;
+        groundMaterial.color.set('#7da7ff');
+        groundMaterial.opacity = 0.12;
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    window.__3D_STATE__ = {
+      modelLoaded: false,
+      autoRotateEnabled: true,
+      activeHotspot: null,
+      hotspotCount: 5,
+      featurePanelVisible: false,
+      quizActive: false,
+      quizDifficulty: 1,
+      quizScore: 0,
+      quizStreak: 0,
+      quizQuestionsAnswered: 0,
+      quizComplete: false,
+      currentTheme: 'dark',
+      cameraPosition: { x: 0, y: 1.5, z: 4 },
+      modelRotationY: 0
+    };
+
+    const clock = new THREE.Clock();
+
+    function updateCameraAnimation() {
+      if (!cameraAnimation) return;
+
+      cameraAnimation.frame += 1;
+      const t = Math.min(cameraAnimation.frame / cameraAnimation.frames, 1);
+      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+      camera.position.lerpVectors(
+        cameraAnimation.startPosition,
+        cameraAnimation.endPosition,
+        eased
+      );
+
+      controls.target.lerpVectors(
+        cameraAnimation.startTarget,
+        cameraAnimation.endTarget,
+        eased
+      );
+
+      if (t >= 1) {
+        const onComplete = cameraAnimation.onComplete;
+        cameraAnimation = null;
+        if (onComplete) onComplete();
+      }
+    }
+
+    function updateState() {
+      window.__3D_STATE__.modelLoaded = modelLoaded;
+      window.__3D_STATE__.autoRotateEnabled = autoRotateEnabled;
+      window.__3D_STATE__.activeHotspot = activeHotspot;
+      window.__3D_STATE__.hotspotCount = hotspotMeshes.length;
+      window.__3D_STATE__.featurePanelVisible = featurePanel.style.display !== 'none';
+      window.__3D_STATE__.quizActive = quizState.active;
+      window.__3D_STATE__.quizDifficulty = quizState.difficulty;
+      window.__3D_STATE__.quizScore = quizState.score;
+      window.__3D_STATE__.quizStreak = quizState.streak;
+      window.__3D_STATE__.quizQuestionsAnswered = quizState.answered;
+      window.__3D_STATE__.quizComplete = quizState.complete;
+      window.__3D_STATE__.currentTheme = currentTheme;
+      window.__3D_STATE__.cameraPosition = {
+        x: camera.position.x,
+        y: camera.position.y,
+        z: camera.position.z
+      };
+      window.__3D_STATE__.modelRotationY = modelRoot.rotation.y;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const elapsed = clock.getElapsedTime();
+
+      if (autoRotateEnabled) {
+        modelRoot.rotation.y += 0.005;
+      }
+
+      hotspotMeshes.forEach((mesh) => {
+        const pulse = 1 + 0.2 * Math.sin(elapsed * 3.2 + mesh.userData.pulseOffset);
+        const quizBoost = mesh.userData.feature.name === highlightedHotspotName ? 2 : 1;
+        const activeBoost = mesh.userData.feature.name === activeHotspot ? 1.45 : 1;
+        mesh.scale.setScalar(pulse * quizBoost * activeBoost);
+      });
+
+      updateCameraAnimation();
+      controls.update();
+      renderer.render(scene, camera);
+      updateState();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

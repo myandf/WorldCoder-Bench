@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Three.js Neon Sign Bloom</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0a;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+    }
+    #app {
+      position: fixed;
+      inset: 0;
+    }
+    canvas {
+      display: block;
+    }
+    #ui {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      width: 300px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 12px;
+      backdrop-filter: blur(6px);
+      z-index: 20;
+    }
+    #ui h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .control {
+      margin-bottom: 10px;
+    }
+    .control label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .control input[type="range"],
+    .control input[type="color"] {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .button-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+    button {
+      background: #1c1c1c;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 8px 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    button.active {
+      outline: 2px solid #fff;
+      background: #333;
+    }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 20;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 10px 12px;
+      min-width: 250px;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-line;
+      pointer-events: none;
+    }
+    #help {
+      margin-top: 8px;
+      font-size: 11px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="hud">Loading...</div>
+
+  <div id="ui">
+    <h3>Neon Controls</h3>
+
+    <div class="control">
+      <label for="bloomStrength">Bloom Strength</label>
+      <input id="bloomStrength" type="range" min="0" max="5" step="0.1" value="1.5" />
+    </div>
+
+    <div class="control">
+      <label for="emissiveIntensity">Emissive Intensity</label>
+      <input id="emissiveIntensity" type="range" min="0" max="10" step="0.1" value="2.0" />
+    </div>
+
+    <div class="control">
+      <label for="activeLetterColor">Letter Color</label>
+      <input id="activeLetterColor" type="color" value="#ff0066" />
+    </div>
+
+    <div class="control">
+      <label>Active Letter</label>
+      <div class="button-row">
+        <button id="btnN1" class="active">N1</button>
+        <button id="btnE">E</button>
+        <button id="btnO">O</button>
+        <button id="btnN2">N2</button>
+      </div>
+    </div>
+
+    <div id="help">
+      Keys: T = toggle letters, P = pulse, R = reset<br/>
+      Mouse wheel over canvas: bloom radius
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+
+    const DEFAULTS = {
+      bloomStrength: 1.5,
+      bloomRadius: 0.4,
+      bloomThreshold: 0.1,
+      emissiveIntensity: 2.0,
+      activeLetterIndex: 0,
+      letterColors: ['#ff0066', '#00ffcc', '#ffcc00', '#6600ff']
+    };
+
+    const app = document.getElementById('app');
+    const hud = document.getElementById('hud');
+
+    const bloomStrengthEl = document.getElementById('bloomStrength');
+    const emissiveIntensityEl = document.getElementById('emissiveIntensity');
+    const activeLetterColorEl = document.getElementById('activeLetterColor');
+
+    const buttons = [
+      document.getElementById('btnN1'),
+      document.getElementById('btnE'),
+      document.getElementById('btnO'),
+      document.getElementById('btnN2')
+    ];
+
+    const letterNames = ['N1', 'E', 'O', 'N2'];
+
+    const state = {
+      bloomStrength: DEFAULTS.bloomStrength,
+      bloomRadius: DEFAULTS.bloomRadius,
+      bloomThreshold: DEFAULTS.bloomThreshold,
+      emissiveIntensity: DEFAULTS.emissiveIntensity,
+      currentEmissiveIntensity: DEFAULTS.emissiveIntensity,
+      activeLetterIndex: DEFAULTS.activeLetterIndex,
+      letterColors: [...DEFAULTS.letterColors],
+      lettersOn: true,
+      pulsingEnabled: false,
+      pulsePhase: 0,
+      letterCount: 4,
+      frameCount: 0,
+      backboardExists: false,
+      groundExists: false,
+      composerPasses: 0
+    };
+
+    window.__3D_STATE__ = { ...state };
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0a0a0a');
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 8);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    app.appendChild(renderer.domElement);
+
+    const composer = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      DEFAULTS.bloomStrength,
+      DEFAULTS.bloomRadius,
+      DEFAULTS.bloomThreshold
+    );
+    composer.addPass(bloomPass);
+    state.composerPasses = composer.passes.length;
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 0.3);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({ color: '#1a1a1a' })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = 0;
+    scene.add(ground);
+    state.groundExists = true;
+
+    const signRoot = new THREE.Group();
+    signRoot.position.set(0, 3, 0);
+    scene.add(signRoot);
+
+    const backboard = new THREE.Mesh(
+      new THREE.BoxGeometry(7.8, 2.4, 0.15),
+      new THREE.MeshStandardMaterial({ color: '#222222', metalness: 0.1, roughness: 0.9 })
+    );
+    backboard.position.set(0, 0, -0.18);
+    signRoot.add(backboard);
+    state.backboardExists = true;
+
+    function tubeFromPoints(points, radius = 0.07, tubularSegments = 64) {
+      const curve = new THREE.CatmullRomCurve3(points);
+      return new THREE.TubeGeometry(curve, tubularSegments, radius, 12, false);
+    }
+
+    function createTubeMesh(points, color) {
+      return new THREE.Mesh(
+        tubeFromPoints(points),
+        new THREE.MeshStandardMaterial({
+          color: new THREE.Color(color),
+          emissive: new THREE.Color(color),
+          emissiveIntensity: DEFAULTS.emissiveIntensity,
+          metalness: 0.1,
+          roughness: 0.35
+        })
+      );
+    }
+
+    function createLetterN(color) {
+      const g = new THREE.Group();
+      const left = createTubeMesh([
+        new THREE.Vector3(-0.45, -0.6, 0),
+        new THREE.Vector3(-0.45, 0.6, 0)
+      ], color);
+      const diag = createTubeMesh([
+        new THREE.Vector3(-0.45, -0.6, 0),
+        new THREE.Vector3(0.45, 0.6, 0)
+      ], color);
+      const right = createTubeMesh([
+        new THREE.Vector3(0.45, -0.6, 0),
+        new THREE.Vector3(0.45, 0.6, 0)
+      ], color);
+      g.add(left, diag, right);
+      return g;
+    }
+
+    function createLetterE(color) {
+      const g = new THREE.Group();
+      const left = createTubeMesh([
+        new THREE.Vector3(-0.42, -0.6, 0),
+        new THREE.Vector3(-0.42, 0.6, 0)
+      ], color);
+      const top = createTubeMesh([
+        new THREE.Vector3(-0.42, 0.6, 0),
+        new THREE.Vector3(0.42, 0.6, 0)
+      ], color);
+      const mid = createTubeMesh([
+        new THREE.Vector3(-0.42, 0.0, 0),
+        new THREE.Vector3(0.25, 0.0, 0)
+      ], color);
+      const bot = createTubeMesh([
+        new THREE.Vector3(-0.42, -0.6, 0),
+        new THREE.Vector3(0.42, -0.6, 0)
+      ], color);
+      g.add(left, top, mid, bot);
+      return g;
+    }
+
+    function createLetterO(color) {
+      const g = new THREE.Group();
+      const torus = new THREE.Mesh(
+        new THREE.TorusGeometry(0.5, 0.07, 12, 64),
+        new THREE.MeshStandardMaterial({
+          color: new THREE.Color(color),
+          emissive: new THREE.Color(color),
+          emissiveIntensity: DEFAULTS.emissiveIntensity,
+          metalness: 0.1,
+          roughness: 0.35
+        })
+      );
+      g.add(torus);
+      return g;
+    }
+
+    const letterGroups = [
+      createLetterN(DEFAULTS.letterColors[0]),
+      createLetterE(DEFAULTS.letterColors[1]),
+      createLetterO(DEFAULTS.letterColors[2]),
+      createLetterN(DEFAULTS.letterColors[3])
+    ];
+
+    letterGroups[0].position.set(-2.7, 0, 0);
+    letterGroups[1].position.set(-0.9, 0, 0);
+    letterGroups[2].position.set(0.9, 0, 0);
+    letterGroups[3].position.set(2.7, 0, 0);
+
+    letterGroups.forEach(group => signRoot.add(group));
+
+    function getLetterMaterials(group) {
+      const mats = [];
+      group.traverse(obj => {
+        if (obj.isMesh && obj.material) mats.push(obj.material);
+      });
+      return mats;
+    }
+
+    const letterMaterials = letterGroups.map(getLetterMaterials);
+
+    function setActiveButton(index) {
+      buttons.forEach((btn, i) => btn.classList.toggle('active', i === index));
+    }
+
+    function setActiveLetter(index) {
+      state.activeLetterIndex = index;
+      activeLetterColorEl.value = state.letterColors[index];
+      setActiveButton(index);
+    }
+
+    function applyLetterColors() {
+      letterMaterials.forEach((mats, i) => {
+        const color = new THREE.Color(state.letterColors[i]);
+        mats.forEach(mat => {
+          mat.color.copy(color);
+          mat.emissive.copy(color);
+        });
+      });
+    }
+
+    function applyCurrentIntensity(value) {
+      letterMaterials.forEach(mats => {
+        mats.forEach(mat => {
+          mat.emissiveIntensity = value;
+        });
+      });
+      state.currentEmissiveIntensity = value;
+    }
+
+    function syncUI() {
+      bloomStrengthEl.value = String(state.bloomStrength);
+      emissiveIntensityEl.value = String(state.emissiveIntensity);
+      activeLetterColorEl.value = state.letterColors[state.activeLetterIndex];
+      setActiveButton(state.activeLetterIndex);
+    }
+
+    function resetAll() {
+      state.bloomStrength = DEFAULTS.bloomStrength;
+      state.bloomRadius = DEFAULTS.bloomRadius;
+      state.bloomThreshold = DEFAULTS.bloomThreshold;
+      state.emissiveIntensity = DEFAULTS.emissiveIntensity;
+      state.activeLetterIndex = DEFAULTS.activeLetterIndex;
+      state.letterColors = [...DEFAULTS.letterColors];
+      state.lettersOn = true;
+      state.pulsingEnabled = false;
+      state.pulsePhase = 0;
+
+      bloomPass.strength = state.bloomStrength;
+      bloomPass.radius = state.bloomRadius;
+      bloomPass.threshold = state.bloomThreshold;
+
+      applyLetterColors();
+      applyCurrentIntensity(state.emissiveIntensity);
+      syncUI();
+    }
+
+    buttons.forEach((btn, index) => {
+      btn.addEventListener('click', () => setActiveLetter(index));
+    });
+
+    bloomStrengthEl.addEventListener('input', (e) => {
+      state.bloomStrength = parseFloat(e.target.value);
+      bloomPass.strength = state.bloomStrength;
+    });
+
+    emissiveIntensityEl.addEventListener('input', (e) => {
+      state.emissiveIntensity = parseFloat(e.target.value);
+      if (state.lettersOn && !state.pulsingEnabled) {
+        applyCurrentIntensity(state.emissiveIntensity);
+      }
+    });
+
+    activeLetterColorEl.addEventListener('input', (e) => {
+      state.letterColors[state.activeLetterIndex] = e.target.value.toLowerCase();
+      applyLetterColors();
+    });
+
+    renderer.domElement.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.05 : -0.05;
+      state.bloomRadius = THREE.MathUtils.clamp(
+        Math.round((state.bloomRadius + delta) * 100) / 100,
+        0.0,
+        2.0
+      );
+      bloomPass.radius = state.bloomRadius;
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      if (key === 't') {
+        state.lettersOn = !state.lettersOn;
+        if (!state.lettersOn) {
+          applyCurrentIntensity(0);
+        } else {
+          if (!state.pulsingEnabled) {
+            applyCurrentIntensity(state.emissiveIntensity);
+          }
+        }
+      } else if (key === 'p') {
+        state.pulsingEnabled = !state.pulsingEnabled;
+        if (!state.pulsingEnabled) {
+          state.pulsePhase = 0;
+          applyCurrentIntensity(state.lettersOn ? state.emissiveIntensity : 0);
+        }
+      } else if (key === 'r') {
+        resetAll();
+      }
+    });
+
+    const clock = new THREE.Clock();
+
+    function updateHUD() {
+      hud.textContent =
+`Bloom Strength: ${state.bloomStrength.toFixed(2)}
+Bloom Radius: ${state.bloomRadius.toFixed(2)}
+Bloom Threshold: ${state.bloomThreshold.toFixed(2)}
+Emissive Intensity: ${state.emissiveIntensity.toFixed(2)}
+Active Letter: ${letterNames[state.activeLetterIndex]}
+Pulsing: ${state.pulsingEnabled ? 'on' : 'off'}
+Letters: ${state.lettersOn ? 'on' : 'off'}`;
+    }
+
+    function updateExposedState() {
+      window.__3D_STATE__ = {
+        bloomStrength: state.bloomStrength,
+        bloomRadius: state.bloomRadius,
+        bloomThreshold: state.bloomThreshold,
+        emissiveIntensity: state.emissiveIntensity,
+        currentEmissiveIntensity: state.currentEmissiveIntensity,
+        activeLetterIndex: state.activeLetterIndex,
+        letterColors: [...state.letterColors],
+        lettersOn: state.lettersOn,
+        pulsingEnabled: state.pulsingEnabled,
+        pulsePhase: state.pulsePhase,
+        letterCount: state.letterCount,
+        frameCount: state.frameCount,
+        backboardExists: state.backboardExists,
+        groundExists: state.groundExists,
+        composerPasses: composer.passes.length
+      };
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const elapsed = clock.getElapsedTime();
+
+      if (!state.lettersOn) {
+        applyCurrentIntensity(0);
+        state.pulsePhase = 0;
+      } else if (state.pulsingEnabled) {
+        state.pulsePhase = elapsed * Math.PI * 4.0;
+        const s = (Math.sin(state.pulsePhase) + 1) * 0.5;
+        const minI = 0.5;
+        const maxI = state.emissiveIntensity;
+        const current = minI + (Math.max(maxI, minI) - minI) * s;
+        applyCurrentIntensity(current);
+      } else {
+        state.pulsePhase = 0;
+        applyCurrentIntensity(state.emissiveIntensity);
+      }
+
+      state.frameCount++;
+      updateHUD();
+      updateExposedState();
+      composer.render();
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+      bloomPass.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    resetAll();
+    setActiveLetter(0);
+    updateHUD();
+    updateExposedState();
+    animate();
+  </script>
+</body>
+</html>

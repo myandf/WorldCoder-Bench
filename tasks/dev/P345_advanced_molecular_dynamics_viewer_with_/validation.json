@@ -1,0 +1,758 @@
+{
+  "task_id": "P345_advanced_molecular_dynamics_viewer_with_",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:18:23.377Z",
+  "html": "reference.html",
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_FAILED"
+  ],
+  "console_errors": [
+    "Failed to load resource: net::ERR_FAILED"
+  ],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 11,
+      "total": 12,
+      "percent": 91.7
+    },
+    "sCov": {
+      "reached": 6,
+      "total": 8,
+      "percent": 75
+    },
+    "tCov": {
+      "passed": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 34,
+      "total": 34,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 91.7,
+  "sCov": 75,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 34,
+    "total": 34,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 8,
+  "total": 8,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "MoleculeGroup",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "CentralAtom",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "HydrogenAtoms",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "OxygenAtoms",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "StaticButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "VibrationButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "RotationButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "TemperatureSlider",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "HUDPanel",
+      "found": true
+    },
+    {
+      "id": "A11",
+      "name": "ScoreDisplay",
+      "found": true
+    },
+    {
+      "id": "A12",
+      "name": "AtomsFoundDisplay",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.atomCount === 7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomCount === 7"
+        },
+        {
+          "expression": "window.__3D_STATE__.bondCount === 6",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bondCount === 6"
+        },
+        {
+          "expression": "window.__3D_STATE__.mode === 'static'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'static'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'vibration'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'vibration'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 300",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 300"
+        },
+        {
+          "expression": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('vibration')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('vibration')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'rotation'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'rotation'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moleculeRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moleculeRotationY === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.moleculeRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.moleculeRotationY)"
+        },
+        {
+          "expression": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('rotation')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('rotation')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'rotation'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'rotation'"
+        },
+        {
+          "expression": "window.__3D_STATE__.moleculeRotationY > 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moleculeRotationY > 1.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.moleculeRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.moleculeRotationY)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cameraDistance > 0 && !isNaN(window.__3D_STATE__.cameraDistance)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cameraDistance > 0 && !isNaN(window.__3D_STATE__.cameraDistance)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 450",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 450"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.75) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.75) < 0.05"
+        },
+        {
+          "expression": "document.getElementById('tempDisplay').textContent.includes('450')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('tempDisplay').textContent.includes('450')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'static'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'static'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsFound === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsFound === 0"
+        },
+        {
+          "expression": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('static')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('static')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'static'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'static'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsFound === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsFound === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 300",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 300"
+        },
+        {
+          "expression": "window.__3D_STATE__.allAtomsFound === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.allAtomsFound === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsFound >= 0 && window.__3D_STATE__.atomsFound <= 7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsFound >= 0 && window.__3D_STATE__.atomsFound <= 7"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.atomsClickedSet)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.atomsClickedSet)"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsClickedSet.length === window.__3D_STATE__.atomsFound",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsClickedSet.length === window.__3D_STATE__.atomsFound"
+        },
+        {
+          "expression": "document.getElementById('scoreDisplay') !== null && document.getElementById('atomsFoundDisplay') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('scoreDisplay') !== null && document.getElementById('atomsFoundDisplay') !== null"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.atomCount === 7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomCount === 7"
+        },
+        {
+          "expression": "window.__3D_STATE__.bondCount === 6",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bondCount === 6"
+        },
+        {
+          "expression": "window.__3D_STATE__.mode === 'static'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'static'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'vibration'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'vibration'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 300",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 300"
+        },
+        {
+          "expression": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('vibration')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('vibration')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'rotation'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'rotation'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moleculeRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moleculeRotationY === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.moleculeRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.moleculeRotationY)"
+        },
+        {
+          "expression": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('rotation')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('rotation')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'rotation'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'rotation'"
+        },
+        {
+          "expression": "window.__3D_STATE__.moleculeRotationY > 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moleculeRotationY > 1.5"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.moleculeRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.moleculeRotationY)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cameraDistance > 0 && !isNaN(window.__3D_STATE__.cameraDistance)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cameraDistance > 0 && !isNaN(window.__3D_STATE__.cameraDistance)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 450",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 450"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.75) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vibrationAmplitude - 0.75) < 0.05"
+        },
+        {
+          "expression": "document.getElementById('tempDisplay').textContent.includes('450')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('tempDisplay').textContent.includes('450')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'static'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'static'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsFound === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsFound === 0"
+        },
+        {
+          "expression": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('static')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('modeDisplay').textContent.toLowerCase().includes('static')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.mode === 'static'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mode === 'static'"
+        },
+        {
+          "expression": "window.__3D_STATE__.score === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsFound === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsFound === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 300",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 300"
+        },
+        {
+          "expression": "window.__3D_STATE__.allAtomsFound === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.allAtomsFound === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.score >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.score >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsFound >= 0 && window.__3D_STATE__.atomsFound <= 7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsFound >= 0 && window.__3D_STATE__.atomsFound <= 7"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.atomsClickedSet)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.atomsClickedSet)"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomsClickedSet.length === window.__3D_STATE__.atomsFound",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomsClickedSet.length === window.__3D_STATE__.atomsFound"
+        },
+        {
+          "expression": "document.getElementById('scoreDisplay') !== null && document.getElementById('atomsFoundDisplay') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('scoreDisplay') !== null && document.getElementById('atomsFoundDisplay') !== null"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 11,
+    "total": 12,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      },
+      {
+        "id": "A11",
+        "pass": true
+      },
+      {
+        "id": "A12",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 6,
+    "total": 8
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 3,
+      "total": 3
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 31,
+      "total": 31
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 14283
+}

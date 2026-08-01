@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Three.js Frosted Glass Shader Demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0e1117;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+    }
+    canvas {
+      display: block;
+    }
+    #ui {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      width: 290px;
+      padding: 14px;
+      background: rgba(15, 18, 25, 0.82);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+      z-index: 10;
+      user-select: none;
+    }
+    #ui h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .control {
+      margin: 10px 0;
+    }
+    .control label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #dbe5ff;
+    }
+    .control .value {
+      color: #9ec7ff;
+      min-width: 52px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    input[type="range"], select, button, input[type="color"] {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    input[type="range"] {
+      accent-color: #72a9ff;
+    }
+    select, button, input[type="color"] {
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      padding: 8px 10px;
+      outline: none;
+    }
+    input[type="color"] {
+      height: 40px;
+      padding: 4px;
+      background: rgba(255,255,255,0.08);
+    }
+    button {
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    button:hover, select:hover {
+      background: rgba(255,255,255,0.14);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: #aab6d3;
+    }
+  </style>
+</head>
+<body>
+  <div id="ui">
+    <h2>Frosted Glass Controls</h2>
+
+    <div class="control">
+      <label for="preset">
+        <span>Preset</span>
+        <span class="value" id="presetValue">Custom</span>
+      </label>
+      <select id="preset">
+        <option>Custom</option>
+        <option>Light Frost</option>
+        <option>Heavy Frost</option>
+        <option>Colored Tint</option>
+        <option>Clear Glass</option>
+      </select>
+    </div>
+
+    <div class="control">
+      <label for="blurStrength">
+        <span>Blur Strength</span>
+        <span class="value" id="blurStrengthValue">0.50</span>
+      </label>
+      <input id="blurStrength" type="range" min="0" max="1" step="0.01" value="0.5" />
+    </div>
+
+    <div class="control">
+      <label for="opacity">
+        <span>Opacity</span>
+        <span class="value" id="opacityValue">0.70</span>
+      </label>
+      <input id="opacity" type="range" min="0" max="1" step="0.01" value="0.7" />
+    </div>
+
+    <div class="control">
+      <label for="fresnelPower">
+        <span>Fresnel Power</span>
+        <span class="value" id="fresnelPowerValue">2.0</span>
+      </label>
+      <input id="fresnelPower" type="range" min="0.5" max="5" step="0.1" value="2.0" />
+    </div>
+
+    <div class="control">
+      <label for="noiseScale">
+        <span>Noise Scale</span>
+        <span class="value" id="noiseScaleValue">8.0</span>
+      </label>
+      <input id="noiseScale" type="range" min="1" max="20" step="0.5" value="8.0" />
+    </div>
+
+    <div class="control">
+      <label for="tintColor">
+        <span>Tint Color</span>
+        <span class="value" id="tintColorValue">#aaccff</span>
+      </label>
+      <input id="tintColor" type="color" value="#aaccff" />
+    </div>
+
+    <div class="row">
+      <button id="resetBtn">Reset Defaults</button>
+      <button id="toggleGlassBtn">Toggle Glass</button>
+    </div>
+
+    <div class="hint">
+      Keys: G toggle glass, R reset, 1-4 presets, ↑/↓ blur ±0.05
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x101722);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 1.5, 5);
+    camera.lookAt(0, 0, 0);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(3, 5, 4);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.set(1024, 1024);
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 20;
+    directionalLight.shadow.camera.left = -8;
+    directionalLight.shadow.camera.right = 8;
+    directionalLight.shadow.camera.top = 8;
+    directionalLight.shadow.camera.bottom = -8;
+    scene.add(directionalLight);
+
+    const rtWidth = 512;
+    const rtHeight = 512;
+    const renderTarget = new THREE.WebGLRenderTarget(rtWidth, rtHeight, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      depthBuffer: true,
+      stencilBuffer: false
+    });
+    renderTarget.texture.colorSpace = THREE.SRGBColorSpace;
+
+    function createCheckerTexture(size = 512, cells = 8) {
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      const cell = size / cells;
+      for (let y = 0; y < cells; y++) {
+        for (let x = 0; x < cells; x++) {
+          const even = (x + y) % 2 === 0;
+          ctx.fillStyle = even ? '#d6dde8' : '#6c7686';
+          ctx.fillRect(x * cell, y * cell, cell, cell);
+        }
+      }
+
+      for (let i = 0; i <= cells; i++) {
+        ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(i * cell, 0);
+        ctx.lineTo(i * cell, size);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * cell);
+        ctx.lineTo(size, i * cell);
+        ctx.stroke();
+      }
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(8, 8);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      return tex;
+    }
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({
+        map: createCheckerTexture(),
+        roughness: 0.9,
+        metalness: 0.05
+      })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1.5;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const bgObjects = [];
+    const bgGroup = new THREE.Group();
+    scene.add(bgGroup);
+
+    const backgroundMaterial = (color) => new THREE.MeshStandardMaterial({
+      color,
+      metalness: 0.3,
+      roughness: 0.5
+    });
+
+    const specs = [
+      { geom: new THREE.TorusGeometry(0.42, 0.16, 24, 64), color: 0xff4444, x: -2.6, y: 0.2, z: -3, speed: 0.45 },
+      { geom: new THREE.IcosahedronGeometry(0.55, 0), color: 0x44ff66, x: -1.3, y: 0.55, z: -3, speed: 0.68 },
+      { geom: new THREE.OctahedronGeometry(0.6, 0), color: 0x4488ff, x: 0.0, y: 0.1, z: -3, speed: 0.52 },
+      { geom: new THREE.ConeGeometry(0.5, 1.0, 32), color: 0xffdd33, x: 1.3, y: 0.2, z: -3, speed: 0.78 },
+      { geom: new THREE.DodecahedronGeometry(0.52, 0), color: 0xff44cc, x: 2.6, y: 0.5, z: -3, speed: 0.37 }
+    ];
+
+    specs.forEach((s, i) => {
+      const mesh = new THREE.Mesh(s.geom, backgroundMaterial(s.color));
+      mesh.position.set(s.x, s.y, s.z);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.rotation.x = 0.2 * (i + 1);
+      bgGroup.add(mesh);
+      bgObjects.push({ mesh, speed: s.speed });
+    });
+
+    const defaults = {
+      blurStrength: 0.5,
+      opacity: 0.7,
+      fresnelPower: 2.0,
+      noiseScale: 8.0,
+      tintColor: '#aaccff'
+    };
+
+    const presets = {
+      'Custom': null,
+      'Light Frost': { blurStrength: 0.2, opacity: 0.5, fresnelPower: 1.5, noiseScale: 5.0, tintColor: '#ffffff' },
+      'Heavy Frost': { blurStrength: 0.9, opacity: 0.85, fresnelPower: 3.5, noiseScale: 15.0, tintColor: '#ddeeff' },
+      'Colored Tint': { blurStrength: 0.4, opacity: 0.6, fresnelPower: 2.0, noiseScale: 8.0, tintColor: '#ff8844' },
+      'Clear Glass': { blurStrength: 0.05, opacity: 0.3, fresnelPower: 4.0, noiseScale: 2.0, tintColor: '#ffffff' }
+    };
+
+    const glassUniforms = {
+      u_sceneTex: { value: renderTarget.texture },
+      u_blurStrength: { value: defaults.blurStrength },
+      u_opacity: { value: defaults.opacity },
+      u_tintColor: { value: new THREE.Color(defaults.tintColor) },
+      u_fresnelPower: { value: defaults.fresnelPower },
+      u_noiseScale: { value: defaults.noiseScale }
+    };
+
+    const glassMaterial = new THREE.ShaderMaterial({
+      uniforms: glassUniforms,
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vWorldPos;
+        varying vec3 vNormalW;
+        void main() {
+          vUv = uv;
+          vec4 worldPos = modelMatrix * vec4(position, 1.0);
+          vWorldPos = worldPos.xyz;
+          vNormalW = normalize(mat3(modelMatrix) * normal);
+          gl_Position = projectionMatrix * viewMatrix * worldPos;
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D u_sceneTex;
+        uniform float u_blurStrength;
+        uniform float u_opacity;
+        uniform vec3 u_tintColor;
+        uniform float u_fresnelPower;
+        uniform float u_noiseScale;
+
+        varying vec2 vUv;
+        varying vec3 vWorldPos;
+        varying vec3 vNormalW;
+
+        float hash21(vec2 p) {
+          p = fract(p * vec2(123.34, 345.45));
+          p += dot(p, p + 34.345);
+          return fract(p.x * p.y);
+        }
+
+        float noise2d(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          float a = hash21(i);
+          float b = hash21(i + vec2(1.0, 0.0));
+          float c = hash21(i + vec2(0.0, 1.0));
+          float d = hash21(i + vec2(1.0, 1.0));
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(a, b, u.x) +
+                 (c - a) * u.y * (1.0 - u.x) +
+                 (d - b) * u.x * u.y;
+        }
+
+        void main() {
+          vec2 uv = vUv;
+          float n1 = noise2d(uv * u_noiseScale + vec2(3.1, 1.7));
+          float n2 = noise2d(uv * u_noiseScale * 1.7 + vec2(8.2, 2.4));
+          vec2 offsetDir = vec2(n1 - 0.5, n2 - 0.5);
+
+          float blurRadius = 0.05 * u_blurStrength;
+          vec2 offset = offsetDir * blurRadius;
+
+          vec4 s0 = texture2D(u_sceneTex, clamp(uv + offset * 1.20, 0.001, 0.999));
+          vec4 s1 = texture2D(u_sceneTex, clamp(uv - offset * 1.10, 0.001, 0.999));
+          vec4 s2 = texture2D(u_sceneTex, clamp(uv + vec2(offset.x, -offset.y) * 0.85, 0.001, 0.999));
+          vec4 s3 = texture2D(u_sceneTex, clamp(uv + vec2(-offset.x, offset.y) * 0.65, 0.001, 0.999));
+          vec4 blurred = (s0 + s1 + s2 + s3) * 0.25;
+
+          vec3 viewDir = normalize(cameraPosition - vWorldPos);
+          float fresnel = pow(1.0 - max(dot(normalize(vNormalW), viewDir), 0.0), u_fresnelPower);
+          float edgeBoost = clamp(fresnel, 0.0, 1.0);
+
+          vec3 tinted = mix(blurred.rgb, mix(blurred.rgb, u_tintColor, 0.45), 0.55);
+          vec3 finalColor = mix(tinted, vec3(1.0), edgeBoost * 0.18);
+
+          float alpha = clamp(u_opacity + edgeBoost * 0.35, 0.0, 1.0);
+          gl_FragColor = vec4(finalColor, alpha);
+        }
+      `
+    });
+
+    const glassGeometry = new THREE.PlaneGeometry(3, 3, 1, 1);
+    const glassPanel = new THREE.Mesh(glassGeometry, glassMaterial);
+    glassPanel.position.set(0, 0, 0);
+    scene.add(glassPanel);
+
+    const ui = {
+      preset: document.getElementById('preset'),
+      presetValue: document.getElementById('presetValue'),
+      blurStrength: document.getElementById('blurStrength'),
+      blurStrengthValue: document.getElementById('blurStrengthValue'),
+      opacity: document.getElementById('opacity'),
+      opacityValue: document.getElementById('opacityValue'),
+      fresnelPower: document.getElementById('fresnelPower'),
+      fresnelPowerValue: document.getElementById('fresnelPowerValue'),
+      noiseScale: document.getElementById('noiseScale'),
+      noiseScaleValue: document.getElementById('noiseScaleValue'),
+      tintColor: document.getElementById('tintColor'),
+      tintColorValue: document.getElementById('tintColorValue'),
+      resetBtn: document.getElementById('resetBtn'),
+      toggleGlassBtn: document.getElementById('toggleGlassBtn')
+    };
+
+    let activePreset = 'Custom';
+    let frameCount = 0;
+
+    function clamp(v, min, max) {
+      return Math.min(max, Math.max(min, v));
+    }
+
+    function setTint(hex) {
+      glassUniforms.u_tintColor.value.set(hex);
+      ui.tintColor.value = hex;
+      ui.tintColorValue.textContent = hex.toLowerCase();
+    }
+
+    function applyValues(values, presetName = 'Custom') {
+      glassUniforms.u_blurStrength.value = clamp(values.blurStrength, 0, 1);
+      glassUniforms.u_opacity.value = clamp(values.opacity, 0, 1);
+      glassUniforms.u_fresnelPower.value = clamp(values.fresnelPower, 0.5, 5.0);
+      glassUniforms.u_noiseScale.value = clamp(values.noiseScale, 1.0, 20.0);
+      setTint(values.tintColor);
+
+      ui.blurStrength.value = glassUniforms.u_blurStrength.value.toFixed(2);
+      ui.opacity.value = glassUniforms.u_opacity.value.toFixed(2);
+      ui.fresnelPower.value = glassUniforms.u_fresnelPower.value.toFixed(1);
+      ui.noiseScale.value = glassUniforms.u_noiseScale.value.toFixed(1);
+
+      activePreset = presetName;
+      ui.preset.value = presetName;
+      refreshValueLabels();
+    }
+
+    function refreshValueLabels() {
+      ui.blurStrengthValue.textContent = Number(glassUniforms.u_blurStrength.value).toFixed(2);
+      ui.opacityValue.textContent = Number(glassUniforms.u_opacity.value).toFixed(2);
+      ui.fresnelPowerValue.textContent = Number(glassUniforms.u_fresnelPower.value).toFixed(1);
+      ui.noiseScaleValue.textContent = Number(glassUniforms.u_noiseScale.value).toFixed(1);
+      ui.tintColorValue.textContent = '#' + glassUniforms.u_tintColor.value.getHexString();
+      ui.presetValue.textContent = activePreset;
+      ui.toggleGlassBtn.textContent = glassPanel.visible ? 'Toggle Glass' : 'Toggle Glass (Hidden)';
+    }
+
+    function markCustom() {
+      if (activePreset !== 'Custom') {
+        activePreset = 'Custom';
+        ui.preset.value = 'Custom';
+      }
+      refreshValueLabels();
+    }
+
+    function resetDefaults() {
+      applyValues(defaults, 'Custom');
+    }
+
+    function toggleGlass() {
+      glassPanel.visible = !glassPanel.visible;
+      refreshValueLabels();
+    }
+
+    ui.blurStrength.addEventListener('input', () => {
+      glassUniforms.u_blurStrength.value = parseFloat(ui.blurStrength.value);
+      markCustom();
+    });
+
+    ui.opacity.addEventListener('input', () => {
+      glassUniforms.u_opacity.value = parseFloat(ui.opacity.value);
+      markCustom();
+    });
+
+    ui.fresnelPower.addEventListener('input', () => {
+      glassUniforms.u_fresnelPower.value = parseFloat(ui.fresnelPower.value);
+      markCustom();
+    });
+
+    ui.noiseScale.addEventListener('input', () => {
+      glassUniforms.u_noiseScale.value = parseFloat(ui.noiseScale.value);
+      markCustom();
+    });
+
+    ui.tintColor.addEventListener('input', () => {
+      setTint(ui.tintColor.value);
+      markCustom();
+    });
+
+    ui.preset.addEventListener('change', () => {
+      const name = ui.preset.value;
+      if (name === 'Custom') {
+        activePreset = 'Custom';
+        refreshValueLabels();
+      } else {
+        applyValues(presets[name], name);
+      }
+    });
+
+    ui.resetBtn.addEventListener('click', resetDefaults);
+    ui.toggleGlassBtn.addEventListener('click', toggleGlass);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+
+      if (e.key === 'g' || e.key === 'G') {
+        toggleGlass();
+      } else if (e.key === 'r' || e.key === 'R') {
+        resetDefaults();
+      } else if (e.key === '1') {
+        applyValues(presets['Light Frost'], 'Light Frost');
+      } else if (e.key === '2') {
+        applyValues(presets['Heavy Frost'], 'Heavy Frost');
+      } else if (e.key === '3') {
+        applyValues(presets['Colored Tint'], 'Colored Tint');
+      } else if (e.key === '4') {
+        applyValues(presets['Clear Glass'], 'Clear Glass');
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        glassUniforms.u_blurStrength.value = clamp(glassUniforms.u_blurStrength.value + 0.05, 0, 1);
+        ui.blurStrength.value = glassUniforms.u_blurStrength.value.toFixed(2);
+        markCustom();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        glassUniforms.u_blurStrength.value = clamp(glassUniforms.u_blurStrength.value - 0.05, 0, 1);
+        ui.blurStrength.value = glassUniforms.u_blurStrength.value.toFixed(2);
+        markCustom();
+      }
+    });
+
+    window.__3D_STATE__ = {
+      blurStrength: defaults.blurStrength,
+      opacity: defaults.opacity,
+      fresnelPower: defaults.fresnelPower,
+      noiseScale: defaults.noiseScale,
+      tintColor: defaults.tintColor,
+      glassVisible: true,
+      activePreset: 'Custom',
+      backgroundObjectCount: bgObjects.length,
+      renderTargetWidth: rtWidth,
+      renderTargetHeight: rtHeight,
+      frameCount: 0,
+      cameraZ: camera.position.z,
+      glassWidth: 3,
+      glassHeight: 3
+    };
+
+    function updateState() {
+      window.__3D_STATE__ = {
+        blurStrength: Number(glassUniforms.u_blurStrength.value),
+        opacity: Number(glassUniforms.u_opacity.value),
+        fresnelPower: Number(glassUniforms.u_fresnelPower.value),
+        noiseScale: Number(glassUniforms.u_noiseScale.value),
+        tintColor: '#' + glassUniforms.u_tintColor.value.getHexString(),
+        glassVisible: glassPanel.visible,
+        activePreset: activePreset,
+        backgroundObjectCount: bgObjects.length,
+        renderTargetWidth: renderTarget.width,
+        renderTargetHeight: renderTarget.height,
+        frameCount: frameCount,
+        cameraZ: camera.position.z,
+        glassWidth: 3,
+        glassHeight: 3
+      };
+    }
+
+    function onResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    window.addEventListener('resize', onResize);
+
+    refreshValueLabels();
+    updateState();
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      frameCount++;
+
+      const t = clock.getElapsedTime();
+
+      bgObjects.forEach((obj, i) => {
+        obj.mesh.rotation.y += 0.005 * obj.speed * 8.0;
+        obj.mesh.rotation.x = 0.25 * Math.sin(t * 0.6 + i) + 0.2 * (i + 1);
+      });
+
+      const originalVisibility = glassPanel.visible;
+      glassPanel.visible = false;
+      renderer.setRenderTarget(renderTarget);
+      renderer.render(scene, camera);
+      renderer.setRenderTarget(null);
+      glassPanel.visible = originalVisibility;
+
+      renderer.render(scene, camera);
+
+      refreshValueLabels();
+      updateState();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

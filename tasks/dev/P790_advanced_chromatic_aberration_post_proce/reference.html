@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Chromatic Aberration Scoring Scene</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111122;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #ffffff;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #hud {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 20;
+      background: rgba(10, 10, 18, 0.78);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      padding: 14px 16px;
+      min-width: 240px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    #hud h1 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.2;
+      color: #ffd08a;
+    }
+
+    #hud .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 6px 0;
+      font-size: 14px;
+    }
+
+    #hud .label {
+      opacity: 0.8;
+    }
+
+    #hud .value {
+      font-weight: 700;
+    }
+
+    #controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    #btn-toggle-effect {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #ff6633, #ff33aa);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    }
+
+    #btn-toggle-effect:hover {
+      filter: brightness(1.08);
+    }
+
+    #instructions {
+      max-width: 320px;
+      background: rgba(10, 10, 18, 0.72);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.9);
+    }
+
+    #history-count {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 20;
+      background: rgba(10, 10, 18, 0.78);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <h1>Chromatic Aberration Score</h1>
+    <div class="row"><span class="label">Intensity</span><span class="value" id="hud-intensity">0.010</span></div>
+    <div class="row"><span class="label">Direction</span><span class="value" id="hud-direction">Horizontal</span></div>
+    <div class="row"><span class="label">Blend</span><span class="value" id="hud-blend">1.00</span></div>
+    <div class="row"><span class="label">Score</span><span class="value" id="hud-score">38</span></div>
+    <div class="row"><span class="label">Rank</span><span class="value" id="hud-rank">Moderate</span></div>
+  </div>
+
+  <div id="controls">
+    <button id="btn-toggle-effect">Disable Effect</button>
+    <div id="instructions">
+      <strong>Keys:</strong><br>
+      ↑ / ↓ Intensity ±0.005<br>
+      ← / → Cycle Direction<br>
+      B Cycle Blend<br>
+      R Reset Defaults<br>
+      S Save Snapshot<br>
+      Z Restore Snapshot
+    </div>
+  </div>
+
+  <div id="history-count">Snapshots: 0</div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#111122');
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 5);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(5, 10, 7);
+    scene.add(directionalLight);
+
+    // Geometry / materials
+    const rotatingMeshes = [];
+
+    function makeStandardMaterial(color) {
+      return new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.35,
+        metalness: 0.2
+      });
+    }
+
+    const torusKnot = new THREE.Mesh(
+      new THREE.TorusKnotGeometry(0.7, 0.23, 180, 32),
+      makeStandardMaterial('#ff6633')
+    );
+    scene.add(torusKnot);
+    rotatingMeshes.push(torusKnot);
+
+    const sphereLeft = new THREE.Mesh(
+      new THREE.SphereGeometry(0.55, 32, 32),
+      makeStandardMaterial('#33aaff')
+    );
+    sphereLeft.position.set(-2, 0, 0);
+    scene.add(sphereLeft);
+    rotatingMeshes.push(sphereLeft);
+
+    const sphereRight = new THREE.Mesh(
+      new THREE.SphereGeometry(0.55, 32, 32),
+      makeStandardMaterial('#66ff99')
+    );
+    sphereRight.position.set(2, 0, 0);
+    scene.add(sphereRight);
+    rotatingMeshes.push(sphereRight);
+
+    const box = new THREE.Mesh(
+      new THREE.BoxGeometry(0.9, 0.9, 0.9),
+      makeStandardMaterial('#ff33aa')
+    );
+    box.position.set(0, 1.5, 0);
+    scene.add(box);
+    rotatingMeshes.push(box);
+
+    const cone = new THREE.Mesh(
+      new THREE.ConeGeometry(0.6, 1.2, 32),
+      makeStandardMaterial('#ffcc00')
+    );
+    cone.position.set(0, -1.5, 0);
+    scene.add(cone);
+    rotatingMeshes.push(cone);
+
+    // Render target for post-processing
+    const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      depthBuffer: true,
+      stencilBuffer: false
+    });
+
+    // Post-processing scene
+    const postScene = new THREE.Scene();
+    const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    const postUniforms = {
+      uTexture: { value: renderTarget.texture },
+      uIntensity: { value: 0.01 },
+      uDirection: { value: 0 },
+      uBlend: { value: 1.0 },
+      uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+    };
+
+    const postMaterial = new THREE.ShaderMaterial({
+      uniforms: postUniforms,
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position.xy, 0.0, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uTexture;
+        uniform float uIntensity;
+        uniform int uDirection;
+        uniform float uBlend;
+        varying vec2 vUv;
+
+        vec2 getOffsetDir(vec2 uv) {
+          if (uDirection == 0) {
+            return vec2(1.0, 0.0);
+          } else if (uDirection == 1) {
+            return vec2(0.0, 1.0);
+          } else {
+            vec2 dir = uv - vec2(0.5);
+            float len = length(dir);
+            if (len < 0.00001) return vec2(0.0);
+            return normalize(dir);
+          }
+        }
+
+        void main() {
+          vec4 original = texture2D(uTexture, vUv);
+          vec2 offsetDir = getOffsetDir(vUv);
+          vec2 offset = offsetDir * uIntensity;
+
+          float r = texture2D(uTexture, vUv + offset).r;
+          float g = texture2D(uTexture, vUv).g;
+          float b = texture2D(uTexture, vUv - offset).b;
+
+          vec4 aberrated = vec4(r, g, b, original.a);
+          gl_FragColor = mix(original, aberrated, uBlend);
+        }
+      `
+    });
+
+    const postQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMaterial);
+    postScene.add(postQuad);
+
+    // HUD elements
+    const hudIntensity = document.getElementById('hud-intensity');
+    const hudDirection = document.getElementById('hud-direction');
+    const hudBlend = document.getElementById('hud-blend');
+    const hudScore = document.getElementById('hud-score');
+    const hudRank = document.getElementById('hud-rank');
+    const historyCountEl = document.getElementById('history-count');
+    const toggleButton = document.getElementById('btn-toggle-effect');
+
+    const DIRECTION_NAMES = ['Horizontal', 'Vertical', 'Radial'];
+    const BLEND_STEPS = [0.0, 0.25, 0.5, 0.75, 1.0];
+
+    let effectEnabled = true;
+    let frameCount = 0;
+    let lastAction = 'init';
+    const history = [];
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function computeScoreAndRank() {
+      if (!effectEnabled) {
+        return { score: 0, rank: 'Off' };
+      }
+
+      const intensity = postUniforms.uIntensity.value;
+      const direction = postUniforms.uDirection.value;
+      const blend = postUniforms.uBlend.value;
+
+      const score = Math.round(
+        (intensity / 0.05) * 40 +
+        (direction === 2 ? 30 : direction === 1 ? 15 : 0) +
+        blend * 30
+      );
+
+      let rank = 'Subtle';
+      if (score >= 86) rank = 'Extreme';
+      else if (score >= 61) rank = 'Intense';
+      else if (score >= 31) rank = 'Moderate';
+
+      return { score, rank };
+    }
+
+    function getDirectionName(direction) {
+      return DIRECTION_NAMES[direction] || 'Horizontal';
+    }
+
+    function updateHUDAndState() {
+      const intensity = postUniforms.uIntensity.value;
+      const direction = postUniforms.uDirection.value;
+      const blend = postUniforms.uBlend.value;
+      const directionName = getDirectionName(direction);
+      const { score, rank } = computeScoreAndRank();
+
+      hudIntensity.textContent = intensity.toFixed(3);
+      hudDirection.textContent = directionName;
+      hudBlend.textContent = blend.toFixed(2);
+      hudScore.textContent = String(score);
+      hudRank.textContent = rank;
+      historyCountEl.textContent = `Snapshots: ${history.length}`;
+      toggleButton.textContent = effectEnabled ? 'Disable Effect' : 'Enable Effect';
+
+      window.__3D_STATE__ = {
+        intensity,
+        direction,
+        directionName,
+        blend,
+        score,
+        rank,
+        effectEnabled,
+        historyCount: history.length,
+        historyEntries: history.map(entry => ({ ...entry })),
+        objectCount: scene.children.filter(obj => obj.isMesh).length,
+        frameCount,
+        lastAction,
+        cameraZ: camera.position.z
+      };
+    }
+
+    function resetDefaults() {
+      postUniforms.uIntensity.value = 0.01;
+      postUniforms.uDirection.value = 0;
+      postUniforms.uBlend.value = 1.0;
+      lastAction = 'reset';
+    }
+
+    function cycleBlend() {
+      const current = Number(postUniforms.uBlend.value.toFixed(2));
+      let index = BLEND_STEPS.findIndex(v => Math.abs(v - current) < 0.001);
+      if (index === -1) index = BLEND_STEPS.indexOf(1.0);
+      postUniforms.uBlend.value = BLEND_STEPS[(index + 1) % BLEND_STEPS.length];
+      lastAction = 'cycle_blend';
+    }
+
+    function saveSnapshot() {
+      const { score, rank } = computeScoreAndRank();
+      history.push({
+        intensity: postUniforms.uIntensity.value,
+        direction: postUniforms.uDirection.value,
+        blend: postUniforms.uBlend.value,
+        score,
+        rank,
+        timestamp: Date.now()
+      });
+      if (history.length > 10) history.shift();
+      lastAction = 'save_snapshot';
+    }
+
+    function restoreSnapshot() {
+      if (history.length === 0) return;
+      const snap = history.pop();
+      postUniforms.uIntensity.value = snap.intensity;
+      postUniforms.uDirection.value = snap.direction;
+      postUniforms.uBlend.value = snap.blend;
+      lastAction = 'restore_snapshot';
+    }
+
+    function toggleEffect() {
+      effectEnabled = !effectEnabled;
+      lastAction = 'toggle_effect';
+    }
+
+    toggleButton.addEventListener('click', toggleEffect);
+
+    window.addEventListener('keydown', (event) => {
+      const key = event.key;
+
+      if (key === 'ArrowUp') {
+        event.preventDefault();
+        postUniforms.uIntensity.value = clamp(postUniforms.uIntensity.value + 0.005, 0.0, 0.05);
+        lastAction = 'increase_intensity';
+      } else if (key === 'ArrowDown') {
+        event.preventDefault();
+        postUniforms.uIntensity.value = clamp(postUniforms.uIntensity.value - 0.005, 0.0, 0.05);
+        lastAction = 'decrease_intensity';
+      } else if (key === 'ArrowRight' || key === 'ArrowLeft') {
+        event.preventDefault();
+        postUniforms.uDirection.value = (postUniforms.uDirection.value + 1) % 3;
+        lastAction = 'cycle_direction';
+      } else if (key === 'b' || key === 'B') {
+        cycleBlend();
+      } else if (key === 'r' || key === 'R') {
+        resetDefaults();
+      } else if (key === 's' || key === 'S') {
+        saveSnapshot();
+      } else if (key === 'z' || key === 'Z') {
+        restoreSnapshot();
+      }
+    });
+
+    function onResize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(w, h);
+      renderTarget.setSize(w, h);
+      postUniforms.uResolution.value.set(w, h);
+    }
+
+    window.addEventListener('resize', onResize);
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      frameCount++;
+
+      const elapsed = clock.getElapsedTime();
+
+      rotatingMeshes.forEach((mesh, i) => {
+        mesh.rotation.y += 0.01 + i * 0.0015;
+      });
+
+      torusKnot.rotation.x = Math.sin(elapsed * 0.7) * 0.25;
+      box.rotation.x += 0.006;
+      cone.rotation.z = Math.sin(elapsed * 0.9) * 0.2;
+
+      if (effectEnabled) {
+        renderer.setRenderTarget(renderTarget);
+        renderer.render(scene, camera);
+        renderer.setRenderTarget(null);
+        renderer.render(postScene, postCamera);
+      } else {
+        renderer.setRenderTarget(null);
+        renderer.render(scene, camera);
+      }
+
+      updateHUDAndState();
+    }
+
+    updateHUDAndState();
+    animate();
+  </script>
+</body>
+</html>

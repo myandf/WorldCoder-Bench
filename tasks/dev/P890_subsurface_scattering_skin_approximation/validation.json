@@ -1,0 +1,990 @@
+{
+  "task_id": "P890_subsurface_scattering_skin_approximation",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:38:47.690Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 6,
+      "total": 8,
+      "percent": 75
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 54,
+      "total": 54,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 75,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 54,
+    "total": 54,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "HeadMesh",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "KeyLight",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "SSSIntensitySlider",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "SSSDistortionSlider",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "RoughnessSlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "WrapFactorSlider",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ToggleWireframeButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "HUDPanel",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.skinBaseColor === 'object' && Array.isArray(window.__3D_STATE__.skinBaseColor) && window.__3D_STATE__.skinBaseColor.length === 3",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.skinBaseColor === 'object' && Array.isArray(window.__3D_STATE__.skinBaseColor) && window.__3D_STATE__.skinBaseColor.length === 3"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition === 'object' && Array.isArray(window.__3D_STATE__.lightPosition) && window.__3D_STATE__.lightPosition.length === 3",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition === 'object' && Array.isArray(window.__3D_STATE__.lightPosition) && window.__3D_STATE__.lightPosition.length === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshVertexCount > 4000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshVertexCount > 4000"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.elapsedTime === 'number' && window.__3D_STATE__.elapsedTime > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.elapsedTime === 'number' && window.__3D_STATE__.elapsedTime > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssIntensity >= 0.0 && window.__3D_STATE__.sssIntensity <= 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssIntensity >= 0.0 && window.__3D_STATE__.sssIntensity <= 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssDistortion === 0.2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssDistortion === 0.2"
+        },
+        {
+          "expression": "window.__3D_STATE__.roughness === 0.55",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.roughness === 0.55"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssDistortion >= 0.0 && window.__3D_STATE__.sssDistortion <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssDistortion >= 0.0 && window.__3D_STATE__.sssDistortion <= 1.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sssColor === 'object' && Array.isArray(window.__3D_STATE__.sssColor) && window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sssColor === 'object' && Array.isArray(window.__3D_STATE__.sssColor) && window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sssDistortion)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sssDistortion)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.roughness >= 0.0 && window.__3D_STATE__.roughness <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.roughness >= 0.0 && window.__3D_STATE__.roughness <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.specularIntensity === 0.4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.specularIntensity === 0.4"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.roughness)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.roughness)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lightOrbitActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbitActive === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition[0] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[0])",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition[0] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[0])"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition[2] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[2])",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition[2] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[2])"
+        },
+        {
+          "expression": "Math.sqrt(window.__3D_STATE__.lightPosition[0]**2 + window.__3D_STATE__.lightPosition[2]**2) > 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.sqrt(window.__3D_STATE__.lightPosition[0]**2 + window.__3D_STATE__.lightPosition[2]**2) > 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.fresnelActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fresnelActive === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'medium'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'medium'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.85) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.85) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.65) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.65) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.5) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.5) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinBaseColor.every(v => v >= 0 && v <= 1)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinBaseColor.every(v => v >= 0 && v <= 1)"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'deep'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'deep'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.55) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.55) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.35) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.35) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.25) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.25) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbitActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbitActive === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.wireframeActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframeActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'deep'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'deep'"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshVertexCount > 4000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshVertexCount > 4000"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.wireframeActive === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.wireframeActive === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.ambientIntensity === 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ambientIntensity === 0.3"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.wrapFactor - 0.85) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.wrapFactor - 0.85) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.wrapFactor >= 0.0 && window.__3D_STATE__.wrapFactor <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wrapFactor >= 0.0 && window.__3D_STATE__.wrapFactor <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'deep'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'deep'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.wireframeActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframeActive === true"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.wrapFactor)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.wrapFactor)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssIntensity - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssIntensity - 0.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssDistortion - 0.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssDistortion - 0.2) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.roughness - 0.55) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.roughness - 0.55) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.wrapFactor - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.wrapFactor - 0.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'fair'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'fair'"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbitActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbitActive === false"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.skinBaseColor === 'object' && Array.isArray(window.__3D_STATE__.skinBaseColor) && window.__3D_STATE__.skinBaseColor.length === 3",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.skinBaseColor === 'object' && Array.isArray(window.__3D_STATE__.skinBaseColor) && window.__3D_STATE__.skinBaseColor.length === 3"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition === 'object' && Array.isArray(window.__3D_STATE__.lightPosition) && window.__3D_STATE__.lightPosition.length === 3",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition === 'object' && Array.isArray(window.__3D_STATE__.lightPosition) && window.__3D_STATE__.lightPosition.length === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshVertexCount > 4000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshVertexCount > 4000"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.elapsedTime === 'number' && window.__3D_STATE__.elapsedTime > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && typeof window.__3D_STATE__.elapsedTime === 'number' && window.__3D_STATE__.elapsedTime > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sssIntensity === 'number' && !isNaN(window.__3D_STATE__.sssIntensity)"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssIntensity >= 0.0 && window.__3D_STATE__.sssIntensity <= 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssIntensity >= 0.0 && window.__3D_STATE__.sssIntensity <= 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssDistortion === 0.2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssDistortion === 0.2"
+        },
+        {
+          "expression": "window.__3D_STATE__.roughness === 0.55",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.roughness === 0.55"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssDistortion >= 0.0 && window.__3D_STATE__.sssDistortion <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssDistortion >= 0.0 && window.__3D_STATE__.sssDistortion <= 1.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssIntensity - 1.4) < 0.05"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sssColor === 'object' && Array.isArray(window.__3D_STATE__.sssColor) && window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sssColor === 'object' && Array.isArray(window.__3D_STATE__.sssColor) && window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sssDistortion)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sssDistortion)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.roughness >= 0.0 && window.__3D_STATE__.roughness <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.roughness >= 0.0 && window.__3D_STATE__.roughness <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.specularIntensity === 0.4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.specularIntensity === 0.4"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssDistortion - 0.7) < 0.05"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.roughness)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.roughness)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lightOrbitActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbitActive === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition[0] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[0])",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition[0] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[0])"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.lightPosition[2] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[2])",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.lightPosition[2] === 'number' && !isNaN(window.__3D_STATE__.lightPosition[2])"
+        },
+        {
+          "expression": "Math.sqrt(window.__3D_STATE__.lightPosition[0]**2 + window.__3D_STATE__.lightPosition[2]**2) > 2.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.sqrt(window.__3D_STATE__.lightPosition[0]**2 + window.__3D_STATE__.lightPosition[2]**2) > 2.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.fresnelActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fresnelActive === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'medium'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'medium'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.85) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.85) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.65) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.65) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.5) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.5) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinBaseColor.every(v => v >= 0 && v <= 1)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinBaseColor.every(v => v >= 0 && v <= 1)"
+        },
+        {
+          "expression": "window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sssColor.every(v => v >= 0 && v <= 1)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'deep'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'deep'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.55) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[0] - 0.55) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.35) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[1] - 0.35) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.25) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.skinBaseColor[2] - 0.25) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbitActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbitActive === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.wireframeActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframeActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'deep'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'deep'"
+        },
+        {
+          "expression": "window.__3D_STATE__.meshVertexCount > 4000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.meshVertexCount > 4000"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.wireframeActive === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.wireframeActive === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.ambientIntensity === 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.ambientIntensity === 0.3"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.wrapFactor - 0.85) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.wrapFactor - 0.85) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.wrapFactor >= 0.0 && window.__3D_STATE__.wrapFactor <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wrapFactor >= 0.0 && window.__3D_STATE__.wrapFactor <= 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'deep'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'deep'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.roughness - 0.15) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.wireframeActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.wireframeActive === true"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.wrapFactor)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.wrapFactor)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssIntensity - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssIntensity - 0.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sssDistortion - 0.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sssDistortion - 0.2) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.roughness - 0.55) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.roughness - 0.55) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.wrapFactor - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.wrapFactor - 0.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.skinPreset === 'fair'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.skinPreset === 'fair'"
+        },
+        {
+          "expression": "window.__3D_STATE__.lightOrbitActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lightOrbitActive === false"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 6,
+    "total": 8,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 9,
+      "total": 9
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 45,
+      "total": 45
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 30291
+}

@@ -1,0 +1,1152 @@
+{
+  "task_id": "P344_sunglasses_try_on",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:26:58.007Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 9,
+      "total": 10,
+      "percent": 90
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 66,
+      "total": 66,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 90,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 66,
+    "total": 66,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "SunglassesGroup",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "TruckModel",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "LensButtons",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "FrameButtons",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "SizeSlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "CartButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "AnimateButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "UVToggleButton",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "PriceDisplay",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lensStyle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lensStyle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameColor !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameColor !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.price !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.price !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.cameraDistance > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cameraDistance > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.cameraDistance)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.cameraDistance)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "document.getElementById('cartBadge') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('cartBadge') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunglassesRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunglassesRotationY)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesRotationY === 'number'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lensStyle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lensStyle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameColor !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameColor !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.price !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.price !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunglassesRotationY > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesRotationY > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunglassesRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunglassesRotationY)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cameraDistance > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cameraDistance > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "document.getElementById('uvInfoPanel') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('uvInfoPanel') !== null"
+        },
+        {
+          "expression": "document.getElementById('uvInfoPanel').style.display !== 'none'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('uvInfoPanel').style.display !== 'none'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lensStyle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lensStyle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameColor !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameColor !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.price !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.price !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.cameraDistance > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cameraDistance > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.cameraDistance)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.cameraDistance)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "document.getElementById('cartBadge') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('cartBadge') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunglassesRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunglassesRotationY)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesRotationY === 'number'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.lensStyle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lensStyle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameColor !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameColor !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.price !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.price !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sunglassesRotationY > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesRotationY > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.sunglassesRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.sunglassesRotationY)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cameraDistance > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cameraDistance > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        },
+        {
+          "expression": "document.getElementById('uvInfoPanel') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('uvInfoPanel') !== null"
+        },
+        {
+          "expression": "document.getElementById('uvInfoPanel').style.display !== 'none'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('uvInfoPanel').style.display !== 'none'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sunglassesScale !== before.sunglassesScale || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sunglassesScale === 'number' && !isNaN(window.__3D_STATE__.sunglassesScale)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.price === 'number' && !isNaN(window.__3D_STATE__.price)"
+        },
+        {
+          "expression": "window.__3D_STATE__.cartCount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cartCount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.uvPanelVisible === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 9,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 41,
+      "total": 41
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 25,
+      "total": 25
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 41080
+}

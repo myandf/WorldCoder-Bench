@@ -1,0 +1,34 @@
+{
+  "id": "P135_soldier_formation",
+  "title": "Military Formation Simulator",
+  "domain": "visualization",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a military formation simulator. Load 12 soldier models and support switching among multiple formations and marching simulation.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import through ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/RobotExpressive.glb;\n(2) RobotExpressive.glb contains skeletal animations (idle, walk/run, etc.); iterate over gltf.animations to obtain the animation clips;\n(3) Use SkeletonUtils.clone (requires import { clone } from 'three/addons/utils/SkeletonUtils.js') to clone 12 independent soldier instances;\n(4) The initial arrangement is a rectangular formation of 3 rows × 4 columns, with 2-meter spacing, centered in the scene;\n(5) Each soldier has an independent AnimationMixer;\n(6) After loading is complete, set window.__3D_STATE__.modelLoaded = true;\n\n[Scene]\n(7) A sufficiently large green ground plane and a sky-blue background of 0x87CEEB;\n(8) DirectionalLight + AmbientLight illumination;\n(9) An OrbitControls camera overlooking the formation from above at a 45-degree angle, with the initial position (0, 15, 15);\n\n[Formation System]\n(10) 4 formation buttons:\n  - \"Line\" button (id=\"lineBtn\"): arrange all 12 soldiers in one horizontal line with uniform spacing;\n  - \"Square Formation\" button (id=\"squareBtn\"): a rectangular formation of 3 rows × 4 columns;\n  - \"Arrow\" button (id=\"arrowBtn\"): a V-shaped formation, with the point facing forward and both wings spreading backward;\n  - \"Circle Formation\" button (id=\"circleBtn\"): distribute all 12 soldiers evenly around a circle, facing the center;\n(11) When switching formations, soldiers must transition smoothly from their current positions to their target positions using lerp interpolation, completing the transition in approximately 2 seconds;\n(12) Play the walk animation during the transition, then switch back to the idle animation after reaching the target positions;\n(13) Soldiers face the direction of movement and, after arrival, face the front of the formation; in the circle formation, they face the center of the circle;\n\n[Marching Mode]\n(14) \"March\" toggle button (id=\"marchBtn\"): click to enable or disable marching mode;\n(15) In marching mode, all soldiers maintain the current formation and move forward together in the positive z direction at approximately 1 m/s;\n(16) All soldiers play the walk animation while marching and switch back to idle when marching stops;\n(17) The marching direction remains unchanged, and the formation shape remains stable while moving;\n\n[Spacing Control]\n(18) Spacing slider (id=\"spacingSlider\", range input, min=1, max=3, step=0.1, default 2);\n(19) When the spacing is adjusted, update soldier positions smoothly by recalculating the target positions for the current formation;\n\n[HUD Display]\n(20) The HUD in the upper-left corner displays:\n  - Current formation name (id=\"formationName\")\n  - Marching state (id=\"marchState\", displaying \"Marching\" or \"Stationary\")\n  - Current spacing (id=\"spacingValue\")\n  - Soldier count (id=\"soldierCount\", which must be 12)\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n{\n  modelLoaded: boolean,\n  formation: string,\n  marching: boolean,\n  spacing: number,\n  soldierCount: number,\n  soldierPositions: Array<{x: number, z: number}>,\n  transitioning: boolean,\n  marchDistance: number\n}\n\nOutput a single HTML file, place it in the same directory as the assets/ folder, and run it through a local HTTP server.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [
+    "../../../assets/shared/RobotExpressive.glb"
+  ],
+  "tags": [
+    "education",
+    "military",
+    "GLTFLoader",
+    "SkeletonUtils",
+    "animation",
+    "formation",
+    "clone",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 220,
+  "physics_constraints": [
+    "12 soldiers cloned via SkeletonUtils",
+    "4 formations: line, square (3x4), arrow (V-shape), circle",
+    "smooth position transitions: ~2 seconds via lerp",
+    "spacing range: 1-3 meters",
+    "march speed: ~1 m/s in z-positive direction",
+    "walk animation during transitions and marching, idle otherwise"
+  ],
+  "difficulty_analysis": "L4 Challenges: (1) Using GLTFLoader + SkeletonUtils.clone to clone 12 models with skeletal animations; (2) calculating positions for 4 formation types; (3) smooth position transitions using lerp; (4) switching animation states between idle and walk; (5) moving the entire formation in marching mode while preserving its shape; (6) dynamically adjusting spacing."
+}

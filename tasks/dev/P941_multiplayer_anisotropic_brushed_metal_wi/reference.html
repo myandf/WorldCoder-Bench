@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplayer Anisotropic Brushed Metal</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; background: #1a1a1a; font-family: 'Segoe UI', Arial, sans-serif; color: #ccc; }
+#canvas-container { width: 100vw; height: 100vh; }
+canvas { display: block; }
+#controls {
+  position: absolute; top: 12px; left: 12px; background: rgba(20,20,20,0.92);
+  border: 1px solid #333; border-radius: 8px; padding: 14px 16px; min-width: 220px; z-index: 10;
+}
+#controls label { font-size: 13px; margin-right: 6px; }
+#player-select {
+  background: #222; color: #eee; border: 1px solid #555; border-radius: 4px;
+  padding: 4px 8px; font-size: 13px; margin-bottom: 8px;
+}
+#controls button {
+  background: #333; color: #ddd; border: 1px solid #555; border-radius: 4px;
+  padding: 5px 12px; margin: 3px 3px 3px 0; cursor: pointer; font-size: 12px;
+}
+#controls button:hover { background: #444; }
+#hud {
+  position: absolute; top: 12px; right: 12px; background: rgba(20,20,20,0.92);
+  border: 1px solid #333; border-radius: 8px; padding: 14px 16px; min-width: 200px; z-index: 10;
+}
+#hud .hud-row { font-size: 13px; margin-bottom: 4px; }
+#hud .hud-label { color: #888; }
+#hud .hud-val { color: #e0e0e0; font-weight: 600; }
+#compass-container { display: flex; justify-content: center; margin-top: 8px; }
+#compass { width: 64px; height: 64px; }
+#keys-help {
+  position: absolute; bottom: 12px; left: 12px; background: rgba(20,20,20,0.85);
+  border: 1px solid #333; border-radius: 8px; padding: 10px 14px; font-size: 11px; color: #777; z-index: 10;
+}
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+<div id="controls">
+  <label for="player-select">Player:</label>
+  <select id="player-select">
+    <option value="1">Player 1 (TL)</option>
+    <option value="2">Player 2 (TR)</option>
+    <option value="3">Player 3 (BL)</option>
+    <option value="4">Player 4 (BR)</option>
+  </select><br>
+  <button id="sync-all-btn">Sync All</button>
+  <button id="reset-btn">Reset</button>
+</div>
+<div id="hud">
+  <div class="hud-row"><span class="hud-label">Player: </span><span class="hud-val" id="hud-player">1</span></div>
+  <div class="hud-row"><span class="hud-label">Brush Angle: </span><span class="hud-val" id="hud-angle">0°</span></div>
+  <div class="hud-row"><span class="hud-label">Anisotropy: </span><span class="hud-val" id="hud-aniso">0.70</span></div>
+  <div class="hud-row"><span class="hud-label">RoughnessX: </span><span class="hud-val" id="hud-rx">0.10</span></div>
+  <div class="hud-row"><span class="hud-label">RoughnessY: </span><span class="hud-val" id="hud-ry">0.50</span></div>
+  <div id="compass-container">
+    <canvas id="compass" width="64" height="64"></canvas>
+  </div>
+</div>
+<div id="keys-help">
+  A/D: Rotate brush &nbsp; W/S: Anisotropy &nbsp; Q/E: RoughnessX
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+const DEFAULTS = [
+  { brushAngle: 0, anisotropyStrength: 0.7, roughnessX: 0.1, roughnessY: 0.5, metalness: 0.95 },
+  { brushAngle: Math.PI / 4, anisotropyStrength: 0.7, roughnessX: 0.1, roughnessY: 0.5, metalness: 0.95 },
+  { brushAngle: Math.PI / 2, anisotropyStrength: 0.7, roughnessX: 0.1, roughnessY: 0.5, metalness: 0.95 },
+  { brushAngle: 3 * Math.PI / 4, anisotropyStrength: 0.7, roughnessX: 0.1, roughnessY: 0.5, metalness: 0.95 }
+];
+
+const state = {
+  activePlayer: 1,
+  players: DEFAULTS.map(d => ({ ...d })),
+  synced: false,
+  lastAction: '',
+  panelCount: 4,
+  lightsActive: 3
+};
+window.__3D_STATE__ = state;
+
+function checkSynced() {
+  const p = state.players;
+  state.synced = p.every(pl =>
+    Math.abs(pl.brushAngle - p[0].brushAngle) < 1e-6 &&
+    Math.abs(pl.anisotropyStrength - p[0].anisotropyStrength) < 1e-6 &&
+    Math.abs(pl.roughnessX - p[0].roughnessX) < 1e-6 &&
+    Math.abs(pl.roughnessY - p[0].roughnessY) < 1e-6 &&
+    Math.abs(pl.metalness - p[0].metalness) < 1e-6
+  );
+}
+
+// Renderer
+const container = document.getElementById('canvas-container');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+container.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1a1a);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 2, 6);
+camera.lookAt(0, 0, 0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.enableDamping = true;
+
+// Lights
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+keyLight.position.set(5, 5, 5);
+scene.add(keyLight);
+
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
+fillLight.position.set(-3, 2, -2);
+scene.add(fillLight);
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.15);
+scene.add(ambientLight);
+
+// Environment map via PMREMGenerator
+const pmremGen = new THREE.PMREMGenerator(renderer);
+pmremGen.compileEquirectangularShader();
+
+function createGradientEnv() {
+  const envScene = new THREE.Scene();
+  const geo = new THREE.SphereGeometry(10, 32, 32);
+  const mat = new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    uniforms: {},
+    vertexShader: `varying vec3 vWorldPos;
+      void main(){ vWorldPos = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: `varying vec3 vWorldPos;
+      void main(){
+        float t = normalize(vWorldPos).y * 0.5 + 0.5;
+        vec3 bottom = vec3(0.05, 0.05, 0.08);
+        vec3 top = vec3(0.3, 0.35, 0.45);
+        vec3 col = mix(bottom, top, t);
+        col += 0.15 * pow(max(dot(normalize(vWorldPos), normalize(vec3(5.0,5.0,5.0))),0.0), 16.0);
+        gl_FragColor = vec4(col, 1.0);
+      }`
+  });
+  envScene.add(new THREE.Mesh(geo, mat));
+  const envRT = pmremGen.fromScene(envScene, 0.04);
+  return envRT.texture;
+}
+const envMap = createGradientEnv();
+scene.environment = envMap;
+
+// Anisotropic shader
+const vertexShader = `
+  varying vec3 vNormal;
+  varying vec3 vWorldPos;
+  varying vec3 vTangent;
+  varying vec3 vBitangent;
+  varying vec2 vUv;
+
+  void main() {
+    vUv = uv;
+    vec4 worldPos = modelMatrix * vec4(position, 1.0);
+    vWorldPos = worldPos.xyz;
+    vNormal = normalize(normalMatrix * normal);
+    // Tangent in object space along X, transform to world
+    vec3 T = normalize(normalMatrix * vec3(1.0, 0.0, 0.0));
+    vec3 N = vNormal;
+    // Re-orthogonalize
+    T = normalize(T - dot(T, N) * N);
+    vec3 B = cross(N, T);
+    vTangent = T;
+    vBitangent = B;
+    gl_Position = projectionMatrix * viewMatrix * worldPos;
+  }
+`;
+
+const fragmentShader = `
+  precision highp float;
+
+  uniform float brushAngle;
+  uniform float anisotropyStrength;
+  uniform float roughnessX;
+  uniform float roughnessY;
+  uniform float metalness;
+  uniform vec3 baseColor;
+  uniform vec3 cameraPosition;
+  uniform float selected;
+
+  uniform vec3 lightDir0;
+  uniform vec3 lightCol0;
+  uniform vec3 lightDir1;
+  uniform vec3 lightCol1;
+  uniform float ambientIntensity;
+
+  varying vec3 vNormal;
+  varying vec3 vWorldPos;
+  varying vec3 vTangent;
+  varying vec3 vBitangent;
+  varying vec2 vUv;
+
+  #define PI 3.14159265359
+
+  // Rotate tangent/bitangent by brush angle
+  void getAnisoDirs(out vec3 T, out vec3 B) {
+    float c = cos(brushAngle);
+    float s = sin(brushAngle);
+    T = normalize(c * vTangent + s * vBitangent);
+    B = normalize(-s * vTangent + c * vBitangent);
+  }
+
+  // GGX anisotropic NDF
+  float D_GGX_Aniso(vec3 N, vec3 H, vec3 T, vec3 B, float ax, float ay) {
+    float TdH = dot(T, H);
+    float BdH = dot(B, H);
+    float NdH = dot(N, H);
+    float a2 = ax * ay;
+    float d = (TdH * TdH) / (ax * ax) + (BdH * BdH) / (ay * ay) + NdH * NdH;
+    return 1.0 / (PI * a2 * d * d + 0.0001);
+  }
+
+  // Schlick Fresnel
+  vec3 F_Schlick(float cosTheta, vec3 F0) {
+    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+  }
+
+  // Smith G
+  float G_Smith(float NdV, float NdL, float r) {
+    float k = (r + 1.0) * (r + 1.0) / 8.0;
+    float gv = NdV / (NdV * (1.0 - k) + k);
+    float gl = NdL / (NdL * (1.0 - k) + k);
+    return gv * gl;
+  }
+
+  vec3 calcLight(vec3 L, vec3 lightColor, vec3 V, vec3 N, vec3 T, vec3 B, float ax, float ay, vec3 F0) {
+    vec3 H = normalize(V + L);
+    float NdL = max(dot(N, L), 0.0);
+    float NdV = max(dot(N, V), 0.001);
+    float NdH = max(dot(N, H), 0.0);
+    float VdH = max(dot(V, H), 0.0);
+
+    float D = D_GGX_Aniso(N, H, T, B, ax, ay);
+    vec3 F = F_Schlick(VdH, F0);
+    float avgR = (ax + ay) * 0.5;
+    float G = G_Smith(NdV, NdL, avgR);
+
+    vec3 spec = (D * F * G) / (4.0 * NdV * NdL + 0.001);
+    vec3 diff = (1.0 - F) * (1.0 - metalness) * baseColor / PI;
+
+    return (diff + spec) * lightColor * NdL;
+  }
+
+  void main() {
+    vec3 N = normalize(vNormal);
+    vec3 V = normalize(cameraPosition - vWorldPos);
+
+    vec3 T, B;
+    getAnisoDirs(T, B);
+
+    // Interpolate roughness based on anisotropy strength
+    float ax = mix(roughnessX, roughnessX, 1.0);
+    float ay = mix(roughnessX, roughnessY, anisotropyStrength);
+
+    vec3 F0 = mix(vec3(0.04), baseColor, metalness);
+
+    vec3 color = baseColor * ambientIntensity * 0.15;
+
+    vec3 L0 = normalize(lightDir0);
+    vec3 L1 = normalize(lightDir1);
+    color += calcLight(L0, lightCol0, V, N, T, B, ax, ay, F0);
+    color += calcLight(L1, lightCol1, V, N, T, B, ax, ay, F0);
+
+    // Fake env reflection
+    vec3 R = reflect(-V, N);
+    float envFresnel = pow(1.0 - max(dot(N, V), 0.0), 3.0) * metalness;
+    vec3 envCol = mix(vec3(0.05, 0.05, 0.08), vec3(0.25, 0.28, 0.35), R.y * 0.5 + 0.5);
+    color += envCol * envFresnel * 0.6;
+
+    // Selected glow
+    if (selected > 0.5) {
+      float edge = 1.0 - smoothstep(0.35, 0.5, abs(vUv.x - 0.5));
+      edge *= 1.0 - smoothstep(0.35, 0.5, abs(vUv.y - 0.5));
+      float glow = (1.0 - edge) * 0.35;
+      color += vec3(0.2, 0.5, 1.0) * glow;
+    }
+
+    // Tonemap
+    color = color / (color + vec3(1.0));
+    color = pow(color, vec3(1.0 / 2.2));
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+// Create panels
+const panelGeo = new RoundedBoxGeometry(1.8, 1.8, 0.15, 4, 0.06);
+const panels = [];
+const materials = [];
+
+const positions = [
+  [-1.1, 0, -1.1],
+  [1.1, 0, -1.1],
+  [-1.1, 0, 1.1],
+  [1.1, 0, 1.1]
+];
+
+for (let i = 0; i < 4; i++) {
+  const p = state.players[i];
+  const mat = new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      brushAngle: { value: p.brushAngle },
+      anisotropyStrength: { value: p.anisotropyStrength },
+      roughnessX: { value: p.roughnessX },
+      roughnessY: { value: p.roughnessY },
+      metalness: { value: p.metalness },
+      baseColor: { value: new THREE.Vector3(0.8, 0.82, 0.85) },
+      cameraPosition: { value: camera.position },
+      selected: { value: i === 0 ? 1.0 : 0.0 },
+      lightDir0: { value: new THREE.Vector3(5, 5, 5).normalize() },
+      lightCol0: { value: new THREE.Vector3(1.2, 1.2, 1.2) },
+      lightDir1: { value: new THREE.Vector3(-3, 2, -2).normalize() },
+      lightCol1: { value: new THREE.Vector3(0.6, 0.6, 0.6) },
+      ambientIntensity: { value: 0.15 }
+    }
+  });
+  materials.push(mat);
+  const mesh = new THREE.Mesh(panelGeo, mat);
+  mesh.position.set(positions[i][0], positions[i][1], positions[i][2]);
+  mesh.rotation.x = -Math.PI / 2;
+  scene.add(mesh);
+  panels.push(mesh);
+}
+
+// Floor grid hint
+const gridHelper = new THREE.GridHelper(8, 16, 0x333333, 0x222222);
+gridHelper.position.y = -0.1;
+scene.add(gridHelper);
+
+// UI
+const playerSelect = document.getElementById('player-select');
+const syncBtn = document.getElementById('sync-all-btn');
+const resetBtn = document.getElementById('reset-btn');
+
+function updateSelection() {
+  const idx = state.activePlayer - 1;
+  for (let i = 0; i < 4; i++) {
+    materials[i].uniforms.selected.value = i === idx ? 1.0 : 0.0;
+  }
+}
+
+function syncUniforms(i) {
+  const p = state.players[i];
+  const u = materials[i].uniforms;
+  u.brushAngle.value = p.brushAngle;
+  u.anisotropyStrength.value = p.anisotropyStrength;
+  u.roughnessX.value = p.roughnessX;
+  u.roughnessY.value = p.roughnessY;
+  u.metalness.value = p.metalness;
+}
+
+function updateHUD() {
+  const idx = state.activePlayer - 1;
+  const p = state.players[idx];
+  document.getElementById('hud-player').textContent = state.activePlayer;
+  const deg = ((p.brushAngle * 180 / Math.PI) % 360 + 360) % 360;
+  document.getElementById('hud-angle').textContent = deg.toFixed(1) + '°';
+  document.getElementById('hud-aniso').textContent = p.anisotropyStrength.toFixed(2);
+  document.getElementById('hud-rx').textContent = p.roughnessX.toFixed(2);
+  document.getElementById('hud-ry').textContent = p.roughnessY.toFixed(2);
+  drawCompass(p.brushAngle);
+}
+
+function drawCompass(angle) {
+  const c = document.getElementById('compass');
+  const ctx = c.getContext('2d');
+  const cx = 32, cy = 32, r = 26;
+  ctx.clearRect(0, 0, 64, 64);
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.stroke();
+  // Ticks
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 - Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(a) * (r - 4), cy + Math.sin(a) * (r - 4));
+    ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+    ctx.strokeStyle = '#666';
+    ctx.stroke();
+  }
+  // Brush direction line
+  const bx = Math.cos(angle);
+  const by = Math.sin(angle);
+  ctx.strokeStyle = '#4a9eff';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - bx * (r - 6), cy - by * (r - 6));
+  ctx.lineTo(cx + bx * (r - 6), cy + by * (r - 6));
+  ctx.stroke();
+  // Arrow tip
+  ctx.fillStyle = '#4a9eff';
+  ctx.beginPath();
+  const tipX = cx + bx * (r - 4);
+  const tipY = cy + by * (r - 4);
+  ctx.arc(tipX, tipY, 3, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+playerSelect.addEventListener('change', () => {
+  state.activePlayer = parseInt(playerSelect.value);
+  state.lastAction = 'select_player';
+  updateSelection();
+  checkSynced();
+  updateHUD();
+});
+
+syncBtn.addEventListener('click', () => {
+  const src = state.players[state.activePlayer - 1];
+  for (let i = 0; i < 4; i++) {
+    state.players[i] = { ...src };
+    syncUniforms(i);
+  }
+  state.lastAction = 'sync';
+  checkSynced();
+  updateHUD();
+});
+
+resetBtn.addEventListener('click', () => {
+  for (let i = 0; i < 4; i++) {
+    state.players[i] = { ...DEFAULTS[i] };
+    syncUniforms(i);
+  }
+  state.activePlayer = 1;
+  playerSelect.value = '1';
+  state.lastAction = 'reset';
+  updateSelection();
+  checkSynced();
+  updateHUD();
+});
+
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  const idx = state.activePlayer - 1;
+  const p = state.players[idx];
+
+  if (key === 'd') {
+    p.brushAngle += Math.PI / 12;
+    state.lastAction = 'rotate_cw';
+  } else if (key === 'a') {
+    p.brushAngle -= Math.PI / 12;
+    state.lastAction = 'rotate_ccw';
+  } else if (key === 'w') {
+    p.anisotropyStrength = Math.min(1.0, p.anisotropyStrength + 0.1);
+    state.lastAction = 'strength_up';
+  } else if (key === 's') {
+    p.anisotropyStrength = Math.max(0.0, p.anisotropyStrength - 0.1);
+    state.lastAction = 'strength_down';
+  } else if (key === 'e') {
+    p.roughnessX = Math.min(0.8, p.roughnessX + 0.05);
+    state.lastAction = 'roughness_up';
+  } else if (key === 'q') {
+    p.roughnessX = Math.max(0.02, p.roughnessX - 0.05);
+    state.lastAction = 'roughness_down';
+  } else {
+    return;
+  }
+
+  syncUniforms(idx);
+  checkSynced();
+  updateHUD();
+});
+
+// Animation loop
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  for (let i = 0; i < 4; i++) {
+    materials[i].uniforms.cameraPosition.value.copy(camera.position);
+  }
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+checkSynced();
+updateSelection();
+updateHUD();
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "id": "P59_stock_3d",
+  "title": "3D Stock Market Dashboard (OHLC Bars)",
+  "domain": "product",
+  "route": "C",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a 3D stock OHLC bar dashboard (simulated data).\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Data]\n(1) Hard-code 10 stocks, each with simulated OHLC data for 100 time points (the arrays may be generated).\n\n[Visualization]\n(2) 3D bars: each stock occupies one row (indexed along the Z or X axis), the bar height represents the price (such as the closing price), and the color represents gains or losses (green for gains and red for losses, or another consistently applied convention).\n(3) Time animation: automatically, or driven by a button with id=\"playPause\", increment currentTime from 0 to 99 in a loop or back-and-forth sequence.\n(4) Click a bar to select the corresponding stock and display its details (in the area with id=\"stockDetail\").\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  stockCount: number,\n  timePoints: number,\n  currentTime: number,\n  selectedStock: null | number | string,\n  animating: boolean\n}\n\nstockCount=10 and timePoints=100; currentTime is an integer index from 0–99.\n\nOutput a single HTML file that can run by being opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "product",
+    "three.js",
+    "stock",
+    "OHLC",
+    "3d-chart",
+    "animation",
+    "dashboard"
+  ],
+  "estimated_human_time_minutes": 200,
+  "physics_constraints": [
+    "10 stocks x 100 bars simulation",
+    "Bar height/color from OHLC",
+    "currentTime 0-99",
+    "playPause or auto animation",
+    "selectedStock on bar pick"
+  ]
+}

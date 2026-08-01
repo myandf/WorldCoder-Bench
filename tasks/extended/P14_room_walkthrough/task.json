@@ -1,0 +1,30 @@
+{
+  "id": "P14_room_walkthrough",
+  "title": "3D Indoor Scene Walkthrough (Living Room)",
+  "domain": "architecture",
+  "route": "C",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a navigable 3D living room scene with procedural furniture and collision detection, output as a single-file HTML document.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nInclude the following importmap in the page, and use <script type=\"module\"> to import three and addons as ES Modules:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n\n[Room]\n- Interior dimensions: 8m × 6m × 3m (recommended: floor at y=0, ceiling at y=3, and horizontal ranges x∈[0,8], z∈[0,6], or an equivalent translation, but remain consistent between the prompt and validation);\n- The floor, four walls, and ceiling must be independent meshes with distinct materials (such as wood grain for the floor, painted material for the walls, and a matte material for the ceiling).\n\n[Furniture (All Must Be Procedurally Assembled Using BoxGeometry/PlaneGeometry/CylinderGeometry, Etc.; Must Include at Least)]\n- Sofa: assembled from multiple Boxes;\n- Coffee table;\n- Television: mounted against a wall, with the screen implemented using PlaneGeometry + emissive;\n- Bookshelf;\n- Floor lamp (clickable to toggle its light source);\n- Two chairs;\n- Rug: a flattened CylinderGeometry (radiusTop=radiusBottom, very small height) placed against the floor.\nThe total number of furniture items is included in furnitureCount (7–8 recommended).\n\n[Lighting]\n- AmbientLight for base ambient illumination;\n- 1 ceiling PointLight to simulate a ceiling-mounted light;\n- Use a SpotLight for the floor lamp (its intensity may change according to the switch state);\n- Reasonable shadows are optional.\n\n[First-Person View and Controls]\n- PointerLockControls (three/addons/controls/PointerLockControls.js) + WASD movement and mouse look;\n- Simple room-axis-aligned AABB collision detection: the camera/person collider must not pass through walls or enter furniture bounding boxes (each frame, clamp the position back into the valid area or push it back with sliding behavior).\n\n[Click Interaction (Ray Picking)]\n- Click the floor lamp mesh: toggle lampOn, changing the SpotLight intensity between \"on/off\" states;\n- Click the television screen area: toggle tvOn; when off, the screen is nearly black, and when on, it has a blue emissive glow.\n\n[Automated Testing Hooks]\n- Attach the first-person PerspectiveCamera reference to window.__fpCamera__, and on every frame update __3D_STATE__.cameraPos from the actual camera according to its final position after collision resolution.\n\n[HUD]\n- id=\"camPos\": camera position text, such as \"x, y, z\";\n- id=\"furnitureCount\": number of furniture items;\n- id=\"lightsOn\": the current number of light sources \"counted as on\" (for example, the always-on ceiling light counts as 1, and the floor lamp adds +1 when on; this must remain consistent with the implementation and be updated when lampOn/tvOn changes).\n\n[State Exposure]\nwindow.__3D_STATE__ = {\n  cameraPos: { x, y, z },\n  furnitureCount: number,\n  furnitureList: [{ name, x, y, z }, ...],\n  lightsOn: number,\n  lampOn: boolean,\n  tvOn: boolean\n}\n\nOutput a single HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "architecture",
+    "interior",
+    "first-person",
+    "PointerLockControls",
+    "AABB",
+    "collision",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 180,
+  "physics_constraints": [
+    "Room interior 8x6x3 m with axis-aligned bounds",
+    "WASD + pointer lock walk",
+    "AABB collision against walls and furniture",
+    "lamp and TV toggles update lampOn/tvOn and lighting/emissive",
+    "window.__fpCamera__ references the active FP camera",
+    "no NaN in cameraPos after collision resolution"
+  ]
+}

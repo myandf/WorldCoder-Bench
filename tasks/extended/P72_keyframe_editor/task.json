@@ -1,0 +1,25 @@
+{
+  "id": "P72_keyframe_editor",
+  "title": "Keyframe Editor (Box Animation)",
+  "domain": "animation",
+  "route": "C",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a keyframe animation editor for a box on a 0–5 second timeline: support adding keyframes, play/pause, time scrubbing, and switching between linear/smooth interpolation.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Functionality]\n(1) Use one BoxGeometry as the object being edited; choose its initial position freely.\n(2) The timeline range is [0, 5] seconds; internally store a keyframe list of {t, x, y, z} (or quaternions; if only position is animated, the first three components are sufficient).\n(3) id=\"addKeyframeBtn\": At the current currentTime, write the box's current position to a keyframe (if a keyframe already exists at the same t, overwrite it; explain this behavior in a comment).\n(4) id=\"playPauseBtn\": Toggle playback/pause; during playback, currentTime must either loop or be clamped within 0–5s.\n(5) id=\"timeSlider\": <input type=\"range\" min=\"0\" max=\"5\" step=\"0.01\" />. Whether scrubbing pauses playback or allows it to continue must be documented by the implementation, but __3D_STATE__.currentTime must match the slider.\n(6) id=\"interpSelect\": A <select> with option values \"linear\" and \"smooth\" (smooth may be implemented using Catmull-Rom, a spline, smoothstep, or a similar method).\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  keyframeCount: number,\n  currentTime: number,       // Seconds, 0..5\n  isPlaying: boolean,\n  interpType: string,        // \"linear\" | \"smooth\"\n  objectPos: { x, y, z }     // Box world position, consistent with the interpolation result\n}\n\nOutput a single HTML file that runs when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "three.js",
+    "keyframe",
+    "timeline",
+    "interpolation",
+    "animation"
+  ],
+  "estimated_human_time_minutes": 300,
+  "physics_constraints": [
+    "0-5s timeline box keyframes",
+    "addKeyframeBtn playPauseBtn timeSlider interpSelect",
+    "__3D_STATE__ keyframeCount objectPos"
+  ]
+}

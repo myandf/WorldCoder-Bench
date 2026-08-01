@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Network Topology</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            overflow: hidden;
+            background: #1a1a2e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        #container canvas {
+            display: block;
+        }
+
+        /* HUD Panel */
+        #hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #eee;
+            padding: 16px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.7;
+            min-width: 180px;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+            user-select: none;
+            z-index: 10;
+        }
+        #hud .hud-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: #aad0ff;
+            letter-spacing: 0.5px;
+        }
+        #hud .hud-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+        #hud .hud-label {
+            color: #aaa;
+        }
+        #hud .hud-value {
+            color: #fff;
+            font-weight: 500;
+        }
+        #hud .hud-selected {
+            margin-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 4px;
+        }
+
+        /* Buttons */
+        #controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 14px;
+            z-index: 20;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #controls button {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.12);
+            color: #eee;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.25s ease;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        #controls button:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+        }
+        #controls button:active {
+            transform: translateY(0px);
+        }
+        #controls button#pulseNetwork {
+            background: rgba(0, 255, 100, 0.18);
+            border-color: rgba(0, 255, 100, 0.3);
+        }
+        #controls button#pulseNetwork:hover {
+            background: rgba(0, 255, 100, 0.30);
+        }
+        #controls button#resetView {
+            background: rgba(100, 180, 255, 0.18);
+            border-color: rgba(100, 180, 255, 0.3);
+        }
+        #controls button#resetView:hover {
+            background: rgba(100, 180, 255, 0.30);
+        }
+        #controls button#toggleLabels {
+            background: rgba(255, 200, 100, 0.18);
+            border-color: rgba(255, 200, 100, 0.3);
+        }
+        #controls button#toggleLabels:hover {
+            background: rgba(255, 200, 100, 0.30);
+        }
+
+        /* Label styling (CSS2D) */
+        .node-label {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.9), 0 0 4px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.55);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
+        }
+        .node-label.center-label {
+            font-size: 14px;
+            background: rgba(255, 215, 0, 0.25);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        /* Loading indicator */
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #aaa;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            transition: opacity 0.6s ease;
+        }
+        #loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #loading .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #4ecdc4;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            #hud {
+                font-size: 12px;
+                padding: 12px 16px;
+                min-width: 140px;
+                top: 12px;
+                left: 12px;
+            }
+            #controls button {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            #controls {
+                bottom: 18px;
+                gap: 10px;
+            }
+            .node-label {
+                font-size: 10px;
+                padding: 2px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading -->
+    <div id="loading">
+        <span class="spinner"></span> Loading network…
+    </div>
+
+    <!-- HUD -->
+    <div id="hud">
+        <div class="hud-title">🌐 Network Topology</div>
+        <div class="hud-row"><span class="hud-label">Nodes</span><span class="hud-value" id="hud-nodes">7</span></div>
+        <div class="hud-row"><span class="hud-label">Edges</span><span class="hud-value" id="hud-edges">12</span></div>
+        <div class="hud-selected hud-row"><span class="hud-label">Selected</span><span class="hud-value" id="hud-selected">None</span></div>
+    </div>
+
+    <!-- Controls -->
+    <div id="controls">
+        <button id="toggleLabels">🏷️ Toggle Labels</button>
+        <button id="resetView">🎯 Reset View</button>
+        <button id="pulseNetwork">⚡ Pulse Network</button>
+    </div>
+
+    <!-- Three.js container -->
+    <div id="container"></div>
+
+    <!-- Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- Main Script -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // ─── DOM refs ───────────────────────────────────────────────
+        const container = document.getElementById('container');
+        const loadingEl = document.getElementById('loading');
+        const hudNodes = document.getElementById('hud-nodes');
+        const hudEdges = document.getElementById('hud-edges');
+        const hudSelected = document.getElementById('hud-selected');
+
+        // ─── Scene Setup ────────────────────────────────────────────
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 15, 25);
+        camera.lookAt(0, 0, 0);
+
+        // ─── Renderers ──────────────────────────────────────────────
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        container.appendChild(renderer.domElement);
+
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0';
+        labelRenderer.domElement.style.left = '0';
+        labelRenderer.domElement.style.pointerEvents = 'none'; // allow clicks to pass through
+        container.appendChild(labelRenderer.domElement);
+
+        // ─── Lights ─────────────────────────────────────────────────
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(10, 20, 10);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 1024;
+        dirLight.shadow.mapSize.height = 1024;
+        scene.add(dirLight);
+
+        const fillLight = new THREE.DirectionalLight(0x4488ff, 0.3);
+        fillLight.position.set(-10, 5, -10);
+        scene.add(fillLight);
+
+        // ─── Orbit Controls ─────────────────────────────────────────
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.minDistance = 5;
+        controls.maxDistance = 50;
+        controls.target.set(0, 0, 0);
+        controls.update();
+
+        // ─── State ──────────────────────────────────────────────────
+        const nodeData = [
+            { name: 'Web Server', color: '#ff6b6b' },
+            { name: 'Database', color: '#4ecdc4' },
+            { name: 'Load Balancer', color: '#45b7d1' },
+            { name: 'Cache Server', color: '#96ceb4' },
+            { name: 'API Gateway', color: '#feca57' },
+            { name: 'Auth Service', color: '#ff9ff3' },
+        ];
+
+        const RADIUS = 10;
+        const NODE_COUNT = 6;
+
+        // Base angles for the 6 outer nodes
+        const baseAngles = nodeData.map((_, i) => (i / NODE_COUNT) * Math.PI * 2);
+
+        let selectedNode = null; // stores the mesh object
+        let selectedName = null;
+        let labelsVisible = true;
+        let pulsing = false;
+        let modelLoaded = false;
+        let rotationAngle = 0;
+
+        // ─── Window.__3D_STATE__ ────────────────────────────────────
+        window.__3D_STATE__ = {
+            nodeCount: 7,
+            edgeCount: 12,
+            selectedNode: null,
+            labelsVisible: true,
+            cameraPosition: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
+            modelLoaded: false,
+            pulsing: false,
+            nodesData: nodeData.map((d, i) => {
+                const angle = baseAngles[i];
+                return { name: d.name, x: RADIUS * Math.cos(angle), y: 0, z: RADIUS * Math.sin(angle) };
+            }),
+        };
+
+        function updateState() {
+            window.__3D_STATE__.selectedNode = selectedName;
+            window.__3D_STATE__.labelsVisible = labelsVisible;
+            window.__3D_STATE__.cameraPosition = {
+                x: camera.position.x,
+                y: camera.position.y,
+                z: camera.position.z,
+            };
+            window.__3D_STATE__.modelLoaded = modelLoaded;
+            window.__3D_STATE__.pulsing = pulsing;
+            // Update nodesData with current rotated positions
+            window.__3D_STATE__.nodesData = nodeData.map((d, i) => {
+                const angle = baseAngles[i] + rotationAngle;
+                return { name: d.name, x: RADIUS * Math.cos(angle), y: 0, z: RADIUS * Math.sin(angle) };
+            });
+        }
+
+        // ─── Create Outer Nodes ─────────────────────────────────────
+        const nodeGroup = new THREE.Group();
+        scene.add(nodeGroup);
+
+        const nodeMeshes = [];
+        const nodeLabels = [];
+        const nodePositions = []; // current world positions updated each frame
+
+        nodeData.forEach((data, i) => {
+            const angle = baseAngles[i];
+            const x = RADIUS * Math.cos(angle);
+            const z = RADIUS * Math.sin(angle);
+
+            // Sphere
+            const geo = new THREE.SphereGeometry(0.6, 32, 32);
+            const mat = new THREE.MeshStandardMaterial({
+                color: data.color,
+                roughness: 0.3,
+                metalness: 0.1,
+                emissive: 0x000000,
+                emissiveIntensity: 0,
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, 0, z);
+            mesh.castShadow = true;
+            mesh.userData = { index: i, name: data.name, color: data.color };
+            nodeGroup.add(mesh);
+            nodeMeshes.push(mesh);
+            nodePositions.push(new THREE.Vector3(x, 0, z));
+
+            // Label (CSS2D)
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'node-label';
+            labelDiv.textContent = data.name;
+            const label = new CSS2DObject(labelDiv);
+            label.position.set(x, 1.6, z);
+            nodeGroup.add(label);
+            nodeLabels.push(label);
+        });
+
+        // ─── Center Model (GLB) ─────────────────────────────────────
+        const centerGroup = new THREE.Group();
+        scene.add(centerGroup);
+
+        let centerModel = null;
+        const loader = new GLTFLoader();
+        const modelUrl =
+            'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/models/gltf/ABeautifulGame/ABeautifulGame.glb';
+
+        loader.load(
+            modelUrl,
+            (gltf) => {
+                const model = gltf.scene;
+                model.scale.set(0.5, 0.5, 0.5);
+                model.position.set(0, 0, 0);
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+                centerGroup.add(model);
+                centerModel = model;
+                modelLoaded = true;
+                window.__3D_STATE__.modelLoaded = true;
+                loadingEl.classList.add('hidden');
+                console.log('✅ GLB model loaded');
+            },
+            (xhr) => {
+                const pct = Math.round((xhr.loaded / xhr.total) * 100);
+                loadingEl.innerHTML = `<span class="spinner"></span> Loading model… ${pct}%`;
+            },
+            (err) => {
+                console.warn('⚠️ GLB load failed, using fallback sphere:', err);
+                // Fallback: a glowing sphere
+                const geo = new THREE.SphereGeometry(1.2, 48, 48);
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0xffd700,
+                    emissive: 0xffa500,
+                    emissiveIntensity: 0.3,
+                    roughness: 0.2,
+                    metalness: 0.8,
+                });
+                const fallback = new THREE.Mesh(geo, mat);
+                fallback.position.set(0, 0, 0);
+                fallback.castShadow = true;
+                centerGroup.add(fallback);
+                centerModel = fallback;
+                modelLoaded = true;
+                window.__3D_STATE__.modelLoaded = true;
+                loadingEl.classList.add('hidden');
+            }
+        );
+
+        // Center label
+        const centerLabelDiv = document.createElement('div');
+        centerLabelDiv.className = 'node-label center-label';
+        centerLabelDiv.textContent = '⭐ Core Server';
+        const centerLabel = new CSS2DObject(centerLabelDiv);
+        centerLabel.position.set(0, 2.2, 0);
+        centerGroup.add(centerLabel);
+
+        // ─── Edges ──────────────────────────────────────────────────
+        const edgeMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.5,
+        });
+        const edgeMaterialPulse = new THREE.LineBasicMaterial({
+            color: 0x00ff00,
+            transparent: true,
+            opacity: 0.9,
+        });
+
+        // We'll store all edge objects so we can pulse them
+        const allEdges = [];
+
+        // Helper to create a line between two points
+        function createLine(p1, p2, material = edgeMaterial) {
+            const geo = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+            const line = new THREE.Line(geo, material.clone());
+            return line;
+        }
+
+        // Ring edges (between outer nodes) — these go in nodeGroup
+        const ringEdgeMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.5,
+        });
+
+        for (let i = 0; i < NODE_COUNT; i++) {
+            const j = (i + 1) % NODE_COUNT;
+            const p1 = new THREE.Vector3(
+                RADIUS * Math.cos(baseAngles[i]), 0, RADIUS * Math.sin(baseAngles[i])
+            );
+            const p2 = new THREE.Vector3(
+                RADIUS * Math.cos(baseAngles[j]), 0, RADIUS * Math.sin(baseAngles[j])
+            );
+            const line = createLine(p1, p2, ringEdgeMaterial);
+            line.userData.isRingEdge = true;
+            line.userData.baseMaterial = ringEdgeMaterial;
+            nodeGroup.add(line);
+            allEdges.push(line);
+        }
+
+        // Center-to-node edges — these are updated each frame
+        const centerEdgeMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.5,
+        });
+        const centerEdges = [];
+
+        for (let i = 0; i < NODE_COUNT; i++) {
+            const p1 = new THREE.Vector3(0, 0, 0);
+            const p2 = new THREE.Vector3(
+                RADIUS * Math.cos(baseAngles[i]), 0, RADIUS * Math.sin(baseAngles[i])
+            );
+            const line = createLine(p1, p2, centerEdgeMaterial);
+            line.userData.isCenterEdge = true;
+            line.userData.baseMaterial = centerEdgeMaterial;
+            line.userData.nodeIndex = i;
+            scene.add(line);
+            centerEdges.push(line);
+            allEdges.push(line);
+        }
+
+        // Store original materials for pulse revert
+        const originalEdgeMaterials = allEdges.map(e => e.material.clone());
+
+        // ─── Update center edges each frame ─────────────────────────
+        function updateCenterEdges() {
+            const origin = new THREE.Vector3(0, 0, 0);
+            centerEdges.forEach((line, i) => {
+                // Get current world position of the node
+                const mesh = nodeMeshes[i];
+                const worldPos = new THREE.Vector3();
+                mesh.getWorldPosition(worldPos);
+                const positions = line.geometry.attributes.position.array;
+                positions[0] = origin.x;
+                positions[1] = origin.y;
+                positions[2] = origin.z;
+                positions[3] = worldPos.x;
+                positions[4] = worldPos.y;
+                positions[5] = worldPos.z;
+                line.geometry.attributes.position.needsUpdate = true;
+            });
+        }
+
+        // ─── Raycaster for Click ────────────────────────────────────
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
+
+        function onPointerDown(event) {
+            const rect = renderer.domElement.getBoundingClientRect();
+            pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(pointer, camera);
+
+            // Intersect with node meshes
+            const intersects = raycaster.intersectObjects(nodeMeshes);
+
+            // Deselect previous
+            if (selectedNode) {
+                selectedNode.material.emissive.setHex(0x000000);
+                selectedNode.material.emissiveIntensity = 0;
+                selectedNode = null;
+                selectedName = null;
+            }
+
+            if (intersects.length > 0) {
+                const hit = intersects[0].object;
+                if (hit.userData && hit.userData.name) {
+                    selectedNode = hit;
+                    selectedName = hit.userData.name;
+                    hit.material.emissive.setHex(0xffffff);
+                    hit.material.emissiveIntensity = 0.5;
+                }
+            }
+
+            // Update HUD
+            hudSelected.textContent = selectedName || 'None';
+            updateState();
+        }
+
+        renderer.domElement.addEventListener('pointerdown', onPointerDown);
+
+        // ─── DOM Buttons ────────────────────────────────────────────
+        document.getElementById('toggleLabels').addEventListener('click', () => {
+            labelsVisible = !labelsVisible;
+            nodeLabels.forEach(l => { l.element.style.display = labelsVisible ? 'block' : 'none'; });
+            centerLabel.element.style.display = labelsVisible ? 'block' : 'none';
+            window.__3D_STATE__.labelsVisible = labelsVisible;
+            updateState();
+        });
+
+        document.getElementById('resetView').addEventListener('click', () => {
+            camera.position.set(0, 15, 25);
+            controls.target.set(0, 0, 0);
+            controls.update();
+            updateState();
+        });
+
+        document.getElementById('pulseNetwork').addEventListener('click', () => {
+            if (pulsing) return;
+            pulsing = true;
+            window.__3D_STATE__.pulsing = true;
+
+            // Change all edges to green
+            allEdges.forEach(line => {
+                line.material.color.setHex(0x00ff00);
+                line.material.opacity = 0.9;
+                line.material.needsUpdate = true;
+            });
+
+            setTimeout(() => {
+                allEdges.forEach(line => {
+                    line.material.color.setHex(0xffffff);
+                    line.material.opacity = 0.5;
+                    line.material.needsUpdate = true;
+                });
+                pulsing = false;
+                window.__3D_STATE__.pulsing = false;
+                updateState();
+            }, 1000);
+        });
+
+        // ─── Resize ─────────────────────────────────────────────────
+        window.addEventListener('resize', () => {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+            labelRenderer.setSize(w, h);
+        });
+
+        // ─── Animation Loop ─────────────────────────────────────────
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate outer node group
+            rotationAngle += 0.002;
+            nodeGroup.rotation.y = rotationAngle;
+
+            // Rotate center model on its own Y axis
+            if (centerModel) {
+                centerModel.rotation.y += 0.01;
+            }
+
+            // Update center-to-node edges
+            updateCenterEdges();
+
+            // Update controls
+            controls.update();
+
+            // Update state
+            updateState();
+
+            // Render
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+
+        // ─── Start ──────────────────────────────────────────────────
+        animate();
+
+        // Initial state sync
+        updateState();
+
+        console.log('🌐 Network topology visualization ready');
+        console.log('📦 window.__3D_STATE__ exposed for testing');
+
+        // ─── Small helper: update HUD from state periodically ───────
+        setInterval(() => {
+            hudNodes.textContent = window.__3D_STATE__.nodeCount;
+            hudEdges.textContent = window.__3D_STATE__.edgeCount;
+            hudSelected.textContent = window.__3D_STATE__.selectedNode || 'None';
+        }, 200);
+
+        console.log('✅ All systems online');
+    </script>
+</body>
+</html>

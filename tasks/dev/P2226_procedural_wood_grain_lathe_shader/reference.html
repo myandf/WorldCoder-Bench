@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Procedural Wood Lathe Shader</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1a2e;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #f2f2f2;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #hud-panel {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      background: rgba(10, 10, 18, 0.78);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 12px 14px;
+      min-width: 240px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    #hud-panel h2 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #f8d7a6;
+    }
+
+    .hud-row {
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 2px 0;
+    }
+
+    .hud-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: #2a2a42;
+      color: #f5f5f5;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.08s ease;
+    }
+
+    button:hover {
+      background: #3a3a5c;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    #instructions {
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.74);
+      line-height: 1.35;
+    }
+
+    #status-note {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 10;
+      background: rgba(10, 10, 18, 0.72);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+    }
+  </style>
+</head>
+<body>
+  <div id="hud-panel">
+    <h2>Wood Lathe Controls</h2>
+    <div class="hud-row" id="hud-lathe-status">Lathe: OFF</div>
+    <div class="hud-row" id="hud-speed">Speed: 0.0</div>
+    <div class="hud-row" id="hud-grain-freq">Grain Freq: 12.0</div>
+    <div class="hud-row" id="hud-cutting-depth">Cutting Depth: 0.0</div>
+    <div class="hud-row" id="hud-turbulence-scale">Turbulence Scale: 3.0</div>
+
+    <div class="hud-buttons">
+      <button id="btn-reset">Reset Defaults</button>
+      <button id="btn-preset-oak">Oak Preset</button>
+      <button id="btn-preset-pine">Pine Preset</button>
+    </div>
+
+    <div id="instructions">
+      Space: Toggle lathe<br>
+      ↑/↓: Grain frequency<br>
+      ←/→: Cutting depth<br>
+      T: Turbulence scale<br>
+      S: Target speed
+    </div>
+  </div>
+
+  <div id="status-note">Loading ScatteringSkull.glb...</div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#1a1a2e');
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 5);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0, 0);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    directionalLight.position.set(3, 5, 4);
+    scene.add(directionalLight);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const lightDir = new THREE.Vector3().copy(directionalLight.position).normalize();
+
+    const TAU = Math.PI * 2.0;
+    const turbulenceScaleCycle = [1.0, 3.0, 5.0, 8.0];
+    const speedCycle = [1.0, 2.0, 3.5, 5.0];
+
+    const defaults = {
+      grainFrequency: 12.0,
+      turbulenceAmount: 0.5,
+      turbulenceScale: 3.0,
+      cuttingDepth: 0.0,
+      targetSpeed: 2.0,
+      rotationSpeed: 0.0,
+      baseColor: [0.6, 0.35, 0.15],
+      ringColor: [0.4, 0.22, 0.08]
+    };
+
+    const state = {
+      modelLoaded: false,
+      latheRunning: false,
+      rotationSpeed: defaults.rotationSpeed,
+      targetSpeed: defaults.targetSpeed,
+      rotationAngle: 0.0,
+      grainFrequency: defaults.grainFrequency,
+      cuttingDepth: defaults.cuttingDepth,
+      turbulenceScale: defaults.turbulenceScale,
+      turbulenceAmount: defaults.turbulenceAmount,
+      baseColor: [...defaults.baseColor],
+      ringColor: [...defaults.ringColor],
+      activePreset: 'default',
+      turbulenceScaleIndex: turbulenceScaleCycle.indexOf(defaults.turbulenceScale),
+      speedIndex: speedCycle.indexOf(defaults.targetSpeed),
+      frameCount: 0,
+      meshCount: 0,
+      shaderCompiled: false
+    };
+
+    window.__3D_STATE__ = state;
+
+    const uniforms = {
+      grainFrequency: { value: state.grainFrequency },
+      turbulenceAmount: { value: state.turbulenceAmount },
+      turbulenceScale: { value: state.turbulenceScale },
+      baseColor: { value: new THREE.Color(...state.baseColor) },
+      ringColor: { value: new THREE.Color(...state.ringColor) },
+      cuttingDepth: { value: state.cuttingDepth },
+      rotationAngle: { value: state.rotationAngle },
+      lightDirection: { value: lightDir.clone() },
+      lightIntensity: { value: directionalLight.intensity },
+      ambientIntensity: { value: ambientLight.intensity }
+    };
+
+    const vertexShader = `
+      varying vec3 vWorldPosition;
+      varying vec3 vWorldNormal;
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        vec4 worldPos = modelMatrix * vec4(position, 1.0);
+        vWorldPosition = worldPos.xyz;
+        vWorldNormal = normalize(mat3(modelMatrix) * normal);
+        gl_Position = projectionMatrix * viewMatrix * worldPos;
+      }
+    `;
+
+    const fragmentShader = `
+      precision highp float;
+
+      varying vec3 vWorldPosition;
+      varying vec3 vWorldNormal;
+      varying vec2 vUv;
+
+      uniform float grainFrequency;
+      uniform float turbulenceAmount;
+      uniform float turbulenceScale;
+      uniform vec3 baseColor;
+      uniform vec3 ringColor;
+      uniform float cuttingDepth;
+      uniform float rotationAngle;
+      uniform vec3 lightDirection;
+      uniform float lightIntensity;
+      uniform float ambientIntensity;
+
+      float hash(vec3 p) {
+        p = fract(p * 0.3183099 + vec3(0.1, 0.2, 0.3));
+        p *= 17.0;
+        return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+      }
+
+      float noise(vec3 p) {
+        vec3 i = floor(p);
+        vec3 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+
+        float n000 = hash(i + vec3(0.0, 0.0, 0.0));
+        float n100 = hash(i + vec3(1.0, 0.0, 0.0));
+        float n010 = hash(i + vec3(0.0, 1.0, 0.0));
+        float n110 = hash(i + vec3(1.0, 1.0, 0.0));
+        float n001 = hash(i + vec3(0.0, 0.0, 1.0));
+        float n101 = hash(i + vec3(1.0, 0.0, 1.0));
+        float n011 = hash(i + vec3(0.0, 1.0, 1.0));
+        float n111 = hash(i + vec3(1.0, 1.0, 1.0));
+
+        float nx00 = mix(n000, n100, f.x);
+        float nx10 = mix(n010, n110, f.x);
+        float nx01 = mix(n001, n101, f.x);
+        float nx11 = mix(n011, n111, f.x);
+
+        float nxy0 = mix(nx00, nx10, f.y);
+        float nxy1 = mix(nx01, nx11, f.y);
+
+        return mix(nxy0, nxy1, f.z);
+      }
+
+      mat2 rot2(float a) {
+        float s = sin(a);
+        float c = cos(a);
+        return mat2(c, -s, s, c);
+      }
+
+      void main() {
+        vec3 pos = vWorldPosition;
+        pos.xz = rot2(rotationAngle) * pos.xz;
+
+        float effectiveTurbulence = turbulenceAmount * (1.0 - cuttingDepth);
+        float n = noise(pos * turbulenceScale);
+        float radial = length(pos.xz);
+        float pattern = sin(radial * grainFrequency * 6.2832 + pos.y * 2.0 + n * effectiveTurbulence * 4.0);
+
+        float rings = smoothstep(-0.35, 0.35, pattern);
+        vec3 woodColor = mix(ringColor, baseColor, rings);
+
+        vec3 normal = normalize(vWorldNormal);
+        vec3 L = normalize(lightDirection);
+        float diff = max(dot(normal, L), 0.0);
+
+        float sheen = mix(0.92, 1.08, cuttingDepth);
+        vec3 lit = woodColor * (ambientIntensity + diff * lightIntensity * 0.75) * sheen;
+
+        gl_FragColor = vec4(lit, 1.0);
+      }
+    `;
+
+    const woodMaterial = new THREE.ShaderMaterial({
+      uniforms,
+      vertexShader,
+      fragmentShader
+    });
+
+    let modelRoot = null;
+
+    const hudEls = {
+      lathe: document.getElementById('hud-lathe-status'),
+      speed: document.getElementById('hud-speed'),
+      grain: document.getElementById('hud-grain-freq'),
+      cutting: document.getElementById('hud-cutting-depth'),
+      turbScale: document.getElementById('hud-turbulence-scale'),
+      statusNote: document.getElementById('status-note')
+    };
+
+    function syncUniforms() {
+      uniforms.grainFrequency.value = state.grainFrequency;
+      uniforms.turbulenceAmount.value = state.turbulenceAmount;
+      uniforms.turbulenceScale.value = state.turbulenceScale;
+      uniforms.cuttingDepth.value = state.cuttingDepth;
+      uniforms.rotationAngle.value = state.rotationAngle;
+      uniforms.baseColor.value.setRGB(state.baseColor[0], state.baseColor[1], state.baseColor[2]);
+      uniforms.ringColor.value.setRGB(state.ringColor[0], state.ringColor[1], state.ringColor[2]);
+      uniforms.lightDirection.value.copy(directionalLight.position).normalize();
+      uniforms.lightIntensity.value = directionalLight.intensity;
+      uniforms.ambientIntensity.value = ambientLight.intensity;
+    }
+
+    function updateHUD() {
+      hudEls.lathe.textContent = `Lathe: ${state.latheRunning ? 'ON' : 'OFF'}`;
+      hudEls.speed.textContent = `Speed: ${state.rotationSpeed.toFixed(1)}`;
+      hudEls.grain.textContent = `Grain Freq: ${state.grainFrequency.toFixed(1)}`;
+      hudEls.cutting.textContent = `Cutting Depth: ${state.cuttingDepth.toFixed(1)}`;
+      hudEls.turbScale.textContent = `Turbulence Scale: ${state.turbulenceScale.toFixed(1)}`;
+    }
+
+    function updateExposedState() {
+      window.__3D_STATE__ = {
+        modelLoaded: state.modelLoaded,
+        latheRunning: state.latheRunning,
+        rotationSpeed: state.rotationSpeed,
+        targetSpeed: state.targetSpeed,
+        rotationAngle: state.rotationAngle,
+        grainFrequency: state.grainFrequency,
+        cuttingDepth: Number(state.cuttingDepth.toFixed(1)),
+        turbulenceScale: state.turbulenceScale,
+        turbulenceAmount: state.turbulenceAmount,
+        baseColor: [...state.baseColor],
+        ringColor: [...state.ringColor],
+        activePreset: state.activePreset,
+        turbulenceScaleIndex: state.turbulenceScaleIndex,
+        speedIndex: state.speedIndex,
+        frameCount: state.frameCount,
+        meshCount: state.meshCount,
+        shaderCompiled: state.shaderCompiled
+      };
+    }
+
+    function applyPreset(name) {
+      if (name === 'oak') {
+        state.baseColor = [0.55, 0.35, 0.18];
+        state.ringColor = [0.35, 0.2, 0.08];
+        state.grainFrequency = 18.0;
+        state.turbulenceAmount = 0.3;
+        state.turbulenceScale = 5.0;
+        state.turbulenceScaleIndex = turbulenceScaleCycle.indexOf(5.0);
+        state.activePreset = 'oak';
+      } else if (name === 'pine') {
+        state.baseColor = [0.75, 0.55, 0.3];
+        state.ringColor = [0.6, 0.4, 0.2];
+        state.grainFrequency = 8.0;
+        state.turbulenceAmount = 0.7;
+        state.turbulenceScale = 1.0;
+        state.turbulenceScaleIndex = turbulenceScaleCycle.indexOf(1.0);
+        state.activePreset = 'pine';
+      }
+      syncUniforms();
+      updateHUD();
+    }
+
+    function resetDefaults() {
+      state.latheRunning = false;
+      state.rotationSpeed = 0.0;
+      state.targetSpeed = defaults.targetSpeed;
+      state.speedIndex = speedCycle.indexOf(defaults.targetSpeed);
+      state.grainFrequency = defaults.grainFrequency;
+      state.cuttingDepth = defaults.cuttingDepth;
+      state.turbulenceScale = defaults.turbulenceScale;
+      state.turbulenceAmount = defaults.turbulenceAmount;
+      state.baseColor = [...defaults.baseColor];
+      state.ringColor = [...defaults.ringColor];
+      state.activePreset = 'default';
+      state.turbulenceScaleIndex = turbulenceScaleCycle.indexOf(defaults.turbulenceScale);
+      syncUniforms();
+      updateHUD();
+    }
+
+    document.getElementById('btn-reset').addEventListener('click', resetDefaults);
+    document.getElementById('btn-preset-oak').addEventListener('click', () => applyPreset('oak'));
+    document.getElementById('btn-preset-pine').addEventListener('click', () => applyPreset('pine'));
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    window.addEventListener('keydown', (event) => {
+      const key = event.key;
+
+      if ([' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+        event.preventDefault();
+      }
+
+      if (key === ' ' || key === 'Spacebar' || event.code === 'Space') {
+        state.latheRunning = !state.latheRunning;
+        state.rotationSpeed = state.latheRunning ? state.targetSpeed : 0.0;
+      } else if (key === 'ArrowUp') {
+        state.grainFrequency = clamp(state.grainFrequency + 1.0, 1.0, 30.0);
+        state.activePreset = 'custom';
+      } else if (key === 'ArrowDown') {
+        state.grainFrequency = clamp(state.grainFrequency - 1.0, 1.0, 30.0);
+        state.activePreset = 'custom';
+      } else if (key === 'ArrowRight') {
+        state.cuttingDepth = clamp(Math.round((state.cuttingDepth + 0.1) * 10) / 10, 0.0, 1.0);
+      } else if (key === 'ArrowLeft') {
+        state.cuttingDepth = clamp(Math.round((state.cuttingDepth - 0.1) * 10) / 10, 0.0, 1.0);
+      } else if (key === 't' || key === 'T') {
+        state.turbulenceScaleIndex = (state.turbulenceScaleIndex + 1) % turbulenceScaleCycle.length;
+        state.turbulenceScale = turbulenceScaleCycle[state.turbulenceScaleIndex];
+        state.activePreset = 'custom';
+      } else if (key === 's' || key === 'S') {
+        state.speedIndex = (state.speedIndex + 1) % speedCycle.length;
+        state.targetSpeed = speedCycle[state.speedIndex];
+        if (state.latheRunning) state.rotationSpeed = state.targetSpeed;
+      }
+
+      syncUniforms();
+      updateHUD();
+    });
+
+    const loader = new GLTFLoader();
+    loader.load(
+      'ScatteringSkull.glb',
+      (gltf) => {
+        modelRoot = gltf.scene;
+
+        const box = new THREE.Box3().setFromObject(modelRoot);
+        const center = new THREE.Vector3();
+        const size = new THREE.Vector3();
+        box.getCenter(center);
+        box.getSize(size);
+
+        modelRoot.position.sub(center);
+
+        const longestAxis = Math.max(size.x, size.y, size.z) || 1;
+        const scale = 2.0 / longestAxis;
+        modelRoot.scale.setScalar(scale);
+
+        modelRoot.updateMatrixWorld(true);
+
+        const centeredBox = new THREE.Box3().setFromObject(modelRoot);
+        const centeredCenter = new THREE.Vector3();
+        centeredBox.getCenter(centeredCenter);
+        modelRoot.position.sub(centeredCenter);
+
+        let meshCount = 0;
+        modelRoot.traverse((child) => {
+          if (child.isMesh) {
+            child.material = woodMaterial;
+            child.castShadow = false;
+            child.receiveShadow = false;
+            meshCount++;
+          }
+        });
+
+        state.meshCount = meshCount;
+        state.modelLoaded = true;
+
+        scene.add(modelRoot);
+
+        try {
+          syncUniforms();
+          renderer.compile(scene, camera);
+          state.shaderCompiled = true;
+        } catch (e) {
+          console.error('Shader compile failed:', e);
+          state.shaderCompiled = false;
+        }
+
+        hudEls.statusNote.textContent = `Loaded ScatteringSkull.glb · Meshes: ${meshCount}`;
+      },
+      undefined,
+      (err) => {
+        console.error('Failed to load ScatteringSkull.glb:', err);
+        hudEls.statusNote.textContent = 'Failed to load ScatteringSkull.glb';
+        state.modelLoaded = false;
+        state.shaderCompiled = false;
+      }
+    );
+
+    updateHUD();
+    syncUniforms();
+    updateExposedState();
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const deltaTime = clock.getDelta();
+
+      if (state.latheRunning) {
+        state.rotationAngle += state.rotationSpeed * deltaTime;
+        if (modelRoot) {
+          modelRoot.rotation.y += state.rotationSpeed * deltaTime;
+        }
+      }
+
+      uniforms.rotationAngle.value = state.rotationAngle;
+
+      controls.update();
+      renderer.render(scene, camera);
+
+      state.frameCount++;
+      updateHUD();
+      updateExposedState();
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

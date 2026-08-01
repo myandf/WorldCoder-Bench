@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Three.js Deferred Rendering G-Buffer Inspector</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    canvas {
+      display: block;
+    }
+    #panel {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 220px;
+      background: rgba(20,20,20,0.88);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 12px;
+      box-sizing: border-box;
+      z-index: 10;
+      user-select: none;
+    }
+    #panel h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    #panel .group {
+      margin-bottom: 12px;
+    }
+    #panel label {
+      display: block;
+      font-size: 13px;
+      margin: 6px 0;
+      cursor: pointer;
+    }
+    #panel input[type="range"] {
+      width: 100%;
+    }
+    #sliderRow {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    #sliderValue {
+      min-width: 36px;
+      text-align: right;
+      font-size: 12px;
+      color: #ddd;
+    }
+    .hint {
+      font-size: 11px;
+      color: #aaa;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    <h3>G-Buffer Inspector</h3>
+
+    <div class="group" id="modeGroup">
+      <label><input type="radio" name="displayMode" value="composite" checked> Final Composite</label>
+      <label><input type="radio" name="displayMode" value="albedo"> Albedo</label>
+      <label><input type="radio" name="displayMode" value="normals"> Normals</label>
+      <label><input type="radio" name="displayMode" value="depth"> Depth</label>
+    </div>
+
+    <div class="group">
+      <label><input type="checkbox" id="wireframeToggle"> Wireframe Overlay</label>
+    </div>
+
+    <div class="group">
+      <label for="lightSlider">Light Intensity</label>
+      <div id="sliderRow">
+        <input id="lightSlider" type="range" min="0" max="3" step="0.1" value="1.0">
+        <div id="sliderValue">1.0</div>
+      </div>
+    </div>
+
+    <div class="hint">
+      Keys: 1-4 buffers, W wireframe, R reset, L cycle Light B color
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 1);
+    renderer.autoClear = false;
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    const initialCameraPosition = new THREE.Vector3(0, 3, 8);
+    camera.position.copy(initialCameraPosition);
+    camera.lookAt(0, 0, 0);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0.8, 0);
+    controls.update();
+
+    const baseLightAIntensity = 1.5;
+    const baseLightBIntensity = 1.0;
+    const lightBColors = [0xffaa44, 0x44ffff, 0xff44ff];
+    let lightBColorIndex = 0;
+
+    const lightA = {
+      position: new THREE.Vector3(4, 5, 4),
+      color: new THREE.Color(0xffffff),
+      intensity: baseLightAIntensity
+    };
+
+    const lightB = {
+      position: new THREE.Vector3(-4, 3, -2),
+      color: new THREE.Color(lightBColors[lightBColorIndex]),
+      intensity: baseLightBIntensity
+    };
+
+    const objects = [];
+    const objectNames = ['Red Sphere', 'Green Box', 'Blue Torus', 'Yellow Cylinder', 'Magenta Cone'];
+    const meshes = [];
+    const wireframes = [];
+
+    function createSceneMesh(name, geometry, color, position, rotation = null) {
+      const mesh = new THREE.Mesh(
+        geometry,
+        new THREE.MeshStandardMaterial({
+          color,
+          roughness: 0.6,
+          metalness: 0.0
+        })
+      );
+      mesh.name = name;
+      mesh.position.copy(position);
+      if (rotation) mesh.rotation.set(rotation.x, rotation.y, rotation.z);
+      scene.add(mesh);
+      objects.push(mesh);
+      meshes.push(mesh);
+
+      const wire = new THREE.LineSegments(
+        new THREE.WireframeGeometry(geometry),
+        new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 })
+      );
+      wire.position.copy(position);
+      if (rotation) wire.rotation.set(rotation.x, rotation.y, rotation.z);
+      wire.visible = false;
+      scene.add(wire);
+      wireframes.push(wire);
+
+      return mesh;
+    }
+
+    createSceneMesh('Red Sphere', new THREE.SphereGeometry(1, 48, 32), 0xff2222, new THREE.Vector3(-3, 1, 0));
+    createSceneMesh('Green Box', new THREE.BoxGeometry(1.5, 1.5, 1.5), 0x22dd55, new THREE.Vector3(0, 0.75, 0));
+    createSceneMesh('Blue Torus', new THREE.TorusGeometry(0.7, 0.3, 24, 48), 0x3366ff, new THREE.Vector3(3, 1, 0), new THREE.Euler(Math.PI * 0.5, 0, 0));
+    createSceneMesh('Yellow Cylinder', new THREE.CylinderGeometry(0.5, 0.5, 2, 32), 0xffdd33, new THREE.Vector3(-1.5, 1, -2));
+    createSceneMesh('Magenta Cone', new THREE.ConeGeometry(0.6, 1.5, 32), 0xff33cc, new THREE.Vector3(1.5, 0.75, -2));
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({ color: 0x777777, roughness: 1.0, metalness: 0.0 })
+    );
+    ground.name = 'Ground';
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = 0;
+    scene.add(ground);
+
+    const targetSize = new THREE.Vector2();
+    renderer.getSize(targetSize);
+
+    function makeRenderTarget() {
+      const rt = new THREE.WebGLRenderTarget(targetSize.x, targetSize.y, {
+        minFilter: THREE.NearestFilter,
+        magFilter: THREE.NearestFilter,
+        format: THREE.RGBAFormat,
+        type: THREE.UnsignedByteType,
+        depthBuffer: true,
+        stencilBuffer: false
+      });
+      rt.texture.generateMipmaps = false;
+      return rt;
+    }
+
+    const albedoTarget = makeRenderTarget();
+    const normalTarget = makeRenderTarget();
+    const depthTarget = makeRenderTarget();
+
+    const originalMaterials = new Map();
+
+    function storeOriginalMaterials() {
+      originalMaterials.clear();
+      scene.traverse(obj => {
+        if (obj.isMesh) originalMaterials.set(obj, obj.material);
+      });
+    }
+
+    function restoreOriginalMaterials() {
+      originalMaterials.forEach((material, obj) => {
+        obj.material = material;
+      });
+    }
+
+    const gUniformsBase = {
+      uColor: { value: new THREE.Color(1, 1, 1) },
+      uNear: { value: camera.near },
+      uFar: { value: camera.far }
+    };
+
+    const albedoMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        uColor: gUniformsBase.uColor
+      },
+      vertexShader: `
+        void main() {
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 uColor;
+        void main() {
+          gl_FragColor = vec4(uColor, 1.0);
+        }
+      `
+    });
+
+    const normalMaterial = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: `
+        varying vec3 vWorldNormal;
+        void main() {
+          vWorldNormal = normalize(mat3(modelMatrix) * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vWorldNormal;
+        void main() {
+          vec3 n = normalize(vWorldNormal);
+          gl_FragColor = vec4(n * 0.5 + 0.5, 1.0);
+        }
+      `
+    });
+
+    const depthMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        uNear: gUniformsBase.uNear,
+        uFar: gUniformsBase.uFar
+      },
+      vertexShader: `
+        varying float vViewZ;
+        void main() {
+          vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+          vViewZ = -mvPos.z;
+          gl_Position = projectionMatrix * mvPos;
+        }
+      `,
+      fragmentShader: `
+        uniform float uNear;
+        uniform float uFar;
+        varying float vViewZ;
+        void main() {
+          float d = clamp((vViewZ - uNear) / (uFar - uNear), 0.0, 1.0);
+          gl_FragColor = vec4(vec3(d), 1.0);
+        }
+      `
+    });
+
+    function applyBufferMaterial(type) {
+      scene.traverse(obj => {
+        if (!obj.isMesh) return;
+        if (obj.userData.skipGBuffer) return;
+        const original = originalMaterials.get(obj);
+        if (!original) return;
+        if (type === 'albedo') {
+          const c = original.color ? original.color : new THREE.Color(1, 1, 1);
+          obj.material = albedoMaterial.clone();
+          obj.material.uniforms.uColor.value = c.clone();
+        } else if (type === 'normals') {
+          obj.material = normalMaterial;
+        } else if (type === 'depth') {
+          obj.material = depthMaterial;
+        }
+      });
+    }
+
+    const postScene = new THREE.Scene();
+    const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    const postUniforms = {
+      uAlbedo: { value: albedoTarget.texture },
+      uNormal: { value: normalTarget.texture },
+      uDepth: { value: depthTarget.texture },
+      uInvProjectionMatrix: { value: new THREE.Matrix4() },
+      uInvViewMatrix: { value: new THREE.Matrix4() },
+      uNear: { value: camera.near },
+      uFar: { value: camera.far },
+      uLightPosA: { value: lightA.position.clone() },
+      uLightColorA: { value: lightA.color.clone() },
+      uLightIntA: { value: lightA.intensity },
+      uLightPosB: { value: lightB.position.clone() },
+      uLightColorB: { value: lightB.color.clone() },
+      uLightIntB: { value: lightB.intensity },
+      uCameraPos: { value: camera.position.clone() },
+      uMode: { value: 0 },
+      uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+    };
+
+    const postMaterial = new THREE.ShaderMaterial({
+      uniforms: postUniforms,
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position.xy, 0.0, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec2 vUv;
+        uniform sampler2D uAlbedo;
+        uniform sampler2D uNormal;
+        uniform sampler2D uDepth;
+        uniform mat4 uInvProjectionMatrix;
+        uniform mat4 uInvViewMatrix;
+        uniform float uNear;
+        uniform float uFar;
+        uniform vec3 uLightPosA;
+        uniform vec3 uLightColorA;
+        uniform float uLightIntA;
+        uniform vec3 uLightPosB;
+        uniform vec3 uLightColorB;
+        uniform float uLightIntB;
+        uniform vec3 uCameraPos;
+        uniform int uMode;
+
+        vec3 reconstructWorldPosition(vec2 uv, float linearDepth) {
+          float viewZ = -(mix(uNear, uFar, linearDepth));
+          vec2 ndcXY = uv * 2.0 - 1.0;
+          vec4 clip = vec4(ndcXY, 1.0, 1.0);
+          vec4 view = uInvProjectionMatrix * clip;
+          view.xyz /= view.w;
+          vec3 ray = normalize(view.xyz);
+          vec3 viewPos = ray * (viewZ / ray.z);
+          vec4 world = uInvViewMatrix * vec4(viewPos, 1.0);
+          return world.xyz;
+        }
+
+        void main() {
+          vec3 albedo = texture2D(uAlbedo, vUv).rgb;
+          vec3 normal = texture2D(uNormal, vUv).rgb * 2.0 - 1.0;
+          float depth = texture2D(uDepth, vUv).r;
+
+          if (uMode == 1) {
+            gl_FragColor = vec4(albedo, 1.0);
+            return;
+          }
+          if (uMode == 2) {
+            gl_FragColor = vec4(normal * 0.5 + 0.5, 1.0);
+            return;
+          }
+          if (uMode == 3) {
+            gl_FragColor = vec4(vec3(depth), 1.0);
+            return;
+          }
+
+          vec3 worldPos = reconstructWorldPosition(vUv, depth);
+          vec3 n = normalize(normal);
+          vec3 ambient = 0.12 * albedo;
+
+          vec3 ldirA = normalize(uLightPosA - worldPos);
+          float diffA = max(dot(n, ldirA), 0.0);
+          float distA = length(uLightPosA - worldPos);
+          float attA = 1.0 / (1.0 + 0.09 * distA + 0.032 * distA * distA);
+          vec3 lightAContrib = albedo * uLightColorA * diffA * uLightIntA * attA;
+
+          vec3 ldirB = normalize(uLightPosB - worldPos);
+          float diffB = max(dot(n, ldirB), 0.0);
+          float distB = length(uLightPosB - worldPos);
+          float attB = 1.0 / (1.0 + 0.09 * distB + 0.032 * distB * distB);
+          vec3 lightBContrib = albedo * uLightColorB * diffB * uLightIntB * attB;
+
+          vec3 color = ambient + lightAContrib + lightBContrib;
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `
+    });
+
+    const postQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMaterial);
+    postScene.add(postQuad);
+
+    const ui = {
+      modeInputs: [...document.querySelectorAll('input[name="displayMode"]')],
+      wireframe: document.getElementById('wireframeToggle'),
+      slider: document.getElementById('lightSlider'),
+      sliderValue: document.getElementById('sliderValue')
+    };
+
+    const state = {
+      displayMode: 'composite',
+      wireframeEnabled: false,
+      lightIntensityMultiplier: 1.0,
+      frameCount: 0
+    };
+
+    function syncUIFromState() {
+      ui.modeInputs.forEach(i => i.checked = i.value === state.displayMode);
+      ui.wireframe.checked = state.wireframeEnabled;
+      ui.slider.value = state.lightIntensityMultiplier.toFixed(1);
+      ui.sliderValue.textContent = state.lightIntensityMultiplier.toFixed(1);
+    }
+
+    function setDisplayMode(mode) {
+      state.displayMode = mode;
+      syncUIFromState();
+    }
+
+    function setWireframe(enabled) {
+      state.wireframeEnabled = enabled;
+      wireframes.forEach(w => w.visible = enabled);
+      syncUIFromState();
+    }
+
+    function setLightMultiplier(v) {
+      state.lightIntensityMultiplier = parseFloat(v);
+      ui.sliderValue.textContent = state.lightIntensityMultiplier.toFixed(1);
+      syncUIFromState();
+    }
+
+    function resetAll() {
+      setDisplayMode('composite');
+      setWireframe(false);
+      setLightMultiplier(1.0);
+      lightBColorIndex = 0;
+      lightB.color.setHex(lightBColors[lightBColorIndex]);
+      camera.position.copy(initialCameraPosition);
+      controls.target.set(0, 0.8, 0);
+      controls.update();
+    }
+
+    ui.modeInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.checked) setDisplayMode(input.value);
+      });
+    });
+
+    ui.wireframe.addEventListener('change', e => setWireframe(e.target.checked));
+    ui.slider.addEventListener('input', e => setLightMultiplier(e.target.value));
+
+    window.addEventListener('keydown', (e) => {
+      const k = e.key.toLowerCase();
+      if (k === '1') setDisplayMode('composite');
+      else if (k === '2') setDisplayMode('albedo');
+      else if (k === '3') setDisplayMode('normals');
+      else if (k === '4') setDisplayMode('depth');
+      else if (k === 'w') setWireframe(!state.wireframeEnabled);
+      else if (k === 'r') resetAll();
+      else if (k === 'l') {
+        lightBColorIndex = (lightBColorIndex + 1) % lightBColors.length;
+        lightB.color.setHex(lightBColors[lightBColorIndex]);
+      }
+    });
+
+    function updateWireframes() {
+      for (let i = 0; i < meshes.length; i++) {
+        wireframes[i].position.copy(meshes[i].position);
+        wireframes[i].quaternion.copy(meshes[i].quaternion);
+        wireframes[i].scale.copy(meshes[i].scale);
+      }
+    }
+
+    function renderGBufferPass(target, type) {
+      storeOriginalMaterials();
+      applyBufferMaterial(type);
+      renderer.setRenderTarget(target);
+      renderer.clear(true, true, true);
+      renderer.render(scene, camera);
+      restoreOriginalMaterials();
+    }
+
+    function updatePostUniforms() {
+      postUniforms.uInvProjectionMatrix.value.copy(camera.projectionMatrixInverse);
+      postUniforms.uInvViewMatrix.value.copy(camera.matrixWorld);
+      postUniforms.uNear.value = camera.near;
+      postUniforms.uFar.value = camera.far;
+      postUniforms.uLightPosA.value.copy(lightA.position);
+      postUniforms.uLightColorA.value.copy(lightA.color);
+      postUniforms.uLightIntA.value = baseLightAIntensity * state.lightIntensityMultiplier;
+      postUniforms.uLightPosB.value.copy(lightB.position);
+      postUniforms.uLightColorB.value.copy(lightB.color);
+      postUniforms.uLightIntB.value = baseLightBIntensity * state.lightIntensityMultiplier;
+      postUniforms.uCameraPos.value.copy(camera.position);
+
+      const modes = { composite: 0, albedo: 1, normals: 2, depth: 3 };
+      postUniforms.uMode.value = modes[state.displayMode];
+    }
+
+    function resize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      albedoTarget.setSize(w, h);
+      normalTarget.setSize(w, h);
+      depthTarget.setSize(w, h);
+      postUniforms.uResolution.value.set(w, h);
+    }
+
+    window.addEventListener('resize', resize);
+
+    window.__3D_STATE__ = {};
+
+    function updateStateObject() {
+      const size = new THREE.Vector2();
+      renderer.getSize(size);
+      window.__3D_STATE__ = {
+        displayMode: state.displayMode,
+        wireframeEnabled: state.wireframeEnabled,
+        lightIntensityMultiplier: Number(state.lightIntensityMultiplier.toFixed(1)),
+        lightAIntensity: Number((baseLightAIntensity * state.lightIntensityMultiplier).toFixed(2)),
+        lightBIntensity: Number((baseLightBIntensity * state.lightIntensityMultiplier).toFixed(2)),
+        lightBColor: '#' + lightB.color.getHexString(),
+        objectCount: 5,
+        gbufferResolution: { width: size.x, height: size.y },
+        renderTargetCount: 3,
+        cameraPosition: {
+          x: Number(camera.position.x.toFixed(2)),
+          y: Number(camera.position.y.toFixed(2)),
+          z: Number(camera.position.z.toFixed(2))
+        },
+        cameraFov: camera.fov,
+        frameCount: state.frameCount,
+        groundVisible: ground.visible,
+        objectNames: objectNames.slice(),
+        lightBColorIndex: lightBColorIndex
+      };
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      updateWireframes();
+
+      depthMaterial.uniforms.uNear.value = camera.near;
+      depthMaterial.uniforms.uFar.value = camera.far;
+
+      renderGBufferPass(albedoTarget, 'albedo');
+      renderGBufferPass(normalTarget, 'normals');
+      renderGBufferPass(depthTarget, 'depth');
+
+      updatePostUniforms();
+
+      renderer.setRenderTarget(null);
+      renderer.clear(true, true, true);
+      renderer.render(postScene, postCamera);
+
+      if (state.wireframeEnabled) {
+        renderer.render(scene, camera);
+      }
+
+      state.frameCount++;
+      updateStateObject();
+    }
+
+    syncUIFromState();
+    resize();
+    animate();
+  </script>
+</body>
+</html>

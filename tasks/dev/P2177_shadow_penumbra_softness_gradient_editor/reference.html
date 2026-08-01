@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Three.js Shadow Penumbra Softness Gradient Editor</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1a2e;
+      font-family: monospace;
+    }
+    canvas {
+      display: block;
+    }
+    #controlPanel {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 100;
+      background: rgba(10, 10, 20, 0.78);
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      min-width: 280px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+      backdrop-filter: blur(4px);
+    }
+    #controlPanel h2 {
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .control-group {
+      margin-bottom: 12px;
+    }
+    .control-group label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .control-group input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+    }
+    .value {
+      color: #9fe6ff;
+      font-weight: bold;
+    }
+    #togglePointLight {
+      width: 100%;
+      margin-top: 4px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      background: #2b2b44;
+      color: white;
+      cursor: pointer;
+      font-family: monospace;
+    }
+    #togglePointLight:hover {
+      background: #38385a;
+    }
+    #hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #c9c9e8;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div id="controlPanel">
+    <h2>Shadow Penumbra Editor</h2>
+
+    <div class="control-group">
+      <label for="dirRadiusSlider">Directional Shadow Radius: <span class="value" id="dirRadiusValue">4</span></label>
+      <input id="dirRadiusSlider" type="range" min="0" max="20" step="0.5" value="4" />
+    </div>
+
+    <div class="control-group">
+      <label for="pointRadiusSlider">Point Shadow Radius: <span class="value" id="pointRadiusValue">2</span></label>
+      <input id="pointRadiusSlider" type="range" min="0" max="15" step="0.5" value="2" />
+    </div>
+
+    <div class="control-group">
+      <label for="shadowMapSlider">Shadow Map Size: <span class="value" id="shadowMapValue">2048</span></label>
+      <input id="shadowMapSlider" type="range" min="9" max="12" step="1" value="11" />
+    </div>
+
+    <div class="control-group">
+      <label for="dirIntensitySlider">Directional Light Intensity: <span class="value" id="dirIntensityValue">1.5</span></label>
+      <input id="dirIntensitySlider" type="range" min="0" max="3" step="0.1" value="1.5" />
+    </div>
+
+    <div class="control-group">
+      <label for="biasSlider">Shadow Bias: <span class="value" id="biasValue">-0.001</span></label>
+      <input id="biasSlider" type="range" min="-0.01" max="0.01" step="0.001" value="-0.001" />
+    </div>
+
+    <button id="togglePointLight">Point Light: ON</button>
+
+    <div id="hint">
+      Keys: <strong>R</strong> reset, <strong>1</strong> hard shadows, <strong>2</strong> soft shadows
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const DEFAULTS = {
+      dirRadius: 4,
+      pointRadius: 2,
+      mapExp: 11,
+      dirIntensity: 1.5,
+      bias: -0.001,
+      pointEnabled: true
+    };
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#1a1a2e');
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 3, 5);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0.8, 0);
+    controls.enableDamping = true;
+
+    const ambientLight = new THREE.AmbientLight('#222244', 0.3);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, DEFAULTS.dirIntensity);
+    dirLight.position.set(3, 6, 3);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.camera.left = -8;
+    dirLight.shadow.camera.right = 8;
+    dirLight.shadow.camera.top = 8;
+    dirLight.shadow.camera.bottom = -8;
+    dirLight.shadow.camera.near = 0.5;
+    dirLight.shadow.camera.far = 25;
+    dirLight.shadow.bias = DEFAULTS.bias;
+    dirLight.shadow.radius = DEFAULTS.dirRadius;
+    scene.add(dirLight);
+    scene.add(dirLight.target);
+    dirLight.target.position.set(0, 0.5, 0);
+
+    const pointLight = new THREE.PointLight('#ff8844', 0.8, 0, 2);
+    pointLight.position.set(-3, 4, -2);
+    pointLight.castShadow = true;
+    pointLight.shadow.mapSize.width = 1024;
+    pointLight.shadow.mapSize.height = 1024;
+    pointLight.shadow.radius = DEFAULTS.pointRadius;
+    scene.add(pointLight);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
+      new THREE.MeshStandardMaterial({ color: '#444466' })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = 0;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const fillSphereGeo = new THREE.SphereGeometry(0.08, 16, 16);
+    const dirMarker = new THREE.Mesh(fillSphereGeo, new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    dirMarker.position.copy(dirLight.position);
+    scene.add(dirMarker);
+
+    const pointMarker = new THREE.Mesh(fillSphereGeo, new THREE.MeshBasicMaterial({ color: 0xff8844 }));
+    pointMarker.position.copy(pointLight.position);
+    scene.add(pointMarker);
+
+    let avocado = null;
+    let modelLoaded = false;
+    let modelCastsShadow = false;
+    const loader = new GLTFLoader();
+
+    loader.load(
+      'Avocado.glb',
+      (gltf) => {
+        avocado = gltf.scene;
+        avocado.scale.setScalar(30);
+        avocado.position.set(0, 0.5, 0);
+
+        avocado.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            modelCastsShadow = true;
+            if (child.material) {
+              child.material.needsUpdate = true;
+            }
+          }
+        });
+
+        scene.add(avocado);
+        modelLoaded = true;
+      },
+      undefined,
+      () => {
+        const fallback = new THREE.Mesh(
+          new THREE.SphereGeometry(0.6, 32, 32),
+          new THREE.MeshStandardMaterial({ color: '#88cc66', roughness: 0.6, metalness: 0.1 })
+        );
+        fallback.position.set(0, 0.8, 0);
+        fallback.castShadow = true;
+        fallback.receiveShadow = true;
+        scene.add(fallback);
+        avocado = fallback;
+        modelLoaded = false;
+        modelCastsShadow = true;
+      }
+    );
+
+    const el = {
+      dirRadiusSlider: document.getElementById('dirRadiusSlider'),
+      pointRadiusSlider: document.getElementById('pointRadiusSlider'),
+      shadowMapSlider: document.getElementById('shadowMapSlider'),
+      dirIntensitySlider: document.getElementById('dirIntensitySlider'),
+      biasSlider: document.getElementById('biasSlider'),
+      dirRadiusValue: document.getElementById('dirRadiusValue'),
+      pointRadiusValue: document.getElementById('pointRadiusValue'),
+      shadowMapValue: document.getElementById('shadowMapValue'),
+      dirIntensityValue: document.getElementById('dirIntensityValue'),
+      biasValue: document.getElementById('biasValue'),
+      togglePointLight: document.getElementById('togglePointLight'),
+    };
+
+    let preset = 'default';
+    let pointLightEnabled = true;
+
+    function mapExpToResolution(exp) {
+      return Math.pow(2, Number(exp));
+    }
+
+    function refreshLabels() {
+      el.dirRadiusValue.textContent = Number(el.dirRadiusSlider.value).toFixed(1).replace('.0', '');
+      el.pointRadiusValue.textContent = Number(el.pointRadiusSlider.value).toFixed(1).replace('.0', '');
+      el.shadowMapValue.textContent = String(mapExpToResolution(el.shadowMapSlider.value));
+      el.dirIntensityValue.textContent = Number(el.dirIntensitySlider.value).toFixed(1).replace('.0', '');
+      el.biasValue.textContent = Number(el.biasSlider.value).toFixed(3);
+      el.togglePointLight.textContent = `Point Light: ${pointLightEnabled ? 'ON' : 'OFF'}`;
+    }
+
+    function forceShadowMapResize(light, resolution) {
+      light.shadow.mapSize.width = resolution;
+      light.shadow.mapSize.height = resolution;
+      if (light.shadow.map) {
+        light.shadow.map.dispose();
+      }
+      light.shadow.map = null;
+      light.shadow.needsUpdate = true;
+    }
+
+    function applyUIToScene() {
+      dirLight.shadow.radius = Number(el.dirRadiusSlider.value);
+      pointLight.shadow.radius = Number(el.pointRadiusSlider.value);
+
+      const dirIntensity = Number(el.dirIntensitySlider.value);
+      dirLight.intensity = dirIntensity;
+
+      const bias = Number(el.biasSlider.value);
+      dirLight.shadow.bias = bias;
+
+      const resolution = mapExpToResolution(el.shadowMapSlider.value);
+      if (dirLight.shadow.mapSize.width !== resolution || dirLight.shadow.mapSize.height !== resolution) {
+        forceShadowMapResize(dirLight, resolution);
+      }
+
+      pointLight.visible = pointLightEnabled;
+      pointLight.intensity = pointLightEnabled ? 0.8 : 0;
+
+      pointMarker.visible = pointLightEnabled;
+
+      refreshLabels();
+    }
+
+    function setPreset(name) {
+      preset = name;
+      if (name === 'hard') {
+        el.dirRadiusSlider.value = 0;
+        el.pointRadiusSlider.value = 0;
+        el.shadowMapSlider.value = 12;
+      } else if (name === 'soft') {
+        el.dirRadiusSlider.value = 12;
+        el.pointRadiusSlider.value = 8;
+        el.shadowMapSlider.value = 10;
+      } else if (name === 'default') {
+        el.dirRadiusSlider.value = DEFAULTS.dirRadius;
+        el.pointRadiusSlider.value = DEFAULTS.pointRadius;
+        el.shadowMapSlider.value = DEFAULTS.mapExp;
+        el.dirIntensitySlider.value = DEFAULTS.dirIntensity;
+        el.biasSlider.value = DEFAULTS.bias;
+        pointLightEnabled = DEFAULTS.pointEnabled;
+      }
+      if (name === 'hard' || name === 'soft') {
+        pointLightEnabled = true;
+        el.dirIntensitySlider.value = DEFAULTS.dirIntensity;
+        el.biasSlider.value = DEFAULTS.bias;
+      }
+      applyUIToScene();
+    }
+
+    function markCustomAndApply() {
+      preset = 'custom';
+      applyUIToScene();
+    }
+
+    el.dirRadiusSlider.addEventListener('input', markCustomAndApply);
+    el.pointRadiusSlider.addEventListener('input', markCustomAndApply);
+    el.shadowMapSlider.addEventListener('input', markCustomAndApply);
+    el.dirIntensitySlider.addEventListener('input', markCustomAndApply);
+    el.biasSlider.addEventListener('input', markCustomAndApply);
+
+    el.togglePointLight.addEventListener('click', () => {
+      pointLightEnabled = !pointLightEnabled;
+      preset = 'custom';
+      applyUIToScene();
+    });
+
+    window.addEventListener('keydown', (event) => {
+      const key = event.key.toLowerCase();
+      if (key === 'r') {
+        setPreset('default');
+      } else if (key === '1') {
+        setPreset('hard');
+      } else if (key === '2') {
+        setPreset('soft');
+      }
+    });
+
+    window.addEventListener('resize', onResize);
+    function onResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.__3D_STATE__ = {
+      modelLoaded: false,
+      dirShadowRadius: DEFAULTS.dirRadius,
+      pointShadowRadius: DEFAULTS.pointRadius,
+      shadowMapResolution: 2048,
+      dirLightIntensity: DEFAULTS.dirIntensity,
+      shadowBias: DEFAULTS.bias,
+      pointLightEnabled: true,
+      preset: 'default',
+      frameCount: 0,
+      groundReceivesShadow: ground.receiveShadow,
+      modelCastsShadow: false
+    };
+
+    applyUIToScene();
+
+    function updateState() {
+      window.__3D_STATE__.modelLoaded = modelLoaded;
+      window.__3D_STATE__.dirShadowRadius = dirLight.shadow.radius;
+      window.__3D_STATE__.pointShadowRadius = pointLight.shadow.radius;
+      window.__3D_STATE__.shadowMapResolution = dirLight.shadow.mapSize.width;
+      window.__3D_STATE__.dirLightIntensity = dirLight.intensity;
+      window.__3D_STATE__.shadowBias = dirLight.shadow.bias;
+      window.__3D_STATE__.pointLightEnabled = pointLightEnabled;
+      window.__3D_STATE__.preset = preset;
+      window.__3D_STATE__.frameCount += 1;
+      window.__3D_STATE__.groundReceivesShadow = ground.receiveShadow;
+      window.__3D_STATE__.modelCastsShadow = modelCastsShadow;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      updateState();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

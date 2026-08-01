@@ -1,0 +1,1041 @@
+{
+  "task_id": "P1879_electronegativity_gradient_bond_polarity",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:41:04.275Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 5,
+      "total": 11,
+      "percent": 45.5
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 56,
+      "total": 56,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 45.5,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 56,
+    "total": 56,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "AtomA_Sphere",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "AtomB_Sphere",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "BondCylinder",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "ElectronCloud",
+      "found": false
+    },
+    {
+      "id": "A5",
+      "name": "DipoleArrow",
+      "found": false
+    },
+    {
+      "id": "A6",
+      "name": "SliderAtomA",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "SliderAtomB",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "PresetDropdown",
+      "found": false
+    },
+    {
+      "id": "A9",
+      "name": "ToggleCloudButton",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "BondTypeLabel",
+      "found": false
+    },
+    {
+      "id": "A11",
+      "name": "InfoPanel",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.atomA_EN === 'number' && typeof window.__3D_STATE__.atomB_EN === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.atomA_EN === 'number' && typeof window.__3D_STATE__.atomB_EN === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN === 2.1 && window.__3D_STATE__.atomB_EN === 3.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN === 2.1 && window.__3D_STATE__.atomB_EN === 3.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_visible === true && window.__3D_STATE__.cloud_particle_count === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_visible === true && window.__3D_STATE__.cloud_particle_count === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.2) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - (1.3 * 0.8)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - (1.3 * 0.8)) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.partial_charge - (1.3 / 3.3)) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.partial_charge - (1.3 / 3.3)) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'A_to_B'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'A_to_B'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 0.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 0.9) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 3.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 3.0) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 2.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 2.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(2.1 * 0.8, 2.5)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(2.1 * 0.8, 2.5)) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'A_to_B'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'A_to_B'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.cloud_visible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_visible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN === 0.9",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN === 0.9"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomB_EN === 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomB_EN === 3.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_particle_count === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_particle_count === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 2.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 0.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 0.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'none'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'none'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.cloud_center_offset) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.cloud_center_offset) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 2.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 2.2) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN === 2.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN === 2.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'B_to_A'|| window.__3D_STATE__.dipole_direction === 'none'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'B_to_A'|| window.__3D_STATE__.dipole_direction === 'none'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 4.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 4.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN <= 4.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN <= 4.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.delta_EN >= 1.7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.delta_EN >= 1.7"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.partial_charge - Math.min(window.__3D_STATE__.delta_EN / 3.3, 1.0)) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.partial_charge - Math.min(window.__3D_STATE__.delta_EN / 3.3, 1.0)) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_center_offset < 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_center_offset < 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 3.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 3.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - (1.4 * 0.8)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - (1.4 * 0.8)) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.cloud_visible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_visible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_particle_count === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_particle_count === 60"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_center_offset > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_center_offset > 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.cloud_center_offset - (1.4 / 3.3) * 2.0) < 0.15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.cloud_center_offset - (1.4 / 3.3) * 2.0) < 0.15"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.cloud_center_offset)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.cloud_center_offset)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 4.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 4.0) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.9) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent' || window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent' || window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(1.9 * 0.8, 2.5)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(1.9 * 0.8, 2.5)) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'A_to_B'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'A_to_B'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.atomA_EN === 'number' && typeof window.__3D_STATE__.atomB_EN === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.atomA_EN === 'number' && typeof window.__3D_STATE__.atomB_EN === 'number'"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN === 2.1 && window.__3D_STATE__.atomB_EN === 3.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN === 2.1 && window.__3D_STATE__.atomB_EN === 3.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_visible === true && window.__3D_STATE__.cloud_particle_count === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_visible === true && window.__3D_STATE__.cloud_particle_count === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.2) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - (1.3 * 0.8)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - (1.3 * 0.8)) < 0.05"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.partial_charge - (1.3 / 3.3)) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.partial_charge - (1.3 / 3.3)) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'A_to_B'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'A_to_B'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 0.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 0.9) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 3.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 3.0) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 2.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 2.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(2.1 * 0.8, 2.5)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(2.1 * 0.8, 2.5)) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'A_to_B'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'A_to_B'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.cloud_visible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_visible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN === 0.9",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN === 0.9"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomB_EN === 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomB_EN === 3.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_particle_count === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_particle_count === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 2.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 0.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 0.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'none'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'none'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.cloud_center_offset) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.cloud_center_offset) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 2.2) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 2.2) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN === 2.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN === 2.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Nonpolar Covalent'"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'B_to_A'|| window.__3D_STATE__.dipole_direction === 'none'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'B_to_A'|| window.__3D_STATE__.dipole_direction === 'none'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 4.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 4.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.atomA_EN <= 4.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.atomA_EN <= 4.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.delta_EN >= 1.7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.delta_EN >= 1.7"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.partial_charge - Math.min(window.__3D_STATE__.delta_EN / 3.3, 1.0)) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.partial_charge - Math.min(window.__3D_STATE__.delta_EN / 3.3, 1.0)) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_center_offset < 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_center_offset < 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 3.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 3.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.4) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - (1.4 * 0.8)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - (1.4 * 0.8)) < 0.05"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.cloud_visible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_visible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_particle_count === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_particle_count === 60"
+        },
+        {
+          "expression": "window.__3D_STATE__.cloud_center_offset > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cloud_center_offset > 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.cloud_center_offset - (1.4 / 3.3) * 2.0) < 0.15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.cloud_center_offset - (1.4 / 3.3) * 2.0) < 0.15"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.cloud_center_offset)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.cloud_center_offset)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomA_EN - 2.1) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.atomB_EN - 4.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.atomB_EN - 4.0) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.delta_EN - 1.9) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.delta_EN - 1.9) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.bond_type === 'Polar Covalent' || window.__3D_STATE__.bond_type === 'Ionic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bond_type === 'Polar Covalent' || window.__3D_STATE__.bond_type === 'Ionic'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(1.9 * 0.8, 2.5)) < 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.dipole_length - Math.min(1.9 * 0.8, 2.5)) < 0.05"
+        },
+        {
+          "expression": "window.__3D_STATE__.dipole_direction === 'A_to_B'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dipole_direction === 'A_to_B'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 5,
+    "total": 11,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": false
+      },
+      {
+        "id": "A5",
+        "pass": false
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": false
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": false
+      },
+      {
+        "id": "A11",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 2,
+      "total": 2
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 54,
+      "total": 54
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 19692
+}

@@ -1,0 +1,29 @@
+{
+  "id": "P96_panorama_vr",
+  "title": "Panorama VR Viewer",
+  "domain": "graphics",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement an interior-sphere panorama viewer with a procedurally generated equirectangular texture, hotspots, multi-room switching, and a mini-map.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\nimport { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';\n</script>\n\n[Panorama]\n(1) Use CanvasTexture or DataTexture to draw an equirectangular-style pattern at runtime: the interior surface of the sphere must use SphereGeometry (flip it for an interior view with a negative scale.x), and the material must use Side.BackSide; use colorful gradients and geometric color blocks to simulate a \"painted\" scene.\n(2) Include a total of 3 \"rooms\": use three procedurally generated textures with different dominant color schemes, and replace the sphere material's map when switching rooms.\n\n[Controls]\n(3) OrbitControls: rotation only, with zoom disabled (enableZoom=false), and the target set to the center of the sphere.\n\n[Hotspots]\n(4) Include 5 hotspots: use CSS2DObject or Sprite, fixed at positions in world space/on the sphere surface; clicking a hotspot must display its title and descriptive text in id=\"hotspotPanel\".\n\n[Navigation]\n(5) id=\"roomPrev\" and id=\"roomNext\": buttons that cyclically switch among the 3 rooms' panorama textures and hotspot sets (if hotspots differ between rooms, they must be updated synchronously).\n\n[Mini-Map]\n(6) id=\"miniMap\": a canvas or div that draws an indicator arrow or sector for the current yaw direction, reflecting the camera's horizontal orientation.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  currentRoom: number,              // 0, 1, and 2 correspond to the three rooms\n\n  viewDirection: { yaw: number, pitch: number },\n  hotspotCount: number,\n  selectedHotspot: string | null,\n  roomCount: number\n}\n\nOutput a single HTML file that can run when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "panorama",
+    "equirectangular",
+    "OrbitControls",
+    "CSS2D",
+    "hotspot",
+    "three.js",
+    "minimap"
+  ],
+  "estimated_human_time_minutes": 320,
+  "physics_constraints": [
+    "Procedural equirectangular-style interior sphere",
+    "OrbitControls rotate only, no zoom",
+    "5 hotspots, hotspotPanel on click",
+    "roomPrev/roomNext cycle 3 rooms",
+    "miniMap shows viewing direction"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "P69_shoe_customizer",
+  "title": "Procedural Sneaker Customization (Shoe Customizer)",
+  "domain": "product",
+  "route": "C",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to procedurally generate a simplified sneaker consisting of four parts: the sole, upper, tongue, and laces. Support changing the color and material type by region.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Model]\n(1) All four regions must be procedural meshes composed using BoxGeometry / Extrude / Lathe, etc., with a single shoe as the parent Group.\n(2) id=\"zoneSelect\": A <select> with four option names exactly matching zones[].name: \"sole\", \"upper\", \"tongue\", and \"laces\".\n(3) id=\"zoneColor\": An <input type=\"color\" /> that changes the material color of the child mesh corresponding to the current selectedZone.\n(4) id=\"zoneMaterial\": A <select> with at least three types: \"standard\", \"matte\", and \"glossy\" (distinguished using roughness/metalness), applied to the current region.\n(5) id=\"autoRotate\": A checkbox that controls OrbitControls.autoRotate.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  zones: [{ name: string, color: string, material: string }],  // The length must always be 4, in the same order as the four regions\n  selectedZone: string,   // \"sole\"|\"upper\"|\"tongue\"|\"laces\"\n  autoRotate: boolean\n}\n\nOutput a single HTML file that runs when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "three.js",
+    "procedural",
+    "shoe",
+    "customizer",
+    "materials",
+    "zones"
+  ],
+  "estimated_human_time_minutes": 240,
+  "physics_constraints": [
+    "Procedural sole upper tongue laces",
+    "zoneSelect zoneColor zoneMaterial autoRotate",
+    "__3D_STATE__.zones length 4"
+  ]
+}

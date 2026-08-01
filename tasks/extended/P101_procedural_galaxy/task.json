@@ -1,0 +1,29 @@
+{
+  "id": "P101_procedural_galaxy",
+  "title": "Procedural Galaxy",
+  "domain": "creative",
+  "route": "C",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a spiral galaxy with 50000 particles, featuring a central bulge and parameter-adjustable spiral arms.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Mathematical Model]\n(1) 4 main spiral arms (default): polar coordinates r = a*exp(b*θ), with particles angularly distributed along each arm and Gaussian random scatter superimposed.\n(2) id=\"armCount\": range 2–6, integer steps; rebuild particle positions when the number of spiral arms changes.\n(3) id=\"spread\": range 0.1–2.0, controls arm width/dispersion.\n(4) Central bulge: additionally increase particle density at small r values.\n\n[Rendering]\n(5) BufferGeometry + PointsMaterial or custom ShaderPoints; vertex colors represent temperature: blue is hotter and red is cooler; point size may vary with random brightness (sizeAttenuation).\n\n[Animation]\n(6) Slowly rotate the entire galaxy around the Y-axis; the id=\"rotSpeed\" slider controls angular velocity.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  starCount: number,\n  armCount: number,\n  spread: number,\n  rotSpeed: number,\n  galaxyRadius: number,\n  centerDensity: number,\n  simTime: number\n}\n\nOutput a single HTML file that can run by being opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "galaxy",
+    "particles",
+    "spiral",
+    "parametric",
+    "vertex-colors",
+    "three.js",
+    "50000"
+  ],
+  "estimated_human_time_minutes": 380,
+  "physics_constraints": [
+    "50000 stars, spiral r=a*exp(b*theta), Gaussian scatter",
+    "armCount slider 2-6, spread 0.1-2.0",
+    "Temperature-like vertex colors, size by brightness",
+    "Central bulge density, rotSpeed slider",
+    "starCount === 50000"
+  ]
+}

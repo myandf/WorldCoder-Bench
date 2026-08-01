@@ -1,0 +1,984 @@
+{
+  "task_id": "P2238_snow_accumulation_deposition_vertex_shad",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:35:41.685Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 9,
+      "total": 10,
+      "percent": 90
+    },
+    "sCov": {
+      "reached": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 52,
+      "total": 52,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 90,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 52,
+    "total": 52,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "IonDriveModel",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "SnowParticles",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "SnowAmountSlider",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "SnowThresholdSlider",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "WindStrengthSlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "WindDirectionSelect",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "BlizzardButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "SnowCoverageDisplay",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "GroundPlane",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.shaderUniformsApplied === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shaderUniformsApplied === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount === 3000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount === 3000"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0 && window.__3D_STATE__.vertexDisplacementMax === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0 && window.__3D_STATE__.vertexDisplacementMax === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowAmount - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowAmount - 0.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage > 0 && window.__3D_STATE__.snowCoverage <= 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage > 0 && window.__3D_STATE__.snowCoverage <= 100"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(window.__3D_STATE__.snowAmount * (1.0 - window.__3D_STATE__.snowThreshold) * 100)))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(window.__3D_STATE__.snowAmount * (1.0 - window.__3D_STATE__.snowThreshold) * 100)))"
+        },
+        {
+          "expression": "document.getElementById('snowCoverageDisplay').textContent.includes('%')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('snowCoverageDisplay').textContent.includes('%')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowThreshold - 0.7) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowThreshold - 0.7) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(0.5 * (1.0 - 0.7) * 100)))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(0.5 * (1.0 - 0.7) * 100)))"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage <= 50",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage <= 50"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 1.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.001"
+        },
+        {
+          "expression": "document.getElementById('snowAmountSlider').value === '100'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('snowAmountSlider').value === '100'"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.snowCoverage) && window.__3D_STATE__.snowCoverage <= 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.snowCoverage) && window.__3D_STATE__.snowCoverage <= 100"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'East'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'East'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.windStrength - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.windStrength - 0.6) < 0.01"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.windVector) && window.__3D_STATE__.windVector.length === 2",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.windVector) && window.__3D_STATE__.windVector.length === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.windVector[0] === 1 && window.__3D_STATE__.windVector[1] === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windVector[0] === 1 && window.__3D_STATE__.windVector[1] === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.shaderUniformsApplied === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shaderUniformsApplied === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.windStrength === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windStrength === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'None'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'None'"
+        },
+        {
+          "expression": "window.__3D_STATE__.vertexDisplacementMax === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.vertexDisplacementMax === 0"
+        },
+        {
+          "expression": "document.getElementById('snowAmountSlider').value === '0' && document.getElementById('windStrengthSlider').value === '0'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('snowAmountSlider').value === '0' && document.getElementById('windStrengthSlider').value === '0'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.blizzardActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blizzardActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'North'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'North'"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.snowAmount === 'number' && !isNaN(window.__3D_STATE__.snowAmount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.snowAmount === 'number' && !isNaN(window.__3D_STATE__.snowAmount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.blizzardActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blizzardActive === false"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowAmount - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowAmount - 1.0) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.windStrength - 0.8) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.windStrength - 0.8) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'North'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'North'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.005",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.005"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.particlesVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particlesVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount === 3000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount === 3000"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.shaderUniformsApplied === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shaderUniformsApplied === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.windStrength === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windStrength === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'None'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'None'"
+        },
+        {
+          "expression": "window.__3D_STATE__.vertexDisplacementMax === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.vertexDisplacementMax === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage === 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.shaderUniformsApplied === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shaderUniformsApplied === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount === 3000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount === 3000"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0 && window.__3D_STATE__.vertexDisplacementMax === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0 && window.__3D_STATE__.vertexDisplacementMax === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0 && !isNaN(window.__3D_STATE__.frameCount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowAmount - 0.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowAmount - 0.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage > 0 && window.__3D_STATE__.snowCoverage <= 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage > 0 && window.__3D_STATE__.snowCoverage <= 100"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(window.__3D_STATE__.snowAmount * (1.0 - window.__3D_STATE__.snowThreshold) * 100)))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(window.__3D_STATE__.snowAmount * (1.0 - window.__3D_STATE__.snowThreshold) * 100)))"
+        },
+        {
+          "expression": "document.getElementById('snowCoverageDisplay').textContent.includes('%')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('snowCoverageDisplay').textContent.includes('%')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowThreshold - 0.7) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowThreshold - 0.7) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(0.5 * (1.0 - 0.7) * 100)))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage === Math.min(100, Math.max(0, Math.round(0.5 * (1.0 - 0.7) * 100)))"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage <= 50",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage <= 50"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.075) < 0.001"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 1.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.001"
+        },
+        {
+          "expression": "document.getElementById('snowAmountSlider').value === '100'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('snowAmountSlider').value === '100'"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage > 0"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.snowCoverage) && window.__3D_STATE__.snowCoverage <= 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.snowCoverage) && window.__3D_STATE__.snowCoverage <= 100"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'East'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'East'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.windStrength - 0.6) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.windStrength - 0.6) < 0.01"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.windVector) && window.__3D_STATE__.windVector.length === 2",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.windVector) && window.__3D_STATE__.windVector.length === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.windVector[0] === 1 && window.__3D_STATE__.windVector[1] === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windVector[0] === 1 && window.__3D_STATE__.windVector[1] === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.shaderUniformsApplied === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shaderUniformsApplied === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.windStrength === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windStrength === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'None'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'None'"
+        },
+        {
+          "expression": "window.__3D_STATE__.vertexDisplacementMax === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.vertexDisplacementMax === 0"
+        },
+        {
+          "expression": "document.getElementById('snowAmountSlider').value === '0' && document.getElementById('windStrengthSlider').value === '0'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('snowAmountSlider').value === '0' && document.getElementById('windStrengthSlider').value === '0'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.blizzardActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blizzardActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'North'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'North'"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount >= 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.snowAmount === 'number' && !isNaN(window.__3D_STATE__.snowAmount)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.snowAmount === 'number' && !isNaN(window.__3D_STATE__.snowAmount)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.blizzardActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blizzardActive === false"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowAmount - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowAmount - 1.0) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.windStrength - 0.8) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.windStrength - 0.8) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'North'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'North'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.005",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.vertexDisplacementMax - 0.15) < 0.005"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.particlesVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particlesVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.particleCount === 3000",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.particleCount === 3000"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.shaderUniformsApplied === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shaderUniformsApplied === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.snowAmount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowAmount === 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.snowThreshold - 0.3) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.windStrength === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windStrength === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.windDirection === 'None'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.windDirection === 'None'"
+        },
+        {
+          "expression": "window.__3D_STATE__.vertexDisplacementMax === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.vertexDisplacementMax === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.snowCoverage === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.snowCoverage === 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 9,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 8,
+    "total": 8
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 3,
+      "total": 3
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 49,
+      "total": 49
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 42029
+}

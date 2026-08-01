@@ -1,0 +1,832 @@
+{
+  "task_id": "P2177_shadow_penumbra_softness_gradient_editor",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:21:57.606Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 7,
+      "total": 10,
+      "percent": 70
+    },
+    "sCov": {
+      "reached": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 42,
+      "total": 42,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 70,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 42,
+    "total": 42,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 8,
+  "total": 8,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "AvocadoModel",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "GroundPlane",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "DirectionalLight",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "PointLight",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "DirRadiusSlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "PointRadiusSlider",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ShadowMapSlider",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "DirIntensitySlider",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "BiasSlider",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "TogglePointLightBtn",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.groundReceivesShadow === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.groundReceivesShadow === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelCastsShadow === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelCastsShadow === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 4 && window.__3D_STATE__.pointShadowRadius === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 4 && window.__3D_STATE__.pointShadowRadius === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'custom'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'custom'"
+        },
+        {
+          "expression": "document.getElementById('dirRadiusSlider').value === '10'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('dirRadiusSlider').value === '10'"
+        },
+        {
+          "expression": "document.getElementById('dirRadiusValue') !== null && document.getElementById('dirRadiusValue').textContent.includes('10')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('dirRadiusValue') !== null && document.getElementById('dirRadiusValue').textContent.includes('10')"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius >= 0 && !isNaN(window.__3D_STATE__.dirShadowRadius)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius >= 0 && !isNaN(window.__3D_STATE__.dirShadowRadius)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowMapResolution === 4096",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowMapResolution === 4096"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'hard'"
+        },
+        {
+          "expression": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 12"
+        },
+        {
+          "expression": "document.getElementById('dirRadiusSlider').value === '0'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('dirRadiusSlider').value === '0'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 12"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius === 8",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius === 8"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowMapResolution === 1024",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowMapResolution === 1024"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'soft'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'soft'"
+        },
+        {
+          "expression": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 10"
+        },
+        {
+          "expression": "document.getElementById('pointRadiusSlider').value === '8'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('pointRadiusSlider').value === '8'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.pointLightEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightEnabled === false"
+        },
+        {
+          "expression": "document.getElementById('togglePointLight').textContent.includes('OFF')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('togglePointLight').textContent.includes('OFF')"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirLightIntensity > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirLightIntensity > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.pointLightEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightEnabled === true"
+        },
+        {
+          "expression": "document.getElementById('togglePointLight').textContent.includes('ON')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('togglePointLight').textContent.includes('ON')"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.shadowBias - 0.005) < 0.0001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.shadowBias - 0.005) < 0.0001"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowBias >= -0.01 && window.__3D_STATE__.shadowBias <= 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowBias >= -0.01 && window.__3D_STATE__.shadowBias <= 0.01"
+        },
+        {
+          "expression": "document.getElementById('biasSlider').value === '0.005'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('biasSlider').value === '0.005'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.shadowBias)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.shadowBias)"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'custom'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'custom'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowMapResolution === 2048",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowMapResolution === 2048"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirLightIntensity === 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirLightIntensity === 1.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.shadowBias - (-0.001)) < 0.0001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.shadowBias - (-0.001)) < 0.0001"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'default'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'default'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.groundReceivesShadow === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.groundReceivesShadow === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelCastsShadow === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelCastsShadow === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 4 && window.__3D_STATE__.pointShadowRadius === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 4 && window.__3D_STATE__.pointShadowRadius === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'custom'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'custom'"
+        },
+        {
+          "expression": "document.getElementById('dirRadiusSlider').value === '10'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('dirRadiusSlider').value === '10'"
+        },
+        {
+          "expression": "document.getElementById('dirRadiusValue') !== null && document.getElementById('dirRadiusValue').textContent.includes('10')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('dirRadiusValue') !== null && document.getElementById('dirRadiusValue').textContent.includes('10')"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius >= 0 && !isNaN(window.__3D_STATE__.dirShadowRadius)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius >= 0 && !isNaN(window.__3D_STATE__.dirShadowRadius)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowMapResolution === 4096",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowMapResolution === 4096"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'hard'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'hard'"
+        },
+        {
+          "expression": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 12"
+        },
+        {
+          "expression": "document.getElementById('dirRadiusSlider').value === '0'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('dirRadiusSlider').value === '0'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 12",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 12"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius === 8",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius === 8"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowMapResolution === 1024",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowMapResolution === 1024"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'soft'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'soft'"
+        },
+        {
+          "expression": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.log2(window.__3D_STATE__.shadowMapResolution) === 10"
+        },
+        {
+          "expression": "document.getElementById('pointRadiusSlider').value === '8'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('pointRadiusSlider').value === '8'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.pointLightEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightEnabled === false"
+        },
+        {
+          "expression": "document.getElementById('togglePointLight').textContent.includes('OFF')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('togglePointLight').textContent.includes('OFF')"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirLightIntensity > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirLightIntensity > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.pointLightEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointLightEnabled === true"
+        },
+        {
+          "expression": "document.getElementById('togglePointLight').textContent.includes('ON')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('togglePointLight').textContent.includes('ON')"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.pointLightEnabled === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.shadowBias - 0.005) < 0.0001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.shadowBias - 0.005) < 0.0001"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowBias >= -0.01 && window.__3D_STATE__.shadowBias <= 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowBias >= -0.01 && window.__3D_STATE__.shadowBias <= 0.01"
+        },
+        {
+          "expression": "document.getElementById('biasSlider').value === '0.005'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('biasSlider').value === '0.005'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.shadowBias)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.shadowBias)"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'custom'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'custom'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.dirShadowRadius === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirShadowRadius === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.pointShadowRadius === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pointShadowRadius === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.shadowMapResolution === 2048",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.shadowMapResolution === 2048"
+        },
+        {
+          "expression": "window.__3D_STATE__.dirLightIntensity === 1.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dirLightIntensity === 1.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.shadowBias - (-0.001)) < 0.0001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.shadowBias - (-0.001)) < 0.0001"
+        },
+        {
+          "expression": "window.__3D_STATE__.preset === 'default'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.preset === 'default'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 7,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 8,
+    "total": 8
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 3,
+      "total": 3
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 39,
+      "total": 39
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 28578
+}

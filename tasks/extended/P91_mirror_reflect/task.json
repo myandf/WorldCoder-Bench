@@ -1,0 +1,22 @@
+{
+  "id": "P91_mirror_reflect",
+  "title": "Indoor Single-Wall Mirror Reflection",
+  "domain": "graphics",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a simple room with one mirrored wall: you may use three/addons/objects/Reflector.js or manually implement planar reflection with a renderTarget.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\nimport { Reflector } from 'three/addons/objects/Reflector.js';\n</script>\n\n[Scene]\n(1) Room: a floor and four walls, or one side left open for the camera; one entire wall, or most of it, must be a mirror.\n(2) Place 5 objects of different shapes and colors in the room, distributed across different positions (for example, one each of a box, sphere, cone, cylinder, and torus).\n\n[Interaction]\n(3) A slider with id=\"reflectivity\" and range 0–1 controls the mirror reflection intensity or a Reflector-related parameter (the implementation must be consistent with __3D_STATE__.mirrorReflectivity).\n(4) Object color: a dropdown or color picker with id=\"objectColorSelect\" changes the currently selected object's color or applies a uniform color adjustment (this must be reflected in __3D_STATE__.objects[].color as a hex string such as '#ff00aa').\n(5) Mirror tint: a color input with id=\"mirrorTint\" (or color + text) maps to the mirror's color filtering.\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - mirrorReflectivity: number (0–1)\n  - mirrorTint: string (for example, '#ffffff')\n  - objectCount: number (5)\n  - objects: Array<{ name: string, x: number, y: number, z: number, color: string }>\n  - fps: number\n\nOutput a single HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "graphics",
+    "mirror",
+    "reflection",
+    "reflector",
+    "room",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 240,
+  "difficulty_analysis": "L4: Reflector/RTT, management of five objects, reflectivity and tint, and synchronization of object colors with __3D_STATE__."
+}

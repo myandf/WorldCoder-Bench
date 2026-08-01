@@ -1,0 +1,940 @@
+{
+  "task_id": "P378_multiplayer_sunglasses_try_on",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:18:18.486Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 14,
+      "total": 14,
+      "percent": 100
+    },
+    "sCov": {
+      "reached": 9,
+      "total": 9,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 48,
+      "total": 48,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 100,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 48,
+    "total": 48,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 8,
+  "total": 8,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "Player1Model",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "Player2Model",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "P1StyleButton0",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "P1StyleButton2",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "P2StyleButton1",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "P2StyleButton3",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "P1RemoveButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "P2RemoveButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "P1OpacitySlider",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "P2OpacitySlider",
+      "found": true
+    },
+    {
+      "id": "A11",
+      "name": "CompareToggle",
+      "found": true
+    },
+    {
+      "id": "A12",
+      "name": "ScreenshotButton",
+      "found": true
+    },
+    {
+      "id": "A13",
+      "name": "P1CurrentLabel",
+      "found": true
+    },
+    {
+      "id": "A14",
+      "name": "P2CurrentLabel",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.styleNames)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.styleNames)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.compareMode === 'boolean'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 14,
+    "total": 14,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      },
+      {
+        "id": "A11",
+        "pass": true
+      },
+      {
+        "id": "A12",
+        "pass": true
+      },
+      {
+        "id": "A13",
+        "pass": true
+      },
+      {
+        "id": "A14",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 9,
+    "total": 9
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 40,
+      "total": 40
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 8,
+      "total": 8
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 81923
+}

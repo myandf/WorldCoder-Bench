@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "WorldCoder-Bench: Source Snapshot and StateProbe Evaluator"
+version: 0.2.0-reconstruction-rc3
+date-released: 2026-08-01
+type: dataset
+message: "Please cite the WorldCoder-Bench paper and report the exact release snapshot, evaluator revision, browser version, and supplied model HTML. This anonymous review release contains task definitions and evaluation materials, not model outputs."
+authors:
+  - name: "Anonymous authors"
+keywords:
+  - 3D world synthesis
+  - executable web applications
+  - Three.js
+  - behavioral contracts
+  - state verification
+  - code generation
+license: "LicenseRef-WorldCoder-Bench-Research-Release-1.0"
+repository-code: "https://anonymous.4open.science/r/WorldCoder-Bench/"
+abstract: >-
+  A deterministic local reconstruction of WorldCoder-Bench task definitions,
+  provenance-verified shared assets, and the StateProbe evaluator for
+  execution-based verification of browser-native 3D programs. Core and HF
+  source-pool identities are tied to an immutable historical release commit,
+  but complete official 2026 split membership is not claimed.

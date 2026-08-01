@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palette-Mapped Dithered Quantization</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; background: #000; font-family: 'Courier New', monospace; }
+canvas { display: block; }
+#hud {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(0,0,0,0.75); color: #fff; padding: 12px 16px;
+  border-radius: 6px; font-size: 13px; line-height: 1.6;
+  pointer-events: none; min-width: 260px;
+}
+#controls {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.7); padding: 10px 16px; border-radius: 6px;
+}
+#controls button {
+  background: #333; color: #fff; border: 1px solid #666; padding: 6px 14px;
+  border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 12px;
+}
+#controls button:hover { background: #555; }
+#controls button.active { background: #0a84ff; border-color: #0a84ff; }
+#controls label { color: #fff; font-size: 12px; }
+#controls input[type=range] { width: 120px; vertical-align: middle; }
+#loading {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  color: #fff; font-size: 20px; background: rgba(0,0,0,0.8); padding: 20px 30px; border-radius: 8px;
+}
+</style>
+</head>
+<body>
+<div id="loading">Loading models...</div>
+<div id="hud"></div>
+<div id="controls">
+  <button id="btnClassic8" class="active" onclick="selectPalette(0)">Classic 8</button>
+  <button id="btnGameboy" onclick="selectPalette(1)">Gameboy</button>
+  <button id="btnCGA" onclick="selectPalette(2)">CGA</button>
+  <button id="btnSunset" onclick="selectPalette(3)">Sunset</button>
+  <span style="color:#555">|</span>
+  <button id="btnDither" onclick="cycleDitherMode()">Dither: Bayer 4x4</button>
+  <label>Strength: <input type="range" id="sliderStrength" min="0" max="100" value="30" oninput="setDitherStrength(this.value/100)"></label>
+  <button id="btnToggle" onclick="toggleEffect()">Effect: ON</button>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const PALETTES = {
+  'Classic 8': [[0,0,0],[1,1,1],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[0,1,1],[1,0,1]],
+  'Gameboy': [[0.06,0.22,0.06],[0.19,0.38,0.19],[0.55,0.67,0.06],[0.61,0.74,0.06]],
+  'CGA': [[0,0,0],[0.33,1,1],[1,0.33,1],[1,1,1]],
+  'Sunset': [[0.1,0.0,0.15],[0.5,0.1,0.2],[0.9,0.4,0.1],[1.0,0.8,0.3],[0.3,0.15,0.3],[0.7,0.3,0.5]]
+};
+const PALETTE_NAMES = Object.keys(PALETTES);
+const DITHER_NAMES = ['None','Bayer 4x4','Blue Noise'];
+
+const state = {
+  foxLoaded: false, chessLoaded: false, effectEnabled: true,
+  currentPaletteName: 'Classic 8', paletteSize: 8,
+  ditherMode: 1, ditherModeName: 'Bayer 4x4', ditherStrength: 0.3,
+  fps: 0, frameCount: 0, renderTargetWidth: 0, renderTargetHeight: 0,
+  paletteColors: PALETTES['Classic 8'].map(c=>[...c]),
+  foxPosition: {x:-2,y:0,z:0}, chessPosition: {x:2,y:0,z:0},
+  animationPlaying: false, cameraPosition: {x:0,y:3,z:8}
+};
+window.__3D_STATE__ = state;
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({ antialias: false });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+// Scene & Camera
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x222233);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 100);
+camera.position.set(0, 3, 8);
+camera.lookAt(0, 0, 0);
+
+// Controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.update();
+
+// Lights
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+dirLight.position.set(5, 10, 7);
+scene.add(dirLight);
+const hemiLight = new THREE.HemisphereLight(0x8899bb, 0x445533, 0.6);
+scene.add(hemiLight);
+
+// Ground
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(20, 20),
+  new THREE.MeshStandardMaterial({ color: 0x555555 })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = 0;
+scene.add(ground);
+
+// Render target
+let renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+  minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter,
+  format: THREE.RGBAFormat, type: THREE.UnsignedByteType
+});
+state.renderTargetWidth = renderTarget.width;
+state.renderTargetHeight = renderTarget.height;
+
+// Post-processing shader
+const vertexShader = `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 1.0);
+}`;
+
+const fragmentShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
+uniform vec3 uPalette[16];
+uniform float uPaletteSize;
+uniform float uDitherStrength;
+uniform bool uEnabled;
+uniform int uDitherMode;
+uniform vec2 uResolution;
+
+float bayerMatrix(ivec2 p) {
+  int m[16];
+  m[0]=0; m[1]=8; m[2]=2; m[3]=10;
+  m[4]=12; m[5]=4; m[6]=14; m[7]=6;
+  m[8]=3; m[9]=11; m[10]=1; m[11]=9;
+  m[12]=15; m[13]=7; m[14]=13; m[15]=5;
+  int x = p.x & 3;
+  int y = p.y & 3;
+  return float(m[y * 4 + x]) / 16.0 - 0.5;
+}
+
+float hash21(vec2 p) {
+  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
+}
+
+void main() {
+  vec4 texel = texture2D(tDiffuse, vUv);
+  if (!uEnabled) { gl_FragColor = texel; return; }
+  vec3 color = texel.rgb;
+  ivec2 pixCoord = ivec2(gl_FragCoord.xy);
+
+  if (uDitherMode == 1) {
+    float d = bayerMatrix(pixCoord) * uDitherStrength;
+    color += vec3(d);
+  } else if (uDitherMode == 2) {
+    float h = hash21(vec2(pixCoord)) - 0.5;
+    color += vec3(h * uDitherStrength);
+  }
+  color = clamp(color, 0.0, 1.0);
+
+  float minDist = 1e10;
+  vec3 closest = uPalette[0];
+  int ps = int(uPaletteSize);
+  for (int i = 0; i < 16; i++) {
+    if (i >= ps) break;
+    vec3 diff = color - uPalette[i];
+    float dist = dot(diff, diff);
+    if (dist < minDist) { minDist = dist; closest = uPalette[i]; }
+  }
+  gl_FragColor = vec4(closest, 1.0);
+}`;
+
+const quadMaterial = new THREE.ShaderMaterial({
+  uniforms: {
+    tDiffuse: { value: null },
+    uPalette: { value: [] },
+    uPaletteSize: { value: 8 },
+    uDitherStrength: { value: 0.3 },
+    uEnabled: { value: true },
+    uDitherMode: { value: 1 },
+    uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+  },
+  vertexShader, fragmentShader, depthTest: false, depthWrite: false
+});
+
+const quadScene = new THREE.Scene();
+const quadCamera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const quadMesh = new THREE.Mesh(new THREE.PlaneGeometry(2,2), quadMaterial);
+quadScene.add(quadMesh);
+
+function setPaletteUniform(name) {
+  const colors = PALETTES[name];
+  const arr = [];
+  for (let i = 0; i < 16; i++) {
+    arr.push(new THREE.Color(
+      colors[i] ? colors[i][0] : 0,
+      colors[i] ? colors[i][1] : 0,
+      colors[i] ? colors[i][2] : 0
+    ));
+  }
+  quadMaterial.uniforms.uPalette.value = arr;
+  quadMaterial.uniforms.uPaletteSize.value = colors.length;
+  state.currentPaletteName = name;
+  state.paletteSize = colors.length;
+  state.paletteColors = colors.map(c=>[...c]);
+}
+setPaletteUniform('Classic 8');
+
+// GLTF loading
+const loader = new GLTFLoader();
+const MODEL_BASE = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/';
+let foxMixer = null;
+let foxAction = null;
+
+function loadModels() {
+  const p1 = new Promise((resolve) => {
+    loader.load(MODEL_BASE + 'Fox/glTF-Binary/Fox.glb', (gltf) => {
+      const model = gltf.scene;
+      model.position.set(-2, 0, 0);
+      model.scale.setScalar(0.03);
+      scene.add(model);
+      state.foxLoaded = true;
+      state.foxPosition = {x:-2,y:0,z:0};
+      if (gltf.animations && gltf.animations.length > 0) {
+        foxMixer = new THREE.AnimationMixer(model);
+        foxAction = foxMixer.clipAction(gltf.animations[0]);
+        foxAction.play();
+        state.animationPlaying = true;
+      }
+      resolve();
+    }, undefined, () => {
+      console.warn('Fox.glb failed to load, adding placeholder');
+      const ph = new THREE.Mesh(new THREE.ConeGeometry(0.5,1.5,8), new THREE.MeshStandardMaterial({color:0xff6600}));
+      ph.position.set(-2, 0.75, 0);
+      scene.add(ph);
+      state.foxLoaded = true;
+      resolve();
+    });
+  });
+
+  const p2 = new Promise((resolve) => {
+    loader.load(MODEL_BASE + 'ABeautifulGame/glTF-Binary/ABeautifulGame.glb', (gltf) => {
+      const model = gltf.scene;
+      model.position.set(2, 0, 0);
+      model.scale.setScalar(1.0);
+      scene.add(model);
+      state.chessLoaded = true;
+      state.chessPosition = {x:2,y:0,z:0};
+      resolve();
+    }, undefined, () => {
+      console.warn('ABeautifulGame.glb failed to load, adding placeholder');
+      const ph = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.3,1.5), new THREE.MeshStandardMaterial({color:0x886644}));
+      ph.position.set(2, 0.15, 0);
+      scene.add(ph);
+      state.chessLoaded = true;
+      resolve();
+    });
+  });
+
+  return Promise.all([p1, p2]);
+}
+
+// FPS tracking
+let frameCount = 0, lastFpsTime = performance.now(), currentFps = 0;
+const clock = new THREE.Clock();
+
+function updateHUD() {
+  const hud = document.getElementById('hud');
+  hud.innerHTML =
+    `Palette: ${state.currentPaletteName} (${state.paletteSize} colors)<br>` +
+    `Dither: ${state.ditherModeName}<br>` +
+    `Strength: ${Math.round(state.ditherStrength * 100)}%<br>` +
+    `FPS: ${state.fps}<br>` +
+    `Effect: ${state.effectEnabled ? 'ON' : 'OFF'}`;
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  const delta = clock.getDelta();
+  if (foxMixer) foxMixer.update(delta);
+  controls.update();
+
+  // FPS
+  frameCount++;
+  state.frameCount++;
+  const now = performance.now();
+  if (now - lastFpsTime >= 1000) {
+    currentFps = frameCount;
+    frameCount = 0;
+    lastFpsTime = now;
+  }
+  state.fps = currentFps;
+
+  // Camera state
+  state.cameraPosition = {
+    x: Math.round(camera.position.x*100)/100,
+    y: Math.round(camera.position.y*100)/100,
+    z: Math.round(camera.position.z*100)/100
+  };
+
+  if (state.effectEnabled) {
+    renderer.setRenderTarget(renderTarget);
+    renderer.render(scene, camera);
+    renderer.setRenderTarget(null);
+    quadMaterial.uniforms.tDiffuse.value = renderTarget.texture;
+    renderer.render(quadScene, quadCamera);
+  } else {
+    renderer.setRenderTarget(null);
+    renderer.render(scene, camera);
+  }
+
+  updateHUD();
+}
+
+// Resize
+window.addEventListener('resize', () => {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+  renderTarget.setSize(w, h);
+  quadMaterial.uniforms.uResolution.value.set(w, h);
+  state.renderTargetWidth = w;
+  state.renderTargetHeight = h;
+});
+
+// Global control functions
+window.selectPalette = function(idx) {
+  const name = PALETTE_NAMES[idx];
+  setPaletteUniform(name);
+  document.querySelectorAll('#controls button[id^="btn"]').forEach(b => {
+    if (b.id === 'btnClassic8' || b.id === 'btnGameboy' || b.id === 'btnCGA' || b.id === 'btnSunset') {
+      b.classList.remove('active');
+    }
+  });
+  const ids = ['btnClassic8','btnGameboy','btnCGA','btnSunset'];
+  document.getElementById(ids[idx]).classList.add('active');
+};
+
+window.cycleDitherMode = function() {
+  state.ditherMode = (state.ditherMode + 1) % 3;
+  state.ditherModeName = DITHER_NAMES[state.ditherMode];
+  quadMaterial.uniforms.uDitherMode.value = state.ditherMode;
+  document.getElementById('btnDither').textContent = 'Dither: ' + state.ditherModeName;
+};
+
+window.setDitherStrength = function(v) {
+  state.ditherStrength = Math.round(Math.max(0, Math.min(1, v)) * 10) / 10;
+  quadMaterial.uniforms.uDitherStrength.value = state.ditherStrength;
+  document.getElementById('sliderStrength').value = Math.round(state.ditherStrength * 100);
+};
+
+window.toggleEffect = function() {
+  state.effectEnabled = !state.effectEnabled;
+  quadMaterial.uniforms.uEnabled.value = state.effectEnabled;
+  document.getElementById('btnToggle').textContent = 'Effect: ' + (state.effectEnabled ? 'ON' : 'OFF');
+};
+
+function resetDefaults() {
+  window.selectPalette(0);
+  state.ditherMode = 1;
+  state.ditherModeName = 'Bayer 4x4';
+  quadMaterial.uniforms.uDitherMode.value = 1;
+  document.getElementById('btnDither').textContent = 'Dither: Bayer 4x4';
+  window.setDitherStrength(0.3);
+  state.effectEnabled = true;
+  quadMaterial.uniforms.uEnabled.value = true;
+  document.getElementById('btnToggle').textContent = 'Effect: ON';
+}
+
+// Keyboard
+window.addEventListener('keydown', (e) => {
+  const key = e.key;
+  if (key === '1') window.selectPalette(0);
+  else if (key === '2') window.selectPalette(1);
+  else if (key === '3') window.selectPalette(2);
+  else if (key === '4') window.selectPalette(3);
+  else if (key === 'd' || key === 'D') window.cycleDitherMode();
+  else if (key === 'e' || key === 'E') window.toggleEffect();
+  else if (key === '+' || key === '=') window.setDitherStrength(state.ditherStrength + 0.1);
+  else if (key === '-' || key === '_') window.setDitherStrength(state.ditherStrength - 0.1);
+  else if (key === 'r' || key === 'R') resetDefaults();
+});
+
+// Start
+loadModels().then(() => {
+  document.getElementById('loading').style.display = 'none';
+  animate();
+});
+</script>
+</body>
+</html>

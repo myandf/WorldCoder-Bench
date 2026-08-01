@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertex Displacement Wave System</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; background: #000; font-family: 'Courier New', monospace; }
+canvas { display: block; }
+#hud {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #0f0;
+  padding: 14px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.7;
+  pointer-events: none;
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  min-width: 260px;
+}
+#btn-snapshot {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background: rgba(0, 200, 200, 0.8);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#btn-snapshot:hover { background: rgba(0, 255, 255, 1); }
+</style>
+</head>
+<body>
+<div id="hud"></div>
+<button id="btn-snapshot">Snapshot Height</button>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const vertexShader = `
+uniform float u_time;
+uniform float u_amplitude;
+uniform float u_frequency;
+uniform float u_speed;
+uniform float u_morphA;
+uniform float u_morphB;
+uniform float u_morphC;
+
+varying float vHeight;
+varying vec2 vUv;
+varying vec3 vWorldPos;
+
+void main() {
+  vUv = uv;
+  vec3 pos = position;
+
+  float sumW = u_morphA + u_morphB + u_morphC;
+  float nA = 0.0, nB = 0.0, nC = 0.0;
+  if (sumW > 0.001) {
+    nA = u_morphA / sumW;
+    nB = u_morphB / sumW;
+    nC = u_morphC / sumW;
+  } else {
+    nA = 1.0;
+  }
+
+  // Mode A: Sine Ripple
+  float distXZ = length(pos.xz);
+  float modeA = u_amplitude * sin(u_frequency * distXZ - u_time * u_speed);
+
+  // Mode B: Perlin-like Noise
+  float modeB = u_amplitude * (
+    sin(pos.x * 2.3 + u_time) * cos(pos.z * 1.7 + u_time * 0.8) +
+    sin(pos.x * 1.1 - u_time * 0.5) * cos(pos.z * 3.1 + u_time * 0.3)
+  ) * 0.5;
+
+  // Mode C: Diamond Wave
+  float modeC = u_amplitude * sin(u_frequency * (abs(pos.x) + abs(pos.z)) - u_time * u_speed);
+
+  float displacement = nA * modeA + nB * modeB + nC * modeC;
+
+  pos.y += displacement;
+  vHeight = displacement;
+  vWorldPos = pos;
+
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+}
+`;
+
+const fragmentShader = `
+uniform int u_colorMode;
+uniform float u_amplitude;
+
+varying float vHeight;
+varying vec2 vUv;
+varying vec3 vWorldPos;
+
+void main() {
+  vec3 color;
+
+  float normH = clamp((vHeight / max(u_amplitude, 0.01) + 1.0) * 0.5, 0.0, 1.0);
+
+  if (u_colorMode == 0) {
+    // Height Map: blue -> green -> red
+    vec3 blue = vec3(0.0, 0.2, 1.0);
+    vec3 green = vec3(0.0, 1.0, 0.3);
+    vec3 red = vec3(1.0, 0.2, 0.0);
+    float t1 = smoothstep(0.0, 0.5, normH);
+    float t2 = smoothstep(0.5, 1.0, normH);
+    color = mix(blue, green, t1);
+    color = mix(color, red, t2);
+  } else if (u_colorMode == 1) {
+    // Normal Shading: derive normals from dFdx/dFdy
+    vec3 dx = dFdx(vWorldPos);
+    vec3 dz = dFdy(vWorldPos);
+    vec3 normal = normalize(cross(dx, dz));
+    vec3 lightDir = normalize(vec3(5.0, 10.0, 5.0));
+    float diff = max(dot(normal, lightDir), 0.0);
+    float ambient = 0.15;
+    color = vec3(0.6, 0.7, 0.9) * (ambient + diff * 0.85);
+  } else {
+    // UV-based cyan-magenta gradient
+    vec3 cyan = vec3(0.0, 1.0, 1.0);
+    vec3 magenta = vec3(1.0, 0.0, 1.0);
+    float t = (vUv.x + vUv.y) * 0.5;
+    color = mix(cyan, magenta, t);
+    color *= 0.7 + 0.3 * normH;
+  }
+
+  gl_FragColor = vec4(color, 1.0);
+}
+`;
+
+// Scene
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 3, 8);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.update();
+
+// Lights
+scene.add(new THREE.AmbientLight(0x333333));
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+dirLight.position.set(5, 10, 5);
+scene.add(dirLight);
+
+// Uniforms
+const uniforms = {
+  u_time: { value: 0.0 },
+  u_amplitude: { value: 1.0 },
+  u_frequency: { value: 2.0 },
+  u_speed: { value: 1.5 },
+  u_morphA: { value: 1.0 },
+  u_morphB: { value: 0.0 },
+  u_morphC: { value: 0.0 },
+  u_colorMode: { value: 0 }
+};
+
+const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms,
+  side: THREE.DoubleSide,
+  extensions: { derivatives: true }
+});
+
+const geometry = new THREE.PlaneGeometry(10, 10, 128, 128);
+const mesh = new THREE.Mesh(geometry, material);
+mesh.rotation.x = -Math.PI / 2;
+scene.add(mesh);
+
+// State
+let paused = false;
+let elapsedTime = 0;
+let frameCount = 0;
+let activePreset = 'A';
+let snapshotHeight = 0;
+let colorMode = 0;
+let amplitude = 1.0;
+let frequency = 2.0;
+let speed = 1.5;
+let morphA = 1.0, morphB = 0.0, morphC = 0.0;
+
+const meshVertexCount = geometry.attributes.position.count;
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function getNormalized(a, b, c) {
+  const s = a + b + c;
+  if (s < 0.001) return { a: 1, b: 0, c: 0 };
+  return { a: a / s, b: b / s, c: c / s };
+}
+
+function syncUniforms() {
+  uniforms.u_amplitude.value = amplitude;
+  uniforms.u_frequency.value = frequency;
+  uniforms.u_speed.value = speed;
+  uniforms.u_morphA.value = morphA;
+  uniforms.u_morphB.value = morphB;
+  uniforms.u_morphC.value = morphC;
+  uniforms.u_colorMode.value = colorMode;
+}
+
+function computeSnapshotHeight() {
+  const posAttr = geometry.attributes.position;
+  let maxH = 0;
+  const nw = getNormalized(morphA, morphB, morphC);
+  const t = elapsedTime;
+  for (let i = 0; i < posAttr.count; i++) {
+    const x = posAttr.getX(i);
+    const y = posAttr.getY(i);
+    const px = x;
+    const pz = y; // plane is in XY before rotation, so Y maps to Z
+
+    const distXZ = Math.sqrt(px * px + pz * pz);
+    const mA = amplitude * Math.sin(frequency * distXZ - t * speed);
+    const mB = amplitude * (
+      Math.sin(px * 2.3 + t) * Math.cos(pz * 1.7 + t * 0.8) +
+      Math.sin(px * 1.1 - t * 0.5) * Math.cos(pz * 3.1 + t * 0.3)
+    ) * 0.5;
+    const mC = amplitude * Math.sin(frequency * (Math.abs(px) + Math.abs(pz)) - t * speed);
+
+    const disp = Math.abs(nw.a * mA + nw.b * mB + nw.c * mC);
+    if (disp > maxH) maxH = disp;
+  }
+  return isNaN(maxH) ? 0 : maxH;
+}
+
+function updateState() {
+  const nw = getNormalized(morphA, morphB, morphC);
+  window.__3D_STATE__ = {
+    morphA,
+    morphB,
+    morphC,
+    amplitude,
+    frequency,
+    speed,
+    colorMode,
+    paused,
+    elapsedTime: isNaN(elapsedTime) ? 0 : elapsedTime,
+    frameCount,
+    activePreset,
+    snapshotHeight: isNaN(snapshotHeight) ? 0 : snapshotHeight,
+    meshVertexCount,
+    normalizedWeights: { a: nw.a, b: nw.b, c: nw.c },
+    maxDisplacement: amplitude
+  };
+}
+
+function updateHUD() {
+  const nw = getNormalized(morphA, morphB, morphC);
+  const hudEl = document.getElementById('hud');
+  hudEl.innerHTML = `
+    <div>Mode: <strong>${activePreset}</strong></div>
+    <div>Amplitude: ${amplitude.toFixed(2)}</div>
+    <div>Frequency: ${frequency.toFixed(2)}</div>
+    <div>Speed: ${speed.toFixed(2)}</div>
+    <div>Color Mode: ${colorMode}</div>
+    <div>Paused: ${paused}</div>
+    <div>Weights: A=${nw.a.toFixed(2)} B=${nw.b.toFixed(2)} C=${nw.c.toFixed(2)}</div>
+    <div>Snapshot: ${snapshotHeight.toFixed(4)}</div>
+    <div>Frame: ${frameCount}</div>
+  `;
+}
+
+// Input
+document.addEventListener('keydown', (e) => {
+  const key = e.key;
+  if (key === '1') { morphA = 1; morphB = 0; morphC = 0; activePreset = 'A'; }
+  else if (key === '2') { morphA = 0; morphB = 1; morphC = 0; activePreset = 'B'; }
+  else if (key === '3') { morphA = 0; morphB = 0; morphC = 1; activePreset = 'C'; }
+  else if (key === '4') { morphA = 0.5; morphB = 0.3; morphC = 0.2; activePreset = 'Blend'; }
+  else if (key === 'c' || key === 'C') { colorMode = (colorMode + 1) % 3; }
+  else if (key === ' ') { e.preventDefault(); paused = !paused; }
+  else if (key === 'r' || key === 'R') {
+    amplitude = 1.0; frequency = 2.0; speed = 1.5;
+    morphA = 1; morphB = 0; morphC = 0;
+    colorMode = 0; paused = false; activePreset = 'A';
+  }
+  else if (key === 'ArrowUp') { e.preventDefault(); amplitude = clamp(amplitude + 0.2, 0.0, 3.0); }
+  else if (key === 'ArrowDown') { e.preventDefault(); amplitude = clamp(amplitude - 0.2, 0.0, 3.0); }
+  else if (key === 'ArrowRight') { e.preventDefault(); frequency = clamp(frequency + 0.5, 0.5, 6.0); }
+  else if (key === 'ArrowLeft') { e.preventDefault(); frequency = clamp(frequency - 0.5, 0.5, 6.0); }
+  syncUniforms();
+});
+
+document.getElementById('btn-snapshot').addEventListener('click', () => {
+  snapshotHeight = computeSnapshotHeight();
+});
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Init state
+syncUniforms();
+updateState();
+
+// Animation
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const delta = clock.getDelta();
+  if (!paused) {
+    elapsedTime += delta;
+    uniforms.u_time.value = elapsedTime;
+  }
+
+  frameCount++;
+  controls.update();
+  syncUniforms();
+  updateState();
+  updateHUD();
+  renderer.render(scene, camera);
+}
+
+animate();
+</script>
+</body>
+</html>

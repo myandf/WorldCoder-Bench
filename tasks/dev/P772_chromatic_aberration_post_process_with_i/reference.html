@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Three.js Chromatic Aberration Difficulty Demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #05070c;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+    }
+    canvas { display: block; }
+    #hud {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 290px;
+      background: rgba(10, 14, 22, 0.78);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 15px;
+      box-sizing: border-box;
+      backdrop-filter: blur(6px);
+      z-index: 10;
+      line-height: 1.45;
+      user-select: none;
+    }
+    #hud h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: #cfe0ff;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 7px 0;
+      font-size: 14px;
+    }
+    .row label {
+      flex: 1;
+    }
+    .row input[type="range"] {
+      flex: 1.1;
+    }
+    .value {
+      color: #8fc2ff;
+      min-width: 74px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .checkbox-row {
+      justify-content: flex-start;
+      gap: 10px;
+    }
+    .hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.4;
+    }
+    .hint code {
+      color: #b8d8ff;
+      background: rgba(255,255,255,0.08);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <h3>Chromatic Aberration HUD</h3>
+
+    <div class="row">
+      <label>Difficulty Level</label>
+      <span class="value" id="difficultyValue">1</span>
+    </div>
+
+    <div class="row">
+      <label for="intensitySlider">Intensity</label>
+      <input id="intensitySlider" type="range" min="0" max="0.05" step="0.0001" value="0.005" />
+    </div>
+
+    <div class="row">
+      <label>Base Intensity</label>
+      <span class="value" id="baseIntensityValue">0.0050</span>
+    </div>
+
+    <div class="row">
+      <label>Direction Angle</label>
+      <span class="value" id="angleValue">0.0°</span>
+    </div>
+
+    <div class="row checkbox-row">
+      <input id="radialCheckbox" type="checkbox" />
+      <label for="radialCheckbox">Radial Mode</label>
+      <span class="value" id="radialValue">Off</span>
+    </div>
+
+    <div class="row">
+      <label>Pulse Active</label>
+      <span class="value" id="pulseValue">Off</span>
+    </div>
+
+    <div class="row">
+      <label>Effective Intensity</label>
+      <span class="value" id="effectiveIntensityValue">0.0050</span>
+    </div>
+
+    <div class="hint">
+      Keys: <code>1-5</code> difficulty,
+      <code>↑/↓</code> intensity,
+      <code>←/→</code> angle,
+      <code>R</code> radial,
+      <code>P</code> pulse,
+      <code>Space</code> reset to difficulty defaults
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/RenderPass.js';
+    import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/ShaderPass.js';
+
+    const hud = {
+      difficultyValue: document.getElementById('difficultyValue'),
+      intensitySlider: document.getElementById('intensitySlider'),
+      baseIntensityValue: document.getElementById('baseIntensityValue'),
+      angleValue: document.getElementById('angleValue'),
+      radialCheckbox: document.getElementById('radialCheckbox'),
+      radialValue: document.getElementById('radialValue'),
+      pulseValue: document.getElementById('pulseValue'),
+      effectiveIntensityValue: document.getElementById('effectiveIntensityValue'),
+    };
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0f18);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 5);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
+    const torusGeometry = new THREE.TorusKnotGeometry(1.5, 0.5, 128, 32);
+    const torusMaterial = new THREE.MeshStandardMaterial({
+      color: '#4488ff',
+      metalness: 0.7,
+      roughness: 0.3,
+    });
+    const torus = new THREE.Mesh(torusGeometry, torusMaterial);
+    scene.add(torus);
+
+    function makeCheckerTexture() {
+      const size = 512;
+      const cells = 16;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      for (let y = 0; y < cells; y++) {
+        for (let x = 0; x < cells; x++) {
+          const even = (x + y) % 2 === 0;
+          ctx.fillStyle = even ? '#d7dbe2' : '#232831';
+          ctx.fillRect(
+            x * (size / cells),
+            y * (size / cells),
+            size / cells,
+            size / cells
+          );
+        }
+      }
+
+      ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+      for (let i = 0; i <= cells; i++) {
+        const p = i * (size / cells);
+        ctx.beginPath();
+        ctx.moveTo(p, 0);
+        ctx.lineTo(p, size);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(0, p);
+        ctx.lineTo(size, p);
+        ctx.stroke();
+      }
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(8, 8);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      return tex;
+    }
+
+    const groundTexture = makeCheckerTexture();
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(30, 30),
+      new THREE.MeshStandardMaterial({
+        map: groundTexture,
+        roughness: 0.9,
+        metalness: 0.05
+      })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -2;
+    scene.add(ground);
+
+    const chromaticShader = {
+      uniforms: {
+        tDiffuse: { value: null },
+        intensity: { value: 0.005 },
+        direction: { value: new THREE.Vector2(1, 0) },
+        radialMode: { value: false },
+        barrelStrength: { value: 0.0 },
+        resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position.xy, 0.0, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        uniform float intensity;
+        uniform vec2 direction;
+        uniform bool radialMode;
+        uniform float barrelStrength;
+        varying vec2 vUv;
+
+        vec2 distortUV(vec2 uv, float strength) {
+          vec2 centered = uv - 0.5;
+          float r2 = dot(centered, centered);
+          centered *= (1.0 + strength * r2);
+          return centered + 0.5;
+        }
+
+        void main() {
+          vec2 baseUV = distortUV(vUv, barrelStrength);
+          vec2 centerDelta = baseUV - 0.5;
+
+          float radialFactor = 1.0;
+          if (radialMode) {
+            radialFactor = length(centerDelta) * 2.0;
+          }
+
+          vec2 offset = direction * intensity * radialFactor;
+
+          vec2 uvR = baseUV + offset;
+          vec2 uvG = baseUV;
+          vec2 uvB = baseUV - offset;
+
+          vec4 r = texture2D(tDiffuse, clamp(uvR, 0.0, 1.0));
+          vec4 g = texture2D(tDiffuse, clamp(uvG, 0.0, 1.0));
+          vec4 b = texture2D(tDiffuse, clamp(uvB, 0.0, 1.0));
+
+          gl_FragColor = vec4(r.r, g.g, b.b, 1.0);
+        }
+      `
+    };
+
+    const composer = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    const chromaticPass = new ShaderPass(chromaticShader);
+    composer.addPass(renderPass);
+    composer.addPass(chromaticPass);
+
+    const DIFFICULTY_CONFIGS = {
+      1: { baseIntensity: 0.005, pulseAmplitude: 0.0,   pulsePeriod: 4.0, dirRotateSpeed: 0.0, radialMode: false, pulseActive: false, barrelStrength: 0.0 },
+      2: { baseIntensity: 0.010, pulseAmplitude: 0.003, pulsePeriod: 4.0, dirRotateSpeed: 0.0, radialMode: false, pulseActive: true,  barrelStrength: 0.0 },
+      3: { baseIntensity: 0.015, pulseAmplitude: 0.005, pulsePeriod: 2.0, dirRotateSpeed: 0.5, radialMode: false, pulseActive: true,  barrelStrength: 0.0 },
+      4: { baseIntensity: 0.020, pulseAmplitude: 0.008, pulsePeriod: 1.0, dirRotateSpeed: 1.0, radialMode: true,  pulseActive: true,  barrelStrength: 0.0 },
+      5: { baseIntensity: 0.035, pulseAmplitude: 0.012, pulsePeriod: 0.5, dirRotateSpeed: 2.0, radialMode: true,  pulseActive: true,  barrelStrength: 0.08 }
+    };
+
+    const state = {
+      difficultyLevel: 1,
+      baseIntensity: 0.005,
+      effectiveIntensity: 0.005,
+      directionAngle: 0,
+      directionX: 1,
+      directionY: 0,
+      radialMode: false,
+      pulseActive: false,
+      pulsePhase: 0,
+      frameCount: 0,
+      torusRotationY: 0,
+      shaderUniformsSet: false,
+      composerActive: true,
+      channelSeparation: {
+        redOffsetX: 0,
+        redOffsetY: 0,
+        blueOffsetX: 0,
+        blueOffsetY: 0
+      }
+    };
+    window.__3D_STATE__ = state;
+
+    function clamp(v, min, max) {
+      return Math.min(max, Math.max(min, v));
+    }
+
+    function normalizeAngleDeg(deg) {
+      deg = deg % 360;
+      if (deg < 0) deg += 360;
+      return deg;
+    }
+
+    function updateDirectionFromAngle() {
+      const rad = THREE.MathUtils.degToRad(state.directionAngle);
+      state.directionX = Math.cos(rad);
+      state.directionY = Math.sin(rad);
+    }
+
+    function applyDifficultyDefaults(level) {
+      const cfg = DIFFICULTY_CONFIGS[level];
+      state.difficultyLevel = level;
+      state.baseIntensity = cfg.baseIntensity;
+      state.radialMode = cfg.radialMode;
+      state.pulseActive = cfg.pulseActive;
+      state.directionAngle = 0;
+      state.pulsePhase = 0;
+      updateDirectionFromAngle();
+      syncControls();
+    }
+
+    function syncControls() {
+      hud.intensitySlider.value = String(state.baseIntensity);
+      hud.radialCheckbox.checked = state.radialMode;
+    }
+
+    function updateHUD() {
+      hud.difficultyValue.textContent = String(state.difficultyLevel);
+      hud.baseIntensityValue.textContent = state.baseIntensity.toFixed(4);
+      hud.angleValue.textContent = `${state.directionAngle.toFixed(1)}°`;
+      hud.radialValue.textContent = state.radialMode ? 'On' : 'Off';
+      hud.pulseValue.textContent = state.pulseActive ? 'On' : 'Off';
+      hud.effectiveIntensityValue.textContent = state.effectiveIntensity.toFixed(4);
+      if (Number(hud.intensitySlider.value) !== state.baseIntensity) {
+        hud.intensitySlider.value = String(state.baseIntensity);
+      }
+      hud.radialCheckbox.checked = state.radialMode;
+    }
+
+    function setDifficulty(level) {
+      if (level < 1 || level > 5) return;
+      applyDifficultyDefaults(level);
+    }
+
+    hud.intensitySlider.addEventListener('input', () => {
+      state.baseIntensity = clamp(parseFloat(hud.intensitySlider.value), 0.0, 0.05);
+    });
+
+    hud.radialCheckbox.addEventListener('change', () => {
+      state.radialMode = hud.radialCheckbox.checked;
+    });
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key;
+
+      if (['1','2','3','4','5'].includes(key)) {
+        setDifficulty(parseInt(key, 10));
+        return;
+      }
+
+      if (key === 'ArrowUp') {
+        e.preventDefault();
+        state.baseIntensity = clamp(state.baseIntensity + 0.002, 0.0, 0.05);
+        syncControls();
+      } else if (key === 'ArrowDown') {
+        e.preventDefault();
+        state.baseIntensity = clamp(state.baseIntensity - 0.002, 0.0, 0.05);
+        syncControls();
+      } else if (key === 'ArrowLeft') {
+        e.preventDefault();
+        state.directionAngle = normalizeAngleDeg(state.directionAngle - 15);
+        updateDirectionFromAngle();
+      } else if (key === 'ArrowRight') {
+        e.preventDefault();
+        state.directionAngle = normalizeAngleDeg(state.directionAngle + 15);
+        updateDirectionFromAngle();
+      } else if (key === 'r' || key === 'R') {
+        state.radialMode = !state.radialMode;
+        syncControls();
+      } else if (key === 'p' || key === 'P') {
+        state.pulseActive = !state.pulseActive;
+      } else if (key === ' ') {
+        e.preventDefault();
+        applyDifficultyDefaults(state.difficultyLevel);
+      }
+    });
+
+    function validateUniforms() {
+      const u = chromaticPass.material.uniforms;
+      state.shaderUniformsSet = !!(
+        u &&
+        u.tDiffuse &&
+        u.intensity &&
+        u.direction &&
+        u.radialMode &&
+        u.barrelStrength &&
+        u.resolution
+      );
+    }
+
+    applyDifficultyDefaults(1);
+    validateUniforms();
+
+    const clock = new THREE.Clock();
+
+    function onResize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+      composer.setSize(w, h);
+      chromaticPass.material.uniforms.resolution.value.set(w, h);
+    }
+    window.addEventListener('resize', onResize);
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const dt = clock.getDelta();
+      const elapsed = clock.elapsedTime;
+      state.frameCount++;
+
+      torus.rotation.y += 0.5 * dt;
+      torus.rotation.x += 0.3 * dt;
+      state.torusRotationY = torus.rotation.y;
+
+      const cfg = DIFFICULTY_CONFIGS[state.difficultyLevel];
+
+      if (cfg.dirRotateSpeed > 0) {
+        state.directionAngle = normalizeAngleDeg(state.directionAngle + THREE.MathUtils.radToDeg(cfg.dirRotateSpeed * dt));
+        updateDirectionFromAngle();
+      }
+
+      let effective = state.baseIntensity;
+      if (state.pulseActive && cfg.pulseAmplitude > 0) {
+        const omega = (Math.PI * 2) / cfg.pulsePeriod;
+        state.pulsePhase = (elapsed * omega) % (Math.PI * 2);
+        effective += Math.sin(state.pulsePhase) * cfg.pulseAmplitude;
+      } else {
+        state.pulsePhase = 0;
+      }
+      state.effectiveIntensity = clamp(effective, 0.0, 0.05);
+
+      chromaticPass.material.uniforms.intensity.value = state.effectiveIntensity;
+      chromaticPass.material.uniforms.direction.value.set(state.directionX, state.directionY);
+      chromaticPass.material.uniforms.radialMode.value = state.radialMode;
+      chromaticPass.material.uniforms.barrelStrength.value = state.difficultyLevel === 5 ? cfg.barrelStrength : 0.0;
+
+      const width = renderer.domElement.width;
+      const height = renderer.domElement.height;
+      state.channelSeparation.redOffsetX = state.effectiveIntensity * state.directionX * width;
+      state.channelSeparation.redOffsetY = state.effectiveIntensity * state.directionY * height;
+      state.channelSeparation.blueOffsetX = -state.effectiveIntensity * state.directionX * width;
+      state.channelSeparation.blueOffsetY = -state.effectiveIntensity * state.directionY * height;
+
+      state.composerActive = true;
+
+      updateHUD();
+      validateUniforms();
+      composer.render();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

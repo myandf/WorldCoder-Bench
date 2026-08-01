@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Interactive Scene</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #1a1a2e;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        #hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 12px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            font-family: monospace;
+            font-size: 13px;
+            z-index: 100;
+            pointer-events: none;
+            line-height: 1.5;
+        }
+    </style>
+    <!-- Import maps polyfill -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="hud">Loading...</div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // --- State Management ---
+        window.__3D_STATE__ = {
+            terrainAmplitude: 1.5,
+            terrainFrequency: 0.3,
+            displacementEnabled: false,
+            headRotationY: 0,
+            fibreRotationY: 0,
+            elapsedTime: 0,
+            headPosition: { x: -4, y: 3, z: 0 },
+            fibrePosition: { x: 4, y: 3, z: 0 },
+            cameraPosition: { x: 0, y: 8, z: 18 },
+            cameraFocus: 'overview',
+            modelsLoaded: 0,
+            fps: 0,
+            frameCount: 0,
+            modelDisplacementValue: 0.0
+        };
+        const state = window.__3D_STATE__;
+
+        // --- Scene Setup ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#1a1a2e');
+        scene.fog = new THREE.FogExp2('#1a1a2e', 0.02);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 8, 18);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.target.set(0, 0, 0);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+
+        const ambLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambLight);
+
+        // --- Terrain ---
+        const terrainGeometry = new THREE.PlaneGeometry(40, 40, 128, 128);
+        terrainGeometry.rotateX(-Math.PI / 2);
+
+        const terrainVertexShader = `
+            uniform float uTime;
+            uniform float uAmplitude;
+            uniform float uFrequency;
+            varying float vElevation;
+
+            void main() {
+                vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+                
+                float elevation = sin(modelPosition.x * uFrequency + uTime) * 
+                                  cos(modelPosition.z * uFrequency * 0.7 + uTime * 0.5) * 
+                                  uAmplitude;
+                
+                modelPosition.y += elevation;
+                vElevation = elevation;
+                
+                vec4 viewPosition = viewMatrix * modelPosition;
+                vec4 projectedPosition = projectionMatrix * viewPosition;
+                gl_Position = projectedPosition;
+            }
+        `;
+
+        const terrainFragmentShader = `
+            uniform float uAmplitude;
+            varying float vElevation;
+
+            void main() {
+                vec3 lowColor = vec3(0.039, 0.086, 0.157); // #0a1628
+                vec3 highColor = vec3(0.0, 1.0, 0.941);    // #00fff0
+                
+                // Normalize elevation to 0.0 - 1.0 range based on max possible amplitude
+                // Adding a small epsilon to avoid division by zero if amplitude is 0
+                float normalizedElevation = (vElevation + uAmplitude) / (uAmplitude * 2.0 + 0.001);
+                normalizedElevation = clamp(normalizedElevation, 0.0, 1.0);
+                
+                vec3 color = mix(lowColor, highColor, normalizedElevation);
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        const terrainMaterial = new THREE.ShaderMaterial({
+            vertexShader: terrainVertexShader,
+            fragmentShader: terrainFragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uAmplitude: { value: state.terrainAmplitude },
+                uFrequency: { value: state.terrainFrequency }
+            },
+            wireframe: false
+        });
+
+        const terrain = new THREE.Mesh(terrainGeometry, terrainMaterial);
+        scene.add(terrain);
+
+        // --- Models ---
+        const modelVertexShader = `
+            uniform float uTime;
+            uniform float uModelDisplacement;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+
+            void main() {
+                vNormal = normalize(normalMatrix * normal);
+                vec3 displacedPosition = position + normal * uModelDisplacement;
+                vec4 modelPosition = modelMatrix * vec4(displacedPosition, 1.0);
+                vPosition = modelPosition.xyz;
+                gl_Position = projectionMatrix * viewMatrix * modelPosition;
+            }
+        `;
+
+        const modelFragmentShader = `
+            uniform vec3 uBaseColor;
+            uniform float uModelDisplacement;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+
+            void main() {
+                vec3 lightDir = normalize(vec3(5.0, 10.0, 7.0));
+                float diff = max(dot(vNormal, lightDir), 0.0);
+                vec3 ambient = vec3(0.4);
+                
+                float highlightIntensity = abs(uModelDisplacement) * 4.0;
+                vec3 highlightColor = vec3(1.0, 1.0, 1.0) * highlightIntensity;
+                
+                vec3 finalColor = uBaseColor * (diff + ambient) + highlightColor;
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        function createModelMaterial(colorHex) {
+            return new THREE.ShaderMaterial({
+                vertexShader: modelVertexShader,
+                fragmentShader: modelFragmentShader,
+                uniforms: {
+                    uTime: { value: 0 },
+                    uModelDisplacement: { value: 0.0 },
+                    uBaseColor: { value: new THREE.Color(colorHex) }
+                }
+            });
+        }
+
+        const headMaterial = createModelMaterial('#e0c097');
+        const fibreMaterial = createModelMaterial('#8899aa');
+
+        let headModel, fibreModel;
+        const loader = new GLTFLoader();
+
+        // Helper to load model or fallback to a primitive if URL fails
+        function loadModelWithFallback(url, material, scale, position, name) {
+            return new Promise((resolve) => {
+                loader.load(url, (gltf) => {
+                    const model = gltf.scene;
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material = material;
+                        }
+                    });
+                    model.scale.setScalar(scale);
+                    model.position.copy(position);
+                    scene.add(model);
+                    state.modelsLoaded++;
+                    resolve(model);
+                }, undefined, (error) => {
+                    console.warn(`Failed to load ${url}, using fallback geometry for ${name}.`);
+                    const geo = new THREE.IcosahedronGeometry(1, 4);
+                    const mesh = new THREE.Mesh(geo, material);
+                    mesh.scale.setScalar(scale);
+                    mesh.position.copy(position);
+                    scene.add(mesh);
+                    state.modelsLoaded++;
+                    resolve(mesh);
+                });
+            });
+        }
+
+        // --- Camera Animation Logic ---
+        const camAnim = {
+            active: false,
+            startPos: new THREE.Vector3(),
+            endPos: new THREE.Vector3(),
+            startTarget: new THREE.Vector3(),
+            endTarget: new THREE.Vector3(),
+            startTime: 0,
+            duration: 0.5
+        };
+
+        function startCameraAnim(endPos, endTarget) {
+            camAnim.active = true;
+            camAnim.startPos.copy(camera.position);
+            camAnim.endPos.copy(endPos);
+            camAnim.startTarget.copy(controls.target);
+            camAnim.endTarget.copy(endTarget);
+            camAnim.startTime = state.elapsedTime;
+        }
+
+        // --- User Interactions ---
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            
+            if (key === 'w') state.terrainAmplitude = Math.min(4.0, state.terrainAmplitude + 0.25);
+            if (key === 's') state.terrainAmplitude = Math.max(0.0, state.terrainAmplitude - 0.25);
+            if (key === 'a') state.terrainFrequency = Math.min(1.0, state.terrainFrequency + 0.05);
+            if (key === 'd') state.terrainFrequency = Math.max(0.1, state.terrainFrequency - 0.05);
+            
+            if (key === 'e') state.displacementEnabled = !state.displacementEnabled;
+            
+            if (key === 'r') {
+                state.terrainAmplitude = 1.5;
+                state.terrainFrequency = 0.3;
+                state.displacementEnabled = false;
+            }
+            
+            if (key === '1') {
+                state.cameraFocus = 'head';
+                startCameraAnim(new THREE.Vector3(-4, 5, 8), new THREE.Vector3(-4, 3, 0));
+            }
+            if (key === '2') {
+                state.cameraFocus = 'fibre';
+                startCameraAnim(new THREE.Vector3(4, 5, 8), new THREE.Vector3(4, 3, 0));
+            }
+            if (key === '0') {
+                state.cameraFocus = 'overview';
+                startCameraAnim(new THREE.Vector3(0, 8, 18), new THREE.Vector3(0, 0, 0));
+            }
+
+            terrainMaterial.uniforms.uAmplitude.value = state.terrainAmplitude;
+            terrainMaterial.uniforms.uFrequency.value = state.terrainFrequency;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- HUD Update ---
+        const hudElement = document.getElementById('hud');
+        function updateHUD() {
+            hudElement.innerHTML = `
+                <b>Controls:</b><br>
+                W/S: Amplitude (${state.terrainAmplitude.toFixed(2)})<br>
+                A/D: Frequency (${state.terrainFrequency.toFixed(2)})<br>
+                E: Displacement (${state.displacementEnabled ? 'ON' : 'OFF'})<br>
+                R: Reset Params<br>
+                1/2/0: Focus Head/Fibre/Overview<br>
+                <br>
+                <b>Status:</b><br>
+                Focus: ${state.cameraFocus.charAt(0).toUpperCase() + state.cameraFocus.slice(1)}<br>
+                FPS: ${state.fps}<br>
+                Models Loaded: ${state.modelsLoaded}/2
+            `;
+        }
+
+        // --- Main Loop ---
+        const clock = new THREE.Clock();
+        let lastTime = 0;
+        let frames = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const dt = clock.getDelta();
+            state.elapsedTime = clock.getElapsedTime();
+            state.frameCount++;
+
+            // FPS Calculation
+            frames++;
+            if (state.elapsedTime - lastTime >= 1.0) {
+                state.fps = frames;
+                frames = 0;
+                lastTime = state.elapsedTime;
+            }
+
+            // Update Terrain Uniforms
+            terrainMaterial.uniforms.uTime.value = state.elapsedTime;
+
+            // Update Model Displacement
+            if (state.displacementEnabled) {
+                state.modelDisplacementValue = Math.sin(state.elapsedTime * 2.0) * 0.15;
+            } else {
+                state.modelDisplacementValue = 0.0;
+            }
+
+            // Update Models
+            if (headModel) {
+                headModel.rotation.y += 0.3 * dt;
+                state.headRotationY = headModel.rotation.y;
+                headMaterial.uniforms.uTime.value = state.elapsedTime;
+                headMaterial.uniforms.uModelDisplacement.value = state.modelDisplacementValue;
+            }
+            if (fibreModel) {
+                fibreModel.rotation.y -= 0.2 * dt;
+                state.fibreRotationY = fibreModel.rotation.y;
+                fibreMaterial.uniforms.uTime.value = state.elapsedTime;
+                fibreMaterial.uniforms.uModelDisplacement.value = state.modelDisplacementValue;
+            }
+
+            // Camera Animation
+            if (camAnim.active) {
+                let t = (state.elapsedTime - camAnim.startTime) / camAnim.duration;
+                if (t >= 1.0) {
+                    t = 1.0;
+                    camAnim.active = false;
+                }
+                // Ease out cubic
+                const easeT = 1 - Math.pow(1 - t, 3);
+                camera.position.lerpVectors(camAnim.startPos, camAnim.endPos, easeT);
+                controls.target.lerpVectors(camAnim.startTarget, camAnim.endTarget, easeT);
+            }
+
+            controls.update();
+
+            // Update State Object
+            state.cameraPosition.x = camera.position.x;
+            state.cameraPosition.y = camera.position.y;
+            state.cameraPosition.z = camera.position.z;
+
+            updateHUD();
+            renderer.render(scene, camera);
+        }
+
+        // --- Initialization ---
+        Promise.all([
+            loadModelWithFallback('LeePerrySmith.glb', headMaterial, 2.0, new THREE.Vector3(-4, 3, 0), 'Head'),
+            loadModelWithFallback('CarbonFibre.glb', fibreMaterial, 1.5, new THREE.Vector3(4, 3, 0), 'Fibre')
+        ]).then((models) => {
+            headModel = models[0];
+            fibreModel = models[1];
+            // Start loop only after models (or fallbacks) are loaded
+            animate();
+        });
+
+    </script>
+</body>
+</html>

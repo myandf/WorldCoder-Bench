@@ -1,0 +1,29 @@
+{
+  "id": "P102_shader_editor",
+  "title": "Interactive GLSL Editor",
+  "domain": "graphics",
+  "route": "C",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a split-pane layout: GLSL fragment shader code (textarea) on the left and a real-time 3D preview on the right.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules inside <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Editor]\n(1) Prepopulate the textarea with a simple fragment shader animation (such as a UV gradient + a time-based sine function). The vertex shader may use a default implementation or minimally pass through vUv.\n(2) id=\"applyBtn\": When clicked, compile the fragment shader code using ShaderMaterial; on success, apply it to the preview Mesh; on failure, display the compiler-returned error text in id=\"errorDisplay\". Set hasError=false on success and hasError=true on failure.\n(3) id=\"u_slider1\", id=\"u_slider2\", id=\"u_slider3\": Three range sliders mapped to ShaderMaterial.uniforms (such as float values u1, u2, and u3), which may be used in the fragment shader.\n(4) id=\"presetSelect\": A <select> with at least 3 built-in shader code presets. When the selection changes, write the selected code into the textarea or apply it directly (currentPreset must be recorded in the state).\n(5) id=\"meshSelect\": A <select> with the options plane, sphere, and torus; changing the selection switches the preview geometry.\n\n[Preview]\n(6) WebGL scene on the right: Mesh + OrbitControls, updating the uTime uniform every frame.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  currentPreset: string,\n  meshType: string,\n  uniforms: [number, number, number],\n  hasError: boolean,\n  errorMessage: string,\n  fps: number\n}\n\nThe order of the uniforms array corresponds to the current normalized or raw values of u_slider1, u_slider2, and u_slider3 (keep this consistent with the implementation and explain it in a comment).\n\nOutput a single HTML file that can run by being opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "glsl",
+    "shader",
+    "editor",
+    "ShaderMaterial",
+    "live-preview",
+    "three.js",
+    "uniforms"
+  ],
+  "estimated_human_time_minutes": 400,
+  "physics_constraints": [
+    "Split view: textarea + 3D preview",
+    "applyBtn compile, errorDisplay on failure",
+    "u_slider1-3 -> shader uniforms",
+    "presetSelect 3+ presets, meshSelect plane/sphere/torus",
+    "uniforms array length 3 in __3D_STATE__"
+  ]
+}

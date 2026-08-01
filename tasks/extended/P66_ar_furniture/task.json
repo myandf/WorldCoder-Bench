@@ -1,0 +1,30 @@
+{
+  "id": "P66_ar_furniture",
+  "title": "AR Furniture Preview (AR-style Furniture Preview)",
+  "domain": "product",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a top-down \"AR Furniture Preview\": place procedural furniture on the floor, select furniture from a catalog, scale and rotate items, and delete them.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Scene]\n(1) Floor: a 10×10 plane with a light-gray grid or material; the camera should view the scene from a slightly elevated, downward-looking angle (a perspective camera is also acceptable).\n(2) Four types of procedural furniture: chair, table, lamp, and rug, each composed of basic geometries and each with a clearly defined userData.type.\n\n[Catalog Panel]\n(3) id=\"furnitureCatalog\": buttons or list items within the panel; clicking one selects the current furniture type to place (chair/table/lamp/rug).\n\n[Placement]\n(4) When a type is selected, use a Raycaster to click the floor and place an instance of that type at the hit point (x,z), with y resting on the floor. A placedItems array may be maintained.\n\n[Controls]\n(5) id=\"scaleSlider\": range 0.5–2.0, step 0.05; uniformly scales the currently selected placed item.\n(6) id=\"rotateSlider\": range 0–360 (degrees); rotates the currently selected item around the Y axis.\n(7) id=\"removeBtn\": deletes the currently selected placed item; it must not throw an error when no item is selected.\n(8) Clicking a placed object selects it and highlights it; it is recommended that each newly placed item be selected automatically so that removeBtn can delete the most recently placed item. Whether clicking the floor again clears the selection may be defined at your discretion, but the state must remain consistent.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  placedCount: number,\n  selectedIndex: number | null,\n  currentType: string,\n  scale: number,\n  rotation: number,\n  items: [{ type: string, x: number, y: number, z: number, scale: number, rotation: number }, ...]\n}\n\nOutput a single HTML file that can run when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "ar",
+    "furniture",
+    "placement",
+    "product",
+    "three.js",
+    "catalog",
+    "preview"
+  ],
+  "estimated_human_time_minutes": 280,
+  "physics_constraints": [
+    "10x10 floor plane, slight top-down camera",
+    "4 procedural furniture types: chair, table, lamp, rug",
+    "furnitureCatalog selects placement type",
+    "click floor places selected type",
+    "scaleSlider 0.5-2.0, rotateSlider 0-360 deg, removeBtn removes selection",
+    "items array mirrors scene"
+  ]
+}

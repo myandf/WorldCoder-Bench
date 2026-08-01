@@ -1,0 +1,733 @@
+{
+  "task_id": "P340_procedural_protein_folding_viewer",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:21:39.701Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 6,
+      "total": 7,
+      "percent": 85.7
+    },
+    "sCov": {
+      "reached": 7,
+      "total": 7,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 36,
+      "total": 36,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 85.7,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 36,
+    "total": 36,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 8,
+  "total": 8,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "ProteinChain",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "UnfoldedButton",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "HelixButton",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "SheetButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "SpinButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "HighlightButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "InfoDisplay",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "window.__3D_STATE__.isAnimating === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueCount === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueCount === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.residuePositions.length === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residuePositions.length === 20"
+        },
+        {
+          "expression": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[0].x - 2*Math.cos(0)) < 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[0].x - 2*Math.cos(0)) < 0.3"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[0].y - (0*0.8 - 8)) < 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[0].y - (0*0.8 - 8)) < 0.3"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalBonds === 19",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalBonds === 19"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.spinEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.spinEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.proteinRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.proteinRotationY === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.proteinRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.proteinRotationY)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.spinEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.spinEnabled === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.proteinRotationY) >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.proteinRotationY) >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.highlightEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.highlightEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[0] === 'hydrophobic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[0] === 'hydrophobic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[1] === 'hydrophilic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[1] === 'hydrophilic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[2] === 'neutral'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[2] === 'neutral'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[3] === 'hydrophobic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[3] === 'hydrophobic'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.conformation === 'sheet'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'sheet'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residuePositions.length === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residuePositions.length === 20"
+        },
+        {
+          "expression": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.residuePositions.every(p => Math.sqrt(p.x*p.x + p.y*p.y + p.z*p.z) < 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residuePositions.every(p => Math.sqrt(p.x*p.x + p.y*p.y + p.z*p.z) < 20)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.conformation === 'unfolded'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'unfolded'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueCount === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueCount === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalBonds === 19",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalBonds === 19"
+        },
+        {
+          "expression": "document.querySelector('#info-display').textContent.includes('Unfolded')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.querySelector('#info-display').textContent.includes('Unfolded')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'unfolded'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'unfolded'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[10].y) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[10].y) < 0.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[10].z) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[10].z) < 0.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 100"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "window.__3D_STATE__.isAnimating === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueCount === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueCount === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.residuePositions.length === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residuePositions.length === 20"
+        },
+        {
+          "expression": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[0].x - 2*Math.cos(0)) < 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[0].x - 2*Math.cos(0)) < 0.3"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[0].y - (0*0.8 - 8)) < 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[0].y - (0*0.8 - 8)) < 0.3"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalBonds === 19",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalBonds === 19"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.spinEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.spinEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.proteinRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.proteinRotationY === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.proteinRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.proteinRotationY)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.spinEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.spinEnabled === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'helix'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'helix'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.proteinRotationY) >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.proteinRotationY) >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.highlightEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.highlightEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[0] === 'hydrophobic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[0] === 'hydrophobic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[1] === 'hydrophilic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[1] === 'hydrophilic'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[2] === 'neutral'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[2] === 'neutral'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueTypes[3] === 'hydrophobic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueTypes[3] === 'hydrophobic'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.conformation === 'sheet'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'sheet'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residuePositions.length === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residuePositions.length === 20"
+        },
+        {
+          "expression": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!window.__3D_STATE__.residuePositions.some(p => isNaN(p.x) || isNaN(p.y) || isNaN(p.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.residuePositions.every(p => Math.sqrt(p.x*p.x + p.y*p.y + p.z*p.z) < 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residuePositions.every(p => Math.sqrt(p.x*p.x + p.y*p.y + p.z*p.z) < 20)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.conformation === 'unfolded'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'unfolded'"
+        },
+        {
+          "expression": "window.__3D_STATE__.residueCount === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.residueCount === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalBonds === 19",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalBonds === 19"
+        },
+        {
+          "expression": "document.querySelector('#info-display').textContent.includes('Unfolded')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.querySelector('#info-display').textContent.includes('Unfolded')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.isAnimating === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isAnimating === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.conformation === 'unfolded'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.conformation === 'unfolded'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[10].y) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[10].y) < 0.5"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.residuePositions[10].z) < 0.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.residuePositions[10].z) < 0.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 100"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 6,
+    "total": 7,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 7,
+    "total": 7
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 1,
+      "total": 1
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 35,
+      "total": 35
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 17902
+}

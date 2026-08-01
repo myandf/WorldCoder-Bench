@@ -1,0 +1,27 @@
+{
+  "id": "P12_force_graph_3d__robust_v2",
+  "title": "3D Force-Directed Network Graph (Social Network Visualization)",
+  "domain": "visualization",
+  "route": "C",
+  "difficulty": "L3",
+  "target_framework": "three.js",
+  "prompt": "Create a \"3D force-directed graph\" social network visualization using Three.js.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nThe following importmap must be included in the HTML <head> exactly as written, and imports must use ES Modules inside <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Graph Data]\n(1) Hard-code a social network in the code with exactly 50 nodes and 80 undirected edges.\n(2) Each node must contain: name (string) and group (an integer from 0–4, for a total of 5 groups). Each edge must contain source and target (node indices or ids).\n\n[Force-Directed Simulation]\n(3) Implement a force-directed simulation that updates every frame (do not use an existing graph library as a black box to encapsulate the entire simulation, but classic formulas may be referenced):\n    - Coulomb repulsion between nodes (all-pairs repulsion)\n    - Spring attraction along edges (the natural length may be the geometric distance when the edge is created or a fixed restLength)\n    - Weak attraction toward the origin/centering to prevent the entire graph from dispersing\n(4) Use semi-implicit Euler integration or a similar numerical integration method, with a reasonably small dt; the position and velocity of each pinned node must remain fixed, with its velocity set to 0 (it must not move).\n\n[Rendering]\n(5) Nodes must be spheres (THREE.Mesh), with 5 distinguishable colors used for the 5 groups.\n(6) Node radius (or scale) must be monotonically related to degree (more connections means a larger node).\n(7) Edges must use THREE.Line or LineSegments, and their vertex positions must update with the nodes every frame.\n(8) Use OrbitControls to view the scene.\n\n[Interaction]\n(9) Hovering the mouse over a node: highlight that node and its neighbors (any clear visual distinction is sufficient), and display the node's name in id=\"hoverInfo\".\n(10) Clicking a node: toggle that node between pin and unpin; pinned nodes must not move during the simulation.\n(11) id=\"pauseBtn\": a button that toggles between pause and resume; while paused, integration updates must stop while preserving the current layout.\n\n[HUD]\n(12) id=\"nodeCount\": the number of nodes (must be 50).\n(13) id=\"edgeCount\": the number of edges (must be 80).\n(14) id=\"simEnergy\": display a scalar simulation \"energy/temperature\" value (for example, total kinetic energy plus a simplified sum of potential energy related to equilibrium positions, or the sum of squared velocities; it must be finite and able to change while the simulation is running).\n(15) id=\"pinnedCount\": the current number of pinned nodes.\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame, including at least:\n- nodeCount: number\n- edgeCount: number\n- nodes: Array<{ x, y, z, name, group, pinned, degree }>\n- simEnergy: number\n- isPaused: boolean\n- pinnedCount: number\n\nOutput a single HTML file that can be opened directly in a browser. All coordinates and energy values must be finite; NaN/Infinity must never occur.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "visualization",
+    "three.js",
+    "force-directed",
+    "graph",
+    "network",
+    "simulation"
+  ],
+  "estimated_human_time_minutes": 120,
+  "physics_constraints": [
+    "50 nodes, 80 edges, hardcoded dataset",
+    "Coulomb repulsion + spring attraction along edges + centering force",
+    "Pinned nodes: zero velocity, fixed position during simulation steps",
+    "simEnergy finite whenever simulation state is queried"
+  ]
+}

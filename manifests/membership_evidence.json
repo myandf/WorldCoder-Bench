@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "historical_release_repository": "shuolucs/WorldCoder-Bench",
+  "historical_release_commit": "d1174798e0a832451ddf37a45802611ca5421b77",
+  "historical_release_commit_date": "2026-07-28T12:23:16+08:00",
+  "core": {
+    "count": 205,
+    "sorted_id_list_sha256": "8f5019a41c18a2fb5f5890856998fb8a8a0e1b25a018f676563dfe6db27fe719",
+    "status": "verified_against_immutable_historical_release_commit"
+  },
+  "hf_source_pool_1799": {
+    "count": 1799,
+    "sorted_id_list_sha256": "90e69dab28a57b785d8872da7dc75f8ab368082aaf0d356669f5ebad94ce9043",
+    "status": "verified_against_immutable_historical_release_commit"
+  },
+  "full_2026_canonical_membership": {
+    "status": "not_independently_verified",
+    "official_membership_verified": false,
+    "reason": "The 2026 Dev/Extended assignment and 22 legacy/source-gap records are reconstructed from local evidence rather than an immutable official paper ledger."
+  },
+  "release_claim": "deterministic_local_reconstruction"
+}

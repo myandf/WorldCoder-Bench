@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Molecular Dynamics Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0a0a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            user-select: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #hudPanel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 26, 0.8);
+            border: 1px solid #404060;
+            border-radius: 8px;
+            padding: 15px;
+            width: 280px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+            pointer-events: auto;
+        }
+        h1 {
+            font-size: 18px;
+            margin: 0 0 15px 0;
+            text-align: center;
+            color: #88ccff;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #ffffaa;
+        }
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        button {
+            background: #2a2a4a;
+            color: white;
+            border: 1px solid #555588;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #3a3a6a;
+        }
+        button.active {
+            background: #4a4a8a;
+            border-color: #88ccff;
+        }
+        #btnReset {
+            background: #6a2a2a;
+            border-color: #aa5555;
+            margin-top: 10px;
+        }
+        #btnReset:hover {
+            background: #8a3a3a;
+        }
+        .slider-container {
+            margin-top: 15px;
+        }
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+        input[type=range] {
+            width: 100%;
+        }
+        #messageDisplay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 0 0 10px #ff0000, 2px 2px 4px #000;
+            pointer-events: none;
+            display: none;
+            text-align: center;
+            z-index: 100;
+        }
+    </style>
+    <!-- Import maps polyfill -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="hudPanel">
+        <h1>MD Viewer</h1>
+        <div class="stat-row">
+            <span>Mode:</span>
+            <span id="modeDisplay" class="stat-value">Static</span>
+        </div>
+        <div class="stat-row">
+            <span>Score:</span>
+            <span id="scoreDisplay" class="stat-value">0</span>
+        </div>
+        <div class="stat-row">
+            <span>Atoms Found:</span>
+            <span id="atomsFoundDisplay" class="stat-value">0/7</span>
+        </div>
+        <div class="stat-row">
+            <span>Temperature:</span>
+            <span id="tempDisplay" class="stat-value">300 K</span>
+        </div>
+
+        <div class="slider-container">
+            <label for="tempSlider">Temperature (K)</label>
+            <input type="range" id="tempSlider" min="0" max="500" value="300">
+        </div>
+
+        <div class="controls">
+            <button id="btnStatic" class="active">Static Mode</button>
+            <button id="btnVibration">Vibration Mode</button>
+            <button id="btnRotation">Rotation Mode</button>
+            <button id="btnReset">Reset Simulation</button>
+        </div>
+    </div>
+
+    <div id="messageDisplay">ALL ATOMS FOUND!</div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- State Management ---
+        window.__3D_STATE__ = {
+            mode: 'static',
+            score: 0,
+            atomsFound: 0,
+            atomsClickedSet: [],
+            temperature: 300,
+            atomCount: 7,
+            bondCount: 6,
+            allAtomsFound: false,
+            cameraDistance: 40,
+            moleculeRotationY: 0,
+            vibrationAmplitude: 0.5,
+            frameCount: 0,
+            lastClickResult: 'none'
+        };
+
+        const state = window.__3D_STATE__;
+        const clickedAtomsSet = new Set();
+
+        // --- DOM Elements ---
+        const modeDisplay = document.getElementById('modeDisplay');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const atomsFoundDisplay = document.getElementById('atomsFoundDisplay');
+        const tempDisplay = document.getElementById('tempDisplay');
+        const tempSlider = document.getElementById('tempSlider');
+        const btnStatic = document.getElementById('btnStatic');
+        const btnVibration = document.getElementById('btnVibration');
+        const btnRotation = document.getElementById('btnRotation');
+        const btnReset = document.getElementById('btnReset');
+        const messageDisplay = document.getElementById('messageDisplay');
+
+        // --- Scene Setup ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a1a);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 40);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0x404060, 0.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 1.5);
+        pointLight.position.set(20, 20, 20);
+        scene.add(pointLight);
+
+        // --- Molecule Construction ---
+        const moleculeGroup = new THREE.Group();
+        scene.add(moleculeGroup);
+
+        const atoms = [];
+        const bonds = [];
+
+        const atomDefs = [
+            { id: 0, type: 'C', pos: [0, 0, 0], color: 0x333333, radius: 1.0 },
+            { id: 1, type: 'H', pos: [3, 0, 0], color: 0xffffff, radius: 0.5 },
+            { id: 2, type: 'H', pos: [-3, 0, 0], color: 0xffffff, radius: 0.5 },
+            { id: 3, type: 'H', pos: [0, 3, 0], color: 0xffffff, radius: 0.5 },
+            { id: 4, type: 'H', pos: [0, -3, 0], color: 0xffffff, radius: 0.5 },
+            { id: 5, type: 'O', pos: [0, 0, 3], color: 0xff3333, radius: 0.7 },
+            { id: 6, type: 'O', pos: [0, 0, -3], color: 0xff3333, radius: 0.7 }
+        ];
+
+        const bondMaterial = new THREE.MeshPhongMaterial({ color: 0x888888 });
+
+        atomDefs.forEach(def => {
+            const geometry = new THREE.SphereGeometry(def.radius, 32, 32);
+            const material = new THREE.MeshPhongMaterial({ 
+                color: def.color,
+                shininess: 80
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            
+            const pos = new THREE.Vector3(...def.pos);
+            mesh.position.copy(pos);
+            
+            mesh.userData = {
+                id: def.id,
+                type: def.type,
+                originalColor: def.color,
+                originalPos: pos.clone(),
+                direction: pos.clone().normalize(),
+                flashTimeout: null
+            };
+            
+            moleculeGroup.add(mesh);
+            atoms.push(mesh);
+
+            // Create bonds (connect central atom 0 to others)
+            if (def.id !== 0) {
+                const distance = pos.length();
+                const bondGeom = new THREE.CylinderGeometry(0.1, 0.1, distance, 8);
+                const bondMesh = new THREE.Mesh(bondGeom, bondMaterial);
+                
+                // Position at midpoint
+                bondMesh.position.copy(pos).multiplyScalar(0.5);
+                // Orient along the vector
+                bondMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
+                
+                bondMesh.userData = {
+                    targetId: def.id,
+                    originalDistance: distance
+                };
+                
+                moleculeGroup.add(bondMesh);
+                bonds.push(bondMesh);
+            }
+        });
+
+        // --- Interaction (Raycasting) ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        window.addEventListener('click', (event) => {
+            // Don't raycast if clicking UI
+            if (event.target.tagName === 'BUTTON' || event.target.tagName === 'INPUT' || event.target.closest('#hudPanel')) {
+                return;
+            }
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(atoms);
+
+            if (intersects.length > 0) {
+                const hitAtom = intersects[0].object;
+                const atomId = hitAtom.userData.id;
+
+                state.lastClickResult = 'hit';
+                state.score += 10;
+
+                // Flash yellow
+                hitAtom.material.color.setHex(0xffff00);
+                if (hitAtom.userData.flashTimeout) {
+                    clearTimeout(hitAtom.userData.flashTimeout);
+                }
+                hitAtom.userData.flashTimeout = setTimeout(() => {
+                    hitAtom.material.color.setHex(hitAtom.userData.originalColor);
+                }, 300);
+
+                // Track unique atoms
+                if (!clickedAtomsSet.has(atomId)) {
+                    clickedAtomsSet.add(atomId);
+                    state.atomsFound = clickedAtomsSet.size;
+                    state.atomsClickedSet = Array.from(clickedAtomsSet);
+
+                    if (state.atomsFound === 7 && !state.allAtomsFound) {
+                        state.score += 50;
+                        state.allAtomsFound = true;
+                        messageDisplay.style.display = 'block';
+                    }
+                }
+            } else {
+                state.lastClickResult = 'miss';
+                state.score = Math.max(0, state.score - 5);
+            }
+
+            updateUI();
+        });
+
+        // --- UI Controls ---
+        function setMode(newMode) {
+            state.mode = newMode;
+            modeDisplay.textContent = newMode.charAt(0).toUpperCase() + newMode.slice(1);
+            
+            btnStatic.classList.remove('active');
+            btnVibration.classList.remove('active');
+            btnRotation.classList.remove('active');
+            
+            if (newMode === 'static') btnStatic.classList.add('active');
+            if (newMode === 'vibration') btnVibration.classList.add('active');
+            if (newMode === 'rotation') btnRotation.classList.add('active');
+
+            // Reset positions if leaving vibration mode
+            if (newMode !== 'vibration') {
+                atoms.forEach(atom => {
+                    atom.position.copy(atom.userData.originalPos);
+                });
+                bonds.forEach(bond => {
+                    const targetAtom = atoms.find(a => a.userData.id === bond.userData.targetId);
+                    bond.scale.y = 1;
+                    bond.position.copy(targetAtom.userData.originalPos).multiplyScalar(0.5);
+                });
+            }
+        }
+
+        btnStatic.addEventListener('click', () => setMode('static'));
+        btnVibration.addEventListener('click', () => setMode('vibration'));
+        btnRotation.addEventListener('click', () => setMode('rotation'));
+
+        tempSlider.addEventListener('input', (e) => {
+            state.temperature = parseInt(e.target.value);
+            tempDisplay.textContent = `${state.temperature} K`;
+        });
+
+        btnReset.addEventListener('click', () => {
+            state.score = 0;
+            state.atomsFound = 0;
+            state.allAtomsFound = false;
+            state.lastClickResult = 'none';
+            clickedAtomsSet.clear();
+            state.atomsClickedSet = [];
+            
+            state.temperature = 300;
+            tempSlider.value = 300;
+            tempDisplay.textContent = '300 K';
+            
+            setMode('static');
+            moleculeGroup.rotation.set(0, 0, 0);
+            
+            messageDisplay.style.display = 'none';
+            
+            // Reset colors and clear timeouts
+            atoms.forEach(atom => {
+                atom.material.color.setHex(atom.userData.originalColor);
+                if (atom.userData.flashTimeout) {
+                    clearTimeout(atom.userData.flashTimeout);
+                    atom.userData.flashTimeout = null;
+                }
+            });
+
+            updateUI();
+        });
+
+        function updateUI() {
+            scoreDisplay.textContent = state.score;
+            atomsFoundDisplay.textContent = `${state.atomsFound}/7`;
+        }
+
+        // --- Window Resize ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- Animation Loop ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            const time = clock.getElapsedTime();
+            
+            state.frameCount++;
+            state.cameraDistance = camera.position.distanceTo(new THREE.Vector3(0,0,0));
+
+            if (state.mode === 'rotation') {
+                moleculeGroup.rotation.y += 1 * delta;
+            }
+
+            if (state.mode === 'vibration') {
+                const amp = 0.5 * (state.temperature / 300);
+                state.vibrationAmplitude = amp;
+                const displacement = Math.sin(time * 2 * Math.PI * 2) * amp;
+
+                // Update peripheral atoms
+                atoms.forEach(atom => {
+                    if (atom.userData.id !== 0) {
+                        const dir = atom.userData.direction;
+                        atom.position.copy(atom.userData.originalPos).addScaledVector(dir, displacement);
+                    }
+                });
+
+                // Update bonds to stretch with atoms
+                bonds.forEach(bond => {
+                    const targetAtom = atoms.find(a => a.userData.id === bond.userData.targetId);
+                    const newDist = targetAtom.position.length();
+                    bond.scale.y = newDist / bond.userData.originalDistance;
+                    bond.position.copy(targetAtom.position).multiplyScalar(0.5);
+                });
+            } else {
+                state.vibrationAmplitude = 0.5 * (state.temperature / 300); // Keep state updated even if not vibrating
+            }
+
+            state.moleculeRotationY = moleculeGroup.rotation.y;
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Initialize UI and start
+        updateUI();
+        animate();
+
+    </script>
+</body>
+</html>

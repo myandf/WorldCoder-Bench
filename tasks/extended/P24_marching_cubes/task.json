@@ -1,0 +1,33 @@
+{
+  "id": "P24_marching_cubes",
+  "title": "Real-Time Marching Cubes Isosurface Extraction",
+  "domain": "physics",
+  "route": "C",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a real-time Marching Cubes isosurface extraction algorithm and render the merging effect of 3 moving Metaballs.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import through ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Marching Cubes Algorithm]\n\nImplement the complete Marching Cubes algorithm yourself (do not use the built-in MarchingCubes example class from three.js):\n\n1. Scalar field definition - 3 Metaballs:\n   f(p) = Σᵢ rᵢ² / |p - cᵢ|²\n   where rᵢ = 1.0 (radius parameter), and cᵢ is the center of each ball\n\n2. 3D grid sampling:\n   - Sampling space: the cube [-3, 3]³\n   - Resolution controlled by a slider (default 48³, range 28-80)\n   - Calculate the scalar field value at all 8 vertices of each grid cell\n\n3. Lookup-table triangle extraction:\n   - Use the standard 256-entry edge table (edgeTable) + 256×16 triangle table (triTable)\n   - Determine inside/outside according to the isolation threshold\n   - Use linear interpolation along edges to obtain precise vertex positions\n\n4. Normal calculation:\n   - Use the scalar field gradient (central differences) as the vertex normal\n\n5. Metaball motion trajectories (sinusoidal curves):\n   - Ball 1: x=2·sin(t), y=2·cos(t*0.7), z=sin(t*1.3)\n   - Ball 2: x=-2·cos(t*0.8), y=sin(t*1.2), z=2·cos(t)\n   - Ball 3: x=sin(t*0.6)*1.5, y=-cos(t*0.9)*1.5, z=sin(t*0.5)*2\n\n[Rendering]\n(1) Use THREE.BufferGeometry for the isosurface, rebuilding the vertex data every frame\n(2) Three switchable materials:\n    - shiny: MeshPhysicalMaterial, metalness=0.7, roughness=0.1, color=#FF6600\n    - matte: MeshLambertMaterial, color=#4CAF50\n    - wireframe: MeshBasicMaterial, wireframe=true, color=#00BCD4\n(3) Lighting: 2 DirectionalLights + AmbientLight\n(4) OrbitControls\n(5) Dark gray background color #1a1a2e\n\n[HUD and Controls]\n(6) Resolution slider (id=\"resolution\"): range 28-80, step 4, default 48\n(7) Isosurface threshold slider (id=\"isolation\"): range 20-200, step 5, default 80\n(8) Material selector (id=\"material\"): select dropdown, options: shiny/matte/wireframe\n(9) 3 ball toggles (id=\"ball1\", id=\"ball2\", id=\"ball3\"): checkboxes, all selected by default\n(10) HUD display:\n    - Current vertex count (id=\"vertexCount\")\n    - FPS (id=\"fps\")\n    - Active ball count (id=\"activeBallCount\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - resolution: current resolution\n  - isolation: current isosurface threshold\n  - vertexCount: total number of triangle vertices in the current frame\n  - activeBalls: number of active balls (1-3)\n  - fps: frame rate\n  - ballPositions: [{x,y,z}, {x,y,z}, {x,y,z}] current positions of the three balls\n\nOutput a single standalone HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "physics",
+    "marching-cubes",
+    "metaball",
+    "isosurface",
+    "implicit-surface",
+    "real-time",
+    "BufferGeometry"
+  ],
+  "estimated_human_time_minutes": 540,
+  "physics_constraints": [
+    "Marching Cubes: must implement full 256-entry edge table and tri table",
+    "Scalar field: f(p) = Σ r²/|p-c|² for each active metaball",
+    "Linear interpolation on edges for vertex positions",
+    "Gradient-based normals via central differencing",
+    "Resolution range 28-80 must work without crash",
+    "Isolation range 20-200 must produce valid geometry",
+    "vertexCount must be > 0 when any ball is active and isolation is reasonable",
+    "Ball positions must follow specified sinusoidal trajectories",
+    "No degenerate triangles (zero-area) in output mesh"
+  ]
+}

@@ -1,0 +1,571 @@
+{
+  "task_id": "P377_advanced_ring_designer_with_gems_with_sc",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:17:32.484Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 7,
+      "total": 9,
+      "percent": 77.8
+    },
+    "sCov": {
+      "reached": 6,
+      "total": 6,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 5,
+      "total": 5,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 25,
+      "total": 25,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 77.8,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 25,
+    "total": 25,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 5,
+  "total": 5,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "Ring",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "HelmetModel",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "GemSlots",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "RubyButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "DiamondButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "ClearButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "RandomizeButton",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "ScoreDisplay",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "GemCountDisplay",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore !== before.totalScore || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalScore === 'number' && !isNaN(window.__3D_STATE__.totalScore)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.gemsPlaced === 'number' && !isNaN(window.__3D_STATE__.gemsPlaced)"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.gemSlots)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.gemSlots)"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 7,
+    "total": 9,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 6,
+    "total": 6
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 15,
+      "total": 15
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 10,
+      "total": 10
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 38221
+}

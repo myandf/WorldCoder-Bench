@@ -1,0 +1,993 @@
+{
+  "task_id": "P1878_building_envelope_thermal_bridge_detecto",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:27:39.093Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 8,
+      "total": 11,
+      "percent": 72.7
+    },
+    "sCov": {
+      "reached": 9,
+      "total": 10,
+      "percent": 90
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 52,
+      "total": 52,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 72.7,
+  "sCov": 90,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 52,
+    "total": 52,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "BuildingEnvelope",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "WallPanel",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "NormalModeBtn",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "ThermalModeBtn",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "RiskModeBtn",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "TempSlider",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "DetectBtn",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "Floor0Btn",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "Floor1Btn",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "FloorAllBtn",
+      "found": true
+    },
+    {
+      "id": "A11",
+      "name": "HUD",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalPanelCount === 'number' && window.__3D_STATE__.totalPanelCount > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalPanelCount === 'number' && window.__3D_STATE__.totalPanelCount > 0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.panels) && window.__3D_STATE__.panels.length === window.__3D_STATE__.totalPanelCount",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.panels) && window.__3D_STATE__.panels.length === window.__3D_STATE__.totalPanelCount"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.thermalBridgePercentage === 'number' && window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.thermalBridgePercentage === 'number' && window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.flaggedPanelCount === 'number' && window.__3D_STATE__.flaggedPanelCount > 0 && window.__3D_STATE__.flaggedPanelCount < window.__3D_STATE__.totalPanelCount",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.flaggedPanelCount === 'number' && window.__3D_STATE__.flaggedPanelCount > 0 && window.__3D_STATE__.flaggedPanelCount < window.__3D_STATE__.totalPanelCount"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'thermal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'thermal'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modeColorMap === 'object' && window.__3D_STATE__.modeColorMap !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modeColorMap === 'object' && window.__3D_STATE__.modeColorMap !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalHeatLoss === (function(){ var s = window.__3D_STATE__; return s.totalHeatLoss; })()",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalHeatLoss === (function(){ var s = window.__3D_STATE__; return s.totalHeatLoss; })()"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.every(function(p){ return typeof p.zone === 'string' && typeof p.uValue === 'number'; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.every(function(p){ return typeof p.zone === 'string' && typeof p.uValue === 'number'; })"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.heatLossByZone === 'object' && typeof window.__3D_STATE__.heatLossByZone.concrete_slab === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.heatLossByZone === 'object' && typeof window.__3D_STATE__.heatLossByZone.concrete_slab === 'number'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'risk'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'risk'"
+        },
+        {
+          "expression": "window.__3D_STATE__.visualizationMode !== 'thermal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode !== 'thermal'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modeColorMap === 'object'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modeColorMap === 'object'"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue >= 2.5; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue >= 2.5; }).length > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue < 0.5; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue < 0.5; }).length > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.outdoorTemp === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.outdoorTemp === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.deltaT === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.deltaT === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.indoorTemp === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.indoorTemp === 20"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.outdoorTemp === -20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.outdoorTemp === -20"
+        },
+        {
+          "expression": "window.__3D_STATE__.deltaT === 40",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.deltaT === 40"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalHeatLoss > window.__prevTotalHeatLoss",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalHeatLoss > window.__prevTotalHeatLoss"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.totalHeatLoss / window.__prevTotalHeatLoss - 4.0) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.totalHeatLoss / window.__prevTotalHeatLoss - 4.0) < 0.1"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.heatLossByFloor) && window.__3D_STATE__.heatLossByFloor.length === 3 && window.__3D_STATE__.heatLossByFloor.every(function(v){ return typeof v === 'number' && !isNaN(v) && v > 0; })",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.heatLossByFloor) && window.__3D_STATE__.heatLossByFloor.length === 3 && window.__3D_STATE__.heatLossByFloor.every(function(v){ return typeof v === 'number' && !isNaN(v) && v > 0; })"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.detectionActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.flaggedPanelCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flaggedPanelCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.flagged === true; }).length === window.__3D_STATE__.flaggedPanelCount",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.flagged === true; }).length === window.__3D_STATE__.flaggedPanelCount"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.every(function(p){ return p.uValue > 1.0 ? p.flagged === true : p.flagged === false; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.every(function(p){ return p.uValue > 1.0 ? p.flagged === true : p.flagged === false; })"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermalBridgePercentage > 0 && window.__3D_STATE__.thermalBridgePercentage < 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermalBridgePercentage > 0 && window.__3D_STATE__.thermalBridgePercentage < 100"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visibleFloor === 0 || window.__3D_STATE__.visibleFloor === '0'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleFloor === 0 || window.__3D_STATE__.visibleFloor === '0'"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 0 && p.visible === true; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 0 && p.visible === true; }).length > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.detectionActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visibleFloor === 'all'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleFloor === 'all'"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.visible === true; }).length === window.__3D_STATE__.totalPanelCount",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.visible === true; }).length === window.__3D_STATE__.totalPanelCount"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'normal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'normal'"
+        },
+        {
+          "expression": "window.__3D_STATE__.detectionActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleFloor === 'all'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleFloor === 'all'"
+        },
+        {
+          "expression": "window.__3D_STATE__.outdoorTemp === -20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.outdoorTemp === -20"
+        },
+        {
+          "expression": "window.__3D_STATE__.deltaT === 40",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.deltaT === 40"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.heatLossByZone.wall_standard === 'number' && window.__3D_STATE__.heatLossByZone.wall_standard > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.heatLossByZone.wall_standard === 'number' && window.__3D_STATE__.heatLossByZone.wall_standard > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.detectionActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'normal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'normal'"
+        },
+        {
+          "expression": "window.__3D_STATE__.flaggedPanelCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flaggedPanelCount > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heatLossByFloor.reduce(function(a,b){return a+b;},0) - window.__3D_STATE__.totalHeatLoss) < 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heatLossByFloor.reduce(function(a,b){return a+b;},0) - window.__3D_STATE__.totalHeatLoss) < 1.0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalPanelCount === 'number' && window.__3D_STATE__.totalPanelCount > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalPanelCount === 'number' && window.__3D_STATE__.totalPanelCount > 0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.panels) && window.__3D_STATE__.panels.length === window.__3D_STATE__.totalPanelCount",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.panels) && window.__3D_STATE__.panels.length === window.__3D_STATE__.totalPanelCount"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.thermalBridgePercentage === 'number' && window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.thermalBridgePercentage === 'number' && window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.flaggedPanelCount === 'number' && window.__3D_STATE__.flaggedPanelCount > 0 && window.__3D_STATE__.flaggedPanelCount < window.__3D_STATE__.totalPanelCount",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.flaggedPanelCount === 'number' && window.__3D_STATE__.flaggedPanelCount > 0 && window.__3D_STATE__.flaggedPanelCount < window.__3D_STATE__.totalPanelCount"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'thermal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'thermal'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modeColorMap === 'object' && window.__3D_STATE__.modeColorMap !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modeColorMap === 'object' && window.__3D_STATE__.modeColorMap !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalHeatLoss === (function(){ var s = window.__3D_STATE__; return s.totalHeatLoss; })()",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalHeatLoss === (function(){ var s = window.__3D_STATE__; return s.totalHeatLoss; })()"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.every(function(p){ return typeof p.zone === 'string' && typeof p.uValue === 'number'; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.every(function(p){ return typeof p.zone === 'string' && typeof p.uValue === 'number'; })"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.heatLossByZone === 'object' && typeof window.__3D_STATE__.heatLossByZone.concrete_slab === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.heatLossByZone === 'object' && typeof window.__3D_STATE__.heatLossByZone.concrete_slab === 'number'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'risk'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'risk'"
+        },
+        {
+          "expression": "window.__3D_STATE__.visualizationMode !== 'thermal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode !== 'thermal'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modeColorMap === 'object'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modeColorMap === 'object'"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue >= 2.5; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue >= 2.5; }).length > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue < 0.5; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.uValue < 0.5; }).length > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.outdoorTemp === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.outdoorTemp === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.deltaT === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.deltaT === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.indoorTemp === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.indoorTemp === 20"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermalBridgePercentage >= 0 && window.__3D_STATE__.thermalBridgePercentage <= 100"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.outdoorTemp === -20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.outdoorTemp === -20"
+        },
+        {
+          "expression": "window.__3D_STATE__.deltaT === 40",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.deltaT === 40"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalHeatLoss > window.__prevTotalHeatLoss",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalHeatLoss > window.__prevTotalHeatLoss"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.totalHeatLoss / window.__prevTotalHeatLoss - 4.0) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.totalHeatLoss / window.__prevTotalHeatLoss - 4.0) < 0.1"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.heatLossByFloor) && window.__3D_STATE__.heatLossByFloor.length === 3 && window.__3D_STATE__.heatLossByFloor.every(function(v){ return typeof v === 'number' && !isNaN(v) && v > 0; })",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.heatLossByFloor) && window.__3D_STATE__.heatLossByFloor.length === 3 && window.__3D_STATE__.heatLossByFloor.every(function(v){ return typeof v === 'number' && !isNaN(v) && v > 0; })"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.detectionActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.flaggedPanelCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flaggedPanelCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.flagged === true; }).length === window.__3D_STATE__.flaggedPanelCount",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.flagged === true; }).length === window.__3D_STATE__.flaggedPanelCount"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.every(function(p){ return p.uValue > 1.0 ? p.flagged === true : p.flagged === false; })",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.every(function(p){ return p.uValue > 1.0 ? p.flagged === true : p.flagged === false; })"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermalBridgePercentage > 0 && window.__3D_STATE__.thermalBridgePercentage < 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermalBridgePercentage > 0 && window.__3D_STATE__.thermalBridgePercentage < 100"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visibleFloor === 0 || window.__3D_STATE__.visibleFloor === '0'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleFloor === 0 || window.__3D_STATE__.visibleFloor === '0'"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 0 && p.visible === true; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 0 && p.visible === true; }).length > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.detectionActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visibleFloor === 'all'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleFloor === 'all'"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.visible === true; }).length === window.__3D_STATE__.totalPanelCount",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.visible === true; }).length === window.__3D_STATE__.totalPanelCount"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 1 && p.visible === true; }).length > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.panels.filter(function(p){ return p.floor === 2 && p.visible === true; }).length > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'normal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'normal'"
+        },
+        {
+          "expression": "window.__3D_STATE__.detectionActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.visibleFloor === 'all'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visibleFloor === 'all'"
+        },
+        {
+          "expression": "window.__3D_STATE__.outdoorTemp === -20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.outdoorTemp === -20"
+        },
+        {
+          "expression": "window.__3D_STATE__.deltaT === 40",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.deltaT === 40"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.heatLossByZone.wall_standard === 'number' && window.__3D_STATE__.heatLossByZone.wall_standard > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.heatLossByZone.wall_standard === 'number' && window.__3D_STATE__.heatLossByZone.wall_standard > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.detectionActive === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.detectionActive === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.visualizationMode === 'normal'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.visualizationMode === 'normal'"
+        },
+        {
+          "expression": "window.__3D_STATE__.flaggedPanelCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flaggedPanelCount > 0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.totalHeatLoss === 'number' && !isNaN(window.__3D_STATE__.totalHeatLoss) && window.__3D_STATE__.totalHeatLoss > 0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.heatLossByFloor.reduce(function(a,b){return a+b;},0) - window.__3D_STATE__.totalHeatLoss) < 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.heatLossByFloor.reduce(function(a,b){return a+b;},0) - window.__3D_STATE__.totalHeatLoss) < 1.0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 8,
+    "total": 11,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      },
+      {
+        "id": "A11",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 9,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 14,
+      "total": 14
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 38,
+      "total": 38
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 36209
+}

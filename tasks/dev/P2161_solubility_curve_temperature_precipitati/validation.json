@@ -1,0 +1,1048 @@
+{
+  "task_id": "P2161_solubility_curve_temperature_precipitati",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:56:15.100Z",
+  "html": "reference.html",
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_FAILED"
+  ],
+  "console_errors": [
+    "Failed to load resource: net::ERR_FAILED"
+  ],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 2,
+      "total": 10,
+      "percent": 20
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 57,
+      "total": 57,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 20,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 57,
+    "total": 57,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "Beaker",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "SolutionVolume",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "PrecipitateParticles",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "Thermometer",
+      "found": false
+    },
+    {
+      "id": "A5",
+      "name": "TemperatureSlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "AddSoluteButton",
+      "found": false
+    },
+    {
+      "id": "A7",
+      "name": "RemoveSoluteButton",
+      "found": false
+    },
+    {
+      "id": "A8",
+      "name": "SolubilityChart",
+      "found": false
+    },
+    {
+      "id": "A9",
+      "name": "TemperatureHUD",
+      "found": false
+    },
+    {
+      "id": "A10",
+      "name": "AmberModel",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.beakerExists === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.beakerExists === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 60 && window.__3D_STATE__.totalSoluteGrams === 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 60 && window.__3D_STATE__.totalSoluteGrams === 100"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 110 && window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 110 && window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 65",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 65"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 65 && window.__3D_STATE__.precipitateGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 65 && window.__3D_STATE__.precipitateGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === true && window.__3D_STATE__.chartLabel === 'Saturated / Precipitating'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === true && window.__3D_STATE__.chartLabel === 'Saturated / Precipitating'"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(35 / 2))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(35 / 2))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 70",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 70"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 125",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 125"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermometerFillRatio === 0.7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermometerFillRatio === 0.7"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 110",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 110"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 110 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 110 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false"
+        },
+        {
+          "expression": "!Number.isNaN(window.__3D_STATE__.dissolvedGrams) && !Number.isNaN(window.__3D_STATE__.precipitateGrams)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!Number.isNaN(window.__3D_STATE__.dissolvedGrams) && !Number.isNaN(window.__3D_STATE__.precipitateGrams)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 200"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateGrams === 165",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateGrams === 165"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 50",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 50"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 35 && window.__3D_STATE__.precipitateGrams === 15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 35 && window.__3D_STATE__.precipitateGrams === 15"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(15 / 2))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(15 / 2))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 100"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 170",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 170"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 50 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 50 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermometerFillRatio === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermometerFillRatio === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 20 && window.__3D_STATE__.precipitateGrams === 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 20 && window.__3D_STATE__.precipitateGrams === 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermometerFillRatio === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermometerFillRatio === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(30 / 2))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(30 / 2))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 200"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateGrams === 180",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateGrams === 180"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 26",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 26"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateGrams === 174",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateGrams === 174"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 26",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 26"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.particlePositions) && window.__3D_STATE__.particlePositions.length === window.__3D_STATE__.precipitateParticleCount",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.particlePositions) && window.__3D_STATE__.particlePositions.length === window.__3D_STATE__.precipitateParticleCount"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.beakerExists === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.beakerExists === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 60 && window.__3D_STATE__.totalSoluteGrams === 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 60 && window.__3D_STATE__.totalSoluteGrams === 100"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 110 && window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 110 && window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 65",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 65"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 65 && window.__3D_STATE__.precipitateGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 65 && window.__3D_STATE__.precipitateGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === true && window.__3D_STATE__.chartLabel === 'Saturated / Precipitating'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === true && window.__3D_STATE__.chartLabel === 'Saturated / Precipitating'"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(35 / 2))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(35 / 2))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 70",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 70"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 125",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 125"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 100 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermometerFillRatio === 0.7",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermometerFillRatio === 0.7"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 110",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 110"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 110 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 110 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false"
+        },
+        {
+          "expression": "!Number.isNaN(window.__3D_STATE__.dissolvedGrams) && !Number.isNaN(window.__3D_STATE__.precipitateGrams)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!Number.isNaN(window.__3D_STATE__.dissolvedGrams) && !Number.isNaN(window.__3D_STATE__.precipitateGrams)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 200"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 10"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateGrams === 165",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateGrams === 165"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 50",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 50"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 35",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 35"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 35 && window.__3D_STATE__.precipitateGrams === 15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 35 && window.__3D_STATE__.precipitateGrams === 15"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(15 / 2))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(15 / 2))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 100",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 100"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 170",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 170"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 50 && window.__3D_STATE__.precipitateGrams === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 50 && window.__3D_STATE__.precipitateGrams === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermometerFillRatio === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermometerFillRatio === 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === false && window.__3D_STATE__.chartLabel === 'Unsaturated'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 20 && window.__3D_STATE__.precipitateGrams === 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 20 && window.__3D_STATE__.precipitateGrams === 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.thermometerFillRatio === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thermometerFillRatio === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.isSaturated === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.isSaturated === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(30 / 2))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === Math.min(60, Math.round(30 / 2))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === 200",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === 200"
+        },
+        {
+          "expression": "window.__3D_STATE__.temperature === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 20",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 20"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateGrams === 180",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateGrams === 180"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateParticleCount === 60",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateParticleCount === 60"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.temperature === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.temperature === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.maxDissolvedGrams === 26",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.maxDissolvedGrams === 26"
+        },
+        {
+          "expression": "window.__3D_STATE__.precipitateGrams === 174",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.precipitateGrams === 174"
+        },
+        {
+          "expression": "window.__3D_STATE__.dissolvedGrams === 26",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.dissolvedGrams === 26"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalSoluteGrams === window.__3D_STATE__.dissolvedGrams + window.__3D_STATE__.precipitateGrams"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.particlePositions) && window.__3D_STATE__.particlePositions.length === window.__3D_STATE__.precipitateParticleCount",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.particlePositions) && window.__3D_STATE__.particlePositions.length === window.__3D_STATE__.precipitateParticleCount"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 2,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": false
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": false
+      },
+      {
+        "id": "A7",
+        "pass": false
+      },
+      {
+        "id": "A8",
+        "pass": false
+      },
+      {
+        "id": "A9",
+        "pass": false
+      },
+      {
+        "id": "A10",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 2,
+      "total": 2
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 55,
+      "total": 55
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 56195
+}

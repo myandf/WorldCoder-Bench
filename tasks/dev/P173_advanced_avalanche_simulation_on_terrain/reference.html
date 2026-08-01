@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avalanche Survival</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { overflow: hidden; background: #1a1a2e; font-family: 'Arial', sans-serif; }
+  canvas { display: block; }
+  #hud {
+    position: fixed; top: 0; left: 0; width: 100%; pointer-events: none;
+    z-index: 10;
+  }
+  #hud-panel {
+    display: flex; align-items: center; gap: 24px;
+    background: rgba(0,0,0,0.55); padding: 12px 24px;
+    border-bottom: 2px solid rgba(255,255,255,0.15);
+    flex-wrap: wrap;
+  }
+  .hud-item { color: #fff; font-size: 18px; font-weight: bold; letter-spacing: 1px; }
+  #score-display { color: #ffe066; }
+  #lives-display { color: #ff6b6b; }
+  #status-display { color: #6bffb8; }
+  #btn-row {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 16px; z-index: 10;
+  }
+  button {
+    padding: 12px 28px; font-size: 16px; font-weight: bold;
+    border: none; border-radius: 8px; cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    pointer-events: all;
+  }
+  button:active { transform: scale(0.96); }
+  #start-btn { background: #ffe066; color: #1a1a2e; }
+  #reset-btn { background: #ff6b6b; color: #fff; }
+  #gameover-overlay {
+    position: fixed; inset: 0; display: none; align-items: center;
+    justify-content: center; z-index: 20;
+    background: rgba(0,0,0,0.6);
+    flex-direction: column; gap: 16px;
+  }
+  #gameover-overlay.show { display: flex; }
+  #gameover-overlay h1 { color: #ff6b6b; font-size: 64px; text-shadow: 0 0 30px #ff6b6b; }
+  #gameover-overlay p { color: #fff; font-size: 24px; }
+  #controls-hint {
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+    color: rgba(255,255,255,0.5); font-size: 13px; z-index: 10; text-align: center;
+  }
+</style>
+</head>
+<body>
+<div id="hud">
+  <div id="hud-panel">
+    <div class="hud-item">🏔️ AVALANCHE SURVIVAL</div>
+    <div class="hud-item" id="score-display">Score: 0</div>
+    <div class="hud-item" id="lives-display">Lives: ❤️❤️❤️</div>
+    <div class="hud-item" id="status-display">Status: Ready</div>
+  </div>
+</div>
+<div id="gameover-overlay">
+  <h1>GAME OVER</h1>
+  <p id="final-score-text">Final Score: 0</p>
+</div>
+<div id="btn-row">
+  <button id="start-btn">▶ Start Avalanche</button>
+  <button id="reset-btn">↺ Reset</button>
+</div>
+<div id="controls-hint">Arrow Keys / A·D to move Ferrari &nbsp;|&nbsp; Space to start &nbsp;|&nbsp; R to reset</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/loaders/GLTFLoader.js';
+
+// ─── State ───────────────────────────────────────────────────────────────────
+const STATE = {
+  simulationStarted: false,
+  score: 0,
+  lives: 3,
+  gameOver: false,
+  ferrarLoaded: false,
+  ferrariX: 0,
+  bouldersSpawned: 0,
+  bouldersActive: 0,
+  bouldersDodged: 0,
+  totalHits: 0,
+  elapsedTime: 0
+};
+window.__3D_STATE__ = STATE;
+
+// ─── Renderer ────────────────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+// ─── Scene & Camera ──────────────────────────────────────────────────────────
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
+scene.fog = new THREE.Fog(0x87ceeb, 60, 120);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 300);
+camera.position.set(0, 25, 40);
+camera.lookAt(0, 0, 0);
+
+// ─── Lights ──────────────────────────────────────────────────────────────────
+const dirLight = new THREE.DirectionalLight(0xfff5e0, 1.5);
+dirLight.position.set(10, 30, 20);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.set(2048, 2048);
+dirLight.shadow.camera.near = 0.5;
+dirLight.shadow.camera.far = 120;
+dirLight.shadow.camera.left = -50;
+dirLight.shadow.camera.right = 50;
+dirLight.shadow.camera.top = 50;
+dirLight.shadow.camera.bottom = -50;
+scene.add(dirLight);
+scene.add(new THREE.AmbientLight(0xadd8e6, 0.4));
+
+// ─── Terrain ─────────────────────────────────────────────────────────────────
+const SLOPE_ANGLE = Math.PI / 6; // 30 degrees
+const terrainGeo = new THREE.PlaneGeometry(80, 80, 40, 40);
+terrainGeo.rotateX(-Math.PI / 2);
+
+// Displace vertices for bumpy snowy terrain
+const pos = terrainGeo.attributes.position;
+for (let i = 0; i < pos.count; i++) {
+  const x = pos.getX(i);
+  const z = pos.getZ(i);
+  const bump = (Math.sin(x * 0.4) * Math.cos(z * 0.35) * 0.8)
+             + (Math.sin(x * 0.9 + 1.2) * 0.4)
+             + (Math.cos(z * 0.7 + 0.5) * 0.3);
+  pos.setY(i, bump);
+}
+terrainGeo.computeVertexNormals();
+
+// Snow/grey gradient via vertex colors
+const colors = [];
+for (let i = 0; i < pos.count; i++) {
+  const y = pos.getY(i);
+  const t = (y + 1) / 2;
+  colors.push(0.85 + t * 0.15, 0.88 + t * 0.12, 0.92 + t * 0.08);
+}
+terrainGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+const terrainMat = new THREE.MeshStandardMaterial({
+  vertexColors: true,
+  roughness: 0.9,
+  metalness: 0.0
+});
+const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+terrain.rotation.x = -SLOPE_ANGLE;
+terrain.receiveShadow = true;
+scene.add(terrain);
+
+// Helper: convert slope-local Z to world Y (approximate surface height)
+function slopeY(worldZ) {
+  return -worldZ * Math.sin(SLOPE_ANGLE);
+}
+
+// ─── Ferrari ─────────────────────────────────────────────────────────────────
+let ferrari = null;
+let ferrariFlashTimer = 0;
+const FERRARI_Z = 15;
+const FERRARI_SPEED = 18; // units/sec
+
+const loader = new GLTFLoader();
+loader.load(
+  'ToyCar.glb',
+  (gltf) => {
+    ferrari = gltf.scene;
+    // Scale to ~2 units wide
+    const box = new THREE.Box3().setFromObject(ferrari);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const scale = 2 / size.x;
+    ferrari.scale.setScalar(scale);
+    ferrari.position.set(0, slopeY(FERRARI_Z) + 0.3, FERRARI_Z);
+    ferrari.rotation.x = -SLOPE_ANGLE;
+    ferrari.castShadow = true;
+    ferrari.traverse(c => { if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; } });
+    scene.add(ferrari);
+    STATE.ferrarLoaded = true;
+  },
+  undefined,
+  () => {
+    // Fallback: simple car shape
+    const group = new THREE.Group();
+    const bodyGeo = new THREE.BoxGeometry(2, 0.5, 4);
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xcc0000 });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    body.position.y = 0.25;
+    group.add(body);
+    const cabGeo = new THREE.BoxGeometry(1.4, 0.45, 2);
+    const cab = new THREE.Mesh(cabGeo, new THREE.MeshStandardMaterial({ color: 0xdd2222 }));
+    cab.position.set(0, 0.7, -0.2);
+    group.add(cab);
+    [[0.9, 0, 1.2], [-0.9, 0, 1.2], [0.9, 0, -1.2], [-0.9, 0, -1.2]].forEach(([x, y, z]) => {
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.2, 16), new THREE.MeshStandardMaterial({ color: 0x222222 }));
+      w.rotation.z = Math.PI / 2;
+      w.position.set(x, y, z);
+      group.add(w);
+    });
+    group.castShadow = true;
+    ferrari = group;
+    ferrari.position.set(0, slopeY(FERRARI_Z) + 0.3, FERRARI_Z);
+    ferrari.rotation.x = -SLOPE_ANGLE;
+    scene.add(ferrari);
+    STATE.ferrarLoaded = true;
+  }
+);
+
+// ─── Boulders ─────────────────────────────────────────────────────────────────
+const BOULDER_COUNT = 15;
+const GRAVITY_SLOPE = 9.8 * Math.sin(SLOPE_ANGLE); // acceleration along slope
+const boulderPool = [];
+
+const boulderMats = [
+  new THREE.MeshStandardMaterial({ color: 0x7a6a5a, roughness: 0.9 }),
+  new THREE.MeshStandardMaterial({ color: 0x8a7a6a, roughness: 0.85 }),
+  new THREE.MeshStandardMaterial({ color: 0x6a5a4a, roughness: 0.95 }),
+];
+
+for (let i = 0; i < BOULDER_COUNT; i++) {
+  const r = 0.5 + Math.random() * 1.0;
+  const geo = new THREE.SphereGeometry(r, 10, 8);
+  const mat = boulderMats[i % boulderMats.length];
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.visible = false;
+  scene.add(mesh);
+  boulderPool.push({
+    mesh,
+    radius: r,
+    active: false,
+    vz: 0,   // velocity along world Z (positive = down slope toward camera)
+    vy: 0,
+    bounceTimer: 0
+  });
+}
+
+function spawnBoulder() {
+  const b = boulderPool.find(b => !b.active);
+  if (!b) return;
+  const spawnZ = -30;
+  b.mesh.position.set(
+    (Math.random() - 0.5) * 28,
+    slopeY(spawnZ) + b.radius + 0.5,
+    spawnZ
+  );
+  b.vz = 1 + Math.random() * 2;
+  b.vy = 0;
+  b.active = true;
+  b.mesh.visible = true;
+  STATE.bouldersSpawned++;
+}
+
+// ─── Input ────────────────────────────────────────────────────────────────────
+const keys = {};
+window.addEventListener('keydown', e => {
+  keys[e.code] = true;
+  if (e.code === 'Space') startSimulation();
+  if (e.code === 'KeyR') resetSimulation();
+});
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+// ─── Simulation Control ───────────────────────────────────────────────────────
+let spawnInterval = null;
+let simStartTime = null;
+
+function startSimulation() {
+  if (STATE.simulationStarted || STATE.gameOver) return;
+  STATE.simulationStarted = true;
+  simStartTime = performance.now();
+  updateHUD();
+  spawnInterval = setInterval(() => {
+    if (!STATE.gameOver) spawnBoulder();
+  }, 1500);
+}
+
+function resetSimulation() {
+  clearInterval(spawnInterval);
+  spawnInterval = null;
+  STATE.simulationStarted = false;
+  STATE.score = 0;
+  STATE.lives = 3;
+  STATE.gameOver = false;
+  STATE.ferrariX = 0;
+  STATE.bouldersSpawned = 0;
+  STATE.bouldersActive = 0;
+  STATE.bouldersDodged = 0;
+  STATE.totalHits = 0;
+  STATE.elapsedTime = 0;
+  simStartTime = null;
+  ferrariFlashTimer = 0;
+
+  boulderPool.forEach(b => {
+    b.active = false;
+    b.mesh.visible = false;
+    b.vz = 0;
+    b.vy = 0;
+  });
+
+  if (ferrari) {
+    ferrari.position.set(0, slopeY(FERRARI_Z) + 0.3, FERRARI_Z);
+    ferrari.traverse(c => {
+      if (c.isMesh && c.material) {
+        if (Array.isArray(c.material)) c.material.forEach(m => { m.emissive && m.emissive.set(0, 0, 0); });
+        else if (c.material.emissive) c.material.emissive.set(0, 0, 0);
+      }
+    });
+  }
+
+  document.getElementById('gameover-overlay').classList.remove('show');
+  updateHUD();
+}
+
+function triggerGameOver() {
+  STATE.gameOver = true;
+  clearInterval(spawnInterval);
+  spawnInterval = null;
+  document.getElementById('final-score-text').textContent = `Final Score: ${STATE.score}`;
+  document.getElementById('gameover-overlay').classList.add('show');
+  updateHUD();
+}
+
+// ─── HUD ──────────────────────────────────────────────────────────────────────
+function livesString(n) {
+  return '❤️'.repeat(Math.max(0, n)) + '🖤'.repeat(Math.max(0, 3 - n));
+}
+
+function updateHUD() {
+  document.getElementById('score-display').textContent = `Score: ${STATE.score}`;
+  document.getElementById('lives-display').textContent = `Lives: ${livesString(STATE.lives)}`;
+  const s = STATE.gameOver ? 'Game Over' : STATE.simulationStarted ? 'Running' : 'Ready';
+  document.getElementById('status-display').textContent = `Status: ${s}`;
+}
+
+document.getElementById('start-btn').addEventListener('click', startSimulation);
+document.getElementById('reset-btn').addEventListener('click', resetSimulation);
+
+// ─── Collision Flash ──────────────────────────────────────────────────────────
+function flashFerrari(on) {
+  if (!ferrari) return;
+  ferrari.traverse(c => {
+    if (c.isMesh && c.material) {
+      const mats = Array.isArray(c.material) ? c.material : [c.material];
+      mats.forEach(m => {
+        if (m.emissive) m.emissive.set(on ? 1 : 0, 0, 0);
+      });
+    }
+  });
+}
+
+// ─── Main Loop ────────────────────────────────────────────────────────────────
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  if (STATE.simulationStarted && !STATE.gameOver && simStartTime !== null) {
+    STATE.elapsedTime = (performance.now() - simStartTime) / 1000;
+
+    // Move Ferrari
+    if (ferrari) {
+      let dx = 0;
+      if (keys['ArrowLeft'] || keys['KeyA']) dx -= FERRARI_SPEED * dt;
+      if (keys['ArrowRight'] || keys['KeyD']) dx += FERRARI_SPEED * dt;
+      STATE.ferrariX = Math.max(-15, Math.min(15, STATE.ferrariX + dx));
+      ferrari.position.x = STATE.ferrariX;
+      ferrari.position.y = slopeY(FERRARI_Z) + 0.3;
+      ferrari.position.z = FERRARI_Z;
+    }
+
+    // Flash timer
+    if (ferrariFlashTimer > 0) {
+      ferrariFlashTimer -= dt;
+      if (ferrariFlashTimer <= 0) {
+        ferrariFlashTimer = 0;
+        flashFerrari(false);
+      }
+    }
+
+    // Update boulders
+    let activeCount = 0;
+    boulderPool.forEach(b => {
+      if (!b.active) return;
+      activeCount++;
+
+      // Accelerate along slope (Z direction)
+      b.vz += GRAVITY_SLOPE * dt;
+
+      // Move
+      b.mesh.position.z += b.vz * dt;
+
+      // Keep boulder on slope surface with slight bounce
+      const surfaceY = slopeY(b.mesh.position.z) + b.radius;
+      if (b.mesh.position.y < surfaceY) {
+        b.mesh.position.y = surfaceY;
+        b.vy = Math.abs(b.vy) * 0.3; // small bounce
+      } else {
+        b.vy -= 9.8 * dt;
+        b.mesh.position.y += b.vy * dt;
+      }
+
+      // Spin for rolling effect
+      b.mesh.rotation.x += b.vz * dt * 0.8;
+      b.mesh.rotation.z += (Math.random() - 0.5) * dt * 0.5;
+
+      // Collision with Ferrari
+      if (ferrari && ferrariFlashTimer <= 0) {
+        const dx = b.mesh.position.x - ferrari.position.x;
+        const dz = b.mesh.position.z - ferrari.position.z;
+        const dist = Math.sqrt(dx * dx + dz * dz);
+        if (dist < 3) {
+          STATE.totalHits++;
+          STATE.lives = Math.max(0, STATE.lives - 1);
+          STATE.score = Math.max(0, STATE.score - 5);
+          ferrariFlashTimer = 0.6;
+          flashFerrari(true);
+          b.active = false;
+          b.mesh.visible = false;
+          activeCount--;
+          updateHUD();
+          if (STATE.lives <= 0) triggerGameOver();
+          return;
+        }
+      }
+
+      // Boulder passed the bottom
+      if (b.mesh.position.z > 25) {
+        b.active = false;
+        b.mesh.visible = false;
+        activeCount--;
+        STATE.bouldersDodged++;
+        STATE.score += 10;
+        updateHUD();
+      }
+    });
+
+    STATE.bouldersActive = activeCount;
+  }
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+// ─── Resize ───────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js LOD Terrain with Dynamic Difficulty</title>
+  <style>
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      height: 100%;
+      background: #000;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      display: block;
+    }
+    #hud-panel {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      color: white;
+      background: rgba(0, 0, 0, 0.65);
+      padding: 12px 14px;
+      border-radius: 8px;
+      min-width: 280px;
+      line-height: 1.4;
+      font-size: 14px;
+      user-select: none;
+    }
+    #hud-panel .title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    #hud-panel .row {
+      margin: 4px 0;
+    }
+    #hud-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    #hud-buttons button {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    #hud-buttons button:hover {
+      background: rgba(255,255,255,0.18);
+    }
+    #hud-help {
+      margin-top: 10px;
+      font-size: 12px;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud-panel">
+    <div class="title">LOD Terrain HUD</div>
+    <div class="row">Difficulty: <span id="hud-difficulty">medium</span></div>
+    <div class="row">Total Triangles: <span id="hud-triangles">0</span></div>
+    <div class="row">LOD Counts: <span id="hud-lod-counts">LOD0:0 LOD1:0 LOD2:0 LOD3:0</span></div>
+    <div class="row">Wireframe: <span id="hud-wireframe">OFF</span></div>
+    <div class="row">LOD Frozen: <span id="hud-frozen">OFF</span></div>
+    <div class="row">Color Mode: <span id="hud-colormode">height</span></div>
+    <div class="row">Geometry Rebuilds: <span id="hud-rebuilds">0</span></div>
+
+    <div id="hud-buttons">
+      <button id="btn-easy">Easy</button>
+      <button id="btn-medium">Medium</button>
+      <button id="btn-hard">Hard</button>
+    </div>
+    <div id="hud-help">
+      Keys: W = wireframe, F = freeze LOD, C = color mode
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x87a9c4);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera.position.set(0, 80, 120);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0, 0);
+    controls.enableDamping = true;
+    controls.update();
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    dirLight.position.set(50, 100, 50);
+    scene.add(dirLight);
+
+    const ambLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambLight);
+
+    const difficultyPresets = {
+      easy: {
+        lodDistances: [80, 160, 260],
+        maxSegments: 32,
+        heightMultiplier: 0.5
+      },
+      medium: {
+        lodDistances: [60, 120, 200],
+        maxSegments: 64,
+        heightMultiplier: 1.0
+      },
+      hard: {
+        lodDistances: [40, 80, 140],
+        maxSegments: 64,
+        heightMultiplier: 1.5
+      }
+    };
+
+    const chunkSize = 100;
+    const gridSize = 4;
+    const terrainSize = 400;
+    const baseSegments = 8;
+    const baseMaxSegments = 64;
+    const colorModes = ['height', 'lod', 'flat'];
+
+    let difficulty = 'medium';
+    let wireframe = false;
+    let lodFrozen = false;
+    let colorMode = 'height';
+    let geometryRebuilds = 0;
+    let frameCount = 0;
+
+    const chunks = [];
+    const tempVec = new THREE.Vector3();
+
+    const hud = {
+      difficulty: document.getElementById('hud-difficulty'),
+      triangles: document.getElementById('hud-triangles'),
+      lodCounts: document.getElementById('hud-lod-counts'),
+      wireframe: document.getElementById('hud-wireframe'),
+      frozen: document.getElementById('hud-frozen'),
+      colorMode: document.getElementById('hud-colormode'),
+      rebuilds: document.getElementById('hud-rebuilds')
+    };
+
+    function getCurrentPreset() {
+      return difficultyPresets[difficulty];
+    }
+
+    function clamp01(v) {
+      return Math.max(0, Math.min(1, v));
+    }
+
+    function terrainHeight(x, z) {
+      const base =
+        15 * Math.sin(x * 0.02) * Math.cos(z * 0.03) +
+        8 * Math.sin(x * 0.05 + z * 0.04);
+      return base * getCurrentPreset().heightMultiplier;
+    }
+
+    function lerpColor(a, b, t) {
+      return new THREE.Color(
+        a.r + (b.r - a.r) * t,
+        a.g + (b.g - a.g) * t,
+        a.b + (b.b - a.b) * t
+      );
+    }
+
+    function getHeightColor(y) {
+      const low = new THREE.Color(0x2e8b57);
+      const mid = new THREE.Color(0x8b5a2b);
+      const high = new THREE.Color(0xffffff);
+
+      const minH = -35 * getCurrentPreset().heightMultiplier;
+      const maxH = 35 * getCurrentPreset().heightMultiplier;
+      const t = clamp01((y - minH) / (maxH - minH));
+
+      if (t < 0.5) {
+        return lerpColor(low, mid, t * 2);
+      }
+      return lerpColor(mid, high, (t - 0.5) * 2);
+    }
+
+    function getLODColor(lod) {
+      switch (lod) {
+        case 0: return new THREE.Color(0xff3333);
+        case 1: return new THREE.Color(0xffff33);
+        case 2: return new THREE.Color(0x33cc33);
+        default: return new THREE.Color(0x3366ff);
+      }
+    }
+
+    function getFlatColor() {
+      return new THREE.Color(0x888888);
+    }
+
+    function determineLOD(distance) {
+      const [d0, d1, d2] = getCurrentPreset().lodDistances;
+      if (distance < d0) return 0;
+      if (distance < d1) return 1;
+      if (distance < d2) return 2;
+      return 3;
+    }
+
+    function segmentsForLOD(lod) {
+      const maxSeg = getCurrentPreset().maxSegments;
+      if (lod === 0) return Math.min(maxSeg, 64);
+      if (lod === 1) return Math.min(maxSeg, 32);
+      if (lod === 2) return Math.min(maxSeg, 16);
+      return 8;
+    }
+
+    function createChunkMaterial() {
+      return new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        wireframe,
+        roughness: 1.0,
+        metalness: 0.0
+      });
+    }
+
+    function applyVertexData(geometry, lodLevel) {
+      const pos = geometry.attributes.position;
+      const colors = [];
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i);
+        const z = pos.getY(i);
+        const h = terrainHeight(x, z);
+        pos.setZ(i, h);
+
+        let c;
+        if (colorMode === 'height') {
+          c = getHeightColor(h);
+        } else if (colorMode === 'lod') {
+          c = getLODColor(lodLevel);
+        } else {
+          c = getFlatColor();
+        }
+        colors.push(c.r, c.g, c.b);
+      }
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      pos.needsUpdate = true;
+      geometry.computeVertexNormals();
+      geometry.computeBoundingBox();
+      geometry.computeBoundingSphere();
+    }
+
+    function buildChunkGeometry(chunk, segments, lodLevel) {
+      const geom = new THREE.PlaneGeometry(chunkSize, chunkSize, segments, segments);
+      applyVertexData(geom, lodLevel);
+      if (chunk.mesh.geometry) chunk.mesh.geometry.dispose();
+      chunk.mesh.geometry = geom;
+      chunk.segments = segments;
+      chunk.lodLevel = lodLevel;
+      chunk.triangleCount = segments * segments * 2;
+      geometryRebuilds++;
+    }
+
+    function refreshChunkColors(chunk) {
+      applyVertexData(chunk.mesh.geometry, chunk.lodLevel);
+      chunk.mesh.material.wireframe = wireframe;
+    }
+
+    function refreshAllChunkColors() {
+      for (const chunk of chunks) {
+        refreshChunkColors(chunk);
+      }
+    }
+
+    function createChunks() {
+      let index = 0;
+      for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+          const centerX = -terrainSize / 2 + chunkSize / 2 + col * chunkSize;
+          const centerZ = -terrainSize / 2 + chunkSize / 2 + row * chunkSize;
+
+          const material = createChunkMaterial();
+          const mesh = new THREE.Mesh(new THREE.PlaneGeometry(chunkSize, chunkSize, baseSegments, baseSegments), material);
+          mesh.rotation.x = -Math.PI / 2;
+          mesh.position.set(centerX, 0, centerZ);
+          scene.add(mesh);
+
+          const chunk = {
+            index,
+            mesh,
+            centerX,
+            centerZ,
+            lodLevel: 3,
+            segments: baseSegments,
+            distance: 0,
+            triangleCount: baseSegments * baseSegments * 2
+          };
+
+          buildChunkGeometry(chunk, baseSegments, 3);
+          chunks.push(chunk);
+          index++;
+        }
+      }
+    }
+
+    function rebuildAllChunks() {
+      for (const chunk of chunks) {
+        chunk.distance = camera.position.distanceTo(tempVec.set(chunk.centerX, 0, chunk.centerZ));
+        const lod = determineLOD(chunk.distance);
+        const segs = segmentsForLOD(lod);
+        buildChunkGeometry(chunk, segs, lod);
+        chunk.mesh.material.wireframe = wireframe;
+      }
+    }
+
+    function updateLOD() {
+      for (const chunk of chunks) {
+        chunk.distance = camera.position.distanceTo(tempVec.set(chunk.centerX, 0, chunk.centerZ));
+        const nextLOD = determineLOD(chunk.distance);
+        const nextSegments = segmentsForLOD(nextLOD);
+
+        if (!lodFrozen && (nextLOD !== chunk.lodLevel || nextSegments !== chunk.segments)) {
+          buildChunkGeometry(chunk, nextSegments, nextLOD);
+          chunk.mesh.material.wireframe = wireframe;
+        }
+      }
+    }
+
+    function updateHUDAndState() {
+      let totalTriangles = 0;
+      const lodCounts = { lod0: 0, lod1: 0, lod2: 0, lod3: 0 };
+
+      const chunkState = chunks.map(chunk => {
+        totalTriangles += chunk.triangleCount;
+        if (chunk.lodLevel === 0) lodCounts.lod0++;
+        else if (chunk.lodLevel === 1) lodCounts.lod1++;
+        else if (chunk.lodLevel === 2) lodCounts.lod2++;
+        else lodCounts.lod3++;
+
+        return {
+          index: chunk.index,
+          lodLevel: chunk.lodLevel,
+          segments: chunk.segments,
+          distance: Number(chunk.distance.toFixed(3)),
+          triangleCount: chunk.triangleCount,
+          centerX: chunk.centerX,
+          centerZ: chunk.centerZ
+        };
+      });
+
+      hud.difficulty.textContent = difficulty;
+      hud.triangles.textContent = totalTriangles;
+      hud.lodCounts.textContent = `LOD0:${lodCounts.lod0} LOD1:${lodCounts.lod1} LOD2:${lodCounts.lod2} LOD3:${lodCounts.lod3}`;
+      hud.wireframe.textContent = wireframe ? 'ON' : 'OFF';
+      hud.frozen.textContent = lodFrozen ? 'ON' : 'OFF';
+      hud.colorMode.textContent = colorMode;
+      hud.rebuilds.textContent = geometryRebuilds;
+
+      window.__3D_STATE__ = {
+        cameraPosition: {
+          x: Number(camera.position.x.toFixed(3)),
+          y: Number(camera.position.y.toFixed(3)),
+          z: Number(camera.position.z.toFixed(3))
+        },
+        chunks: chunkState,
+        totalTriangles,
+        difficulty,
+        wireframe,
+        lodFrozen,
+        colorMode,
+        geometryRebuilds,
+        lodCounts,
+        frameCount,
+        heightMultiplier: getCurrentPreset().heightMultiplier,
+        lodDistances: [...getCurrentPreset().lodDistances]
+      };
+    }
+
+    function setDifficulty(nextDifficulty) {
+      if (!difficultyPresets[nextDifficulty]) return;
+      difficulty = nextDifficulty;
+      rebuildAllChunks();
+      refreshAllChunkColors();
+      updateHUDAndState();
+    }
+
+    document.getElementById('btn-easy').addEventListener('click', () => setDifficulty('easy'));
+    document.getElementById('btn-medium').addEventListener('click', () => setDifficulty('medium'));
+    document.getElementById('btn-hard').addEventListener('click', () => setDifficulty('hard'));
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      if (key === 'w') {
+        wireframe = !wireframe;
+        for (const chunk of chunks) {
+          chunk.mesh.material.wireframe = wireframe;
+        }
+      } else if (key === 'f') {
+        lodFrozen = !lodFrozen;
+      } else if (key === 'c') {
+        const idx = colorModes.indexOf(colorMode);
+        colorMode = colorModes[(idx + 1) % colorModes.length];
+        refreshAllChunkColors();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    createChunks();
+    rebuildAllChunks();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      frameCount++;
+      controls.update();
+      updateLOD();
+      updateHUDAndState();
+      renderer.render(scene, camera);
+    }
+
+    updateHUDAndState();
+    animate();
+  </script>
+</body>
+</html>

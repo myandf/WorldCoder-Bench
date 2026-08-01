@@ -1,0 +1,22 @@
+{
+  "id": "P87_artifact_viewer",
+  "title": "Artifact Display, Annotation, and Distance Measurement",
+  "domain": "visualization",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement 3 procedural “artifacts”: a vase (a solid of revolution using LatheGeometry), a plate (disc + edge rim), and a small figurine (a composite mesh assembled from multiple spheres).\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Display and Annotations]\n(1) Artifact selector id=\"artifactSelect\": the options correspond to the three artifacts (e.g., vase, plate, figurine).\n(2) Turntable: the selected object rotates around the vertical axis; automatic rotation switch id=\"autoRotate\" (checkbox or toggle).\n(3) Place 5 clickable hotspots (small red dots/Sprites) on each artifact. When clicked, display descriptive text in a popup or fixed panel.\n(4) Distance measurement tool: the user clicks two points on the surface in sequence, records the measurement result in __3D_STATE__.measurements (e.g., [{a,b,distance},...]), and displays it briefly in the UI.\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - currentArtifact: string\n  - annotationCount: number (the number of hotspots on the current artifact; should be 5)\n  - selectedAnnotation: number | null (0–4 or null)\n  - autoRotate: boolean\n  - measurements: Array (measurement records; the structure may be defined as needed but must include a numeric distance)\n  - artifactSize: { w: number, h: number, d: number } (estimated bounding dimensions of the current artifact)\n\nOutput a single HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "education",
+    "museum",
+    "artifact",
+    "annotation",
+    "measurement",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 300,
+  "difficulty_analysis": "L4: Lathe/composite geometry, 5 hotspots per artifact, turntable and automatic rotation, two-point distance measurement, and state synchronization."
+}

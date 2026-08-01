@@ -1,0 +1,1029 @@
+{
+  "task_id": "P469_advanced_solar_eclipse_simulation_with_s",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:52:53.201Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 1,
+      "total": 7,
+      "percent": 14.3
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 58,
+      "total": 58,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 14.3,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 58,
+    "total": 58,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "Sun",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "Earth",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "Moon",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "CelestialFish",
+      "found": false
+    },
+    {
+      "id": "A5",
+      "name": "CameraToggleButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "HUD",
+      "found": false
+    },
+    {
+      "id": "A7",
+      "name": "MoonTrail",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonX !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonX !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonZ !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonZ !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPaused === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPaused === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonX !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonX !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonZ !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonZ !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPaused === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPaused === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonX !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonX !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonZ !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonZ !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPaused === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPaused === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== before.moonAngle || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number' && !isNaN(window.__3D_STATE__.moonAngle)"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number' && !isNaN(window.__3D_STATE__.moonSpeed)"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P1",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.moonAngle !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonAngle !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonSpeed !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonSpeed !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonX !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonX !== undefined"
+        },
+        {
+          "expression": "window.__3D_STATE__.moonZ !== undefined",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.moonZ !== undefined"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonAngle === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonAngle === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.moonSpeed === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.moonSpeed === 'number'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.isPaused === 'boolean'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.isPaused === 'boolean'"
+        },
+        {
+          "expression": "window.__3D_STATE__.eclipseScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.eclipseScore >= 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.totalScore >= 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.totalScore >= 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 1,
+    "total": 7,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": false
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": false
+      },
+      {
+        "id": "A7",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 30,
+      "total": 30
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 28,
+      "total": 28
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 15279
+}

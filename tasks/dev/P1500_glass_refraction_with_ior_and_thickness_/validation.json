@@ -1,0 +1,972 @@
+{
+  "task_id": "P1500_glass_refraction_with_ior_and_thickness_",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:35:41.922Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 8,
+      "total": 10,
+      "percent": 80
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 51,
+      "total": 51,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 80,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 51,
+    "total": 51,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "TorusKnotGlass",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "SphereGlass",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "IORSlider",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "ThicknessSlider",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "RoughnessSlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "AttenuationColorPicker",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ActiveObjectDropdown",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "WireframeToggle",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "RefractionTargets",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.torusknot === 'object' && typeof window.__3D_STATE__.sphere === 'object'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.torusknot === 'object' && typeof window.__3D_STATE__.sphere === 'object'"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.ior === 1.5 && window.__3D_STATE__.torusknot.thickness === 0.5 && window.__3D_STATE__.torusknot.roughness === 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.ior === 1.5 && window.__3D_STATE__.torusknot.thickness === 0.5 && window.__3D_STATE__.torusknot.roughness === 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.ior === 1.33 && window.__3D_STATE__.sphere.thickness === 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.ior === 1.33 && window.__3D_STATE__.sphere.thickness === 0.3"
+        },
+        {
+          "expression": "window.__3D_STATE__.refTargetCount === 5 && window.__3D_STATE__.lightCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.refTargetCount === 5 && window.__3D_STATE__.lightCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.rendererToneMapping === 'ACESFilmic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rendererToneMapping === 'ACESFilmic'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'torusknot'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'torusknot'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02"
+        },
+        {
+          "expression": "document.getElementById('iorValue').textContent.includes('2.0') || document.getElementById('iorValue').textContent.includes('2')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('iorValue').textContent.includes('2.0') || document.getElementById('iorValue').textContent.includes('2')"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.ior >= 1.0 && window.__3D_STATE__.torusknot.ior <= 2.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.ior >= 1.0 && window.__3D_STATE__.torusknot.ior <= 2.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.transmission === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.thickness - 1.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.thickness - 1.5) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.thickness > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.thickness > 0"
+        },
+        {
+          "expression": "document.getElementById('thicknessValue').textContent.includes('1.5')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('thicknessValue').textContent.includes('1.5')"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.wireframe === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'sphere'"
+        },
+        {
+          "expression": "document.getElementById('activeObject').value === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('activeObject').value === 'sphere'"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('iorSlider').value) - window.__3D_STATE__.sphere.ior) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('iorSlider').value) - window.__3D_STATE__.sphere.ior) < 0.02"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.sphere.thickness) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.sphere.thickness) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.33) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.33) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'sphere'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.ior !== window.__3D_STATE__.torusknot.ior",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.ior !== window.__3D_STATE__.torusknot.ior"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.transmission === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sphere.wireframe === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.wireframe === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.wireframe === false"
+        },
+        {
+          "expression": "document.getElementById('wireframeToggle').checked === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('wireframeToggle').checked === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'sphere'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'torusknot'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'torusknot'"
+        },
+        {
+          "expression": "window.__3D_STATE__.thicknessPresetIndex !== 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thicknessPresetIndex !== 1"
+        },
+        {
+          "expression": "[0.1, 0.5, 1.0, 1.5].includes(Math.round(window.__3D_STATE__.torusknot.thickness * 10) / 10)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "[0.1, 0.5, 1.0, 1.5].includes(Math.round(window.__3D_STATE__.torusknot.thickness * 10) / 10)"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.torusknot.thickness) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.torusknot.thickness) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.wireframe === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.wireframe === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.6) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.6) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.roughness >= 0.0 && window.__3D_STATE__.torusknot.roughness <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.roughness >= 0.0 && window.__3D_STATE__.torusknot.roughness <= 1.0"
+        },
+        {
+          "expression": "document.getElementById('roughnessValue').textContent.includes('0.6')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('roughnessValue').textContent.includes('0.6')"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.roughness === 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.roughness === 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.transmission === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 1.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 1.5) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.thickness - 0.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.thickness - 0.5) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.wireframe === false"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.frameCount > 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 10"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.camera.x) && !isNaN(window.__3D_STATE__.camera.y) && !isNaN(window.__3D_STATE__.camera.z)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.camera.x) && !isNaN(window.__3D_STATE__.camera.y) && !isNaN(window.__3D_STATE__.camera.z)"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.transmission === 1.0 && window.__3D_STATE__.sphere.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.transmission === 1.0 && window.__3D_STATE__.sphere.transmission === 1.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.positionX - 3) < 0.1 && Math.abs(window.__3D_STATE__.sphere.positionY - 0.5) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.positionX - 3) < 0.1 && Math.abs(window.__3D_STATE__.sphere.positionY - 0.5) < 0.1"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.torusknot.attenuationColor === 'string' && typeof window.__3D_STATE__.sphere.attenuationColor === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.torusknot.attenuationColor === 'string' && typeof window.__3D_STATE__.sphere.attenuationColor === 'string'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.torusknot === 'object' && typeof window.__3D_STATE__.sphere === 'object'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.torusknot === 'object' && typeof window.__3D_STATE__.sphere === 'object'"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.ior === 1.5 && window.__3D_STATE__.torusknot.thickness === 0.5 && window.__3D_STATE__.torusknot.roughness === 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.ior === 1.5 && window.__3D_STATE__.torusknot.thickness === 0.5 && window.__3D_STATE__.torusknot.roughness === 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.ior === 1.33 && window.__3D_STATE__.sphere.thickness === 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.ior === 1.33 && window.__3D_STATE__.sphere.thickness === 0.3"
+        },
+        {
+          "expression": "window.__3D_STATE__.refTargetCount === 5 && window.__3D_STATE__.lightCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.refTargetCount === 5 && window.__3D_STATE__.lightCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.rendererToneMapping === 'ACESFilmic'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.rendererToneMapping === 'ACESFilmic'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'torusknot'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'torusknot'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02"
+        },
+        {
+          "expression": "document.getElementById('iorValue').textContent.includes('2.0') || document.getElementById('iorValue').textContent.includes('2')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('iorValue').textContent.includes('2.0') || document.getElementById('iorValue').textContent.includes('2')"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.ior >= 1.0 && window.__3D_STATE__.torusknot.ior <= 2.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.ior >= 1.0 && window.__3D_STATE__.torusknot.ior <= 2.5"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.transmission === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.thickness - 1.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.thickness - 1.5) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.thickness > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.thickness > 0"
+        },
+        {
+          "expression": "document.getElementById('thicknessValue').textContent.includes('1.5')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('thicknessValue').textContent.includes('1.5')"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.wireframe === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'sphere'"
+        },
+        {
+          "expression": "document.getElementById('activeObject').value === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('activeObject').value === 'sphere'"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('iorSlider').value) - window.__3D_STATE__.sphere.ior) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('iorSlider').value) - window.__3D_STATE__.sphere.ior) < 0.02"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.sphere.thickness) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.sphere.thickness) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.33) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.33) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'sphere'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 2.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.ior !== window.__3D_STATE__.torusknot.ior",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.ior !== window.__3D_STATE__.torusknot.ior"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.transmission === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sphere.wireframe === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.wireframe === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.wireframe === false"
+        },
+        {
+          "expression": "document.getElementById('wireframeToggle').checked === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('wireframeToggle').checked === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'sphere'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'sphere'"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.activeObject === 'torusknot'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.activeObject === 'torusknot'"
+        },
+        {
+          "expression": "window.__3D_STATE__.thicknessPresetIndex !== 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.thicknessPresetIndex !== 1"
+        },
+        {
+          "expression": "[0.1, 0.5, 1.0, 1.5].includes(Math.round(window.__3D_STATE__.torusknot.thickness * 10) / 10)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "[0.1, 0.5, 1.0, 1.5].includes(Math.round(window.__3D_STATE__.torusknot.thickness * 10) / 10)"
+        },
+        {
+          "expression": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.torusknot.thickness) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(parseFloat(document.getElementById('thicknessSlider').value) - window.__3D_STATE__.torusknot.thickness) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.wireframe === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.wireframe === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.6) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.6) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.roughness >= 0.0 && window.__3D_STATE__.torusknot.roughness <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.roughness >= 0.0 && window.__3D_STATE__.torusknot.roughness <= 1.0"
+        },
+        {
+          "expression": "document.getElementById('roughnessValue').textContent.includes('0.6')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('roughnessValue').textContent.includes('0.6')"
+        },
+        {
+          "expression": "window.__3D_STATE__.sphere.roughness === 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sphere.roughness === 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.transmission === 1.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.ior - 1.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.ior - 1.5) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.thickness - 0.5) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.thickness - 0.5) < 0.02"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.0) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.torusknot.roughness - 0.0) < 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.wireframe === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.wireframe === false"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.ior - 1.8) < 0.02"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.frameCount > 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 10"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.camera.x) && !isNaN(window.__3D_STATE__.camera.y) && !isNaN(window.__3D_STATE__.camera.z)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.camera.x) && !isNaN(window.__3D_STATE__.camera.y) && !isNaN(window.__3D_STATE__.camera.z)"
+        },
+        {
+          "expression": "window.__3D_STATE__.torusknot.transmission === 1.0 && window.__3D_STATE__.sphere.transmission === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.torusknot.transmission === 1.0 && window.__3D_STATE__.sphere.transmission === 1.0"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.sphere.positionX - 3) < 0.1 && Math.abs(window.__3D_STATE__.sphere.positionY - 0.5) < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.sphere.positionX - 3) < 0.1 && Math.abs(window.__3D_STATE__.sphere.positionY - 0.5) < 0.1"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.torusknot.attenuationColor === 'string' && typeof window.__3D_STATE__.sphere.attenuationColor === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.torusknot.attenuationColor === 'string' && typeof window.__3D_STATE__.sphere.attenuationColor === 'string'"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 8,
+    "total": 10,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 3,
+      "total": 3
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 48,
+      "total": 48
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 185761
+}

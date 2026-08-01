@@ -1,0 +1,33 @@
+{
+  "id": "P26_fluid_rigid_couple",
+  "title": "Fluid-Rigid Body Two-Way Coupling Simulation",
+  "domain": "physics",
+  "route": "C",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a two-way coupling simulation between SPH fluid and rigid bodies: 200 SPH fluid particles interact with 3 rigid-body boxes of different densities in a tank.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[SPH Fluid Model]\n\nParticle count: N = 200\nParticle mass: m = 0.05 kg\nInitial distribution: arranged in a uniform grid in the left half of the tank (x ∈ [0, 2], y ∈ [0, 2], z ∈ [0, 2])\n\nKernel function (Poly6 kernel):\n  W(r, h) = 315/(64·π·h⁹) · (h² - r²)³, when r < h\n  h = 0.5 (smoothing length)\n\nDensity calculation:\n  ρᵢ = Σⱼ mⱼ · W(|rᵢ - rⱼ|, h)\n\nPressure (Tait equation):\n  pᵢ = k · ((ρᵢ/ρ₀)⁷ - 1)\n  k = 15.0, ρ₀ = 1000\n\nPressure-gradient force (Spiky kernel):\n  ∇W_spiky(r, h) = -45/(π·h⁶) · (h-r)² · r̂\n  fᵢ_pressure = -Σⱼ mⱼ · (pᵢ+pⱼ)/(2ρⱼ) · ∇W_spiky\n\nViscosity force:\n  ∇²W_visc(r, h) = 45/(π·h⁶) · (h-r)\n  fᵢ_viscosity = μ · Σⱼ mⱼ · (vⱼ-vᵢ)/ρⱼ · ∇²W_visc\n  μ = 0.15\n\nGravity: g = (0, -9.81, 0)\nTime integration: Semi-implicit Euler, dt = 0.002s\n3 substeps per frame\n\n[Rigid-Body Model]\n\n3 rigid-body boxes (all sized 0.4×0.4×0.4):\n- Heavy: density 2000 kg/m³, color red #D32F2F, initial position (1, 2.5, 1)\n  → mass = 2000 × 0.064 = 128 kg (equivalent), will sink\n- Neutral: density 1000 kg/m³, color green #388E3C, initial position (2, 2.5, 1)\n  → mass = 64 kg, remains suspended\n- Light: density 500 kg/m³, color yellow #FBC02D, initial position (3, 2.5, 1)\n  → mass = 32 kg, will float\n\nRigid-body physics:\n- Each rigid body is subject to gravity + buoyancy\n- Buoyancy calculation: count the SPH particles within range h around the rigid body and calculate the submerged fraction submergedRatio\n  submergedRatio = (estimated from the relationship between the rigid-body center y and fluidSurfaceY)\n  F_buoyancy = ρ_fluid × V_body × submergedRatio × g (upward)\n- Fluid pressure on rigid bodies: accumulate the pressure forces from particles near the rigid-body surface\n- Rigid-body velocity update: v += (F_gravity + F_buoyancy + F_pressure) / mass × dt\n- Position update: x += v × dt\n- Rigid-body-wall collision: coefficient of restitution 0.2\n\n[Two-Way Coupling]\n- Fluid→rigid body: transmit SPH pressure forces to the rigid body\n- Rigid body→fluid: the rigid-body surface applies a repulsive force to nearby particles\n  F_repel = k_repel × (overlap) × normal, k_repel = 500\n  Activate when the distance between a particle and the rigid-body surface is < 0.15\n\n[Container (Tank)]\nRectangular cuboid 4×3×4 (x ∈ [0,4], y ∈ [0,3], z ∈ [0,4])\nDisplay as a semi-transparent wireframe with a solid bottom\nParticle-wall collision coefficient of restitution: 0.3\n\n[Rendering]\n(1) Fluid particles: InstancedMesh(SphereGeometry(0.06), 200), with color mapped by speed (slow = dark blue, fast = light blue)\n(2) 3 rigid-body boxes: BoxGeometry(0.4,0.4,0.4), each with its own color, opacity=0.85\n(3) Tank: wireframe + semi-transparent bottom\n(4) OrbitControls\n(5) Lighting: DirectionalLight + AmbientLight\n\n[HUD]\n(6) Simulation time (id=\"simTime\")\n(7) Particle count (id=\"particleCount\")\n(8) Heavy box y-coordinate (id=\"heavyY\")\n(9) Light box y-coordinate (id=\"lightY\")\n(10) Reset button (id=\"resetBtn\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - particleCount: 200\n  - rigidBodies: [{name:'heavy', x,y,z, density:2000, submergedRatio}, {name:'neutral',...}, {name:'light',...}]\n  - simTime: simulation time\n  - totalEnergy: total energy (kinetic energy + potential energy + elastic potential energy)\n\nOutput a single standalone HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "physics",
+    "SPH",
+    "fluid",
+    "rigid-body",
+    "coupling",
+    "buoyancy",
+    "two-way-interaction"
+  ],
+  "estimated_human_time_minutes": 600,
+  "physics_constraints": [
+    "SPH: Poly6 kernel, h=0.5, ρ₀=1000, k=15",
+    "Semi-implicit Euler with dt=0.002, 3 sub-steps per frame",
+    "Rigid body buoyancy: heavy (ρ=2000) sinks, neutral (ρ=1000) floats at surface, light (ρ=500) floats high",
+    "Two-way coupling: fluid pressure affects rigid bodies AND rigid bodies repel nearby fluid",
+    "All 200 particles must remain in [0,4]×[0,3]×[0,4] bounds",
+    "Rigid bodies must remain in bounds",
+    "No NaN/Infinity in particle positions or rigid body state",
+    "Energy should generally decrease over time due to damping/viscosity",
+    "After settling: heavy.y < neutral.y < light.y must hold"
+  ]
+}

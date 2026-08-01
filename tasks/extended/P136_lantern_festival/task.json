@@ -1,0 +1,34 @@
+{
+  "id": "P136_lantern_festival",
+  "title": "Lantern Festival Scene",
+  "domain": "creative",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a lantern festival scene. 20 lanterns slowly rise into the sky, each with a glowing point light inside, with support for day/night switching and click-to-change-color interaction.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/Lantern.glb;\n(2) Create 20 cloned lanterns distributed at random positions (x: -15~15, y: 0~15, z: -15~15);\n(3) Scale each lantern appropriately (approximately 0.5-0.8 random scale);\n(4) After loading is complete, set window.__3D_STATE__.modelLoaded = true;\n\n[Lantern Lighting Effects]\n(5) Attach a PointLight at the internal center position of each lantern, with intensity 0.8 and decay distance 5;\n(6) Each lantern's PointLight color must be a random warm color (randomly selected from the following presets: 0xff6600 orange, 0xff3300 red-orange, 0xffcc00 gold, 0xff9900 amber, 0xff4444 warm red);\n(7) The PointLight intensity must have a subtle flickering effect (sinusoidal variation of ±0.2);\n\n[Lantern Ascent Motion]\n(8) All lanterns slowly float upward at a speed of 0.2 m/s;\n(9) While rising, the lanterns must have subtle horizontal swaying (sinusoidal variation in the x and z directions, amplitude 0.3, with different frequencies for each);\n(10) When a lantern's y-coordinate reaches 30, it must begin fading out: opacity transitions from 1 to 0 (completed in approximately 2 seconds);\n(11) After becoming fully transparent, the lantern must respawn at the bottom (a random height of y=0~2), at a new random x/z position, with opacity restored to 1;\n(12) Lantern materials must have transparent = true to support the fade-out effect;\n\n[Click Interaction]\n(13) Use Raycaster to detect mouse clicks on lanterns;\n(14) After a lantern is clicked, randomly change its internal PointLight color to another warm color (select a color from the preset list that differs from the current color);\n(15) The clicked lantern must briefly display an enlargement pulse effect (1.2 times its size, then return to normal);\n(16) Record the index of the last clicked lantern;\n\n[Day/Night Switching]\n(17) A \"Day/Night\" toggle button (id=\"dayNightBtn\");\n(18) Day mode: sky blue 0x87CEEB, AmbientLight intensity 0.6, and a DirectionalLight simulating sunlight; lantern PointLight intensity reduced to 0.3 (not prominent during the day);\n(19) Night mode: deep blue sky 0x0a0a2e, AmbientLight intensity 0.05, no DirectionalLight; lantern PointLight intensity 0.8 (highly prominent at night);\n(20) Smoothly transition when switching (completed in approximately 1 second);\n\n[Scene Setup]\n(21) The ground must be a dark plane (0x1a1a1a), with an OrbitControls camera;\n(22) In night mode, dynamic light and shadow cast by the lanterns must be visible on the ground;\n\n[HUD Display]\n(23) The HUD in the upper-left corner must display:\n  - Total number of lanterns (id=\"lanternCount\", must be 20)\n  - Current time of day (id=\"timeOfDay\", \"day\" or \"night\")\n  - ID of the last clicked lantern (id=\"clickedLantern\", -1 indicates that none has been clicked)\n  - Average lantern height (id=\"avgHeight\", rounded to 1 decimal place)\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n{\n  modelLoaded: boolean,\n  lanternCount: number,\n  timeOfDay: string,\n  clickedLanternId: number,\n  avgHeight: number,\n  lanternHeights: number[],\n  dayNightTransitioning: boolean\n}\n\nOutput a single HTML file placed in the same directory as the assets/ folder, and run it through a local HTTP server.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [
+    "../../../assets/shared/Lantern.glb"
+  ],
+  "tags": [
+    "creative",
+    "visualization",
+    "GLTFLoader",
+    "PointLight",
+    "particles",
+    "day-night",
+    "raycaster",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 200,
+  "physics_constraints": [
+    "20 lanterns cloned from single GLB",
+    "float speed: 0.2 m/s upward",
+    "horizontal sway: sin wave amplitude 0.3, varied frequency",
+    "fade out at y=30, respawn at y=0~2",
+    "PointLight per lantern: warm color, intensity flicker ±0.2",
+    "day mode: ambient 0.6, night mode: ambient 0.05"
+  ],
+  "difficulty_analysis": "L4 challenges: (1) Loading with GLTFLoader and cloning 20 lanterns; (2) a built-in PointLight and flickering effect for each lantern; (3) ascent plus horizontal swaying motion; (4) opacity transition and respawn logic; (5) Raycaster click detection and color changing; (6) smooth lighting transitions when switching between day and night"
+}

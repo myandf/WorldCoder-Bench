@@ -1,0 +1,1023 @@
+{
+  "task_id": "P2224_sobel_laplacian_edge_detection_kernel_co",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:49:57.577Z",
+  "html": "reference.html",
+  "consoleErrors": [
+    "THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false\n\nMaterial Name: unspecified\nMaterial Type: ShaderMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\u0000\n\nFRAGMENT\n\nERROR: 0:65: 'in' : function must have the same parameter qualifiers in all of its declarations\nERROR: 0:65: 'luminance' : function already has a body\n\u0000\n\n  60:     uniform float edgeStrength;\n  61:     uniform vec3 edgeColor;\n  62:     uniform float threshold;\n  63:     varying vec2 vUv;\n  64: \n> 65:     float luminance(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }\n  66: \n  67:     void main() {\n  68:       vec2 texel = 1.0 / resolution;\n  69:       float tl = luminance(texture2D(tDiffuse, vUv + vec2(-texel.x, texel.y)).rgb);\n  70:       float tm = luminance(texture2D(tDiffuse, vUv + vec2(0.0, texel.y)).rgb);\n  71:       float tr = luminance(texture2D(tDiffuse, vUv + vec2(texel.x, texel.y)).rgb);",
+    "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: unspecified\nMaterial Type: ShaderMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\u0000\n\nFRAGMENT\n\nERROR: 0:65: 'in' : function must have the same parameter qualifiers in all of its declarations\nERROR: 0:65: 'luminance' : function already has a body\n\u0000\n\n  60:     uniform float edgeStrength;\n  61:     uniform vec3 edgeColor;\n  62:     uniform float threshold;\n  63:     varying vec2 vUv;\n  64: \n> 65:     float luminance(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }\n  66: \n  67:     void main() {\n  68:       vec2 texel = 1.0 / resolution;\n  69:       float tm = luminance(texture2D(tDiffuse, vUv + vec2(0.0, texel.y)).rgb);\n  70:       float ml = luminance(texture2D(tDiffuse, vUv + vec2(-texel.x, 0.0)).rgb);\n  71:       float mc = luminance(texture2D(tDiffuse, vUv).rgb);"
+  ],
+  "console_errors": [
+    "THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false\n\nMaterial Name: unspecified\nMaterial Type: ShaderMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\u0000\n\nFRAGMENT\n\nERROR: 0:65: 'in' : function must have the same parameter qualifiers in all of its declarations\nERROR: 0:65: 'luminance' : function already has a body\n\u0000\n\n  60:     uniform float edgeStrength;\n  61:     uniform vec3 edgeColor;\n  62:     uniform float threshold;\n  63:     varying vec2 vUv;\n  64: \n> 65:     float luminance(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }\n  66: \n  67:     void main() {\n  68:       vec2 texel = 1.0 / resolution;\n  69:       float tl = luminance(texture2D(tDiffuse, vUv + vec2(-texel.x, texel.y)).rgb);\n  70:       float tm = luminance(texture2D(tDiffuse, vUv + vec2(0.0, texel.y)).rgb);\n  71:       float tr = luminance(texture2D(tDiffuse, vUv + vec2(texel.x, texel.y)).rgb);",
+    "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: unspecified\nMaterial Type: ShaderMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\u0000\n\nFRAGMENT\n\nERROR: 0:65: 'in' : function must have the same parameter qualifiers in all of its declarations\nERROR: 0:65: 'luminance' : function already has a body\n\u0000\n\n  60:     uniform float edgeStrength;\n  61:     uniform vec3 edgeColor;\n  62:     uniform float threshold;\n  63:     varying vec2 vUv;\n  64: \n> 65:     float luminance(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }\n  66: \n  67:     void main() {\n  68:       vec2 texel = 1.0 / resolution;\n  69:       float tm = luminance(texture2D(tDiffuse, vUv + vec2(0.0, texel.y)).rgb);\n  70:       float ml = luminance(texture2D(tDiffuse, vUv + vec2(-texel.x, 0.0)).rgb);\n  71:       float mc = luminance(texture2D(tDiffuse, vUv).rgb);"
+  ],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 11,
+      "total": 11,
+      "percent": 100
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 54,
+      "total": 54,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 100,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 54,
+    "total": 54,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "IonDriveModel",
+      "found": true
+    },
+    {
+      "id": "A2",
+      "name": "HUDPanel",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "ModeDisplay",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "StrengthDisplay",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "ThresholdDisplay",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "BtnOriginal",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "BtnSobel",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "BtnLaplacian",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "BtnSplit",
+      "found": true
+    },
+    {
+      "id": "A10",
+      "name": "BtnOverlay",
+      "found": true
+    },
+    {
+      "id": "A11",
+      "name": "RotateDisplay",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sceneReady === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sceneReady === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelBBoxSize === 'object' && window.__3D_STATE__.modelBBoxSize !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelBBoxSize === 'object' && window.__3D_STATE__.modelBBoxSize !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelBBoxSize.x > 0 && window.__3D_STATE__.modelBBoxSize.y > 0 && window.__3D_STATE__.modelBBoxSize.z > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelBBoxSize.x > 0 && window.__3D_STATE__.modelBBoxSize.y > 0 && window.__3D_STATE__.modelBBoxSize.z > 0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.sobelKernel) && window.__3D_STATE__.sobelKernel.length === 9",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.sobelKernel) && window.__3D_STATE__.sobelKernel.length === 9"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.laplacianKernel) && window.__3D_STATE__.laplacianKernel.length === 9",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.laplacianKernel) && window.__3D_STATE__.laplacianKernel.length === 9"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'sobel'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'sobel'"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 2"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.sobelKernel) === JSON.stringify([-1,0,1,-2,0,2,-1,0,1])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.sobelKernel) === JSON.stringify([-1,0,1,-2,0,2,-1,0,1])"
+        },
+        {
+          "expression": "window.__3D_STATE__.edgeStrength === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.edgeStrength === 1.0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.modeHistory) && window.__3D_STATE__.modeHistory[window.__3D_STATE__.modeHistory.length - 1] === 1",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.modeHistory) && window.__3D_STATE__.modeHistory[window.__3D_STATE__.modeHistory.length - 1] === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'laplacian'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'laplacian'"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.laplacianKernel) === JSON.stringify([0,-1,0,-1,4,-1,0,-1,0])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.laplacianKernel) === JSON.stringify([0,-1,0,-1,4,-1,0,-1,0])"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.threshold === 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.threshold === 0.1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'split'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'split'"
+        },
+        {
+          "expression": "window.__3D_STATE__.renderTargetWidth > 0 && window.__3D_STATE__.renderTargetHeight > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.renderTargetWidth > 0 && window.__3D_STATE__.renderTargetHeight > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.renderTargetWidth === window.innerWidth",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.renderTargetWidth === window.innerWidth"
+        },
+        {
+          "expression": "window.__3D_STATE__.renderTargetHeight === window.innerHeight",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.renderTargetHeight === window.innerHeight"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.fps)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.fps)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'overlay'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'overlay'"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.modeHistory.length >= 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modeHistory.length >= 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.edgeStrength - 1.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.edgeStrength - 1.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.edgeStrength >= 0.1 && window.__3D_STATE__.edgeStrength <= 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.edgeStrength >= 0.1 && window.__3D_STATE__.edgeStrength <= 3.0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.edgeStrength === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.edgeStrength === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.edgeStrength)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.edgeStrength)"
+        },
+        {
+          "expression": "document.getElementById('hud-strength') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-strength') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.threshold - 0.15) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.threshold - 0.15) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.threshold >= 0.0 && window.__3D_STATE__.threshold <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.threshold >= 0.0 && window.__3D_STATE__.threshold <= 1.0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.threshold === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.threshold === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.threshold)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.threshold)"
+        },
+        {
+          "expression": "document.getElementById('hud-threshold') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-threshold') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.autoRotate === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.autoRotate === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelRotationY === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.modelRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.modelRotationY)"
+        },
+        {
+          "expression": "document.getElementById('hud-rotate') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-rotate') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-rotate').textContent.toLowerCase().includes('off') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('false') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('disabled')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-rotate').textContent.toLowerCase().includes('off') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('false') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('disabled')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sobelColorHex !== '#00ff80'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sobelColorHex !== '#00ff80'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sobelColorHex === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sobelColorHex === 'string'"
+        },
+        {
+          "expression": "window.__3D_STATE__.sobelColorHex.startsWith('#')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sobelColorHex.startsWith('#')"
+        },
+        {
+          "expression": "window.__3D_STATE__.sobelColorHex.toLowerCase() === '#00ffff'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sobelColorHex.toLowerCase() === '#00ffff'"
+        },
+        {
+          "expression": "document.getElementById('hud-sobel-color') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-sobel-color') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.laplacianColorHex !== '#ff4d00'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.laplacianColorHex !== '#ff4d00'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.laplacianColorHex === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.laplacianColorHex === 'string'"
+        },
+        {
+          "expression": "window.__3D_STATE__.laplacianColorHex.startsWith('#')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.laplacianColorHex.startsWith('#')"
+        },
+        {
+          "expression": "window.__3D_STATE__.laplacianColorHex.toLowerCase() === '#ff00ff'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.laplacianColorHex.toLowerCase() === '#ff00ff'"
+        },
+        {
+          "expression": "document.getElementById('hud-laplacian-color') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-laplacian-color') !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modeHistory.length <= 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modeHistory.length <= 10"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sceneReady === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sceneReady === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelLoaded === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelBBoxSize === 'object' && window.__3D_STATE__.modelBBoxSize !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelBBoxSize === 'object' && window.__3D_STATE__.modelBBoxSize !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelBBoxSize.x > 0 && window.__3D_STATE__.modelBBoxSize.y > 0 && window.__3D_STATE__.modelBBoxSize.z > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelBBoxSize.x > 0 && window.__3D_STATE__.modelBBoxSize.y > 0 && window.__3D_STATE__.modelBBoxSize.z > 0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.sobelKernel) && window.__3D_STATE__.sobelKernel.length === 9",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.sobelKernel) && window.__3D_STATE__.sobelKernel.length === 9"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.laplacianKernel) && window.__3D_STATE__.laplacianKernel.length === 9",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.laplacianKernel) && window.__3D_STATE__.laplacianKernel.length === 9"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 1"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'sobel'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'sobel'"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 2"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.sobelKernel) === JSON.stringify([-1,0,1,-2,0,2,-1,0,1])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.sobelKernel) === JSON.stringify([-1,0,1,-2,0,2,-1,0,1])"
+        },
+        {
+          "expression": "window.__3D_STATE__.edgeStrength === 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.edgeStrength === 1.0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.modeHistory) && window.__3D_STATE__.modeHistory[window.__3D_STATE__.modeHistory.length - 1] === 1",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.modeHistory) && window.__3D_STATE__.modeHistory[window.__3D_STATE__.modeHistory.length - 1] === 1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'laplacian'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'laplacian'"
+        },
+        {
+          "expression": "JSON.stringify(window.__3D_STATE__.laplacianKernel) === JSON.stringify([0,-1,0,-1,4,-1,0,-1,0])",
+          "tier": "L2",
+          "passed": true,
+          "detail": "JSON.stringify(window.__3D_STATE__.laplacianKernel) === JSON.stringify([0,-1,0,-1,4,-1,0,-1,0])"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.threshold === 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.threshold === 0.1"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'split'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'split'"
+        },
+        {
+          "expression": "window.__3D_STATE__.renderTargetWidth > 0 && window.__3D_STATE__.renderTargetHeight > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.renderTargetWidth > 0 && window.__3D_STATE__.renderTargetHeight > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.renderTargetWidth === window.innerWidth",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.renderTargetWidth === window.innerWidth"
+        },
+        {
+          "expression": "window.__3D_STATE__.renderTargetHeight === window.innerHeight",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.renderTargetHeight === window.innerHeight"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.fps)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.fps)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.currentMode === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentMode === 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.currentModeName === 'overlay'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.currentModeName === 'overlay'"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.modeHistory.length >= 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modeHistory.length >= 4"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.edgeStrength - 1.1) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.edgeStrength - 1.1) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.edgeStrength >= 0.1 && window.__3D_STATE__.edgeStrength <= 3.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.edgeStrength >= 0.1 && window.__3D_STATE__.edgeStrength <= 3.0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.edgeStrength === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.edgeStrength === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.edgeStrength)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.edgeStrength)"
+        },
+        {
+          "expression": "document.getElementById('hud-strength') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-strength') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.threshold - 0.15) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.threshold - 0.15) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.threshold >= 0.0 && window.__3D_STATE__.threshold <= 1.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.threshold >= 0.0 && window.__3D_STATE__.threshold <= 1.0"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.threshold === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.threshold === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.threshold)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.threshold)"
+        },
+        {
+          "expression": "document.getElementById('hud-threshold') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-threshold') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.autoRotate === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.autoRotate === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.modelRotationY === 'number'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.modelRotationY === 'number'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.modelRotationY)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.modelRotationY)"
+        },
+        {
+          "expression": "document.getElementById('hud-rotate') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-rotate') !== null"
+        },
+        {
+          "expression": "document.getElementById('hud-rotate').textContent.toLowerCase().includes('off') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('false') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('disabled')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('hud-rotate').textContent.toLowerCase().includes('off') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('false') || document.getElementById('hud-rotate').textContent.toLowerCase().includes('disabled')"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sobelColorHex !== '#00ff80'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sobelColorHex !== '#00ff80'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.sobelColorHex === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.sobelColorHex === 'string'"
+        },
+        {
+          "expression": "window.__3D_STATE__.sobelColorHex.startsWith('#')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sobelColorHex.startsWith('#')"
+        },
+        {
+          "expression": "window.__3D_STATE__.sobelColorHex.toLowerCase() === '#00ffff'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sobelColorHex.toLowerCase() === '#00ffff'"
+        },
+        {
+          "expression": "document.getElementById('hud-sobel-color') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-sobel-color') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.laplacianColorHex !== '#ff4d00'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.laplacianColorHex !== '#ff4d00'"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.laplacianColorHex === 'string'",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.laplacianColorHex === 'string'"
+        },
+        {
+          "expression": "window.__3D_STATE__.laplacianColorHex.startsWith('#')",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.laplacianColorHex.startsWith('#')"
+        },
+        {
+          "expression": "window.__3D_STATE__.laplacianColorHex.toLowerCase() === '#ff00ff'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.laplacianColorHex.toLowerCase() === '#ff00ff'"
+        },
+        {
+          "expression": "document.getElementById('hud-laplacian-color') !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "document.getElementById('hud-laplacian-color') !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modeHistory.length <= 10",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modeHistory.length <= 10"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 11,
+    "total": 11,
+    "results": [
+      {
+        "id": "A1",
+        "pass": true
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": true
+      },
+      {
+        "id": "A10",
+        "pass": true
+      },
+      {
+        "id": "A11",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 14,
+      "total": 14
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 40,
+      "total": 40
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 34595
+}

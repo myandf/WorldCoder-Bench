@@ -1,0 +1,177 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "https://mlcommons.org/croissant/1.0/",
+    "dct": "http://purl.org/dc/terms/"
+  },
+  "@type": "Dataset",
+  "@id": "https://anonymous.4open.science/r/WorldCoder-Bench/",
+  "name": "WorldCoder-Bench",
+  "description": "Streamlined deterministic public reconstruction for browser-native 3D world synthesis, including colocated public Dev evaluation material.",
+  "version": "0.2.0-reconstruction-rc3",
+  "dateModified": "2026-08-01",
+  "license": "LicenseRef-WorldCoder-Bench-Research-Release-1.0",
+  "isAccessibleForFree": true,
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "name": "Task manifest",
+      "contentUrl": "manifests/tasks.jsonl",
+      "encodingFormat": "application/jsonl"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Recovered task manifest",
+      "contentUrl": "manifests/recovered_tasks.jsonl",
+      "encodingFormat": "application/jsonl"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Unresolved task manifest",
+      "contentUrl": "manifests/unresolved_tasks.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Unresolved contract manifest",
+      "contentUrl": "manifests/unresolved_contracts.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Recovery exclusion manifest",
+      "contentUrl": "manifests/recovery_exclusions.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Extended augmentation manifest",
+      "contentUrl": "manifests/extended_augmentations.jsonl",
+      "encodingFormat": "application/jsonl"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Asset manifest",
+      "contentUrl": "manifests/assets.jsonl",
+      "encodingFormat": "application/jsonl"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Unresolved asset manifest",
+      "contentUrl": "manifests/unresolved_assets.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Public task definitions",
+      "contentUrl": "tasks/",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Shared task assets",
+      "contentUrl": "assets/shared/",
+      "encodingFormat": "application/octet-stream"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Asset provenance manifest",
+      "contentUrl": "manifests/asset_provenance.jsonl",
+      "encodingFormat": "application/jsonl"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Asset substitution manifest",
+      "contentUrl": "manifests/asset_substitutions.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Membership evidence",
+      "contentUrl": "manifests/membership_evidence.json",
+      "encodingFormat": "application/json"
+    }
+  ],
+  "measurementTechnique": "Execution-based StateProbe verification with action-driven behavioral-contract checks",
+  "variableMeasured": [
+    "task prompt",
+    "task domain",
+    "task difficulty",
+    "declared task assets",
+    "behavioral-contract affordances",
+    "behavioral-contract states",
+    "behavioral-contract transitions"
+  ],
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "published_task_payload_count",
+      "value": 2641
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "canonical_target_count",
+      "value": 2026
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "canonical_executable_count",
+      "value": 2026
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "canonical_evaluable_count",
+      "value": 2026
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "unresolved_task_count",
+      "value": 5
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "unresolved_contract_count",
+      "value": 0
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "public_dev_rubric_count",
+      "value": 200
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "shared_glb_count",
+      "value": 55
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "shared_asset_count",
+      "value": 62
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "shared_non_glb_count",
+      "value": 7
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "unresolved_asset_declaration_count",
+      "value": 0
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "official_membership_verified",
+      "value": false
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "model_outputs_in_public_task_release",
+      "value": false
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "asset_provenance_verified_count",
+      "value": 62
+    }
+  ]
+}

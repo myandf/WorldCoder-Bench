@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Multiplayer Gradient Map Color Grading</title>
+  <style>
+    html, body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      display: block;
+    }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      color: #fff;
+      background: rgba(0,0,0,0.55);
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      min-width: 220px;
+      backdrop-filter: blur(4px);
+    }
+    #toggle-grading {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #toggle-grading:hover {
+      background: #eaeaea;
+    }
+    .label {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div><span class="label">Player:</span> <span id="hud-player">0</span></div>
+    <div><span class="label">Intensity:</span> <span id="hud-intensity">1.00</span></div>
+    <div><span class="label">Blend:</span> <span id="hud-blend">1.00</span></div>
+    <div><span class="label">Grading Enabled:</span> <span id="hud-grading-enabled">true</span></div>
+    <div><span class="label">Luminance Mode:</span> <span id="hud-lum-mode">standard</span></div>
+  </div>
+  <button id="toggle-grading">Toggle Grading</button>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x101014);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 5);
+    camera.lookAt(0, 0, 0);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambient);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    dirLight.position.set(5, 8, 3);
+    scene.add(dirLight);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(10, 10),
+      new THREE.MeshStandardMaterial({ color: 0x888888 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = 0;
+    scene.add(ground);
+
+    const coloredMeshes = [];
+
+    const sphere = new THREE.Mesh(
+      new THREE.SphereGeometry(0.6, 32, 24),
+      new THREE.MeshStandardMaterial({ color: 0xff3333 })
+    );
+    sphere.position.set(-2, 0.6, 0);
+    scene.add(sphere);
+    coloredMeshes.push(sphere);
+
+    const box = new THREE.Mesh(
+      new THREE.BoxGeometry(0.9, 0.9, 0.9),
+      new THREE.MeshStandardMaterial({ color: 0x33ff33 })
+    );
+    box.position.set(0, 0.45, -1);
+    scene.add(box);
+    coloredMeshes.push(box);
+
+    const torus = new THREE.Mesh(
+      new THREE.TorusGeometry(0.5, 0.2, 24, 48),
+      new THREE.MeshStandardMaterial({ color: 0x3333ff })
+    );
+    torus.position.set(2, 0.7, 0);
+    scene.add(torus);
+    coloredMeshes.push(torus);
+
+    const cone = new THREE.Mesh(
+      new THREE.ConeGeometry(0.5, 1.2, 32),
+      new THREE.MeshStandardMaterial({ color: 0xffff33 })
+    );
+    cone.position.set(0, 0.6, 1.5);
+    scene.add(cone);
+    coloredMeshes.push(cone);
+
+    const gradientPresets = [
+      {
+        name: 'Cinematic',
+        stops: [
+          { pos: 0.0, color: '#000020' },
+          { pos: 0.3, color: '#331100' },
+          { pos: 0.6, color: '#ff8844' },
+          { pos: 1.0, color: '#ffffee' }
+        ]
+      },
+      {
+        name: 'Cyberpunk',
+        stops: [
+          { pos: 0.0, color: '#0a000a' },
+          { pos: 0.25, color: '#ff00ff' },
+          { pos: 0.5, color: '#00ffff' },
+          { pos: 0.75, color: '#ffff00' },
+          { pos: 1.0, color: '#ffffff' }
+        ]
+      },
+      {
+        name: 'Noir',
+        stops: [
+          { pos: 0.0, color: '#000000' },
+          { pos: 0.5, color: '#444444' },
+          { pos: 1.0, color: '#ffffff' }
+        ]
+      },
+      {
+        name: 'Thermal',
+        stops: [
+          { pos: 0.0, color: '#000033' },
+          { pos: 0.33, color: '#0000ff' },
+          { pos: 0.5, color: '#ff0000' },
+          { pos: 0.75, color: '#ffff00' },
+          { pos: 1.0, color: '#ffffff' }
+        ]
+      }
+    ];
+
+    function hexToRgbObj(hex) {
+      const c = new THREE.Color(hex);
+      return {
+        r: Math.round(c.r * 255),
+        g: Math.round(c.g * 255),
+        b: Math.round(c.b * 255)
+      };
+    }
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function generateGradientTexture(stops) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 256;
+      canvas.height = 1;
+      const ctx = canvas.getContext('2d');
+      const image = ctx.createImageData(256, 1);
+
+      const sortedStops = [...stops].sort((a, b) => a.pos - b.pos);
+
+      for (let i = 0; i < 256; i++) {
+        const t = i / 255;
+        let left = sortedStops[0];
+        let right = sortedStops[sortedStops.length - 1];
+
+        for (let j = 0; j < sortedStops.length - 1; j++) {
+          const s0 = sortedStops[j];
+          const s1 = sortedStops[j + 1];
+          if (t >= s0.pos && t <= s1.pos) {
+            left = s0;
+            right = s1;
+            break;
+          }
+        }
+
+        const leftRgb = hexToRgbObj(left.color);
+        const rightRgb = hexToRgbObj(right.color);
+        const range = Math.max(1e-6, right.pos - left.pos);
+        const localT = THREE.MathUtils.clamp((t - left.pos) / range, 0, 1);
+
+        const r = Math.round(lerp(leftRgb.r, rightRgb.r, localT));
+        const g = Math.round(lerp(leftRgb.g, rightRgb.g, localT));
+        const b = Math.round(lerp(leftRgb.b, rightRgb.b, localT));
+
+        const idx = i * 4;
+        image.data[idx + 0] = r;
+        image.data[idx + 1] = g;
+        image.data[idx + 2] = b;
+        image.data[idx + 3] = 255;
+      }
+
+      ctx.putImageData(image, 0, 0);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.generateMipmaps = false;
+      texture.needsUpdate = true;
+      texture.colorSpace = THREE.SRGBColorSpace;
+      return texture;
+    }
+
+    const gradientTextures = gradientPresets.map(p => generateGradientTexture(p.stops));
+
+    const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      depthBuffer: true,
+      stencilBuffer: false
+    });
+    renderTarget.texture.colorSpace = THREE.SRGBColorSpace;
+
+    const postScene = new THREE.Scene();
+    const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    const postMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        tDiffuse: { value: renderTarget.texture },
+        tGradientA: { value: gradientTextures[0] },
+        tGradientB: { value: gradientTextures[0] },
+        uBlendFactor: { value: 1.0 },
+        uIntensity: { value: 1.0 },
+        uLuminanceWeights: { value: new THREE.Vector3(0.2126, 0.7152, 0.0722) }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position.xy, 0.0, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec2 vUv;
+        uniform sampler2D tDiffuse;
+        uniform sampler2D tGradientA;
+        uniform sampler2D tGradientB;
+        uniform float uBlendFactor;
+        uniform float uIntensity;
+        uniform vec3 uLuminanceWeights;
+
+        void main() {
+          vec4 sceneColor = texture2D(tDiffuse, vUv);
+          float lum = clamp(dot(sceneColor.rgb, uLuminanceWeights), 0.0, 1.0);
+
+          vec3 gradA = texture2D(tGradientA, vec2(lum, 0.5)).rgb;
+          vec3 gradB = texture2D(tGradientB, vec2(lum, 0.5)).rgb;
+          vec3 graded = mix(gradA, gradB, clamp(uBlendFactor, 0.0, 1.0));
+
+          vec3 finalColor = mix(sceneColor.rgb, graded, clamp(uIntensity, 0.0, 1.0));
+          gl_FragColor = vec4(finalColor, sceneColor.a);
+        }
+      `
+    });
+
+    const postQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMaterial);
+    postScene.add(postQuad);
+
+    const hudPlayer = document.getElementById('hud-player');
+    const hudIntensity = document.getElementById('hud-intensity');
+    const hudBlend = document.getElementById('hud-blend');
+    const hudGradingEnabled = document.getElementById('hud-grading-enabled');
+    const hudLumMode = document.getElementById('hud-lum-mode');
+    const toggleButton = document.getElementById('toggle-grading');
+
+    const standardWeights = new THREE.Vector3(0.2126, 0.7152, 0.0722);
+    const equalWeights = new THREE.Vector3(0.33, 0.33, 0.34);
+
+    const appState = {
+      previousPlayer: 0,
+      activePlayer: 0,
+      currentPlayerResolved: 0,
+      blendFactor: 1.0,
+      blendAnimating: false,
+      blendDuration: 1.0,
+      blendElapsed: 1.0,
+
+      intensity: 1.0,
+      intensityStart: 1.0,
+      intensityTarget: 1.0,
+      intensityAnimating: false,
+      intensityDuration: 0.5,
+      intensityElapsed: 0.5,
+
+      gradingEnabled: true,
+      storedEnabledIntensity: 1.0,
+
+      luminanceMode: 'standard',
+      frameCount: 0
+    };
+
+    window.__3D_STATE__ = {
+      activePlayer: appState.activePlayer,
+      previousPlayer: appState.previousPlayer,
+      blendFactor: appState.blendFactor,
+      intensity: appState.intensity,
+      gradingEnabled: appState.gradingEnabled,
+      luminanceMode: appState.luminanceMode,
+      luminanceWeights: [standardWeights.x, standardWeights.y, standardWeights.z],
+      meshCount: coloredMeshes.length,
+      gradientPresetCount: gradientPresets.length,
+      frameCount: 0,
+      blendAnimating: appState.blendAnimating,
+      intensityAnimating: appState.intensityAnimating
+    };
+
+    function setLuminanceMode(equal) {
+      if (equal) {
+        appState.luminanceMode = 'equal';
+        postMaterial.uniforms.uLuminanceWeights.value.copy(equalWeights);
+      } else {
+        appState.luminanceMode = 'standard';
+        postMaterial.uniforms.uLuminanceWeights.value.copy(standardWeights);
+      }
+    }
+
+    function switchPlayer(index) {
+      index = THREE.MathUtils.clamp(index, 0, gradientTextures.length - 1);
+      if (index === appState.activePlayer && !appState.blendAnimating) return;
+
+      let currentVisiblePlayer = appState.activePlayer;
+      if (appState.blendAnimating && appState.blendFactor < 1.0) {
+        currentVisiblePlayer = appState.activePlayer;
+      }
+
+      appState.previousPlayer = appState.blendAnimating ? appState.previousPlayer : appState.activePlayer;
+      if (!appState.blendAnimating) {
+        appState.previousPlayer = appState.activePlayer;
+      }
+
+      postMaterial.uniforms.tGradientA.value = gradientTextures[appState.blendAnimating ? appState.previousPlayer : currentVisiblePlayer];
+      postMaterial.uniforms.tGradientB.value = gradientTextures[index];
+
+      appState.previousPlayer = appState.blendAnimating ? appState.previousPlayer : currentVisiblePlayer;
+      appState.activePlayer = index;
+      appState.blendFactor = 0.0;
+      appState.blendElapsed = 0.0;
+      appState.blendAnimating = true;
+      postMaterial.uniforms.uBlendFactor.value = 0.0;
+    }
+
+    function animateIntensityTo(target, duration = 0.5) {
+      appState.intensityStart = appState.intensity;
+      appState.intensityTarget = THREE.MathUtils.clamp(target, 0, 1);
+      appState.intensityDuration = duration;
+      appState.intensityElapsed = 0.0;
+      appState.intensityAnimating = true;
+    }
+
+    function resetState() {
+      appState.previousPlayer = 0;
+      appState.activePlayer = 0;
+      appState.blendFactor = 1.0;
+      appState.blendAnimating = false;
+      appState.blendElapsed = appState.blendDuration;
+
+      appState.intensity = 1.0;
+      appState.intensityStart = 1.0;
+      appState.intensityTarget = 1.0;
+      appState.intensityAnimating = false;
+      appState.intensityElapsed = appState.intensityDuration;
+
+      appState.gradingEnabled = true;
+      appState.storedEnabledIntensity = 1.0;
+
+      setLuminanceMode(false);
+
+      postMaterial.uniforms.tGradientA.value = gradientTextures[0];
+      postMaterial.uniforms.tGradientB.value = gradientTextures[0];
+      postMaterial.uniforms.uBlendFactor.value = 1.0;
+      postMaterial.uniforms.uIntensity.value = 1.0;
+    }
+
+    function toggleGrading() {
+      if (appState.gradingEnabled) {
+        appState.storedEnabledIntensity = appState.intensity > 0 ? appState.intensity : Math.max(appState.storedEnabledIntensity, 0.5);
+        appState.gradingEnabled = false;
+        animateIntensityTo(0.0, 0.5);
+      } else {
+        appState.gradingEnabled = true;
+        const restore = appState.storedEnabledIntensity > 0 ? appState.storedEnabledIntensity : 1.0;
+        animateIntensityTo(restore, 0.5);
+      }
+    }
+
+    toggleButton.addEventListener('click', toggleGrading);
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+
+      if (key === '1') switchPlayer(0);
+      if (key === '2') switchPlayer(1);
+      if (key === '3') switchPlayer(2);
+      if (key === '4') switchPlayer(3);
+
+      if (key === 'i') {
+        const target = appState.intensity >= 0.75 ? 0.5 : 1.0;
+        appState.storedEnabledIntensity = target;
+        if (appState.gradingEnabled) animateIntensityTo(target, 0.5);
+        else appState.intensity = 0.0;
+      }
+
+      if (key === 'r') {
+        resetState();
+      }
+
+      if (key === 'b') {
+        setLuminanceMode(appState.luminanceMode !== 'equal');
+      }
+    });
+
+    function updateHUD() {
+      hudPlayer.textContent = String(appState.activePlayer);
+      hudIntensity.textContent = appState.intensity.toFixed(2);
+      hudBlend.textContent = appState.blendFactor.toFixed(2);
+      hudGradingEnabled.textContent = String(appState.gradingEnabled);
+      hudLumMode.textContent = appState.luminanceMode;
+    }
+
+    function updateExposedState() {
+      window.__3D_STATE__.activePlayer = appState.activePlayer;
+      window.__3D_STATE__.previousPlayer = appState.previousPlayer;
+      window.__3D_STATE__.blendFactor = appState.blendFactor;
+      window.__3D_STATE__.intensity = appState.intensity;
+      window.__3D_STATE__.gradingEnabled = appState.gradingEnabled;
+      window.__3D_STATE__.luminanceMode = appState.luminanceMode;
+      window.__3D_STATE__.luminanceWeights = [
+        postMaterial.uniforms.uLuminanceWeights.value.x,
+        postMaterial.uniforms.uLuminanceWeights.value.y,
+        postMaterial.uniforms.uLuminanceWeights.value.z
+      ];
+      window.__3D_STATE__.meshCount = coloredMeshes.length;
+      window.__3D_STATE__.gradientPresetCount = gradientPresets.length;
+      window.__3D_STATE__.frameCount = appState.frameCount;
+      window.__3D_STATE__.blendAnimating = appState.blendAnimating;
+      window.__3D_STATE__.intensityAnimating = appState.intensityAnimating;
+    }
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = clock.getDelta();
+      appState.frameCount++;
+
+      for (const mesh of coloredMeshes) {
+        mesh.rotation.y += 0.3 * dt;
+      }
+
+      if (appState.blendAnimating) {
+        appState.blendElapsed += dt;
+        appState.blendFactor = THREE.MathUtils.clamp(appState.blendElapsed / appState.blendDuration, 0, 1);
+        postMaterial.uniforms.uBlendFactor.value = appState.blendFactor;
+        if (appState.blendFactor >= 1.0) {
+          appState.blendAnimating = false;
+          appState.previousPlayer = appState.activePlayer;
+          postMaterial.uniforms.tGradientA.value = gradientTextures[appState.activePlayer];
+          postMaterial.uniforms.tGradientB.value = gradientTextures[appState.activePlayer];
+          postMaterial.uniforms.uBlendFactor.value = 1.0;
+        }
+      }
+
+      if (appState.intensityAnimating) {
+        appState.intensityElapsed += dt;
+        const t = THREE.MathUtils.clamp(appState.intensityElapsed / appState.intensityDuration, 0, 1);
+        appState.intensity = THREE.MathUtils.lerp(appState.intensityStart, appState.intensityTarget, t);
+        postMaterial.uniforms.uIntensity.value = appState.intensity;
+        if (t >= 1.0) {
+          appState.intensityAnimating = false;
+          appState.intensity = appState.intensityTarget;
+          postMaterial.uniforms.uIntensity.value = appState.intensity;
+        }
+      } else {
+        postMaterial.uniforms.uIntensity.value = appState.intensity;
+      }
+
+      renderer.setRenderTarget(renderTarget);
+      renderer.render(scene, camera);
+      renderer.setRenderTarget(null);
+      renderer.render(postScene, postCamera);
+
+      updateHUD();
+      updateExposedState();
+    }
+
+    function onResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderTarget.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.addEventListener('resize', onResize);
+
+    resetState();
+    updateHUD();
+    updateExposedState();
+    animate();
+  </script>
+</body>
+</html>

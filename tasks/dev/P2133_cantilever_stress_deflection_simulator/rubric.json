@@ -1,0 +1,653 @@
+{
+  "task_id": "P2133_cantilever_stress_deflection_simulator",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "CantileverBeam",
+      "type": "3d_object",
+      "semantic": "Segmented cantilever beam with 20 segments that deform under load",
+      "locator_hints": [
+        "beam segments group",
+        "BoxGeometry segments"
+      ],
+      "checks": [
+        {
+          "expr": "false",
+          "tier": "L1"
+        }
+      ],
+      "check_origin": "unverifiable_fail_closed"
+    },
+    {
+      "id": "A2",
+      "name": "SupportColumn",
+      "type": "3d_object",
+      "semantic": "Vertical support column at fixed end of beam",
+      "locator_hints": [
+        "column at x=0"
+      ],
+      "checks": [
+        {
+          "expr": "false",
+          "tier": "L1"
+        }
+      ],
+      "check_origin": "unverifiable_fail_closed"
+    },
+    {
+      "id": "A3",
+      "name": "ShoeModel",
+      "type": "3d_object",
+      "semantic": "Loaded GLB shoe model as decorative reference",
+      "locator_hints": [
+        "MaterialsVariantsShoe.glb",
+        "position (4,0,4)"
+      ],
+      "checks": [
+        {
+          "expr": "false",
+          "tier": "L1"
+        }
+      ],
+      "check_origin": "unverifiable_fail_closed"
+    },
+    {
+      "id": "A4",
+      "name": "ForceSlider",
+      "type": "dom_element",
+      "semantic": "Slider controlling applied force 0-50000 N",
+      "locator_hints": [
+        "#forceSlider"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#forceSlider\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A5",
+      "name": "MaterialSelect",
+      "type": "dom_element",
+      "semantic": "Dropdown to select beam material",
+      "locator_hints": [
+        "#materialSelect"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#materialSelect\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A6",
+      "name": "ApplyImpactBtn",
+      "type": "dom_element",
+      "semantic": "Button to apply 30000N impact load",
+      "locator_hints": [
+        "#applyImpact"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#applyImpact\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A7",
+      "name": "ResetBtn",
+      "type": "dom_element",
+      "semantic": "Button to reset force and material",
+      "locator_hints": [
+        "#resetBtn"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#resetBtn\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A8",
+      "name": "StressColorsCheckbox",
+      "type": "dom_element",
+      "semantic": "Checkbox toggling stress-based coloring",
+      "locator_hints": [
+        "#showStressColors"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#showStressColors\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A9",
+      "name": "MeasureBtn",
+      "type": "dom_element",
+      "semantic": "Button toggling measurement mode",
+      "locator_hints": [
+        "#measureBtn"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#measureBtn\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A10",
+      "name": "InfoPanel",
+      "type": "dom_element",
+      "semantic": "HUD panel showing deflection, stress, safety factor",
+      "locator_hints": [
+        "#infoPanel"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#infoPanel\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A11",
+      "name": "YieldWarning",
+      "type": "dom_element",
+      "semantic": "Warning label when yield stress exceeded",
+      "locator_hints": [
+        "#yieldWarning"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#yieldWarning\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    }
+  ],
+  "states": [
+    {
+      "id": "S0",
+      "name": "SceneLoaded_NoForce",
+      "conditions": [
+        "window.__3D_STATE__.sceneReady === true",
+        "window.__3D_STATE__.appliedForce === 0",
+        "window.__3D_STATE__.currentMaterial === 'Steel'"
+      ]
+    },
+    {
+      "id": "S1",
+      "name": "ModerateForceApplied_Steel",
+      "conditions": [
+        "window.__3D_STATE__.appliedForce === 10000",
+        "window.__3D_STATE__.currentMaterial === 'Steel'",
+        "window.__3D_STATE__.maxDeflection > 0"
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "ImpactForceApplied_Steel",
+      "conditions": [
+        "window.__3D_STATE__.appliedForce === 30000",
+        "window.__3D_STATE__.currentMaterial === 'Steel'"
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "MaterialChanged_Wood",
+      "conditions": [
+        "window.__3D_STATE__.currentMaterial === 'Wood'",
+        "window.__3D_STATE__.youngsModulus === 12e9"
+      ]
+    },
+    {
+      "id": "S4",
+      "name": "WoodUnderForce_YieldExceeded",
+      "conditions": [
+        "window.__3D_STATE__.currentMaterial === 'Wood'",
+        "window.__3D_STATE__.appliedForce === 10000",
+        "window.__3D_STATE__.yieldExceeded === true"
+      ]
+    },
+    {
+      "id": "S5",
+      "name": "StressColorsDisabled",
+      "conditions": [
+        "window.__3D_STATE__.stressColorsEnabled === false"
+      ]
+    },
+    {
+      "id": "S6",
+      "name": "MeasurementModeActive",
+      "conditions": [
+        "window.__3D_STATE__.measurementMode === true"
+      ]
+    },
+    {
+      "id": "S7",
+      "name": "ResetState",
+      "conditions": [
+        "window.__3D_STATE__.appliedForce === 0",
+        "window.__3D_STATE__.currentMaterial === 'Steel'",
+        "window.__3D_STATE__.maxDeflection === 0"
+      ]
+    },
+    {
+      "id": "S8",
+      "name": "AluminumHighForce",
+      "conditions": [
+        "window.__3D_STATE__.currentMaterial === 'Aluminum'",
+        "window.__3D_STATE__.appliedForce === 50000"
+      ]
+    },
+    {
+      "id": "S9",
+      "name": "ConcreteModerateForce",
+      "conditions": [
+        "window.__3D_STATE__.currentMaterial === 'Concrete'",
+        "window.__3D_STATE__.appliedForce === 15000"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "from": "S0",
+      "to": "S0",
+      "severity": "P0",
+      "action": {
+        "type": "wait",
+        "duration_ms": 3000
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "typeof window.__3D_STATE__ !== 'undefined'",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.sceneReady === true",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.glbLoaded === true",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.beamSegments === 20",
+            "tier": "L2"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.segmentDeflections) && window.__3D_STATE__.segmentDeflections.length === 20",
+            "tier": "L0"
+          },
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 0 && window.__3D_STATE__.maxDeflection === 0",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T2",
+      "from": "S0",
+      "to": "S1",
+      "severity": "P0",
+      "action": {
+        "type": "script",
+        "code": "document.getElementById('forceSlider').value = 10000; document.getElementById('forceSlider').dispatchEvent(new Event('input'));"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 10000",
+            "tier": "L2"
+          },
+          {
+            "expr": "Math.abs(window.__3D_STATE__.maxDeflection - (10000 * 216) / (3 * 200e9 * 0.0002)) < 1e-6",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.maxDeflectionMM > 0 && !isNaN(window.__3D_STATE__.maxDeflectionMM)",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.maxStress > 0 && window.__3D_STATE__.maxStressMPa === window.__3D_STATE__.maxStress / 1e6",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.segmentDeflections[19] >= window.__3D_STATE__.segmentDeflections[0]",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.segmentStresses[0] >= window.__3D_STATE__.segmentStresses[19]",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T3",
+      "from": "S1",
+      "to": "S2",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#applyImpact"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 30000",
+            "tier": "L2"
+          },
+          {
+            "expr": "Math.abs(window.__3D_STATE__.maxDeflection - (30000 * 216) / (3 * 200e9 * 0.0002)) < 1e-5",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.beamEnergy > 0 && Math.abs(window.__3D_STATE__.beamEnergy - 0.5 * 30000 * window.__3D_STATE__.maxDeflection) < 0.01",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.safetyFactor !== null && window.__3D_STATE__.safetyFactor > 0",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.yieldExceeded === false",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T4",
+      "from": "S2",
+      "to": "S3",
+      "severity": "P0",
+      "action": {
+        "type": "script",
+        "code": "document.getElementById('materialSelect').value = 'Wood'; document.getElementById('materialSelect').dispatchEvent(new Event('change'));"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.currentMaterial === 'Wood'",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.youngsModulus === 12e9",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.yieldStrength === 40e6",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.maxDeflection > (30000 * 216) / (3 * 200e9 * 0.0002)",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.yieldExceeded === true",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T5",
+      "from": "S3",
+      "to": "S4",
+      "severity": "P0",
+      "action": {
+        "type": "script",
+        "code": "document.getElementById('forceSlider').value = 10000; document.getElementById('forceSlider').dispatchEvent(new Event('input'));"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 10000",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.currentMaterial === 'Wood'",
+            "tier": "L2"
+          },
+          {
+            "expr": "Math.abs(window.__3D_STATE__.maxDeflection - (10000 * 216) / (3 * 12e9 * 0.0002)) < 1e-3",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.maxStressMPa > 0 && Math.abs(window.__3D_STATE__.maxStress - 10000 * 6 * 0.15 / 0.0002) < 100",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.yieldExceeded === (window.__3D_STATE__.maxStress > 40e6)",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.safetyFactor !== null && Math.abs(window.__3D_STATE__.safetyFactor - 40e6 / window.__3D_STATE__.maxStress) < 0.01",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T6",
+      "from": "S4",
+      "to": "S5",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#showStressColors"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.stressColorsEnabled === false",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 10000",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.maxDeflection > 0",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.currentMaterial === 'Wood'",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T7",
+      "from": "S5",
+      "to": "S6",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#measureBtn"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.measurementMode === true",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.stressColorsEnabled === false",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 10000",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.beamSegments === 20",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T8",
+      "from": "S6",
+      "to": "S7",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#resetBtn"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 0",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.currentMaterial === 'Steel'",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.youngsModulus === 200e9",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.maxDeflection === 0",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.maxStress === 0",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.safetyFactor === null",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T9",
+      "from": "S7",
+      "to": "S8",
+      "severity": "P0",
+      "action": {
+        "type": "script",
+        "code": "document.getElementById('materialSelect').value = 'Aluminum'; document.getElementById('materialSelect').dispatchEvent(new Event('change')); document.getElementById('forceSlider').value = 50000; document.getElementById('forceSlider').dispatchEvent(new Event('input'));"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.currentMaterial === 'Aluminum'",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.youngsModulus === 69e9",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 50000",
+            "tier": "L2"
+          },
+          {
+            "expr": "Math.abs(window.__3D_STATE__.maxDeflection - (50000 * 216) / (3 * 69e9 * 0.0002)) < 1e-3",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.segmentDeflections.every(d => !isNaN(d) && d >= 0)",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.segmentStresses.every(s => !isNaN(s) && s >= 0)",
+            "tier": "L2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T10",
+      "from": "S8",
+      "to": "S9",
+      "severity": "P0",
+      "action": {
+        "type": "script",
+        "code": "document.getElementById('materialSelect').value = 'Concrete'; document.getElementById('materialSelect').dispatchEvent(new Event('change')); document.getElementById('forceSlider').value = 15000; document.getElementById('forceSlider').dispatchEvent(new Event('input'));"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.currentMaterial === 'Concrete'",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.youngsModulus === 30e9",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.appliedForce === 15000",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.yieldStrength === 30e6",
+            "tier": "L2"
+          },
+          {
+            "expr": "Math.abs(window.__3D_STATE__.beamEnergy - 0.5 * 15000 * window.__3D_STATE__.maxDeflection) < 0.1",
+            "tier": "L2"
+          },
+          {
+            "expr": "window.__3D_STATE__.beamLength === 6 && window.__3D_STATE__.momentOfInertia === 0.0002",
+            "tier": "L2"
+          }
+        ]
+      }
+    }
+  ],
+  "rubric_metadata": {
+    "visibility": "public_dev",
+    "version": "contract-20260801-v3",
+    "normalization": "lossless_check_shape_and_duplicate_removal",
+    "strictness_gate": {
+      "all_states_have_executable_conditions": true,
+      "all_transitions_have_actions": true,
+      "all_transitions_have_assertions": true,
+      "tautological_assertions_rejected": true,
+      "reference_browser_validation_required": true,
+      "assertion_count": 54,
+      "all_affordances_have_executable_checks": true,
+      "affordance_check_origins": {
+        "dom_locator": 8,
+        "unverifiable_fail_closed": 3
+      }
+    }
+  }
+}

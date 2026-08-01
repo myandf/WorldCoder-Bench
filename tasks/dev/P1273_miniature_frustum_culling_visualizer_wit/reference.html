@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frustum Culling Visualizer Diorama</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1a2e;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    canvas {
+      display: block;
+    }
+    #hud-panel {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      background: rgba(10, 10, 20, 0.75);
+      color: #fff;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      min-width: 230px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    #hud-panel .row {
+      margin: 4px 0;
+    }
+    #hud-panel .buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    #hud-panel button {
+      background: #2b2b45;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    #hud-panel button:hover {
+      background: #3a3a5a;
+    }
+    #help {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 10;
+      background: rgba(10, 10, 20, 0.7);
+      color: #ddd;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud-panel">
+    <div class="row" id="hud-inside-count">Inside Frustum: 0</div>
+    <div class="row" id="hud-outside-count">Outside Frustum: 25</div>
+    <div class="row" id="hud-fov">FOV: 60°</div>
+    <div class="row" id="hud-far">Far Plane: 20</div>
+    <div class="row" id="hud-subject-pos">Subject Pos: (0.00, 2.00, 0.00)</div>
+    <div class="buttons">
+      <button id="btn-toggle-aabb">Toggle AABBs</button>
+      <button id="btn-reset">Reset Camera</button>
+    </div>
+  </div>
+
+  <div id="help">
+    Arrow Keys: Move/Rotate subject camera<br>
+    Q / E: Decrease / Increase FOV<br>
+    N / M: Decrease / Increase Far Plane<br>
+    R: Reset subject camera
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1a2e);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const observerCamera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
+    observerCamera.position.set(20, 18, 20);
+    observerCamera.lookAt(0, 0, 0);
+
+    const controls = new OrbitControls(observerCamera, renderer.domElement);
+    controls.target.set(0, 1, 0);
+    controls.enableDamping = true;
+    controls.update();
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(10, 15, 10);
+    scene.add(dirLight);
+
+    const grid = new THREE.GridHelper(40, 40, 0x333355, 0x333355);
+    grid.position.y = 0;
+    scene.add(grid);
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(40, 40),
+      new THREE.MeshStandardMaterial({ color: 0x202038, transparent: true, opacity: 0.35, side: THREE.DoubleSide })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.001;
+    scene.add(ground);
+
+    const INITIAL_SUBJECT = {
+      position: new THREE.Vector3(0, 2, 0),
+      rotationY: 0,
+      fov: 60,
+      near: 1,
+      far: 20,
+      aspect: 1.5
+    };
+
+    const subjectCamera = new THREE.PerspectiveCamera(
+      INITIAL_SUBJECT.fov,
+      INITIAL_SUBJECT.aspect,
+      INITIAL_SUBJECT.near,
+      INITIAL_SUBJECT.far
+    );
+    scene.add(subjectCamera);
+
+    const subjectVisual = new THREE.Mesh(
+      new THREE.ConeGeometry(0.35, 1.0, 16),
+      new THREE.MeshStandardMaterial({ color: 0xffdd44, emissive: 0x442200 })
+    );
+    subjectVisual.rotation.x = -Math.PI / 2;
+    scene.add(subjectVisual);
+
+    const frustumMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff });
+    const frustumGeometry = new THREE.BufferGeometry();
+    const frustumLines = new THREE.LineSegments(frustumGeometry, frustumMaterial);
+    scene.add(frustumLines);
+
+    function resetSubjectCamera() {
+      subjectCamera.position.copy(INITIAL_SUBJECT.position);
+      subjectCamera.rotation.set(0, INITIAL_SUBJECT.rotationY, 0);
+      subjectCamera.fov = INITIAL_SUBJECT.fov;
+      subjectCamera.near = INITIAL_SUBJECT.near;
+      subjectCamera.far = INITIAL_SUBJECT.far;
+      subjectCamera.aspect = INITIAL_SUBJECT.aspect;
+      subjectCamera.updateProjectionMatrix();
+      updateSubjectVisual();
+      updateFrustumWireframe();
+    }
+
+    function updateSubjectVisual() {
+      subjectVisual.position.copy(subjectCamera.position);
+      subjectVisual.quaternion.copy(subjectCamera.quaternion);
+    }
+
+    function updateFrustumWireframe() {
+      subjectCamera.updateMatrixWorld(true);
+      const projScreenMatrix = new THREE.Matrix4().multiplyMatrices(
+        subjectCamera.projectionMatrix,
+        subjectCamera.matrixWorldInverse
+      );
+      const frustum = new THREE.Frustum().setFromProjectionMatrix(projScreenMatrix);
+
+      const points = [];
+      const planes = [
+        { x: -1, y: -1, z: -1 }, // near
+        { x:  1, y: -1, z: -1 },
+        { x:  1, y:  1, z: -1 },
+        { x: -1, y:  1, z: -1 },
+        { x: -1, y: -1, z:  1 }, // far
+        { x:  1, y: -1, z:  1 },
+        { x:  1, y:  1, z:  1 },
+        { x: -1, y:  1, z:  1 }
+      ];
+
+      for (const p of planes) {
+        const v = new THREE.Vector3(p.x, p.y, p.z).unproject(subjectCamera);
+        points.push(v);
+      }
+
+      const edgeIndices = [
+        [0,1],[1,2],[2,3],[3,0],
+        [4,5],[5,6],[6,7],[7,4],
+        [0,4],[1,5],[2,6],[3,7]
+      ];
+
+      const vertices = [];
+      for (const [a, b] of edgeIndices) {
+        vertices.push(points[a].x, points[a].y, points[a].z);
+        vertices.push(points[b].x, points[b].y, points[b].z);
+      }
+
+      const positionAttr = new THREE.Float32BufferAttribute(vertices, 3);
+      frustumGeometry.setAttribute('position', positionAttr);
+      frustumGeometry.computeBoundingSphere();
+      return frustum;
+    }
+
+    const objects = [];
+    const tempBox = new THREE.Box3();
+
+    function createAABBLineSegments(box, color) {
+      const min = box.min;
+      const max = box.max;
+      const vertices = [
+        min.x, min.y, min.z,  max.x, min.y, min.z,
+        max.x, min.y, min.z,  max.x, max.y, min.z,
+        max.x, max.y, min.z,  min.x, max.y, min.z,
+        min.x, max.y, min.z,  min.x, min.y, min.z,
+
+        min.x, min.y, max.z,  max.x, min.y, max.z,
+        max.x, min.y, max.z,  max.x, max.y, max.z,
+        max.x, max.y, max.z,  min.x, max.y, max.z,
+        min.x, max.y, max.z,  min.x, min.y, max.z,
+
+        min.x, min.y, min.z,  min.x, min.y, max.z,
+        max.x, min.y, min.z,  max.x, min.y, max.z,
+        max.x, max.y, min.z,  max.x, max.y, max.z,
+        min.x, max.y, min.z,  min.x, max.y, max.z
+      ];
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+      const mat = new THREE.LineBasicMaterial({ color });
+      return new THREE.LineSegments(geom, mat);
+    }
+
+    function pseudoRandom(seed) {
+      let x = Math.sin(seed * 999.123) * 43758.5453123;
+      return x - Math.floor(x);
+    }
+
+    for (let i = 0; i < 25; i++) {
+      const isBox = i % 2 === 0;
+      const geometry = isBox
+        ? new THREE.BoxGeometry(0.8, 0.8, 0.8)
+        : new THREE.SphereGeometry(0.5, 16, 16);
+
+      const hue = (i / 25) * 0.8 + 0.05;
+      const color = new THREE.Color().setHSL(hue, 0.65, 0.55);
+      const material = new THREE.MeshStandardMaterial({ color });
+
+      const mesh = new THREE.Mesh(geometry, material);
+
+      const x = pseudoRandom(i + 1) * 30 - 15;
+      const z = pseudoRandom(i + 100) * 30 - 15;
+      mesh.position.set(x, 1, z);
+      mesh.rotation.y = pseudoRandom(i + 200) * Math.PI * 2;
+
+      scene.add(mesh);
+
+      tempBox.setFromObject(mesh);
+      const bboxLine = createAABBLineSegments(tempBox.clone(), 0xff3344);
+      scene.add(bboxLine);
+
+      objects.push({
+        id: i,
+        mesh,
+        bboxLine,
+        box: new THREE.Box3(),
+        inside: false
+      });
+    }
+
+    let aabbVisible = true;
+    let frameCount = 0;
+
+    const hudInside = document.getElementById('hud-inside-count');
+    const hudOutside = document.getElementById('hud-outside-count');
+    const hudFov = document.getElementById('hud-fov');
+    const hudFar = document.getElementById('hud-far');
+    const hudPos = document.getElementById('hud-subject-pos');
+    const btnToggleAABB = document.getElementById('btn-toggle-aabb');
+    const btnReset = document.getElementById('btn-reset');
+
+    btnToggleAABB.addEventListener('click', () => {
+      aabbVisible = !aabbVisible;
+      for (const obj of objects) obj.bboxLine.visible = aabbVisible;
+    });
+
+    btnReset.addEventListener('click', resetSubjectCamera);
+
+    function deg(rad) {
+      return rad * 180 / Math.PI;
+    }
+
+    function round(value, places) {
+      const p = Math.pow(10, places);
+      return Math.round(value * p) / p;
+    }
+
+    function handleKey(e) {
+      const key = e.key.toLowerCase();
+      let changed = false;
+
+      if (e.key === 'ArrowLeft') {
+        subjectCamera.rotation.y += THREE.MathUtils.degToRad(5);
+        changed = true;
+      } else if (e.key === 'ArrowRight') {
+        subjectCamera.rotation.y -= THREE.MathUtils.degToRad(5);
+        changed = true;
+      } else if (e.key === 'ArrowUp') {
+        const dir = new THREE.Vector3();
+        subjectCamera.getWorldDirection(dir);
+        subjectCamera.position.addScaledVector(dir, 1);
+        changed = true;
+      } else if (e.key === 'ArrowDown') {
+        const dir = new THREE.Vector3();
+        subjectCamera.getWorldDirection(dir);
+        subjectCamera.position.addScaledVector(dir, -1);
+        changed = true;
+      } else if (key === 'q') {
+        subjectCamera.fov = Math.max(20, subjectCamera.fov - 5);
+        subjectCamera.updateProjectionMatrix();
+        changed = true;
+      } else if (key === 'e') {
+        subjectCamera.fov = Math.min(120, subjectCamera.fov + 5);
+        subjectCamera.updateProjectionMatrix();
+        changed = true;
+      } else if (key === 'n') {
+        subjectCamera.far = Math.max(6, subjectCamera.far - 2);
+        if (subjectCamera.far <= subjectCamera.near) subjectCamera.far = subjectCamera.near + 0.1;
+        subjectCamera.updateProjectionMatrix();
+        changed = true;
+      } else if (key === 'm') {
+        subjectCamera.far = Math.min(40, subjectCamera.far + 2);
+        subjectCamera.updateProjectionMatrix();
+        changed = true;
+      } else if (key === 'r') {
+        resetSubjectCamera();
+        changed = false;
+      }
+
+      if (changed) {
+        updateSubjectVisual();
+        updateFrustumWireframe();
+      }
+    }
+
+    window.addEventListener('keydown', handleKey);
+
+    function updateBBoxGeometry(lineSegments, box) {
+      const min = box.min;
+      const max = box.max;
+      const arr = lineSegments.geometry.attributes.position.array;
+
+      const verts = [
+        min.x, min.y, min.z,  max.x, min.y, min.z,
+        max.x, min.y, min.z,  max.x, max.y, min.z,
+        max.x, max.y, min.z,  min.x, max.y, min.z,
+        min.x, max.y, min.z,  min.x, min.y, min.z,
+
+        min.x, min.y, max.z,  max.x, min.y, max.z,
+        max.x, min.y, max.z,  max.x, max.y, max.z,
+        max.x, max.y, max.z,  min.x, max.y, max.z,
+        min.x, max.y, max.z,  min.x, min.y, max.z,
+
+        min.x, min.y, min.z,  min.x, min.y, max.z,
+        max.x, min.y, min.z,  max.x, min.y, max.z,
+        max.x, max.y, min.z,  max.x, max.y, max.z,
+        min.x, max.y, min.z,  min.x, max.y, max.z
+      ];
+
+      for (let i = 0; i < verts.length; i++) arr[i] = verts[i];
+      lineSegments.geometry.attributes.position.needsUpdate = true;
+      lineSegments.geometry.computeBoundingSphere();
+    }
+
+    function updateHUD(insideCount, outsideCount) {
+      hudInside.textContent = `Inside Frustum: ${insideCount}`;
+      hudOutside.textContent = `Outside Frustum: ${outsideCount}`;
+      hudFov.textContent = `FOV: ${subjectCamera.fov}°`;
+      hudFar.textContent = `Far Plane: ${subjectCamera.far}`;
+      hudPos.textContent = `Subject Pos: (${subjectCamera.position.x.toFixed(2)}, ${subjectCamera.position.y.toFixed(2)}, ${subjectCamera.position.z.toFixed(2)})`;
+    }
+
+    function updateState(insideCount, outsideCount) {
+      window.__3D_STATE__ = {
+        totalObjects: 25,
+        insideCount,
+        outsideCount,
+        subjectFOV: subjectCamera.fov,
+        subjectNear: subjectCamera.near,
+        subjectFar: subjectCamera.far,
+        subjectPosition: {
+          x: round(subjectCamera.position.x, 4),
+          y: round(subjectCamera.position.y, 4),
+          z: round(subjectCamera.position.z, 4)
+        },
+        subjectRotationY: round(deg(subjectCamera.rotation.y), 2),
+        objectStates: objects.map(obj => ({
+          id: obj.id,
+          inside: obj.inside,
+          opacity: obj.mesh.material.opacity,
+          bboxVisible: obj.bboxLine.visible
+        })),
+        aabbVisible,
+        frustumLinesVisible: frustumLines.visible,
+        frameCount,
+        conservationCheck: insideCount + outsideCount
+      };
+    }
+
+    resetSubjectCamera();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      frameCount++;
+
+      controls.update();
+      updateSubjectVisual();
+
+      subjectCamera.updateMatrixWorld(true);
+      const projScreenMatrix = new THREE.Matrix4().multiplyMatrices(
+        subjectCamera.projectionMatrix,
+        subjectCamera.matrixWorldInverse
+      );
+      const frustum = new THREE.Frustum().setFromProjectionMatrix(projScreenMatrix);
+      updateFrustumWireframe();
+
+      let insideCount = 0;
+      let outsideCount = 0;
+
+      for (const obj of objects) {
+        obj.box.setFromObject(obj.mesh);
+        updateBBoxGeometry(obj.bboxLine, obj.box);
+
+        const inside = frustum.intersectsBox(obj.box);
+        obj.inside = inside;
+
+        if (inside) {
+          insideCount++;
+          obj.mesh.material.opacity = 1.0;
+          obj.mesh.material.transparent = false;
+          obj.bboxLine.material.color.setHex(0x00ff88);
+        } else {
+          outsideCount++;
+          obj.mesh.material.opacity = 0.25;
+          obj.mesh.material.transparent = true;
+          obj.bboxLine.material.color.setHex(0xff3344);
+        }
+
+        obj.bboxLine.visible = aabbVisible;
+      }
+
+      updateHUD(insideCount, outsideCount);
+      updateState(insideCount, outsideCount);
+
+      renderer.render(scene, observerCamera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      observerCamera.aspect = window.innerWidth / window.innerHeight;
+      observerCamera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

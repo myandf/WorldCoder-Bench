@@ -1,0 +1,25 @@
+{
+  "id": "P70_morph_targets",
+  "title": "Morph Target Demo (Sphere)",
+  "domain": "graphics",
+  "route": "B",
+  "difficulty": "L4",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to create a sphere mesh with 3 morph targets, providing weight sliders, an animation toggle, and a wireframe mode toggle.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Geometry]\n(1) SphereGeometry must have a sufficient number of segments (such as 32,32). On the BufferGeometry, duplicate and edit the position attribute to generate 3 morphAttributes.position attributes (for example, a conical protrusion, horizontal compression, and vertical elongation).\n(2) Use MeshStandardMaterial or MeshPhongMaterial, with morphTargets: true.\n(3) id=\"morphWeight0\", id=\"morphWeight1\", and id=\"morphWeight2\": three <input type=\"range\" min=\"0\" max=\"1\" step=\"0.01\" /> elements that control morphTargetInfluences[0..2], respectively.\n(4) id=\"animateToggle\": a checkbox. When enabled, periodically change the weights using requestAnimationFrame (using sine waves or similar); when disabled, the weights are controlled only by the sliders.\n(5) id=\"wireframeToggle\": a checkbox that toggles material.wireframe.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  morphWeights: [number, number, number],  // Matches morphTargetInfluences; length is always 3\n  animating: boolean,\n  wireframe: boolean,\n  vertexCount: number                      // Number of vertices in the sphere's position attribute\n}\n\nOutput a single HTML file that can run when opened directly in a browser.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "three.js",
+    "morphTargets",
+    "BufferGeometry",
+    "animation",
+    "wireframe"
+  ],
+  "estimated_human_time_minutes": 180,
+  "physics_constraints": [
+    "Sphere with 3 morph targets",
+    "morphWeight0-2 animateToggle wireframeToggle",
+    "__3D_STATE__ morphWeights vertexCount"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "P108_lantern_scene_builder",
+  "title": "3D Scene Builder",
+  "domain": "creative",
+  "route": "B",
+  "difficulty": "L3",
+  "target_framework": "three.js",
+  "prompt": "Use Three.js to implement a 3D scene-building tool. Users can select lantern and chair models from the toolbar, click the ground to place them, and select, move, and delete placed objects.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to preload assets/Lantern.glb and assets/SheenChair.glb;\n(2) After loading is complete, cache the model data for subsequent cloning and placement;\n(3) After loading is complete, set window.__3D_STATE__.modelLoaded = true;\n\n[Scene Layout]\n(4) Create a ground plane (PlaneGeometry 20x20, light gray-green 0xC8D6C0), placed horizontally at y=0;\n(5) Add a grid guide (GridHelper, 20x20, gray) covering the ground;\n(6) Use OrbitControls to control the camera, with a default top-down viewing angle;\n(7) AmbientLight (0.5) + DirectionalLight (0.8) + HemisphereLight (sky blue/ground green);\n\n[Toolbar]\n(8) The top toolbar contains two buttons:\n  - \"Place Lantern\" (id=\"placeLanternBtn\")\n  - \"Place Chair\" (id=\"placeChairBtn\")\n(9) Clicking a toolbar button enters placement mode. At this point, change the mouse cursor to a crosshair and prompt the user to click the ground to place the object;\n(10) Click the same button again or press the Escape key to cancel placement mode;\n\n[Placement Interaction]\n(11) In placement mode, use Raycaster to detect the intersection between the mouse ray and the ground;\n(12) After clicking the ground, clone and place the corresponding model at the intersection position (Lantern scale 0.02, SheenChair scale 3);\n(13) Exit placement mode after placement;\n(14) For each object placed, objectCount += 1;\n\n[Selection and Operations]\n(15) In non-placement mode, click a placed object to select it;\n(16) The selected object receives an outline highlight effect (an emissive color or an edge/wireframe mode may be used);\n(17) After selecting an object, use the arrow keys (ArrowUp/Down/Left/Right) to move it by 0.5 units per keypress;\n(18) Press the Delete key to delete the selected object, objectCount -= 1;\n(19) Click an empty area to clear the selection;\n\n[HUD Display]\n(20) HUD in the upper-left corner:\n  - Number of placed objects (id=\"objectCount\")\n  - Current mode (id=\"currentMode\", \"browse\" / \"place_lantern\" / \"place_chair\")\n  - Selected object information (id=\"selectedInfo\", type + position, or \"None\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean (whether model preloading is complete)\n  - objectCount: number (total number of placed objects)\n  - currentMode: string (\"browse\" / \"place_lantern\" / \"place_chair\")\n  - selectedObject: { type: string, position: {x, y, z} } | null (selected object information)\n  - lanternCount: number (number of lanterns)\n  - chairCount: number (number of chairs)\n\nOutput a single standalone HTML file. Place this file in the same directory as the assets/ folder and run it through a local HTTP server.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [
+    "../../../assets/shared/Lantern.glb",
+    "../../../assets/shared/SheenChair.glb"
+  ],
+  "tags": [
+    "creative",
+    "scene-builder",
+    "GLTFLoader",
+    "drag-drop",
+    "selection",
+    "keyboard-controls",
+    "three.js"
+  ],
+  "estimated_human_time_minutes": 150,
+  "physics_constraints": [
+    "ground plane: 20x20 at y=0",
+    "arrow key movement: 0.5 units per press",
+    "Lantern scale: 0.02, SheenChair scale: 3"
+  ],
+  "difficulty_analysis": "L3: Preload and cache two models with GLTFLoader, clone and place models, detect ground intersections with Raycaster, select and highlight objects, move and delete objects using the keyboard, and manage mode switching."
+}

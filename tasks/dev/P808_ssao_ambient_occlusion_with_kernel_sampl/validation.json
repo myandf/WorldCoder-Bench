@@ -1,0 +1,1051 @@
+{
+  "task_id": "P808_ssao_ambient_occlusion_with_kernel_sampl",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:42:26.479Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 7,
+      "total": 9,
+      "percent": 77.8
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 11,
+      "total": 11,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 57,
+      "total": 57,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 77.8,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 57,
+    "total": 57,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 11,
+  "total": 11,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "SSAOScene",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "KernelSlider",
+      "found": true
+    },
+    {
+      "id": "A3",
+      "name": "RadiusSlider",
+      "found": true
+    },
+    {
+      "id": "A4",
+      "name": "BiasSlider",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "IntensitySlider",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "BlurCheckbox",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "ViewModeDropdown",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A9",
+      "name": "EffectComposer",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.depthTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.depthTextureActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.normalTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.normalTextureActive === true"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => typeof s.x === 'number' && typeof s.y === 'number' && typeof s.z === 'number' && s.z >= 0 && !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => typeof s.x === 'number' && typeof s.y === 'number' && typeof s.z === 'number' && s.z >= 0 && !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sceneObjectCount >= 8",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sceneObjectCount >= 8"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.noiseTextureSize === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.noiseTextureSize === 4"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.cameraPosition === 'object' && Math.abs(window.__3D_STATE__.cameraPosition.y - 5) < 1.0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.cameraPosition === 'object' && Math.abs(window.__3D_STATE__.cameraPosition.y - 5) < 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 32 && window.__3D_STATE__.radius === 1.5 && window.__3D_STATE__.bias === 0.025",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 32 && window.__3D_STATE__.radius === 1.5 && window.__3D_STATE__.bias === 0.025"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 16",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => s.z >= 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => s.z >= 0)"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => Math.sqrt(s.x*s.x + s.y*s.y + s.z*s.z) <= 1.01)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => Math.sqrt(s.x*s.x + s.y*s.y + s.z*s.z) <= 1.01)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.radius > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radius > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'combined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'combined'"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'ao_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'ao_only'"
+        },
+        {
+          "expression": "document.getElementById('select-viewmode').value === 'ao_only' || document.getElementById('select-viewmode').value === 'AO Only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('select-viewmode').value === 'ao_only' || document.getElementById('select-viewmode').value === 'AO Only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.depthTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.depthTextureActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.normalTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.normalTextureActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 5"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === false"
+        },
+        {
+          "expression": "document.getElementById('checkbox-blur').checked === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('checkbox-blur').checked === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'ao_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'ao_only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.aoIntensity > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.aoIntensity > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'ao_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'ao_only'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'depth_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'depth_only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.depthTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.depthTextureActive === true"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.bias > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bias > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.bias < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bias < 0.1"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'depth_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'depth_only'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.bias)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.bias)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'normals_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'normals_only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.normalTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.normalTextureActive === true"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T11",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 32",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 32"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.radius - 1.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.radius - 1.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.bias - 0.025) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.bias - 0.025) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.aoIntensity - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.aoIntensity - 1.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'combined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'combined'"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32"
+        },
+        {
+          "expression": "window.__3D_STATE__.lastResetFrame > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lastResetFrame > 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.depthTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.depthTextureActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.normalTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.normalTextureActive === true"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => typeof s.x === 'number' && typeof s.y === 'number' && typeof s.z === 'number' && s.z >= 0 && !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => typeof s.x === 'number' && typeof s.y === 'number' && typeof s.z === 'number' && s.z >= 0 && !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.sceneObjectCount >= 8",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.sceneObjectCount >= 8"
+        },
+        {
+          "expression": "window.__3D_STATE__.composerPassCount >= 3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.composerPassCount >= 3"
+        },
+        {
+          "expression": "window.__3D_STATE__.noiseTextureSize === 4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.noiseTextureSize === 4"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.cameraPosition === 'object' && Math.abs(window.__3D_STATE__.cameraPosition.y - 5) < 1.0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.cameraPosition === 'object' && Math.abs(window.__3D_STATE__.cameraPosition.y - 5) < 1.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 32 && window.__3D_STATE__.radius === 1.5 && window.__3D_STATE__.bias === 0.025",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 32 && window.__3D_STATE__.radius === 1.5 && window.__3D_STATE__.bias === 0.025"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 16",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => s.z >= 0)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => s.z >= 0)"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => !isNaN(s.x) && !isNaN(s.y) && !isNaN(s.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSamples.every(s => Math.sqrt(s.x*s.x + s.y*s.y + s.z*s.z) <= 1.01)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSamples.every(s => Math.sqrt(s.x*s.x + s.y*s.y + s.z*s.z) <= 1.01)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.radius > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.radius > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'combined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'combined'"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === true"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'ao_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'ao_only'"
+        },
+        {
+          "expression": "document.getElementById('select-viewmode').value === 'ao_only' || document.getElementById('select-viewmode').value === 'AO Only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('select-viewmode').value === 'ao_only' || document.getElementById('select-viewmode').value === 'AO Only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.depthTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.depthTextureActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.normalTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.normalTextureActive === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 5"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === false"
+        },
+        {
+          "expression": "document.getElementById('checkbox-blur').checked === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "document.getElementById('checkbox-blur').checked === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'ao_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'ao_only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.radius - 3.0) < 0.01"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.aoIntensity > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.aoIntensity > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'ao_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'ao_only'"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'depth_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'depth_only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.depthTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.depthTextureActive === true"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.aoIntensity - 2.5) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === false"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.bias > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bias > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.bias < 0.1",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.bias < 0.1"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'depth_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'depth_only'"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.bias)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.bias)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'normals_only'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'normals_only'"
+        },
+        {
+          "expression": "window.__3D_STATE__.normalTextureActive === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.normalTextureActive === true"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.bias - 0.05) < 0.001"
+        },
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 16",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 16"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T11",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.kernelSize === 32",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.kernelSize === 32"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.radius - 1.5) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.radius - 1.5) < 0.01"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.bias - 0.025) < 0.001",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.bias - 0.025) < 0.001"
+        },
+        {
+          "expression": "Math.abs(window.__3D_STATE__.aoIntensity - 1.0) < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "Math.abs(window.__3D_STATE__.aoIntensity - 1.0) < 0.01"
+        },
+        {
+          "expression": "window.__3D_STATE__.blurEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.blurEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.viewMode === 'combined'",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.viewMode === 'combined'"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.kernelSamples) && window.__3D_STATE__.kernelSamples.length === 32"
+        },
+        {
+          "expression": "window.__3D_STATE__.lastResetFrame > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.lastResetFrame > 0"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 7,
+    "total": 9,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": true
+      },
+      {
+        "id": "A3",
+        "pass": true
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": true
+      },
+      {
+        "id": "A9",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 5,
+      "total": 5
+    },
+    "L1": {
+      "pass": 0,
+      "total": 0
+    },
+    "L2": {
+      "pass": 52,
+      "total": 52
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 82775
+}

@@ -1,0 +1,699 @@
+{
+  "task_id": "P2728_heat_distortion_shader_around_glb_fire_a",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:22:26.190Z",
+  "html": "reference.html",
+  "consoleErrors": [],
+  "console_errors": [],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 2,
+      "total": 5,
+      "percent": 40
+    },
+    "sCov": {
+      "reached": 8,
+      "total": 8,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 7,
+      "total": 7,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 36,
+      "total": 36,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 40,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 36,
+    "total": 36,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 7,
+  "total": 7,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "CesiumMan",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "Flamingo",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "FireGroup",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "HUD",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "ToggleFlamingoBtn",
+      "found": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.cesiumManLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cesiumManLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelsCount === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelsCount === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === true && window.__3D_STATE__.distortionStrength === 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === true && window.__3D_STATE__.distortionStrength === 0.015"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireVisible === true && window.__3D_STATE__.fireLightIntensity === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === true && window.__3D_STATE__.fireLightIntensity === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && !isNaN(window.__3D_STATE__.shaderTimeUniform)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && !isNaN(window.__3D_STATE__.shaderTimeUniform)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.cesiumManPosition.x === 1.5 && window.__3D_STATE__.cesiumManPosition.y === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cesiumManPosition.x === 1.5 && window.__3D_STATE__.cesiumManPosition.y === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength === 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength === 0.015"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength >= 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength >= 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength <= 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength <= 0.05"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && window.__3D_STATE__.shaderTimeUniform > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && window.__3D_STATE__.shaderTimeUniform > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionFrequency === 30.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionFrequency === 30.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionStrength >= 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength >= 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength <= 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength <= 0.015"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.distortionStrength)",
+          "tier": "L1",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.distortionStrength)"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionRadius === 0.4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionRadius === 0.4"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoPosition.x === -1.5 && window.__3D_STATE__.flamingoPosition.y === 2.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoPosition.x === -1.5 && window.__3D_STATE__.flamingoPosition.y === 2.5"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.fireVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireLightIntensity === 0.2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireLightIntensity === 0.2"
+        },
+        {
+          "expression": "window.__3D_STATE__.cesiumManLoaded === true && window.__3D_STATE__.flamingoLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cesiumManLoaded === true && window.__3D_STATE__.flamingoLoaded === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 10",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 10"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.flamingoAnimPlaying === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoAnimPlaying === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoPosition.z === 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoPosition.z === 0"
+        },
+        {
+          "expression": "document.getElementById('hud') !== null",
+          "tier": "L1",
+          "passed": true,
+          "detail": "document.getElementById('hud') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength === 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength === 0.015"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireLightIntensity === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireLightIntensity === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionFrequency === 30.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionFrequency === 30.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionRadius === 0.4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionRadius === 0.4"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.cesiumManLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cesiumManLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelsCount === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelsCount === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === true && window.__3D_STATE__.distortionStrength === 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === true && window.__3D_STATE__.distortionStrength === 0.015"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireVisible === true && window.__3D_STATE__.fireLightIntensity === 2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === true && window.__3D_STATE__.fireLightIntensity === 2"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === false"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && !isNaN(window.__3D_STATE__.shaderTimeUniform)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && !isNaN(window.__3D_STATE__.shaderTimeUniform)"
+        },
+        {
+          "expression": "window.__3D_STATE__.frameCount > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.frameCount > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.cesiumManPosition.x === 1.5 && window.__3D_STATE__.cesiumManPosition.y === 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cesiumManPosition.x === 1.5 && window.__3D_STATE__.cesiumManPosition.y === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength === 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength === 0.015"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength >= 0.02",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength >= 0.02"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength <= 0.05",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength <= 0.05"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && window.__3D_STATE__.shaderTimeUniform > 0",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.shaderTimeUniform === 'number' && window.__3D_STATE__.shaderTimeUniform > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionFrequency === 30.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionFrequency === 30.0"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionStrength >= 0.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength >= 0.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength <= 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength <= 0.015"
+        },
+        {
+          "expression": "!isNaN(window.__3D_STATE__.distortionStrength)",
+          "tier": "L1",
+          "passed": true,
+          "detail": "!isNaN(window.__3D_STATE__.distortionStrength)"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionRadius === 0.4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionRadius === 0.4"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoPosition.x === -1.5 && window.__3D_STATE__.flamingoPosition.y === 2.5",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoPosition.x === -1.5 && window.__3D_STATE__.flamingoPosition.y === 2.5"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.fireVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireLightIntensity === 0.2",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireLightIntensity === 0.2"
+        },
+        {
+          "expression": "window.__3D_STATE__.cesiumManLoaded === true && window.__3D_STATE__.flamingoLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.cesiumManLoaded === true && window.__3D_STATE__.flamingoLoaded === true"
+        },
+        {
+          "expression": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 10",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__.frameCount === 'number' && window.__3D_STATE__.frameCount > 10"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.flamingoAnimPlaying === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoAnimPlaying === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoLoaded === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoLoaded === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.flamingoPosition.z === 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.flamingoPosition.z === 0"
+        },
+        {
+          "expression": "document.getElementById('hud') !== null",
+          "tier": "L1",
+          "passed": true,
+          "detail": "document.getElementById('hud') !== null"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.distortionEnabled === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionEnabled === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionStrength === 0.015",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionStrength === 0.015"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.fireLightIntensity === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.fireLightIntensity === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionFrequency === 30.0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionFrequency === 30.0"
+        },
+        {
+          "expression": "window.__3D_STATE__.distortionRadius === 0.4",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.distortionRadius === 0.4"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 2,
+    "total": 5,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 8,
+    "total": 8
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 4,
+      "total": 4
+    },
+    "L1": {
+      "pass": 5,
+      "total": 5
+    },
+    "L2": {
+      "pass": 27,
+      "total": 27
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 17506
+}

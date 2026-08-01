@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Sandstone Formation</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+canvas { display: block; }
+
+.hud {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  padding: 14px 18px;
+  border-radius: 10px;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+}
+
+#erosionPanel {
+  top: 16px;
+  left: 16px;
+}
+
+#erosionPanel label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+#erosionSlider {
+  width: 200px;
+  cursor: pointer;
+  accent-color: #DEB887;
+}
+
+#erosionValue {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #DEB887;
+}
+
+#crossSectionBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  transition: background 0.2s, border-color 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+#crossSectionBtn:hover {
+  background: rgba(50, 50, 50, 0.8);
+  border-color: rgba(255,255,255,0.6);
+}
+
+#crossSectionBtn.active {
+  background: rgba(100, 60, 20, 0.8);
+  border-color: #DEB887;
+}
+
+#layerInfo {
+  bottom: 16px;
+  left: 16px;
+  min-width: 220px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+#layerInfo .title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #DEB887;
+}
+
+#layerInfo .empty {
+  color: rgba(255,255,255,0.5);
+  font-style: italic;
+}
+
+#windDisplay {
+  bottom: 16px;
+  right: 16px;
+  text-align: center;
+  min-width: 140px;
+}
+
+#windDisplay .label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+}
+
+#windDisplay .direction {
+  font-size: 18px;
+  font-weight: 600;
+  color: #87CEEB;
+}
+
+#windDisplay .hint {
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 6px;
+}
+</style>
+</head>
+<body>
+
+<div id="erosionPanel" class="hud">
+  <label>Erosion Level: <span id="erosionPercent">0%</span></label>
+  <input type="range" id="erosionSlider" min="0" max="100" step="1" value="0">
+  <div id="erosionValue">Pristine formation</div>
+</div>
+
+<button id="crossSectionBtn">&#9986; Cross-Section</button>
+
+<div id="layerInfo" class="hud">
+  <div class="empty">Click a layer to inspect</div>
+</div>
+
+<div id="windDisplay" class="hud">
+  <div class="label">WIND DIRECTION</div>
+  <div class="direction" id="windDir">None</div>
+  <div class="hint">W A S D to change</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const LAYER_COLORS = ['#8B4513','#A0522D','#CD853F','#DEB887','#D2B48C','#F5DEB3'];
+const LAYER_ROUGHNESS = [0.95, 0.9, 0.85, 0.8, 0.75, 0.7];
+const LAYER_NAMES = ['Basal Conglomerate','Iron-Rich Sandstone','Cross-Bedded Sandstone','Fine Sandstone','Siltstone','Caprock'];
+const LAYER_AGES = [250, 220, 180, 150, 100, 65];
+const BASE_RADIUS = 2.5;
+const LAYER_HEIGHT = 0.5;
+const NUM_LAYERS = 6;
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+document.body.appendChild(renderer.domElement);
+
+// Scene
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87CEEB);
+scene.fog = new THREE.FogExp2(0x87CEEB, 0.02);
+
+// Camera
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 3, 8);
+camera.lookAt(0, 1.5, 0);
+
+// Controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.5, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 3;
+controls.maxDistance = 20;
+controls.update();
+
+// Lights
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+dirLight.position.set(5, 10, 5);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.set(1024, 1024);
+dirLight.shadow.camera.near = 0.5;
+dirLight.shadow.camera.far = 30;
+dirLight.shadow.camera.left = -8;
+dirLight.shadow.camera.right = 8;
+dirLight.shadow.camera.top = 8;
+dirLight.shadow.camera.bottom = -8;
+scene.add(dirLight);
+
+const ambLight = new THREE.AmbientLight(0xffffff, 0.3);
+scene.add(ambLight);
+
+const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0xC2B280, 0.2);
+scene.add(hemiLight);
+
+// Ground
+const groundGeo = new THREE.PlaneGeometry(20, 20);
+const groundMat = new THREE.MeshStandardMaterial({ color: 0xC2B280, roughness: 1.0, metalness: 0.0 });
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// Clipping plane
+const clippingPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
+
+// Layers
+const formationGroup = new THREE.Group();
+scene.add(formationGroup);
+
+const layers = [];
+const layerMaterials = [];
+
+for (let i = 0; i < NUM_LAYERS; i++) {
+  const geo = new THREE.CylinderGeometry(BASE_RADIUS, BASE_RADIUS, LAYER_HEIGHT, 48, 1);
+  const mat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(LAYER_COLORS[i]),
+    roughness: LAYER_ROUGHNESS[i],
+    metalness: 0.05,
+    side: THREE.DoubleSide,
+    clippingPlanes: [],
+  });
+  layerMaterials.push(mat);
+
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.y = 0.25 + i * LAYER_HEIGHT;
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.userData.layerIndex = i;
+  formationGroup.add(mesh);
+  layers.push(mesh);
+}
+
+// State
+let erosionLevel = 0;
+let crossSectionActive = false;
+let selectedLayer = -1;
+let windDirection = 'None';
+let windBias = { x: 0, z: 0 };
+
+// State object
+window.__3D_STATE__ = {
+  erosionLevel: 0,
+  layerCount: 6,
+  layerRadii: new Array(6).fill(BASE_RADIUS),
+  layerVisibility: new Array(6).fill(true),
+  crossSectionActive: false,
+  selectedLayer: -1,
+  selectedLayerName: '',
+  selectedLayerAge: 0,
+  windDirection: 'None',
+  windBias: { x: 0, z: 0 },
+  cameraPosition: { x: 0, y: 3, z: 8 },
+  layerRoughness: [...LAYER_ROUGHNESS],
+  totalVisibleVolume: 0,
+};
+
+// DOM refs
+const erosionSlider = document.getElementById('erosionSlider');
+const erosionPercent = document.getElementById('erosionPercent');
+const erosionValueEl = document.getElementById('erosionValue');
+const crossSectionBtn = document.getElementById('crossSectionBtn');
+const layerInfoEl = document.getElementById('layerInfo');
+const windDirEl = document.getElementById('windDir');
+
+// Erosion slider
+erosionSlider.addEventListener('input', (e) => {
+  erosionLevel = parseInt(e.target.value);
+  erosionPercent.textContent = erosionLevel + '%';
+  if (erosionLevel === 0) erosionValueEl.textContent = 'Pristine formation';
+  else if (erosionLevel < 30) erosionValueEl.textContent = 'Minor surface weathering';
+  else if (erosionLevel < 60) erosionValueEl.textContent = 'Moderate erosion';
+  else if (erosionLevel < 90) erosionValueEl.textContent = 'Severe erosion';
+  else erosionValueEl.textContent = 'Near-total erosion';
+  updateErosion();
+});
+
+// Cross-section toggle
+crossSectionBtn.addEventListener('click', () => {
+  crossSectionActive = !crossSectionActive;
+  crossSectionBtn.classList.toggle('active', crossSectionActive);
+  crossSectionBtn.textContent = crossSectionActive ? '✂ Cross-Section (ON)' : '✂ Cross-Section';
+  for (const mat of layerMaterials) {
+    mat.clippingPlanes = crossSectionActive ? [clippingPlane] : [];
+    mat.needsUpdate = true;
+  }
+});
+
+// Wind controls
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  if (key === 'w') { windDirection = 'North'; windBias = { x: 0, z: -0.2 }; }
+  else if (key === 's') { windDirection = 'South'; windBias = { x: 0, z: 0.2 }; }
+  else if (key === 'a') { windDirection = 'West'; windBias = { x: -0.2, z: 0 }; }
+  else if (key === 'd') { windDirection = 'East'; windBias = { x: 0.2, z: 0 }; }
+  else return;
+  windDirEl.textContent = windDirection;
+  updateErosion();
+});
+
+// Raycaster for layer selection
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+renderer.domElement.addEventListener('click', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const visibleLayers = layers.filter(l => l.visible);
+  const intersects = raycaster.intersectObjects(visibleLayers);
+
+  // Deselect previous
+  if (selectedLayer >= 0 && selectedLayer < NUM_LAYERS) {
+    layerMaterials[selectedLayer].emissive.setHex(0x000000);
+    layerMaterials[selectedLayer].emissiveIntensity = 0;
+  }
+
+  if (intersects.length > 0) {
+    const hit = intersects[0].object;
+    const idx = hit.userData.layerIndex;
+    selectedLayer = idx;
+    layerMaterials[idx].emissive.setHex(0xFFD700);
+    layerMaterials[idx].emissiveIntensity = 0.3;
+    updateLayerInfo(idx);
+  } else {
+    selectedLayer = -1;
+    updateLayerInfo(-1);
+  }
+});
+
+function getLayerErosionPercent(i) {
+  const erosionFactor = erosionLevel / 100;
+  const effectiveScale = 1 - erosionFactor * (1 + i * 0.15);
+  const clamped = Math.max(0, effectiveScale);
+  return Math.round((1 - clamped) * 100);
+}
+
+function updateLayerInfo(idx) {
+  if (idx < 0) {
+    layerInfoEl.innerHTML = '<div class="empty">Click a layer to inspect</div>';
+    return;
+  }
+  const erosionPct = getLayerErosionPercent(idx);
+  layerInfoEl.innerHTML = `
+    <div class="title">${LAYER_NAMES[idx]}</div>
+    <div>Layer: ${idx} of ${NUM_LAYERS - 1}</div>
+    <div>Age: ~${LAYER_AGES[idx]} Ma</div>
+    <div>Erosion: ${erosionPct}%</div>
+    <div>Roughness: ${LAYER_ROUGHNESS[idx]}</div>
+    <div style="margin-top:6px;width:14px;height:14px;border-radius:3px;display:inline-block;vertical-align:middle;background:${LAYER_COLORS[idx]};border:1px solid rgba(255,255,255,0.3)"></div>
+    <span style="font-size:11px;color:rgba(255,255,255,0.6);margin-left:6px">${LAYER_COLORS[idx]}</span>
+  `;
+}
+
+function updateErosion() {
+  const erosionFactor = erosionLevel / 100;
+
+  for (let i = 0; i < NUM_LAYERS; i++) {
+    const effectiveScale = 1 - erosionFactor * (1 + i * 0.15);
+    const clamped = Math.max(0, effectiveScale);
+
+    if (clamped < 0.05) {
+      layers[i].visible = false;
+    } else {
+      layers[i].visible = true;
+      let sx = clamped;
+      let sz = clamped;
+
+      // Wind bias
+      if (windDirection !== 'None') {
+        sx = Math.max(0, clamped - Math.abs(windBias.x) * erosionFactor * (1 + i * 0.1));
+        sz = Math.max(0, clamped - Math.abs(windBias.z) * erosionFactor * (1 + i * 0.1));
+        if (sx < 0.05 && sz < 0.05) {
+          layers[i].visible = false;
+          continue;
+        }
+      }
+
+      layers[i].scale.set(sx, 1, sz);
+    }
+  }
+
+  // Update selected layer info if visible
+  if (selectedLayer >= 0) {
+    if (!layers[selectedLayer].visible) {
+      layerMaterials[selectedLayer].emissive.setHex(0x000000);
+      selectedLayer = -1;
+      updateLayerInfo(-1);
+    } else {
+      updateLayerInfo(selectedLayer);
+    }
+  }
+}
+
+function updateState() {
+  const erosionFactor = erosionLevel / 100;
+  const radii = [];
+  const visibility = [];
+  let visibleCount = 0;
+  let totalVolume = 0;
+
+  for (let i = 0; i < NUM_LAYERS; i++) {
+    const effectiveScale = Math.max(0, 1 - erosionFactor * (1 + i * 0.15));
+    const effectiveRadius = BASE_RADIUS * effectiveScale;
+    const isVisible = layers[i].visible;
+
+    radii.push(parseFloat(effectiveRadius.toFixed(4)));
+    visibility.push(isVisible);
+    if (isVisible) {
+      visibleCount++;
+      totalVolume += effectiveRadius;
+    }
+  }
+
+  const s = window.__3D_STATE__;
+  s.erosionLevel = erosionLevel;
+  s.layerCount = visibleCount;
+  s.layerRadii = radii;
+  s.layerVisibility = visibility;
+  s.crossSectionActive = crossSectionActive;
+  s.selectedLayer = selectedLayer;
+  s.selectedLayerName = selectedLayer >= 0 ? LAYER_NAMES[selectedLayer] : '';
+  s.selectedLayerAge = selectedLayer >= 0 ? LAYER_AGES[selectedLayer] : 0;
+  s.windDirection = windDirection;
+  s.windBias = { ...windBias };
+  s.cameraPosition = {
+    x: parseFloat(camera.position.x.toFixed(3)),
+    y: parseFloat(camera.position.y.toFixed(3)),
+    z: parseFloat(camera.position.z.toFixed(3)),
+  };
+  s.layerRoughness = [...LAYER_ROUGHNESS];
+  s.totalVisibleVolume = parseFloat(totalVolume.toFixed(4));
+}
+
+// Animation
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  updateState();
+  renderer.render(scene, camera);
+}
+animate();
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,633 @@
+{
+  "task_id": "P378_multiplayer_sunglasses_try_on",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "Player1Model",
+      "type": "3d_object",
+      "semantic": "Robot model for Player 1 on the left side",
+      "locator_hints": [
+        "position.x ≈ -1.2"
+      ],
+      "checks": [
+        {
+          "expr": "window.__3D_STATE__.player1Style === -1",
+          "tier": "L1"
+        }
+      ],
+      "check_origin": "initial_state_expression"
+    },
+    {
+      "id": "A2",
+      "name": "Player2Model",
+      "type": "3d_object",
+      "semantic": "Robot model for Player 2 on the right side",
+      "locator_hints": [
+        "position.x ≈ 1.2"
+      ],
+      "checks": [
+        {
+          "expr": "window.__3D_STATE__.player2Style === -1",
+          "tier": "L1"
+        }
+      ],
+      "check_origin": "initial_state_expression"
+    },
+    {
+      "id": "A3",
+      "name": "P1StyleButton0",
+      "type": "dom_element",
+      "semantic": "Aviator style button for Player 1",
+      "locator_hints": [
+        "#p1-style-0"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p1-style-0\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A4",
+      "name": "P1StyleButton2",
+      "type": "dom_element",
+      "semantic": "Round style button for Player 1",
+      "locator_hints": [
+        "#p1-style-2"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p1-style-2\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A5",
+      "name": "P2StyleButton1",
+      "type": "dom_element",
+      "semantic": "Wayfarer style button for Player 2",
+      "locator_hints": [
+        "#p2-style-1"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p2-style-1\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A6",
+      "name": "P2StyleButton3",
+      "type": "dom_element",
+      "semantic": "Sport style button for Player 2",
+      "locator_hints": [
+        "#p2-style-3"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p2-style-3\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A7",
+      "name": "P1RemoveButton",
+      "type": "dom_element",
+      "semantic": "Remove glasses button for Player 1",
+      "locator_hints": [
+        "#p1-remove"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p1-remove\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A8",
+      "name": "P2RemoveButton",
+      "type": "dom_element",
+      "semantic": "Remove glasses button for Player 2",
+      "locator_hints": [
+        "#p2-remove"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p2-remove\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A9",
+      "name": "P1OpacitySlider",
+      "type": "dom_element",
+      "semantic": "Lens opacity slider for Player 1",
+      "locator_hints": [
+        "#p1-opacity"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p1-opacity\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A10",
+      "name": "P2OpacitySlider",
+      "type": "dom_element",
+      "semantic": "Lens opacity slider for Player 2",
+      "locator_hints": [
+        "#p2-opacity"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p2-opacity\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A11",
+      "name": "CompareToggle",
+      "type": "dom_element",
+      "semantic": "Compare mode toggle button",
+      "locator_hints": [
+        "#compare-toggle"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#compare-toggle\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A12",
+      "name": "ScreenshotButton",
+      "type": "dom_element",
+      "semantic": "Screenshot mode button",
+      "locator_hints": [
+        "#screenshot-btn"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#screenshot-btn\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A13",
+      "name": "P1CurrentLabel",
+      "type": "dom_element",
+      "semantic": "Current style label for Player 1",
+      "locator_hints": [
+        "#p1-current-label"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p1-current-label\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    },
+    {
+      "id": "A14",
+      "name": "P2CurrentLabel",
+      "type": "dom_element",
+      "semantic": "Current style label for Player 2",
+      "locator_hints": [
+        "#p2-current-label"
+      ],
+      "checks": [
+        {
+          "expr": "(() => { const hs=[\"#p2-current-label\"]; const all=Array.from(document.querySelectorAll('body *')); const text=(tag,value)=>all.some(el=>(!tag||el.tagName.toLowerCase()===tag)&&String(el.textContent||'').trim().toLowerCase().includes(value.toLowerCase())); return hs.some(raw=>{ const h=String(raw).trim(); if(!h)return false; try { if(document.querySelector(h))return true; } catch {} const id=h.replace(/^#/,''); if(/^[A-Za-z][\\w:.-]*$/.test(id)&&document.getElementById(id))return true; const quoted=h.match(/^(?:([a-z]+)\\s+)?(?:with\\s+)?text\\s+['\"]([^'\"]+)['\"]$/i)||h.match(/^([a-z]+)\\s+labeled\\s+['\"]([^'\"]+)['\"]$/i); if(quoted&&text((quoted[1]||'').toLowerCase(),quoted[2]))return true; const label=h.match(/^(.*?)(?:\\s+button|\\s+slider|\\s+panel)$/i); return label ? text('',label[1]) : text('',h); }); })()",
+          "tier": "L0"
+        }
+      ],
+      "check_origin": "dom_locator"
+    }
+  ],
+  "states": [
+    {
+      "id": "S0",
+      "name": "ModelsLoaded",
+      "conditions": [
+        "window.__3D_STATE__.modelsLoaded === true",
+        "window.__3D_STATE__.player1Style === -1",
+        "window.__3D_STATE__.player2Style === -1"
+      ]
+    },
+    {
+      "id": "S1",
+      "name": "P1AviatorEquipped",
+      "conditions": [
+        "window.__3D_STATE__.player1Style === 0",
+        "window.__3D_STATE__.player1GlassesVisible === true"
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "P2WayfarerEquipped",
+      "conditions": [
+        "window.__3D_STATE__.player2Style === 1",
+        "window.__3D_STATE__.player2GlassesVisible === true"
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "P1StyleChanged",
+      "conditions": [
+        "window.__3D_STATE__.player1Style === 2",
+        "window.__3D_STATE__.player1GlassesVisible === true"
+      ]
+    },
+    {
+      "id": "S4",
+      "name": "P1OpacityAdjusted",
+      "conditions": [
+        "window.__3D_STATE__.player1Opacity === 0.8"
+      ]
+    },
+    {
+      "id": "S5",
+      "name": "CompareModeActive",
+      "conditions": [
+        "window.__3D_STATE__.compareMode === true"
+      ]
+    },
+    {
+      "id": "S6",
+      "name": "P1GlassesRemoved",
+      "conditions": [
+        "window.__3D_STATE__.player1Style === -1",
+        "window.__3D_STATE__.player1GlassesVisible === false"
+      ]
+    },
+    {
+      "id": "S7",
+      "name": "ScreenshotModeActive",
+      "conditions": [
+        "window.__3D_STATE__.screenshotMode === true"
+      ]
+    },
+    {
+      "id": "S8",
+      "name": "P2SportViaKeyboard",
+      "conditions": [
+        "window.__3D_STATE__.player2Style === 3",
+        "window.__3D_STATE__.player2GlassesVisible === true"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "from": "S0",
+      "to": "S1",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#p1-style-0"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T2",
+      "from": "S1",
+      "to": "S2",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#p2-style-1"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T3",
+      "from": "S2",
+      "to": "S3",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#p1-style-2"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T4",
+      "from": "S3",
+      "to": "S4",
+      "severity": "P1",
+      "action": {
+        "type": "script",
+        "code": "document.getElementById('p1-opacity').value = 0.8; document.getElementById('p1-opacity').dispatchEvent(new Event('input', {bubbles: true}));"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T5",
+      "from": "S4",
+      "to": "S5",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#compare-toggle"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T6",
+      "from": "S5",
+      "to": "S6",
+      "severity": "P0",
+      "action": {
+        "type": "click_dom",
+        "selector": "#p1-remove"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T7",
+      "from": "S6",
+      "to": "S7",
+      "severity": "P1",
+      "action": {
+        "type": "click_dom",
+        "selector": "#screenshot-btn"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T8",
+      "from": "S7",
+      "to": "S8",
+      "severity": "P0",
+      "action": {
+        "type": "keyboard",
+        "key": "0"
+      },
+      "verifier": {
+        "type": "scene_probe",
+        "checks": [
+          {
+            "expr": "window.__3D_STATE__.player1Style !== before.player1Style || JSON.stringify(window.__3D_STATE__) !== JSON.stringify(before)",
+            "tier": "L2"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player1Style === 'number' && !isNaN(window.__3D_STATE__.player1Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.player2Style === 'number' && !isNaN(window.__3D_STATE__.player2Style)",
+            "tier": "L0"
+          },
+          {
+            "expr": "Array.isArray(window.__3D_STATE__.styleNames)",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.modelsLoaded === 'boolean'",
+            "tier": "L0"
+          },
+          {
+            "expr": "typeof window.__3D_STATE__.compareMode === 'boolean'",
+            "tier": "L0"
+          }
+        ]
+      }
+    }
+  ],
+  "rubric_metadata": {
+    "visibility": "public_dev",
+    "version": "contract-20260801-v3",
+    "normalization": "lossless_check_shape_and_duplicate_removal",
+    "strictness_gate": {
+      "all_states_have_executable_conditions": true,
+      "all_transitions_have_actions": true,
+      "all_transitions_have_assertions": true,
+      "tautological_assertions_rejected": true,
+      "reference_browser_validation_required": true,
+      "assertion_count": 48,
+      "all_affordances_have_executable_checks": true,
+      "affordance_check_origins": {
+        "dom_locator": 12,
+        "initial_state_expression": 2
+      }
+    }
+  }
+}

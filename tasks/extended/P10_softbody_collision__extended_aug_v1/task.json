@@ -1,0 +1,31 @@
+{
+  "id": "P10_softbody_collision__extended_aug_v1",
+  "title": "3D Soft-Body Collision and Deformation Simulation",
+  "domain": "physics",
+  "route": "C",
+  "difficulty": "L5",
+  "target_framework": "three.js",
+  "prompt": "Implement a 3D soft-body simulation using Three.js: two deformable elastic spheres fall onto the ground under gravity and collide with each other.\n\n[Three.js Import Method (Must Be Followed Strictly)]\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n\n[Soft-Body Model (Mass-Spring Tetrahedral Mesh)]\n\nEach elastic sphere consists of a tetrahedral mesh:\n- Use THREE.IcosahedronGeometry(1.0, 2) as the surface mesh (162 vertices)\n- Add an additional central mass point (centroid)\n- Connect the central mass point to every surface vertex with springs (radial springs)\n- Connect adjacent surface vertices with springs (surface springs)\n\nSpring parameters:\n- Stiffness k = 500 N/m (radial springs)\n- Stiffness k = 300 N/m (surface springs)\n- Damping d = 5.8\n- restLength = the original distance between the two endpoints at creation time\n\nEach vertex/mass point:\n- mass = 0.01 kg\n- Position + velocity state\n\nIntegration: Verlet Integration, dt = 0.002s\n  x_new = 2*x - x_prev + acceleration * dt²\n  5 substeps per frame\n\nInitial positions of the two spheres:\n- Sphere A: center at (-1.5, 5, 0), red\n- Sphere B: center at (1.5, 6, 0), blue\n\nCollision detection and response:\n1. Ground collision (y=0): if a vertex has y < 0, set y = 0, vy = -vy * 0.3\n2. Sphere-sphere collision: for every vertex of sphere A and every vertex of sphere B, if the distance < 0.1, apply mutually repulsive spring forces\n   F = k_contact * (0.1 - dist) * direction, k_contact = 1000\n\nPressure maintenance (volume-conservation approximation):\n- Each frame, calculate the current volume of each sphere (approximated using the cube of the average distance from the center to the surface: V ≈ 4/3 π r_avg³)\n- If the volume < original volume * 0.7, apply an outward expansion force to all surface vertices\n  F_pressure = pressure_coeff * (V0 - V) / V0 * outward_normal\n  pressure_coeff = 200\n\n[Rendering]\n(1) Two elastic spheres: each is a THREE.Mesh; update vertex positions and recompute normals every frame\n(2) Sphere A is red and semi-transparent (opacity=0.7); sphere B is blue and semi-transparent\n(3) Ground: gray grid\n(4) The internal spring network can be seen: mark the center point with a small sphere and draw radial springs with thin lines (optional toggle)\n(5) OrbitControls\n\n[HUD and Controls]\n(6) HUD:\n  - Sphere A center-of-mass position (id=\"posA\")\n  - Sphere B center-of-mass position (id=\"posB\")\n  - Sphere A current volume/original volume ratio (id=\"volRatioA\")\n  - Sphere B current volume/original volume ratio (id=\"volRatioB\")\n  - Simulation time (id=\"simTime\")\n\n(7) Reset button (id=\"resetBtn\")\n(8) Apply impulse button (id=\"pushBtn\"): apply a rightward impulse to sphere A so that the two spheres collide\n\n[State Exposure]\nwindow.__3D_STATE__:\n  - simTime: simulation time\n  - bodyA: { center:{x,y,z}, avgRadius, volumeRatio, speed, nodeCount, nodes(25 sampled):[{x,y,z}] }\n  - bodyB: { center:{x,y,z}, avgRadius, volumeRatio, speed, nodeCount, nodes(25 sampled):[{x,y,z}] }\n  - totalEnergy: total energy (spring potential energy + kinetic energy + gravitational potential energy)\n  - groundContacts: number of vertices in contact with the ground (combined total for both spheres)\n\nOutput a single standalone HTML file.",
+  "reference_images": [],
+  "reference_videos": [],
+  "required_assets": [],
+  "tags": [
+    "physics",
+    "softbody",
+    "deformation",
+    "collision",
+    "mass-spring",
+    "verlet",
+    "volume-preservation"
+  ],
+  "estimated_human_time_minutes": 480,
+  "physics_constraints": [
+    "Verlet integration with dt=0.002, 5 sub-steps per frame",
+    "Radial springs k=500, surface springs k=300, damping=5",
+    "Volume preservation: ratio should stay in [0.5, 1.5] range",
+    "Ground collision with restitution 0.3",
+    "Inter-body collision with contact spring k=1000",
+    "Total node count: 2 × (162+1) = 326",
+    "No NaN/Infinity in any node position"
+  ]
+}

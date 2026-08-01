@@ -1,0 +1,914 @@
+{
+  "task_id": "P2726_glb_robot_swarm_navigating_glb_obstacle_",
+  "split": "dev",
+  "timestamp": "2026-08-01T18:43:50.580Z",
+  "html": "reference.html",
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED"
+  ],
+  "console_errors": [
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED"
+  ],
+  "browser_version": "145.0.7632.6",
+  "coverage": {
+    "aCov": {
+      "found": 4,
+      "total": 8,
+      "percent": 50
+    },
+    "sCov": {
+      "reached": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "tCov": {
+      "passed": 10,
+      "total": 10,
+      "percent": 100
+    },
+    "vCov": {
+      "passed": 47,
+      "total": 47,
+      "percent": 100,
+      "policy": "unweighted_assertion_ratio"
+    }
+  },
+  "aCov": 50,
+  "sCov": 100,
+  "tCov": 100,
+  "vCov": 100,
+  "vCovStats": {
+    "passed": 47,
+    "total": 47,
+    "policy": "unweighted_assertion_ratio"
+  },
+  "passed": 10,
+  "total": 10,
+  "mode": "CHECK_PASS",
+  "affordances": [
+    {
+      "id": "A1",
+      "name": "SwarmAgents",
+      "found": false
+    },
+    {
+      "id": "A2",
+      "name": "GoalWatch",
+      "found": false
+    },
+    {
+      "id": "A3",
+      "name": "MazeWalls",
+      "found": false
+    },
+    {
+      "id": "A4",
+      "name": "StartButton",
+      "found": true
+    },
+    {
+      "id": "A5",
+      "name": "ResetButton",
+      "found": true
+    },
+    {
+      "id": "A6",
+      "name": "SpeedButton",
+      "found": true
+    },
+    {
+      "id": "A7",
+      "name": "HUD",
+      "found": true
+    },
+    {
+      "id": "A8",
+      "name": "GroundPlane",
+      "found": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelsLoaded.parrot === true && window.__3D_STATE__.modelsLoaded.watch === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelsLoaded.parrot === true && window.__3D_STATE__.modelsLoaded.watch === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentCount === 5",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentCount === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.agentPositions) && window.__3D_STATE__.agentPositions.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.agentPositions) && window.__3D_STATE__.agentPositions.length === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeWallCount > 30 && window.__3D_STATE__.mazeWallCount < 300",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeWallCount > 30 && window.__3D_STATE__.mazeWallCount < 300"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.arrivedCount === 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.arrivedCount === 0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.pathLengths) && window.__3D_STATE__.pathLengths.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.pathLengths) && window.__3D_STATE__.pathLengths.length === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.pathLengths.every(p => typeof p === 'number' && p > 0)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pathLengths.every(p => typeof p === 'number' && p > 0)"
+        },
+        {
+          "expression": "window.__3D_STATE__.goalPosition.x > 15 && window.__3D_STATE__.goalPosition.z > 15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.goalPosition.x > 15 && window.__3D_STATE__.goalPosition.z > 15"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationTime > 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationTime > 0.3"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && s >= 0 && s <= 15)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && s >= 0 && s <= 15)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "document.querySelector('#speedBtn').textContent.includes('2')",
+          "tier": "L1",
+          "passed": true,
+          "detail": "document.querySelector('#speedBtn').textContent.includes('2')"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationTime > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationTime > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => Math.abs(p.y - 0.5) < 2)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => Math.abs(p.y - 0.5) < 2)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentCount === 5",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentCount === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.obstaclesVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.obstaclesVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeWallCount > 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeWallCount > 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.obstaclesVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.obstaclesVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeWallCount > 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeWallCount > 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 4",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 4"
+        },
+        {
+          "expression": "document.querySelector('#speedBtn').textContent.includes('4')",
+          "tier": "L1",
+          "passed": true,
+          "detail": "document.querySelector('#speedBtn').textContent.includes('4')"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && !isNaN(s))",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && !isNaN(s))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.arrivedCount === 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.arrivedCount === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentArrived.every(a => a === false)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentArrived.every(a => a === false)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -19 && p.x <= -15 && p.z >= -19 && p.z <= -15)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -19 && p.x <= -15 && p.z >= -19 && p.z <= -15)"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationTime === 0 || window.__3D_STATE__.simulationTime < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationTime === 0 || window.__3D_STATE__.simulationTime < 0.01"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "T1",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null",
+          "tier": "L0",
+          "passed": true,
+          "detail": "typeof window.__3D_STATE__ === 'object' && window.__3D_STATE__ !== null"
+        },
+        {
+          "expression": "window.__3D_STATE__.modelsLoaded.parrot === true && window.__3D_STATE__.modelsLoaded.watch === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.modelsLoaded.parrot === true && window.__3D_STATE__.modelsLoaded.watch === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentCount === 5",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentCount === 5"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.agentPositions) && window.__3D_STATE__.agentPositions.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.agentPositions) && window.__3D_STATE__.agentPositions.length === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeWallCount > 30 && window.__3D_STATE__.mazeWallCount < 300",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeWallCount > 30 && window.__3D_STATE__.mazeWallCount < 300"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T2",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.arrivedCount === 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.arrivedCount === 0"
+        },
+        {
+          "expression": "Array.isArray(window.__3D_STATE__.pathLengths) && window.__3D_STATE__.pathLengths.length === 5",
+          "tier": "L0",
+          "passed": true,
+          "detail": "Array.isArray(window.__3D_STATE__.pathLengths) && window.__3D_STATE__.pathLengths.length === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.pathLengths.every(p => typeof p === 'number' && p > 0)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.pathLengths.every(p => typeof p === 'number' && p > 0)"
+        },
+        {
+          "expression": "window.__3D_STATE__.goalPosition.x > 15 && window.__3D_STATE__.goalPosition.z > 15",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.goalPosition.x > 15 && window.__3D_STATE__.goalPosition.z > 15"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T3",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationTime > 0.3",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationTime > 0.3"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && s >= 0 && s <= 15)",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && s >= 0 && s <= 15)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T4",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "document.querySelector('#speedBtn').textContent.includes('2')",
+          "tier": "L1",
+          "passed": true,
+          "detail": "document.querySelector('#speedBtn').textContent.includes('2')"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T5",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationTime > 0",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationTime > 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => Math.abs(p.y - 0.5) < 2)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => Math.abs(p.y - 0.5) < 2)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T6",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 2",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 2"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentCount === 5",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentCount === 5"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.y) && !isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T7",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.obstaclesVisible === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.obstaclesVisible === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeWallCount > 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeWallCount > 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T8",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.obstaclesVisible === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.obstaclesVisible === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.mazeWallCount > 30",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.mazeWallCount > 30"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => !isNaN(p.x) && !isNaN(p.z))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T9",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.speedMultiplier === 4",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.speedMultiplier === 4"
+        },
+        {
+          "expression": "document.querySelector('#speedBtn').textContent.includes('4')",
+          "tier": "L1",
+          "passed": true,
+          "detail": "document.querySelector('#speedBtn').textContent.includes('4')"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === true",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === true"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -20 && p.x <= 20 && p.z >= -20 && p.z <= 20)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && !isNaN(s))",
+          "tier": "L0",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentSpeeds.every(s => typeof s === 'number' && !isNaN(s))"
+        }
+      ],
+      "pre_checks": []
+    },
+    {
+      "id": "T10",
+      "severity": "P0",
+      "status": "PASS",
+      "checks": [
+        {
+          "expression": "window.__3D_STATE__.simulationRunning === false",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationRunning === false"
+        },
+        {
+          "expression": "window.__3D_STATE__.arrivedCount === 0",
+          "tier": "L1",
+          "passed": true,
+          "detail": "window.__3D_STATE__.arrivedCount === 0"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentArrived.every(a => a === false)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentArrived.every(a => a === false)"
+        },
+        {
+          "expression": "window.__3D_STATE__.agentPositions.every(p => p.x >= -19 && p.x <= -15 && p.z >= -19 && p.z <= -15)",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.agentPositions.every(p => p.x >= -19 && p.x <= -15 && p.z >= -19 && p.z <= -15)"
+        },
+        {
+          "expression": "window.__3D_STATE__.simulationTime === 0 || window.__3D_STATE__.simulationTime < 0.01",
+          "tier": "L2",
+          "passed": true,
+          "detail": "window.__3D_STATE__.simulationTime === 0 || window.__3D_STATE__.simulationTime < 0.01"
+        }
+      ],
+      "pre_checks": []
+    }
+  ],
+  "affordanceStats": {
+    "pass": 4,
+    "total": 8,
+    "results": [
+      {
+        "id": "A1",
+        "pass": false
+      },
+      {
+        "id": "A2",
+        "pass": false
+      },
+      {
+        "id": "A3",
+        "pass": false
+      },
+      {
+        "id": "A4",
+        "pass": true
+      },
+      {
+        "id": "A5",
+        "pass": true
+      },
+      {
+        "id": "A6",
+        "pass": true
+      },
+      {
+        "id": "A7",
+        "pass": true
+      },
+      {
+        "id": "A8",
+        "pass": false
+      }
+    ]
+  },
+  "stateStats": {
+    "reached": 10,
+    "total": 10
+  },
+  "tierStats": {
+    "L0": {
+      "pass": 6,
+      "total": 6
+    },
+    "L1": {
+      "pass": 10,
+      "total": 10
+    },
+    "L2": {
+      "pass": 31,
+      "total": 31
+    }
+  },
+  "l0Checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "l0_checks": [
+    {
+      "name": "L0_webgl_context",
+      "passed": true,
+      "detail": "Canvas with WebGL context exists"
+    },
+    {
+      "name": "L0_not_blank",
+      "passed": true,
+      "detail": "Canvas is not all-black"
+    },
+    {
+      "name": "L0_probe_exists",
+      "passed": true,
+      "detail": "window.__3D_STATE__ is an object"
+    }
+  ],
+  "failure_mode": "CHECK_PASS",
+  "duration_ms": 39625
+}

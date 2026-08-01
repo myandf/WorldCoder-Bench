@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Procedural Galaxy Nebula with Stork</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #050510;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #controlPanel {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 280px;
+      padding: 14px;
+      background: rgba(10, 10, 25, 0.78);
+      border: 1px solid rgba(140, 140, 255, 0.25);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(80, 80, 200, 0.18);
+      backdrop-filter: blur(6px);
+      z-index: 10;
+    }
+
+    #controlPanel h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      color: #d8d8ff;
+    }
+
+    .control-group {
+      margin-bottom: 10px;
+    }
+
+    .control-group label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #d0d0ff;
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button {
+      background: rgba(80, 60, 180, 0.85);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: rgba(110, 90, 220, 0.95);
+    }
+
+    #fpsDisplay {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #aaddff;
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #aaaad8;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div id="controlPanel">
+    <h3>Galaxy Nebula Controls</h3>
+
+    <div class="control-group">
+      <label for="densitySlider">Nebula Density</label>
+      <input id="densitySlider" type="range" min="0.1" max="3.0" step="0.1" value="1.0" />
+    </div>
+
+    <div class="control-group">
+      <label for="colorMixSlider">Color Mix</label>
+      <input id="colorMixSlider" type="range" min="0.0" max="1.0" step="0.05" value="0.5" />
+    </div>
+
+    <div class="control-group">
+      <label for="brightnessSlider">Brightness</label>
+      <input id="brightnessSlider" type="range" min="0.1" max="2.0" step="0.1" value="1.0" />
+    </div>
+
+    <div class="control-group">
+      <label for="speedSlider">Rotation Speed</label>
+      <input id="speedSlider" type="range" min="0.0" max="2.0" step="0.1" value="0.3" />
+    </div>
+
+    <div class="button-row">
+      <button id="toggleParticlesBtn">Toggle Particles</button>
+      <button id="resetBtn">Reset All</button>
+      <button id="pulseBtn">Pulse Effect</button>
+    </div>
+
+    <div id="fpsDisplay">FPS: 0</div>
+    <div class="hint">
+      Keyboard: [1] Cosmic Purple, [2] Neon Storm, [3] Calm Void, [P] Toggle Particles, [R] Reset
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#050510');
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2, 8);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0, 0);
+
+    const ambientLight = new THREE.AmbientLight('#4444aa', 0.3);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight('#ff8844', 1.5);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    const nebulaUniforms = {
+      uTime: { value: 0.0 },
+      uDensity: { value: 1.0 },
+      uColorMix: { value: 0.5 },
+      uRotationSpeed: { value: 0.3 },
+      uBrightness: { value: 1.0 }
+    };
+
+    const nebulaVertexShader = `
+      varying vec2 vUv;
+      varying vec3 vWorldPosition;
+      varying vec3 vNormal;
+      varying vec3 vLocalPosition;
+      uniform float uTime;
+
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
+        vLocalPosition = position;
+        vec4 worldPos = modelMatrix * vec4(position, 1.0);
+        vWorldPosition = worldPos.xyz;
+        gl_Position = projectionMatrix * viewMatrix * worldPos;
+      }
+    `;
+
+    const nebulaFragmentShader = `
+      precision highp float;
+
+      varying vec2 vUv;
+      varying vec3 vWorldPosition;
+      varying vec3 vNormal;
+      varying vec3 vLocalPosition;
+
+      uniform float uTime;
+      uniform float uDensity;
+      uniform float uColorMix;
+      uniform float uRotationSpeed;
+      uniform float uBrightness;
+
+      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 permute(vec4 x) { return mod289(((x*34.0)+10.0)*x); }
+      vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+      float snoise(vec3 v) {
+        const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+        const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+
+        vec3 i = floor(v + dot(v, C.yyy));
+        vec3 x0 = v - i + dot(i, C.xxx);
+
+        vec3 g = step(x0.yzx, x0.xyz);
+        vec3 l = 1.0 - g;
+        vec3 i1 = min(g.xyz, l.zxy);
+        vec3 i2 = max(g.xyz, l.zxy);
+
+        vec3 x1 = x0 - i1 + C.xxx;
+        vec3 x2 = x0 - i2 + C.yyy;
+        vec3 x3 = x0 - D.yyy;
+
+        i = mod289(i);
+        vec4 p = permute(permute(permute(
+                  i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+
+        float n_ = 1.0/7.0;
+        vec3 ns = n_ * D.wyz - D.xzx;
+
+        vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+
+        vec4 x_ = floor(j * ns.z);
+        vec4 y_ = floor(j - 7.0 * x_);
+
+        vec4 x = x_ * ns.x + ns.yyyy;
+        vec4 y = y_ * ns.x + ns.yyyy;
+        vec4 h = 1.0 - abs(x) - abs(y);
+
+        vec4 b0 = vec4(x.xy, y.xy);
+        vec4 b1 = vec4(x.zw, y.zw);
+
+        vec4 s0 = floor(b0)*2.0 + 1.0;
+        vec4 s1 = floor(b1)*2.0 + 1.0;
+        vec4 sh = -step(h, vec4(0.0));
+
+        vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+        vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+
+        vec3 p0 = vec3(a0.xy, h.x);
+        vec3 p1 = vec3(a0.zw, h.y);
+        vec3 p2 = vec3(a1.xy, h.z);
+        vec3 p3 = vec3(a1.zw, h.w);
+
+        vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+        p0 *= norm.x;
+        p1 *= norm.y;
+        p2 *= norm.z;
+        p3 *= norm.w;
+
+        vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+        m = m * m;
+        return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+      }
+
+      float fbm(vec3 p) {
+        float value = 0.0;
+        float amplitude = 0.5;
+        float frequency = 1.0;
+        for (int i = 0; i < 4; i++) {
+          value += amplitude * snoise(p * frequency);
+          frequency *= 2.0;
+          amplitude *= 0.5;
+        }
+        return value;
+      }
+
+      void main() {
+        vec3 p = vLocalPosition * 0.55;
+        float t = uTime * 0.25 + uRotationSpeed * 0.2;
+
+        vec3 swirlP = p;
+        swirlP.xy *= mat2(cos(t + p.z * 0.5), -sin(t + p.z * 0.5), sin(t + p.z * 0.5), cos(t + p.z * 0.5));
+        swirlP.xz *= mat2(cos(t * 0.8 + p.y * 0.4), -sin(t * 0.8 + p.y * 0.4), sin(t * 0.8 + p.y * 0.4), cos(t * 0.8 + p.y * 0.4));
+
+        float n1 = fbm(swirlP + vec3(t * 0.6, -t * 0.3, t * 0.4));
+        float n2 = fbm(swirlP * 1.7 - vec3(t * 0.4, t * 0.5, -t * 0.2));
+        float nebula = mix(n1, n2, 0.5 + 0.4 * sin(uColorMix * 3.14159));
+        nebula = nebula * 0.5 + 0.5;
+        nebula = pow(clamp(nebula * uDensity, 0.0, 1.5), 1.15);
+
+        vec3 deepPurple = vec3(0.4196, 0.0588, 0.6196);
+        vec3 hotPink    = vec3(1.0, 0.1765, 0.4824);
+        vec3 electricBlue = vec3(0.0, 0.6667, 1.0);
+
+        float band1 = smoothstep(0.15, 0.55, nebula);
+        float band2 = smoothstep(0.45, 0.9, nebula + (uColorMix - 0.5) * 0.35);
+
+        vec3 colorA = mix(deepPurple, hotPink, band1);
+        vec3 colorB = mix(colorA, electricBlue, band2);
+
+        float radial = length(vLocalPosition) / 4.0;
+        float edgeFade = pow(clamp(1.0 - radial, 0.0, 1.0), 1.8);
+
+        float sparkleNoise = snoise(vLocalPosition * 14.0 + vec3(uTime * 0.8));
+        float sparkle = step(0.94, sparkleNoise * 0.5 + 0.5) * 0.75;
+
+        float fresnel = pow(1.0 - abs(dot(normalize(vNormal), normalize(vec3(0.0, 0.0, 1.0)))), 2.0);
+
+        vec3 finalColor = colorB * (nebula * 1.4 + 0.25) * uBrightness;
+        finalColor += sparkle * vec3(1.0, 0.95, 1.0);
+        finalColor += fresnel * 0.12 * vec3(0.4, 0.6, 1.0);
+
+        float alpha = clamp(nebula * edgeFade * 0.85 + sparkle * 0.2, 0.0, 1.0);
+
+        gl_FragColor = vec4(finalColor, alpha);
+      }
+    `;
+
+    const nebulaGeometry = new THREE.IcosahedronGeometry(4, 5);
+    const nebulaMaterial = new THREE.ShaderMaterial({
+      uniforms: nebulaUniforms,
+      vertexShader: nebulaVertexShader,
+      fragmentShader: nebulaFragmentShader,
+      side: THREE.DoubleSide,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+
+    const nebulaMesh = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+    scene.add(nebulaMesh);
+
+    const particleCount = 3000;
+    const particleGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+
+    for (let i = 0; i < particleCount; i++) {
+      const u = Math.random();
+      const v = Math.random();
+      const theta = u * Math.PI * 2.0;
+      const phi = Math.acos(2.0 * v - 1.0);
+      const radius = Math.cbrt(Math.random()) * 6.0;
+
+      positions[i * 3 + 0] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = radius * Math.cos(phi);
+      positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+      sizes[i] = THREE.MathUtils.randFloat(0.01, 0.05);
+    }
+
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particleGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+    const particleMaterial = new THREE.PointsMaterial({
+      color: '#ffffff',
+      size: 0.04,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.8,
+      depthWrite: false
+    });
+
+    const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particleSystem);
+
+    let stork = null;
+    let mixer = null;
+    let storkLoaded = false;
+
+    const storkMaterialOverride = new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#ffffff'),
+      emissive: new THREE.Color('#6633ff'),
+      emissiveIntensity: 0.8,
+      metalness: 0.7,
+      roughness: 0.3
+    });
+
+    const loader = new GLTFLoader();
+    loader.load(
+      'Fox.glb',
+      (gltf) => {
+        stork = gltf.scene;
+
+        const box = new THREE.Box3().setFromObject(stork);
+        const size = new THREE.Vector3();
+        const center = new THREE.Vector3();
+        box.getSize(size);
+        box.getCenter(center);
+
+        const targetHeight = 1.5;
+        const scale = size.y > 0 ? targetHeight / size.y : 1.0;
+        stork.scale.setScalar(scale);
+
+        stork.updateMatrixWorld(true);
+        const boxScaled = new THREE.Box3().setFromObject(stork);
+        const centerScaled = new THREE.Vector3();
+        boxScaled.getCenter(centerScaled);
+
+        stork.position.sub(centerScaled);
+        stork.position.set(0, 0, 0);
+
+        stork.traverse((child) => {
+          if (child.isMesh) {
+            child.material = storkMaterialOverride;
+            child.castShadow = false;
+            child.receiveShadow = false;
+          }
+        });
+
+        scene.add(stork);
+
+        if (gltf.animations && gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(stork);
+          const action = mixer.clipAction(gltf.animations[0]);
+          action.play();
+        }
+
+        storkLoaded = true;
+      },
+      undefined,
+      (err) => {
+        console.warn('Failed to load Fox.glb', err);
+      }
+    );
+
+    const densitySlider = document.getElementById('densitySlider');
+    const colorMixSlider = document.getElementById('colorMixSlider');
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const speedSlider = document.getElementById('speedSlider');
+    const toggleParticlesBtn = document.getElementById('toggleParticlesBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const pulseBtn = document.getElementById('pulseBtn');
+    const fpsDisplay = document.getElementById('fpsDisplay');
+
+    let activePreset = 'default';
+    let isPulsing = false;
+    let pulseStart = 0;
+    let pulseBaseBrightness = 1.0;
+    let pulseTargetBrightness = 1.0;
+
+    function syncUniformsFromUI() {
+      nebulaUniforms.uDensity.value = parseFloat(densitySlider.value);
+      nebulaUniforms.uColorMix.value = parseFloat(colorMixSlider.value);
+      if (!isPulsing) {
+        nebulaUniforms.uBrightness.value = parseFloat(brightnessSlider.value);
+      }
+      nebulaUniforms.uRotationSpeed.value = parseFloat(speedSlider.value);
+    }
+
+    function setControls(density, colorMix, brightness, speed, presetName = 'default') {
+      densitySlider.value = density.toFixed(1);
+      colorMixSlider.value = colorMix.toFixed(2).replace(/0+$/, '').replace(/\.$/, '.0');
+      brightnessSlider.value = brightness.toFixed(1);
+      speedSlider.value = speed.toFixed(1);
+      activePreset = presetName;
+      isPulsing = false;
+      syncUniformsFromUI();
+    }
+
+    function resetAll() {
+      densitySlider.value = '1.0';
+      colorMixSlider.value = '0.5';
+      brightnessSlider.value = '1.0';
+      speedSlider.value = '0.3';
+      particleSystem.visible = true;
+      activePreset = 'default';
+      isPulsing = false;
+      syncUniformsFromUI();
+    }
+
+    function toggleParticles() {
+      particleSystem.visible = !particleSystem.visible;
+    }
+
+    function startPulse() {
+      pulseBaseBrightness = parseFloat(brightnessSlider.value);
+      pulseTargetBrightness = pulseBaseBrightness;
+      pulseStart = performance.now() * 0.001;
+      isPulsing = true;
+      nebulaUniforms.uBrightness.value = pulseBaseBrightness * 2.0;
+    }
+
+    densitySlider.addEventListener('input', () => {
+      nebulaUniforms.uDensity.value = parseFloat(densitySlider.value);
+      activePreset = 'default';
+    });
+
+    colorMixSlider.addEventListener('input', () => {
+      nebulaUniforms.uColorMix.value = parseFloat(colorMixSlider.value);
+      activePreset = 'default';
+    });
+
+    brightnessSlider.addEventListener('input', () => {
+      if (!isPulsing) {
+        nebulaUniforms.uBrightness.value = parseFloat(brightnessSlider.value);
+      }
+      activePreset = 'default';
+    });
+
+    speedSlider.addEventListener('input', () => {
+      nebulaUniforms.uRotationSpeed.value = parseFloat(speedSlider.value);
+      activePreset = 'default';
+    });
+
+    toggleParticlesBtn.addEventListener('click', toggleParticles);
+    resetBtn.addEventListener('click', resetAll);
+    pulseBtn.addEventListener('click', startPulse);
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      if (key === '1') {
+        setControls(2.0, 0.2, 1.2, 0.5, 'cosmic_purple');
+      } else if (key === '2') {
+        setControls(1.5, 0.8, 1.8, 1.0, 'neon_storm');
+      } else if (key === '3') {
+        setControls(0.5, 0.5, 0.6, 0.1, 'calm_void');
+      } else if (key === 'p') {
+        toggleParticles();
+      } else if (key === 'r') {
+        resetAll();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+    let frameCount = 0;
+    let fps = 0;
+    let fpsAccum = 0;
+    let fpsFrames = 0;
+    let fpsTimer = 0;
+
+    window.__3D_STATE__ = {
+      nebulaExists: true,
+      storkLoaded: false,
+      particlesVisible: true,
+      particleCount,
+      density: 1.0,
+      colorMix: 0.5,
+      brightness: 1.0,
+      rotationSpeed: 0.3,
+      nebulaRotationY: 0,
+      particleRotationY: 0,
+      elapsedTime: 0,
+      storkPositionY: 0,
+      cameraDistance: camera.position.length(),
+      isPulsing: false,
+      activePreset: 'default',
+      fps: 0,
+      frameCount: 0
+    };
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta = clock.getDelta();
+      const elapsed = clock.getElapsedTime();
+      frameCount++;
+
+      controls.update();
+
+      nebulaUniforms.uTime.value += delta * nebulaUniforms.uRotationSpeed.value;
+      nebulaMesh.rotation.y += nebulaUniforms.uRotationSpeed.value * delta;
+      particleSystem.rotation.y += -0.5 * nebulaUniforms.uRotationSpeed.value * delta;
+
+      if (mixer) {
+        mixer.update(delta);
+      } else if (stork) {
+        stork.position.y = Math.sin(elapsed * 1.2) * 0.2;
+      }
+
+      if (isPulsing) {
+        const now = performance.now() * 0.001;
+        const pulseElapsed = now - pulseStart;
+        if (pulseElapsed <= 1.0) {
+          nebulaUniforms.uBrightness.value = pulseBaseBrightness * 2.0;
+        } else if (pulseElapsed <= 1.5) {
+          const t = (pulseElapsed - 1.0) / 0.5;
+          nebulaUniforms.uBrightness.value = THREE.MathUtils.lerp(pulseBaseBrightness * 2.0, pulseTargetBrightness, t);
+        } else {
+          nebulaUniforms.uBrightness.value = pulseTargetBrightness;
+          isPulsing = false;
+        }
+      }
+
+      fpsAccum += delta;
+      fpsFrames++;
+      fpsTimer += delta;
+      if (fpsTimer >= 0.5) {
+        fps = fpsFrames / fpsAccum;
+        fpsDisplay.textContent = `FPS: ${fps.toFixed(1)}`;
+        fpsAccum = 0;
+        fpsFrames = 0;
+        fpsTimer = 0;
+      }
+
+      const storkWorldPos = new THREE.Vector3();
+      if (stork) stork.getWorldPosition(storkWorldPos);
+
+      window.__3D_STATE__ = {
+        nebulaExists: !!nebulaMesh && scene.children.includes(nebulaMesh),
+        storkLoaded: storkLoaded,
+        particlesVisible: particleSystem.visible,
+        particleCount: particleCount,
+        density: nebulaUniforms.uDensity.value,
+        colorMix: nebulaUniforms.uColorMix.value,
+        brightness: nebulaUniforms.uBrightness.value,
+        rotationSpeed: nebulaUniforms.uRotationSpeed.value,
+        nebulaRotationY: nebulaMesh.rotation.y,
+        particleRotationY: particleSystem.rotation.y,
+        elapsedTime: nebulaUniforms.uTime.value,
+        storkPositionY: stork ? storkWorldPos.y : 0,
+        cameraDistance: camera.position.length(),
+        isPulsing: isPulsing,
+        activePreset: activePreset,
+        fps: fps,
+        frameCount: frameCount
+      };
+
+      renderer.render(scene, camera);
+    }
+
+    syncUniformsFromUI();
+    animate();
+  </script>
+</body>
+</html>
