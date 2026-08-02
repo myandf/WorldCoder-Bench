@@ -9,7 +9,7 @@ npx playwright install chromium
 ./code/run_eval.sh --split dev --task <task-id> --html-path <generated.html> --offline
 ```
 
-`code/stateprobe/` contains the action executor, state probe, checkers,
-sandbox, and report logic. `code/vendor/three/` supports offline Three.js
-loading. Evaluation is refused for Core, Extended, and Robust because their
-contracts are private.
+`code/stateprobe/` contains the action executor, state probe, checkers, and
+report logic. `code/vendor/three/` supports offline Three.js loading.
+Evaluation is refused for Core, Extended, and Robust because their contracts
+are private.

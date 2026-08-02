@@ -45,6 +45,3 @@ It is a deterministic local reconstruction with the assets required by its
 public tasks. Complete official frozen 2026 membership is not independently
 verified. Twelve source gaps are represented by controlled task/contract
 augmentations.
-
-Do not add or publish `WorldCoder-Bench-evaluation-private`, hidden contracts,
-model outputs, screenshots, trajectories, or raw model reports.
