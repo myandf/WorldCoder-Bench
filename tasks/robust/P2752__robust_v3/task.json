@@ -1,7 +1,6 @@
 {
   "id": "P2752__robust_v3",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarConcept.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

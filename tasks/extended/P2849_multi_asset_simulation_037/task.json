@@ -1,7 +1,6 @@
 {
   "id": "P2849_multi_asset_simulation_037",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/WaterBottle.glb"

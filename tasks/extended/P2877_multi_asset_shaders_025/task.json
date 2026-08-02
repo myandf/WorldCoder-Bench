@@ -1,7 +1,6 @@
 {
   "id": "P2877_multi_asset_shaders_025",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/PrimaryIonDrive.glb",
     "../../../assets/shared/IridescenceAbalone.glb",

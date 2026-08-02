@@ -1,7 +1,6 @@
 {
   "id": "P2756__robust_v2",
   "domain": "physics",
-  "difficulty": "L6",
   "title": "Sky Lantern Migration Physics Lab",
   "description": "A physics sandbox where the user manages a flock of storks carrying lanterns across a pond, adjusting mass, buoyancy, and wind forces to guide them safely. A duck floats on the pond below acting as a movable target checkpoint. The user must balance momentum conservation, gravitational potential energy, and drag forces across multiple coupled inputs while using undo/redo to refine trajectories.",
   "assets": [

@@ -1,7 +1,6 @@
 {
   "id": "P2764__robust_v2",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/CarConcept.glb"

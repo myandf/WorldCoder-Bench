@@ -1,7 +1,6 @@
 {
   "id": "P2806_multi_asset_game_034",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ToyCar.glb",
     "../../../assets/shared/CarbonFibre.glb"

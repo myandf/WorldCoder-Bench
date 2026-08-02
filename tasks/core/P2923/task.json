@@ -1,7 +1,6 @@
 {
   "id": "P2923",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SpecularSilkPouf.glb",
     "../../../assets/shared/bath_day.glb"

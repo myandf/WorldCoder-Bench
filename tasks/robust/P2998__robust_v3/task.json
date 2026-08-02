@@ -1,7 +1,6 @@
 {
   "id": "P2998__robust_v3",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnisotropyBarnLamp.glb",
     "../../../assets/shared/GlassBrokenWindow.glb"

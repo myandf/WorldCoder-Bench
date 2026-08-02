@@ -1,7 +1,6 @@
 {
   "id": "P3109__robust_v3",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ClearCoatCarPaint.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

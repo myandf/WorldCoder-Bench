@@ -1,7 +1,6 @@
 {
   "id": "P3029__robust_v3",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ClearCoatCarPaint.glb",
     "../../../assets/shared/GlamVelvetSofa.glb"

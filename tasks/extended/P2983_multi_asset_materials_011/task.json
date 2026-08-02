@@ -1,7 +1,6 @@
 {
   "id": "P2983_multi_asset_materials_011",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

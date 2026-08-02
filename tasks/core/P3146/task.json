@@ -1,7 +1,6 @@
 {
   "id": "P3146",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/Duck.glb",

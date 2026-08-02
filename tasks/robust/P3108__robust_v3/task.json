@@ -1,7 +1,6 @@
 {
   "id": "P3108__robust_v3",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DispersionTest.glb",
     "../../../assets/shared/SunglassesKhronos.glb",

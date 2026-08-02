@@ -1,7 +1,6 @@
 {
   "id": "P3097_multi_asset_graphics_005",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassBrokenWindow.glb",
     "../../../assets/shared/ScatteringSkull.glb",

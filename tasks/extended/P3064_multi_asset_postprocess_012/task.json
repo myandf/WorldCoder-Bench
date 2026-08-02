@@ -1,7 +1,6 @@
 {
   "id": "P3064_multi_asset_postprocess_012",
   "domain": "postprocess",
-  "difficulty": "L6",
   "title": "Dragon Essence Forge — Post-Process Alchemy",
   "description": "Two dragons face each other on pedestals: the Attenuation Dragon absorbs light while the Dispersion Dragon refracts it. The user manipulates a shared post-processing pipeline of six chained effects, balancing a conservation law where total visual energy across both dragons must remain constant. Adjusting bloom on one dragon steals luminance from the other, requiring careful multi-input coupling, with full undo/redo support.",
   "assets": [

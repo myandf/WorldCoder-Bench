@@ -1,7 +1,6 @@
 {
   "id": "P3123_multi_asset_graphics_031",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/AnisotropyBarnLamp.glb"

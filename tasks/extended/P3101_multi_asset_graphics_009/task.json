@@ -1,7 +1,6 @@
 {
   "id": "P3101_multi_asset_graphics_009",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/GlassHurricaneCandleHolder.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

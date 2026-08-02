@@ -1,7 +1,6 @@
 {
   "id": "P3099_multi_asset_graphics_007",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

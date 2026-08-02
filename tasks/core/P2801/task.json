@@ -1,7 +1,6 @@
 {
   "id": "P2801",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/ScatteringSkull.glb"

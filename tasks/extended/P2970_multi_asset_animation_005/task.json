@@ -1,7 +1,6 @@
 {
   "id": "P2970_multi_asset_animation_005",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/RobotExpressive.glb"

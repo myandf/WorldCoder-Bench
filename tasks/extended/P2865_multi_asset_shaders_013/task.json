@@ -1,7 +1,6 @@
 {
   "id": "P2865_multi_asset_shaders_013",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/ScatteringSkull.glb"

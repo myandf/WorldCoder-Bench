@@ -1,7 +1,6 @@
 {
   "id": "P3148_multi_asset_chemistry-lab_021",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Spectral Dispersion Analysis Lab",
   "description": "The user operates a virtual chemistry lab where the AnisotropyBarnLamp serves as an adjustable broadband light source illuminating a prism apparatus (DispersionTest). The user must calibrate the lamp intensity, angle, and wavelength filters across multiple coupled parameters to separate a target spectral pattern, while conserving total photon energy across all output channels. Full undo/redo support lets the user backtrack through their calibration steps.",
   "assets": [

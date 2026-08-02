@@ -1,7 +1,6 @@
 {
   "id": "P3114_multi_asset_graphics_022",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/LeePerrySmith.glb",
     "../../../assets/shared/Fox.glb"

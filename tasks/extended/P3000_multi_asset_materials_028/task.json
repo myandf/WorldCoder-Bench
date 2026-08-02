@@ -1,7 +1,6 @@
 {
   "id": "P3000_multi_asset_materials_028",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/GlassVaseFlowers.glb",
     "../../../assets/shared/ScatteringSkull.glb",

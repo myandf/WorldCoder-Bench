@@ -1,7 +1,6 @@
 {
   "id": "P3036_multi_asset_architecture_024",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/Avocado.glb"

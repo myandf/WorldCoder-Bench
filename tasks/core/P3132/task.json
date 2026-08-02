@@ -1,7 +1,6 @@
 {
   "id": "P3132",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

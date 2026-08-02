@@ -1,7 +1,6 @@
 {
   "id": "P2742_multi_asset_physics_010",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/LeePerrySmith.glb"

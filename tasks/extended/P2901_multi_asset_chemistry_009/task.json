@@ -1,7 +1,6 @@
 {
   "id": "P2901_multi_asset_chemistry_009",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnisotropyBarnLamp.glb",
     "../../../assets/shared/GlassVaseFlowers.glb"

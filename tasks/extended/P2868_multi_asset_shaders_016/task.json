@@ -1,7 +1,6 @@
 {
   "id": "P2868_multi_asset_shaders_016",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BoomBox.glb",
     "../../../assets/shared/InterpolationTest.glb"

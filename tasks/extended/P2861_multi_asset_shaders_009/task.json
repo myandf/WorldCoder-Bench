@@ -1,7 +1,6 @@
 {
   "id": "P2861_multi_asset_shaders_009",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Quantum Forge: Shader Energy Coupling",
   "description": "A PrimaryIonDrive hovers above a Corset acting as an energy conduit. The user manipulates custom shader parameters on both objects—adjusting fresnel glow, displacement waves, chromatic aberration, and dissolve thresholds—to achieve a target energy resonance state. Each shader parameter on one object is coupled to parameters on the other, requiring careful multi-input balancing with full undo/redo support.",
   "assets": [

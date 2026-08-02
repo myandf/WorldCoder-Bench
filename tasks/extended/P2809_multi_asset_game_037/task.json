@@ -1,7 +1,6 @@
 {
   "id": "P2809_multi_asset_game_037",
   "domain": "game",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/RobotExpressive.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3138_multi_asset_chemistry-lab_011",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/DirectionalLight.glb",

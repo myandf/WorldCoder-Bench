@@ -1,7 +1,6 @@
 {
   "id": "P2984__robust_v1",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DispersionTest.glb",
     "../../../assets/shared/CarbonFibre.glb"

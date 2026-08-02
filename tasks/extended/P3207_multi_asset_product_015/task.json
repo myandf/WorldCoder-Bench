@@ -1,7 +1,6 @@
 {
   "id": "P3207_multi_asset_product_015",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CesiumMilkTruck.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",

@@ -1,7 +1,6 @@
 {
   "id": "P2989__robust_v2",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassBrokenWindow.glb",
     "../../../assets/shared/ChairDamaskPurplegold.glb"

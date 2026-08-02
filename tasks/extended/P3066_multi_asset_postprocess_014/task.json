@@ -1,7 +1,6 @@
 {
   "id": "P3066_multi_asset_postprocess_014",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/ABeautifulGame.glb"

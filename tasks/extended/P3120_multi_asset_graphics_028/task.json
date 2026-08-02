@@ -1,7 +1,6 @@
 {
   "id": "P3120_multi_asset_graphics_028",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/IridescenceLamp.glb",
     "../../../assets/shared/ClearCoatCarPaint.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2863_multi_asset_shaders_011",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/RobotExpressive.glb",

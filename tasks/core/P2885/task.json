@@ -1,7 +1,6 @@
 {
   "id": "P2885",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/Duck.glb"

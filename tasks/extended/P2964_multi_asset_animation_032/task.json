@@ -1,7 +1,6 @@
 {
   "id": "P2964_multi_asset_animation_032",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/BoomBox.glb",

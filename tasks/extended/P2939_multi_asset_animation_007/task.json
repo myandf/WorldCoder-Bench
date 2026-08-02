@@ -1,7 +1,6 @@
 {
   "id": "P2939_multi_asset_animation_007",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/Lantern.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2741_multi_asset_physics_009",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/Fox.glb"

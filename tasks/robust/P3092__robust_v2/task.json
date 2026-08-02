@@ -1,7 +1,6 @@
 {
   "id": "P3092__robust_v2",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/Corset.glb"

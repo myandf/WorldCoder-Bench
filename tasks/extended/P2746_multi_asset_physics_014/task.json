@@ -1,7 +1,6 @@
 {
   "id": "P2746_multi_asset_physics_014",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/Corset.glb",

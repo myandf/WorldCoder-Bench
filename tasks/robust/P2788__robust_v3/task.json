@@ -1,7 +1,6 @@
 {
   "id": "P2788__robust_v3",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RiggedFigure.glb",
     "../../../assets/shared/steampunk_camera.glb"

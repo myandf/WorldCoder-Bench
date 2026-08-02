@@ -1,7 +1,6 @@
 {
   "id": "P2975_multi_asset_materials_003",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassVaseFlowers.glb",
     "../../../assets/shared/IridescenceAbalone.glb"

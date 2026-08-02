@@ -1,7 +1,6 @@
 {
   "id": "P2947_multi_asset_animation_015",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BoomBox.glb",
     "../../../assets/shared/Fox.glb"

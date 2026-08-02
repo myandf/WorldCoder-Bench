@@ -1,7 +1,6 @@
 {
   "id": "P2777_multi_asset_game_005",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarConcept.glb",
     "../../../assets/shared/ScatteringSkull.glb"

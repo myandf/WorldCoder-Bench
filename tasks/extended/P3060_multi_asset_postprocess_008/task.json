@@ -1,7 +1,6 @@
 {
   "id": "P3060_multi_asset_postprocess_008",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnisotropyBarnLamp.glb",
     "../../../assets/shared/RiggedFigure.glb"

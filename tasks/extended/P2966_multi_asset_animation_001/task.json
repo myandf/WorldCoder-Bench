@@ -1,7 +1,6 @@
 {
   "id": "P2966_multi_asset_animation_001",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/InterpolationTest.glb",

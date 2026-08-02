@@ -1,7 +1,6 @@
 {
   "id": "P3077_multi_asset_postprocess_025",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/DiffuseTransmissionPlant.glb",

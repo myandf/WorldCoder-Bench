@@ -1,7 +1,6 @@
 {
   "id": "P3087__robust_v2",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Corset.glb",
     "../../../assets/shared/RobotExpressive.glb"

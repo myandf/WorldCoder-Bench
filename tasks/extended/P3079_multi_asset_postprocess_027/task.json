@@ -1,7 +1,6 @@
 {
   "id": "P3079_multi_asset_postprocess_027",
   "domain": "postprocess",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/CarbonFibre.glb"

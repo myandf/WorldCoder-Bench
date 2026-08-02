@@ -1,7 +1,6 @@
 {
   "id": "P2821_multi_asset_simulation_009",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RiggedFigure.glb",
     "../../../assets/shared/CarbonFibre.glb"

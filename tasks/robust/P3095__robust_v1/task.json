@@ -1,7 +1,6 @@
 {
   "id": "P3095__robust_v1",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/PotOfCoals.glb",
     "../../../assets/shared/SpecularSilkPouf.glb"

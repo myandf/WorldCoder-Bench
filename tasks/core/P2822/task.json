@@ -1,7 +1,6 @@
 {
   "id": "P2822",
   "domain": "animation",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/CesiumMan.glb"

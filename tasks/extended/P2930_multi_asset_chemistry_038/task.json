@@ -1,7 +1,6 @@
 {
   "id": "P2930_multi_asset_chemistry_038",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Corset.glb",
     "../../../assets/shared/ABeautifulGame.glb"

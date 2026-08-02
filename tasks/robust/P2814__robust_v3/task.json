@@ -1,7 +1,6 @@
 {
   "id": "P2814__robust_v3",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/CesiumMan.glb"

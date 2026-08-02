@@ -1,7 +1,6 @@
 {
   "id": "P2914_multi_asset_chemistry_022",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/RobotExpressive.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3047_multi_asset_architecture_035",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

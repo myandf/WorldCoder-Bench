@@ -1,7 +1,6 @@
 {
   "id": "P2813__robust_v1",
   "domain": "animation",
-  "difficulty": "L6",
   "title": "Venetian Automaton Workshop",
   "description": "The user operates a steampunk workshop where a mechanical gear system powers an enchanted Venetian mask that animates a puppet figure (Kira). By coupling gear speeds, mask energy channels, and puppet joint controls, the user must choreograph a carnival dance sequence while conserving a finite pool of mechanical energy across all three subsystems, with full undo/redo support.",
   "assets": [

@@ -1,7 +1,6 @@
 {
   "id": "P2781",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CesiumMan.glb",
     "../../../assets/shared/ToyCar.glb"

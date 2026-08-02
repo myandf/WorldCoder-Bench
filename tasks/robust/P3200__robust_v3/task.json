@@ -1,7 +1,6 @@
 {
   "id": "P3200__robust_v3",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/AntiqueCamera.glb"

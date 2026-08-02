@@ -3,7 +3,6 @@
   "title": "DNA Double Helix and Base-Pair Sequence",
   "domain": "molecular",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Implement a DNA double helix using Three.js: the two backbones are parametric helical curves, with base pairs connecting the two strands.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Geometry and Sequence]\n(1) Double-helix backbone: two helical curves (for example, radius r and a phase difference of π), sampled along the curves using tubes or thin cylinders.\n(2) Include a total of 20 base pairs. Hard-code a sequence string such as \"ATCGATCGAATCGATCGATCG\" (length 20), and map each position as follows: use red-green for A-T and blue-yellow for G-C (the colors may be fine-tuned, but they must remain distinguishable).\n(3) Connect the corresponding sampled points on the two strands for each base pair using a short line or cylinder.\n\n[Interaction]\n(4) A rotation-speed slider with id=\"rotSpeed\" (controls the overall self-rotation around the axis or scene rotation).\n(5) A base-pair spacing slider with id=\"spacing\" that changes the vertical spacing between adjacent bases in the helix.\n(6) Clicking a base pair highlights it and displays its index and base character (A/T/G/C) in the DOM (for example, in an element with id=\"baseInfo\" or a fixed area on the page).\n(7) A button with id=\"unwindBtn\": plays or toggles an \"unwinding\" animation that separates the two strands along the axis (isUnwinding is true, or the animation progress is reflected by the state).\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - basePairCount: number (20)\n  - sequence: string (the 20-character sequence above)\n  - rotSpeed: number\n  - spacing: number\n  - selectedBase: number | null (0–19 or null)\n  - isUnwinding: boolean\n  - helixRadius: number (the helix radius parameter)\n\nOutput a single HTML file.",
   "reference_images": [],
@@ -18,6 +17,5 @@
     "animation",
     "three.js"
   ],
-  "estimated_human_time_minutes": 270,
-  "difficulty_analysis": "L4: Double-helix parametric equations, sequence and color mapping for 20 pairs, click picking, unwinding animation, and slider integration."
+  "estimated_human_time_minutes": 270
 }

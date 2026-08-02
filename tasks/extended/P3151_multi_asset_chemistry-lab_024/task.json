@@ -1,7 +1,6 @@
 {
   "id": "P3151_multi_asset_chemistry-lab_024",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/IridescenceLamp.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2773__robust_v2",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BoomBox.glb",
     "../../../assets/shared/RobotExpressive.glb",

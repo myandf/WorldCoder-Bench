@@ -1,7 +1,6 @@
 {
   "id": "P2875__robust_v3",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Thermal Radiance Greenhouse",
   "description": "A glowing pot of coals radiates heat energy that feeds a translucent plant through custom shaders. The user manipulates coal intensity, wind direction, and spectral filters to grow the plant while conserving a fixed pool of thermal energy across multiple shader channels. Undo/redo lets the user backtrack through shader parameter states.",
   "assets": [

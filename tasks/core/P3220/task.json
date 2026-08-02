@@ -1,7 +1,6 @@
 {
   "id": "P3220",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/space_ship_hallway.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

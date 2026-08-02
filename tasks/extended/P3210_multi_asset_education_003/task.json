@@ -1,7 +1,6 @@
 {
   "id": "P3210_multi_asset_education_003",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Lantern.glb",
     "../../../assets/shared/LittlestTokyo.glb"

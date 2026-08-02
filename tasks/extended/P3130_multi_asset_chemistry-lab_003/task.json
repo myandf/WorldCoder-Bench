@@ -1,7 +1,6 @@
 {
   "id": "P3130_multi_asset_chemistry-lab_003",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/BoomBox.glb"

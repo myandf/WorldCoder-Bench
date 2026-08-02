@@ -1,7 +1,6 @@
 {
   "id": "P3035_multi_asset_architecture_023",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/GlamVelvetSofa.glb",

@@ -1,7 +1,6 @@
 {
   "id": "P2987_multi_asset_materials_015",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/IridescenceAbalone.glb"

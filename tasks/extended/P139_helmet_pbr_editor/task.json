@@ -3,7 +3,6 @@
   "title": "PBR Material Editor",
   "domain": "graphics",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Implement a PBR material editor using Three.js. Adjust the material parameters of DamagedHelmet in real time.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/ScatteringSkull.glb;\n(2) Center the model;\n\n[Material Parameter Sliders]\n(3) Roughness slider (id=\"roughness\", range 0-1, step 0.01);\n(4) Metalness slider (id=\"metalness\", range 0-1, step 0.01);\n(5) Normal Scale slider (id=\"normalScale\", range 0-2, step 0.1);\n(6) Emissive Intensity slider (id=\"emissive\", range 0-3, step 0.1);\n(7) Base color picker (id=\"baseColor\", type=\"color\");\n(8) All sliders must affect the model material in real time;\n\n[Environment Map]\n(9) 3 environment preset buttons: Studio, Outdoor, Night;\n(10) When switching, use PMREMGenerator to generate an envMap and apply it;\n\n[OrbitControls]\n(11) Allow rotational viewing;\n\n[HUD Display]\n(12) HUD in the upper-left corner:\n  - Current environment name (id=\"envName\")\n  - Roughness value (id=\"roughnessVal\")\n  - Metalness value (id=\"metalnessVal\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - roughness: number\n  - metalness: number\n  - normalScale: number\n  - emissiveIntensity: number\n  - envMap: string (current environment name)\n\nOutput a standalone HTML file.",
   "reference_images": [],
@@ -19,6 +18,5 @@
     "editor"
   ],
   "estimated_human_time_minutes": 120,
-  "physics_constraints": [],
-  "difficulty_analysis": "L4: Load the model with GLTFLoader, dynamically modify PBR material parameters (roughness/metalness/normal/emissive), switch environment maps (PMREMGenerator), and implement a split comparison view."
+  "physics_constraints": []
 }

@@ -1,7 +1,6 @@
 {
   "id": "P3102_multi_asset_graphics_010",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/Lantern.glb"

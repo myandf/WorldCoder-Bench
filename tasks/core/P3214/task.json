@@ -1,7 +1,6 @@
 {
   "id": "P3214",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/Lantern.glb"

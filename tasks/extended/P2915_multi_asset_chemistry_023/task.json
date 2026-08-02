@@ -1,7 +1,6 @@
 {
   "id": "P2915_multi_asset_chemistry_023",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Molecular Binding Energy Calorimeter",
   "description": "A virtual calorimetry lab where the coffee mat serves as a heated reaction platform, the corset model represents a flexible molecular cage catalyst, and the shoe model represents a ligand donor molecule. Users drag reagent spheres onto the platform, adjust catalyst compression and ligand orientation, then measure exothermic/endothermic energy changes while obeying conservation of energy across all coupled subsystems.",
   "assets": [

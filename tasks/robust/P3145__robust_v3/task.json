@@ -1,7 +1,6 @@
 {
   "id": "P3145__robust_v3",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/WaterBottle.glb"

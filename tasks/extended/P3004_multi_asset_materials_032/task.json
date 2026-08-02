@@ -1,7 +1,6 @@
 {
   "id": "P3004_multi_asset_materials_032",
   "domain": "materials",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/MosquitoInAmber.glb",
     "../../../assets/shared/GlassBrokenWindow.glb"

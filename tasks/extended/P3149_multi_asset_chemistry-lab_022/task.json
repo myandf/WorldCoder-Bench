@@ -1,7 +1,6 @@
 {
   "id": "P3149_multi_asset_chemistry-lab_022",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/space_ship_hallway.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3142_multi_asset_chemistry-lab_015",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Polymer Coating Reactor Simulation",
   "description": "A virtual chemistry lab where the user operates a carbon fibre substrate coating reactor. The user must mix reagent concentrations, control temperature and pressure, apply clear-coat polymer layers onto a carbon fibre sample, and manage conservation of mass across the reaction chamber while using undo/redo to correct mistakes across a multi-step synthesis protocol.",
   "assets": [

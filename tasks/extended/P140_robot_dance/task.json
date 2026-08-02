@@ -3,7 +3,6 @@
   "title": "Robot Dance Choreography",
   "domain": "creative",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Implement a robot dance choreographer using Three.js. Set animation keyframes through a timeline.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/RobotExpressive.glb;\n(2) Center the model and list the names of all available animation clips;\n\n[Timeline System]\n(3) A timeline bar at the bottom (DOM or canvas, total duration 10 seconds, id=\"timeline\");\n(4) Clicking a position on the timeline adds a \"keyframe\" marker;\n(5) A menu opens for each keyframe to select the animation clip to play;\n(6) During playback, automatically switch animations upon reaching a keyframe (using a crossFadeTo transition);\n\n[Playback Controls]\n(7) Play/Pause button (id=\"playBtn\");\n(8) Speed control slider (id=\"speedSlider\", range 0.5-2);\n(9) Loop playback (return to 0 seconds after reaching 10 seconds);\n\n[Beat Indicator]\n(10) BPM slider (id=\"bpmSlider\", range 60-180, default 120);\n(11) A pulsing circle flashes according to the BPM (CSS or canvas);\n\n[HUD Display]\n(12) HUD in the upper-left corner:\n  - Current time (id=\"currentTime\")\n  - Playback state (id=\"playState\")\n  - Number of keyframes (id=\"keyframeCount\")\n  - BPM value (id=\"bpmValue\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - currentTime: number (0-10 seconds)\n  - isPlaying: boolean\n  - keyframeCount: number\n  - bpm: number\n  - currentAnim: string (name of the animation currently playing)\n  - speed: number\n\nOutput a standalone HTML file.",
   "reference_images": [],
@@ -19,6 +18,5 @@
     "interactive"
   ],
   "estimated_human_time_minutes": 150,
-  "physics_constraints": [],
-  "difficulty_analysis": "L4: Loading an animated model with GLTFLoader, a custom timeline system (keyframe-triggered animations), BPM beat synchronization, and play/pause controls."
+  "physics_constraints": []
 }

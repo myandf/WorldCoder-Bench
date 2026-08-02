@@ -1,7 +1,6 @@
 {
   "id": "P2827_multi_asset_simulation_015",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

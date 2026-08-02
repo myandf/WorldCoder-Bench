@@ -1,7 +1,6 @@
 {
   "id": "P2814__robust_v2",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/RobotExpressive.glb"

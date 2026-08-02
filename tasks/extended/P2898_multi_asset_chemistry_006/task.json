@@ -1,7 +1,6 @@
 {
   "id": "P2898_multi_asset_chemistry_006",
   "domain": "molecular",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/PrimaryIonDrive.glb",
     "../../../assets/shared/LittlestTokyo.glb"

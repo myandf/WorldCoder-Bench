@@ -1,7 +1,6 @@
 {
   "id": "P3070_multi_asset_postprocess_018",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/PotOfCoals.glb"

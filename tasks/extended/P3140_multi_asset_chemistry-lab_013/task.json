@@ -1,7 +1,6 @@
 {
   "id": "P3140_multi_asset_chemistry-lab_013",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/IridescenceAbalone.glb",
     "../../../assets/shared/MaterialsVariantsShoe.glb"

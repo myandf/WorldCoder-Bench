@@ -1,7 +1,6 @@
 {
   "id": "P2910__robust_v1",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/space_ship_hallway.glb",
     "../../../assets/shared/ClearCoatCarPaint.glb"

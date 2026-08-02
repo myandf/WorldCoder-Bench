@@ -1,7 +1,6 @@
 {
   "id": "P3143_multi_asset_chemistry-lab_016",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Catalytic Reaction Pool with Coffee-Mat Filtration Station",
   "description": "A chemistry lab features a large reaction pool filled with colored liquid reagents and a coffeemat repurposed as a molecular filtration membrane station beside it. The user must combine reagents in the pool following conservation-of-mass rules, filter products through the coffeemat station, and manage a multi-step synthesis chain with full undo/redo support across all operations.",
   "assets": [

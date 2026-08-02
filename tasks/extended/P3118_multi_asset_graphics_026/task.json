@@ -1,7 +1,6 @@
 {
   "id": "P3118_multi_asset_graphics_026",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/ScatteringSkull.glb"

@@ -3,7 +3,6 @@
   "title": "Animal Farm",
   "domain": "game",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Use Three.js to implement a farm with procedural geometry: cows/chickens/pigs roam inside a fence, with a day-night cycle, click selection, and a feeding animation. External GLB files are prohibited.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import through ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Animal Models (Procedural)]\n(1) Cow: compound Box body + Sphere head + Cylinder legs + small Cone horns;\n(2) Chicken: small sphere body + Cone beak + flat planar wings;\n(3) Pig: round/spherical body + flat Box snout + Torus segment curly tail;\n(4) 3 of each species, for 9 animals in total; each animals[].name must be unique;\n\n[Fence]\n(5) The enclosure is approximately 15×15 (XZ); animal centers must remain within the boundaries (use inner padding to prevent geometry from clipping through the fence);\n\n[AI]\n(6) Random wandering, with a random direction change every 2–5 seconds and small steps at a constant speed;\n\n[Interaction]\n(7) Select animals by raycast clicking; id=\"animalInfo\" displays the name and type (cow/chicken/pig);\n(8) id=\"feedBtn\": play a feeding animation for the selected animal (vertical bobbing, with a sine-driven y offset over several cycles);\n\n[Day-Night Cycle]\n(9) One cycle every 30 seconds: the DirectionalLight rotates around the scene; Ambient intensity/color changes with dayTime∈[0,1);\n\n[State Exposure (Required)]\n(10) Update window.__3D_STATE__ every frame:\n  - animalCount (always 9)\n  - animals:[{type,name,x,y,z,selected}]\n  - dayTime: number (cycles through 0..1)\n  - selectedAnimal: string|null\n\n[Evaluation Helpers (Recommended)]\n(11) window.__STATEPROBE_selectAnimal__(indexOrName), window.__STATEPROBE_triggerFeed__().\n\nOutput a single HTML file that can run when opened directly in a browser.",
   "reference_images": [],
@@ -26,6 +25,5 @@
     "random walk 2-5s retarget",
     "animalInfo feedBtn",
     "30s day-night cycle"
-  ],
-  "difficulty_analysis": "L4: compound geometry, fence boundaries, wandering and picking, feeding animation, day-night cycle and dayTime, __3D_STATE__."
+  ]
 }

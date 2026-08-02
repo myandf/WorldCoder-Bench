@@ -1,7 +1,6 @@
 {
   "id": "P2803_multi_asset_game_031",
   "domain": "game",
-  "difficulty": "L5",
   "title": "Ion Drive Sunglasses Heist",
   "description": "The player pilots a stolen ion drive engine through a neon-lit asteroid corridor, collecting floating sunglasses as power-up tokens. Each collected pair of sunglasses boosts the engine's thrust and applies a visual tint filter. The player must collect at least 5 sunglasses while dodging obstacles to reach the escape warp gate.",
   "assets": [

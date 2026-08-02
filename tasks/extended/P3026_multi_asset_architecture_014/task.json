@@ -1,7 +1,6 @@
 {
   "id": "P3026_multi_asset_architecture_014",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/SheenChair.glb"

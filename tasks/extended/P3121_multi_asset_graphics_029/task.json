@@ -1,7 +1,6 @@
 {
   "id": "P3121_multi_asset_graphics_029",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Duck.glb",
     "../../../assets/shared/IridescenceAbalone.glb",

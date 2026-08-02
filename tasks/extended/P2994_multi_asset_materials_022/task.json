@@ -1,7 +1,6 @@
 {
   "id": "P2994_multi_asset_materials_022",
   "domain": "materials",
-  "difficulty": "L5",
   "title": "Enchanted Forge: Material Transmutation Workshop",
   "description": "The user operates a magical forge where a rubber duck, a pot of glowing coals, and a coffee mug sit on a workbench. By selecting objects and applying different material presets through a control panel, the user transmutes each object through stages — from clay to bronze to crystal to molten lava to enchanted glass — watching physically-based material properties change in real time. Each transmutation must follow the correct elemental sequence validated by the forge.",
   "assets": [

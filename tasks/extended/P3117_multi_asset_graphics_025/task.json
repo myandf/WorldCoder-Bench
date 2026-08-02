@@ -1,7 +1,6 @@
 {
   "id": "P3117_multi_asset_graphics_025",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassBrokenWindow.glb",
     "../../../assets/shared/Corset.glb"

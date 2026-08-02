@@ -1,7 +1,6 @@
 {
   "id": "P3041_multi_asset_architecture_029",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/PrimaryIonDrive.glb",
     "../../../assets/shared/WaterBottle.glb"

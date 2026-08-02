@@ -1,7 +1,6 @@
 {
   "id": "P2922_multi_asset_chemistry_030",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/DirectionalLight.glb"

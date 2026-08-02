@@ -1,7 +1,6 @@
 {
   "id": "P2881",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/ABeautifulGame.glb"

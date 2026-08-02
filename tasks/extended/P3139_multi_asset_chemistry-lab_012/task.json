@@ -1,7 +1,6 @@
 {
   "id": "P3139_multi_asset_chemistry-lab_012",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Gear-Driven Spectral Dispersion Calibrator",
   "description": "A mechanical chemistry apparatus where interlocking gears drive a prism dispersion system. The user must rotate gear assemblies to precisely angle the prism, adjust beam intensity and wavelength inputs, and calibrate spectral output bands while obeying energy conservation — with full undo/redo support for each adjustment step.",
   "assets": [

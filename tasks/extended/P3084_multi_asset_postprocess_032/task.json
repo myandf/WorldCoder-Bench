@@ -1,7 +1,6 @@
 {
   "id": "P3084_multi_asset_postprocess_032",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/space_ship_hallway.glb"

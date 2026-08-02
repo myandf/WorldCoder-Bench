@@ -1,7 +1,6 @@
 {
   "id": "P3023__robust_v1",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/minimalistic_modern_bedroom.glb",

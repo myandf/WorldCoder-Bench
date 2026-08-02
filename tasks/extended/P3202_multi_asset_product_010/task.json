@@ -1,7 +1,6 @@
 {
   "id": "P3202_multi_asset_product_010",
   "domain": "product",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/bath_day.glb"

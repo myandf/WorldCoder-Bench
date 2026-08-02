@@ -1,7 +1,6 @@
 {
   "id": "P2963_multi_asset_animation_031",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RiggedFigure.glb",
     "../../../assets/shared/BoomBox.glb",

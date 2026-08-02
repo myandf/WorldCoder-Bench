@@ -1,7 +1,6 @@
 {
   "id": "P3055_multi_asset_postprocess_003",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/IridescenceLamp.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

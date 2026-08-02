@@ -1,7 +1,6 @@
 {
   "id": "P2799_multi_asset_game_027",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/CarConcept.glb",

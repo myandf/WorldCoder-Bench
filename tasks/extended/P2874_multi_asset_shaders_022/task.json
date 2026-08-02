@@ -1,7 +1,6 @@
 {
   "id": "P2874_multi_asset_shaders_022",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/BoomBox.glb"

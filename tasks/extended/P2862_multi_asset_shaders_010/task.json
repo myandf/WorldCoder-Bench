@@ -1,7 +1,6 @@
 {
   "id": "P2862_multi_asset_shaders_010",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/BoomBox.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2878_multi_asset_shaders_026",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/DiffuseTransmissionPlant.glb",

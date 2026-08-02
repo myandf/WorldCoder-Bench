@@ -1,7 +1,6 @@
 {
   "id": "P2887_multi_asset_shaders_035",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/CarbonFibre.glb"

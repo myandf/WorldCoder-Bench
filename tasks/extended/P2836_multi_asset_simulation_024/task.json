@@ -1,7 +1,6 @@
 {
   "id": "P2836_multi_asset_simulation_024",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RiggedFigure.glb",
     "../../../assets/shared/DirectionalLight.glb"

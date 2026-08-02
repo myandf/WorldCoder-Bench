@@ -1,7 +1,6 @@
 {
   "id": "P2866_multi_asset_shaders_014",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",

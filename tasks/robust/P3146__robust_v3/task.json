@@ -1,7 +1,6 @@
 {
   "id": "P3146__robust_v3",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/Duck.glb",

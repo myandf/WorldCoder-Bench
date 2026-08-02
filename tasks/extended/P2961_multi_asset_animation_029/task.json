@@ -1,7 +1,6 @@
 {
   "id": "P2961_multi_asset_animation_029",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/RobotExpressive.glb"

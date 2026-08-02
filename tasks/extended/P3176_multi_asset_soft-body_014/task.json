@@ -1,7 +1,6 @@
 {
   "id": "P3176_multi_asset_soft-body_014",
   "domain": "soft_body",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/RobotExpressive.glb"

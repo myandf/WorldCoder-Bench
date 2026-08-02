@@ -1,7 +1,6 @@
 {
   "id": "P2943",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/InterpolationTest.glb",
     "../../../assets/shared/AntiqueCamera.glb"

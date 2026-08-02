@@ -1,7 +1,6 @@
 {
   "id": "P2807_multi_asset_game_035",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/Avocado.glb"

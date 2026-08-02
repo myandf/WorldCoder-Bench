@@ -1,7 +1,6 @@
 {
   "id": "P3218",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Lantern.glb",
     "../../../assets/shared/ABeautifulGame.glb",

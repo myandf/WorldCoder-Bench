@@ -1,7 +1,6 @@
 {
   "id": "P2888_multi_asset_shaders_036",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

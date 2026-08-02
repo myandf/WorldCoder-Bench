@@ -1,7 +1,6 @@
 {
   "id": "P2826__robust_v3",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/DirectionalLight.glb",

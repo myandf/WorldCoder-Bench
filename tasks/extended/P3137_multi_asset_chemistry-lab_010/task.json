@@ -1,7 +1,6 @@
 {
   "id": "P3137_multi_asset_chemistry-lab_010",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/GlassBrokenWindow.glb"

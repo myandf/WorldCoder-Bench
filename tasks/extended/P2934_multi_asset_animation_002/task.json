@@ -1,7 +1,6 @@
 {
   "id": "P2934_multi_asset_animation_002",
   "domain": "animation",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

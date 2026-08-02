@@ -1,7 +1,6 @@
 {
   "id": "P3050_multi_asset_architecture_038",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Corset.glb",
     "../../../assets/shared/Duck.glb"

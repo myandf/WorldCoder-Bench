@@ -1,7 +1,6 @@
 {
   "id": "P3009_multi_asset_materials_037",
   "domain": "materials",
-  "difficulty": "L6",
   "title": "Refrigerant Leak & Glass Fracture Thermal Simulation",
   "description": "A commercial refrigerator sits in a cold storage room with a broken glass window. The user must manage the refrigerator's material properties (insulation layers, door seal integrity, coolant flow rate) and the broken window's glass fragment materials (thermal conductivity, transparency, structural bonding) to maintain a target internal temperature. Energy conservation governs heat exchange: heat leaking through the broken window raises ambient temperature, stressing the refrigerator. Users can undo/redo any material adjustment and must balance multiple coupled inputs to reach equilibrium.",
   "assets": [

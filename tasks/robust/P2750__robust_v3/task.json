@@ -1,7 +1,6 @@
 {
   "id": "P2750__robust_v3",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ClearCoatCarPaint.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2970__robust_v2",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/nemetona.glb",
     "../../../assets/shared/ScatteringSkull.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2842_multi_asset_simulation_030",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/nemetona.glb",
     "../../../assets/shared/RiggedFigure.glb"

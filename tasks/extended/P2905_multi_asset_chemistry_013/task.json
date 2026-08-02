@@ -1,7 +1,6 @@
 {
   "id": "P2905_multi_asset_chemistry_013",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/coffeemat.glb",
     "../../../assets/shared/Avocado.glb"

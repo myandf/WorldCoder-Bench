@@ -3,7 +3,6 @@
   "title": "Ball Shooter",
   "domain": "game",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Use Three.js to implement a first-person ball shooter: click to launch spheres affected by gravity and hit floating cube targets.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';\n// Write your code here\n</script>\n\n[View and Arena]\n(1) First-person camera; the arena is approximately 30×20×30 (in Three.js units), with visible or enclosed boundaries;\n(2) Write the player position to __3D_STATE__.playerPos;\n\n[Shooting]\n(3) Fire SphereGeometry projectiles along the camera's forward direction with the left mouse button (click after PointerLock);\n(4) Initial speed is approximately 15 units/s, directed forward; apply gravity each frame (for example, ay=-9.8); perform sphere/AABB collision detection with targets;\n\n[Targets]\n(5) Exactly 20 cube targets, randomly distributed and floating within the arena (a slight sinusoidal floating motion may be added);\n(6) Glow when hit (emissive/highlight); the same target must be hit 2 times before it is destroyed; after destruction, decrement targetsRemaining by 1;\n\n[Scoring]\n(7) +10 for each hit; an additional +50 for complete destruction (after the second hit, the total score must reflect both +10 and +50; the rule must be explained in a comment and remain consistent with __3D_STATE__.score);\n\n[Ammunition and Reloading]\n(8) Initial ammo=50; for each shot, ammo-1 and shotsFired+1;\n(9) Button id=\"reloadBtn\": clicking it resets ammo to 50 (shotsFired is not rolled back);\n\n[Timer]\n(10) A 60-second countdown, displayed in the element id=\"timeLeft\" (in seconds, optionally with one decimal place); at 0, shooting may stop or the game may freeze;\n\n[UI]\n(11) Display score, ammo, and timeLeft; the recommended IDs are id=\"score\", id=\"ammo\", and id=\"timeLeft\" to facilitate HUD and state synchronization;\n\n[State Exposure (Required)]\n(12) Update window.__3D_STATE__ every frame:\n  - score, ammo, targetsRemaining (0..20), shotsFired, timeLeft, playerPos:{x,y,z}\n\n[Evaluation Helper (Recommended)]\n(13) window.__STATEPROBE_shoot__(): equivalent to one valid shot (ammo-1, shotsFired+1, and create a projectile).\n\nOutput a single HTML file that runs when opened directly in a browser.",
   "reference_images": [],
@@ -27,6 +26,5 @@
     "score: +10 per hit, +50 bonus per destroy",
     "ammo: 50, reloadBtn",
     "timer: 60s, id=timeLeft"
-  ],
-  "difficulty_analysis": "L4: PointerLock, ballistic gravity, double-hit target durability, scoring and countdown, reloading, and full synchronization of __3D_STATE__."
+  ]
 }

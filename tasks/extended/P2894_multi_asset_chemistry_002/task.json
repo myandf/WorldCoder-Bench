@@ -1,7 +1,6 @@
 {
   "id": "P2894_multi_asset_chemistry_002",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/SpecularSilkPouf.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2766_multi_asset_physics_034",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/BarramundiFish.glb"

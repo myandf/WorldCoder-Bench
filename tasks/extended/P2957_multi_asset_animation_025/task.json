@@ -1,7 +1,6 @@
 {
   "id": "P2957_multi_asset_animation_025",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/WaterBottle.glb"

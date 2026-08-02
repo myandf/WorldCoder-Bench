@@ -1,7 +1,6 @@
 {
   "id": "P2774_multi_asset_game_002",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/AntiqueCamera.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2892_multi_asset_shaders_040",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Bioluminescent Garden Shader Lab",
   "description": "A mystical garden scene where a translucent plant is illuminated by a magical lantern. The user manipulates custom shader parameters on both objects — controlling subsurface scattering intensity, light color wavelength, fresnel glow, distortion amplitude, and emission pulses — while a conservation law ensures total energy across all shader channels remains constant. Full undo/redo support tracks every parameter change.",
   "assets": [

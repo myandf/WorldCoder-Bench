@@ -1,7 +1,6 @@
 {
   "id": "P2960__robust_v2",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/RobotExpressive.glb"

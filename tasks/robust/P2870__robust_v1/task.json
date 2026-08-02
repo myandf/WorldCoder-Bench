@@ -1,7 +1,6 @@
 {
   "id": "P2870__robust_v1",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Dungeon Shader Forge: Ion-Powered Lens Enchantment",
   "description": "Inside a dark dungeon, the player uses an Ion Drive engine to channel energy beams into enchanted sunglasses, mixing custom shader effects on both objects. Each energy channel applies a distinct post-processing shader layer (chromatic aberration, heat distortion, glow, dissolve, scan-lines, refraction) to the sunglasses lenses, with conservation of total energy across channels. The player must couple multiple inputs, undo/redo shader configurations, and balance energy to unlock a final combined shader effect.",
   "assets": [

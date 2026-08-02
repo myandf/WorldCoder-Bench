@@ -1,7 +1,6 @@
 {
   "id": "P2782_multi_asset_game_010",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/CarbonFibre.glb"

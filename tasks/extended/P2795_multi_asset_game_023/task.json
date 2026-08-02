@@ -1,7 +1,6 @@
 {
   "id": "P2795_multi_asset_game_023",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/BoomBox.glb"

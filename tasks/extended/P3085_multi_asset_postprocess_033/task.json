@@ -1,7 +1,6 @@
 {
   "id": "P3085_multi_asset_postprocess_033",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/PrimaryIonDrive.glb",
     "../../../assets/shared/Corset.glb"

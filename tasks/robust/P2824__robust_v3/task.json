@@ -1,7 +1,6 @@
 {
   "id": "P2824__robust_v3",
   "domain": "visualization",
-  "difficulty": "L6",
   "title": "Thermal Shader Ball Coffee Mat Simulator",
   "description": "A physics-based thermal simulation where shader balls of varying temperatures are placed onto a coffee mat acting as a heat-conducting surface. Users drag shader balls onto the mat, adjust their initial temperatures, and observe heat transfer between balls through the mat medium, with total thermal energy conserved across the system. Undo/redo controls let users reverse placement and temperature changes.",
   "assets": [

@@ -1,7 +1,6 @@
 {
   "id": "P3129__robust_v3",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/IridescenceLamp.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3131",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Ancient DNA Extraction & Spectral Analysis Lab",
   "description": "You are a paleogenomics chemist tasked with extracting preserved DNA from a mosquito trapped in amber. Using a broken glass window as a diffraction grating, you must split laser light through the fractured panes to perform spectral analysis on extracted samples, calibrating wavelengths and reagent concentrations while obeying conservation of reagent mass across all vessels.",
   "assets": [

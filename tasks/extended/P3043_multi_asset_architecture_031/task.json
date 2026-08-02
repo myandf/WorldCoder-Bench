@@ -1,7 +1,6 @@
 {
   "id": "P3043_multi_asset_architecture_031",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/WaterBottle.glb"

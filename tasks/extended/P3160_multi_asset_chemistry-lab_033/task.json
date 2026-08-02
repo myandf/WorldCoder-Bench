@@ -1,7 +1,6 @@
 {
   "id": "P3160_multi_asset_chemistry-lab_033",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Amber DNA Extraction & City Biocontamination Simulator",
   "description": "A chemistry lab workstation where the user extracts ancient DNA from a mosquito preserved in amber using a multi-step chemical process, then simulates releasing the reconstructed organism into a virtual city to observe biocontamination spread. The user must balance reagent concentrations, maintain temperature equilibria, and can undo/redo extraction steps while monitoring conservation of total molecular mass across all reactions.",
   "assets": [

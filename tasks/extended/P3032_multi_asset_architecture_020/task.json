@@ -1,7 +1,6 @@
 {
   "id": "P3032_multi_asset_architecture_020",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CommercialRefrigerator.glb",
     "../../../assets/shared/minimalistic_modern_bedroom.glb"

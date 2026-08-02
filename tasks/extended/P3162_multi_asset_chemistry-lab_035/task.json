@@ -1,7 +1,6 @@
 {
   "id": "P3162_multi_asset_chemistry-lab_035",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Polymer Dye Synthesis Lab",
   "description": "A chemistry lab bench holds a coffee mug repurposed as a mixing beaker and a shoe mounted on a test stand as the dyeing target. The user must combine reagents in the mug following a specific reaction sequence, monitor temperature and pH conservation laws, apply the synthesized polymer dye to the shoe's material variants, and use undo/redo to correct mistakes across the multi-step process.",
   "assets": [

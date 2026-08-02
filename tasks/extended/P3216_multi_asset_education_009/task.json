@@ -1,7 +1,6 @@
 {
   "id": "P3216_multi_asset_education_009",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/Fox.glb"

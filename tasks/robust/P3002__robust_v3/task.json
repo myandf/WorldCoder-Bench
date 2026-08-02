@@ -1,7 +1,6 @@
 {
   "id": "P3002__robust_v3",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/MaterialsVariantsShoe.glb",
     "../../../assets/shared/IridescenceLamp.glb"

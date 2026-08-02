@@ -1,7 +1,6 @@
 {
   "id": "P3038_multi_asset_architecture_026",
   "domain": "architecture",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/ChairDamaskPurplegold.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

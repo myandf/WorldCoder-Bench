@@ -1,7 +1,6 @@
 {
   "id": "P2758_multi_asset_physics_026",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/CarConcept.glb",

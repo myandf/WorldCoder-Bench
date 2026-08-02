@@ -1,7 +1,6 @@
 {
   "id": "P3075_multi_asset_postprocess_023",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/CarbonFibre.glb"

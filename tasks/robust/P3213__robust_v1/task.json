@@ -1,7 +1,6 @@
 {
   "id": "P3213__robust_v1",
   "domain": "visualization",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/space_ship_hallway.glb"

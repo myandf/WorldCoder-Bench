@@ -1,7 +1,6 @@
 {
   "id": "P3206_multi_asset_product_014",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/ToyCar.glb"

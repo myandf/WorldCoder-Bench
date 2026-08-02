@@ -1,7 +1,6 @@
 {
   "id": "P3113_multi_asset_graphics_021",
   "domain": "materials",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/InterpolationTest.glb"

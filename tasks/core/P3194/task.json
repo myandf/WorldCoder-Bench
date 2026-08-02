@@ -1,7 +1,6 @@
 {
   "id": "P3194",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/WaterBottle.glb"

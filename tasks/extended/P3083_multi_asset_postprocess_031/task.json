@@ -1,7 +1,6 @@
 {
   "id": "P3083_multi_asset_postprocess_031",
   "domain": "postprocess",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/space_ship_hallway.glb",
     "../../../assets/shared/MaterialsVariantsShoe.glb"

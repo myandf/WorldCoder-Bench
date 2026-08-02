@@ -1,7 +1,6 @@
 {
   "id": "P3219__robust_v3",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/ABeautifulGame.glb"

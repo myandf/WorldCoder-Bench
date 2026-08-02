@@ -1,7 +1,6 @@
 {
   "id": "P2834__robust_v2",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/RobotExpressive.glb"

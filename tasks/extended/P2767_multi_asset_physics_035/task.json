@@ -1,7 +1,6 @@
 {
   "id": "P2767_multi_asset_physics_035",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/BoomBox.glb"

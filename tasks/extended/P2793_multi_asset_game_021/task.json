@@ -1,7 +1,6 @@
 {
   "id": "P2793_multi_asset_game_021",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/nemetona.glb",
     "../../../assets/shared/BoomBox.glb"

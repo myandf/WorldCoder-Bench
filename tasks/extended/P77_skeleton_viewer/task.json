@@ -3,7 +3,6 @@
   "title": "Skeletal Hierarchy Viewer (Procedural Skeleton)",
   "domain": "visualization",
   "route": "B",
-  "difficulty": "L5",
   "target_framework": "three.js",
   "prompt": "Use Three.js to implement a procedural human skeleton (20 bones), with cylinders representing bone segments and spheres representing joints, supporting hierarchical transformations and interactive selection.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules within <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Skeletal Hierarchy (Must Be Implemented; Names May Match or Use Synonyms)]\nExample root structure: root → pelvis → spine → chest → neck → head; chest → L_shoulder → L_upperArm → L_forearm → L_hand; chest → R_shoulder → …; pelvis → L_thigh → L_shin → L_foot; pelvis → R_thigh → …. There must be 20 bones (bone segments) in total, with each segment represented by a CylinderGeometry connecting parent and child joints represented by SphereGeometry.\n\n[Interaction]\n(1) Use a Raycaster to select and highlight a bone (or joint) by clicking. Display the following in the DOM element with id=\"boneInfo\": name, parent bone, and bone-segment length (either world-space or local-space length is acceptable, but it must be labeled).\n(2) Pose preset dropdown with id=\"poseSelect\": include at least T-pose, rest, and walk (a single frame from a walking cycle; a fixed frame is acceptable).\n(3) After selecting a bone, use sliders to adjust its local rotation (Euler angles, consistently using either degrees or radians): id=\"boneRotX\", id=\"boneRotY\", and id=\"boneRotZ\". The recommended range is -π~π or -180~180.\n\n[Rendering]\n(4) Include OrbitControls, a ground grid, and a reasonable initial camera position.\n(5) Use distinct colors for selected and unselected elements.\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - boneCount: number (should be 20)\n  - selectedBone: string | null (name of the currently selected bone, or null if none is selected)\n  - currentPose: string (e.g. 'tpose'|'rest'|'walk')\n  - bones: Array<{ name: string, parent: string | null, length: number, rotation: { x: number, y: number, z: number } }>\n\nOutput a single HTML file.",
   "reference_images": [],
@@ -18,6 +17,5 @@
     "interactive",
     "three.js"
   ],
-  "estimated_human_time_minutes": 420,
-  "difficulty_analysis": "L5: Hierarchical matrix updates for 20 bones, click picking, pose presets and slider-driven local rotation, and synchronization of __3D_STATE__ with boneInfo."
+  "estimated_human_time_minutes": 420
 }

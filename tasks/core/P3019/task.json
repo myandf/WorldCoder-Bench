@@ -1,7 +1,6 @@
 {
   "id": "P3019",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlamVelvetSofa.glb",
     "../../../assets/shared/DirectionalLight.glb"

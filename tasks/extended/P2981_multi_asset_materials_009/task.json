@@ -1,7 +1,6 @@
 {
   "id": "P2981_multi_asset_materials_009",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/IridescenceAbalone.glb",
     "../../../assets/shared/Corset.glb"

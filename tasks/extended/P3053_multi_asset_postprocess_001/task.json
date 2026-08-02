@@ -1,7 +1,6 @@
 {
   "id": "P3053_multi_asset_postprocess_001",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/IridescenceLamp.glb",
     "../../../assets/shared/space_ship_hallway.glb",

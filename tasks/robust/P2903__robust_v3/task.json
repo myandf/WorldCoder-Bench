@@ -1,7 +1,6 @@
 {
   "id": "P2903__robust_v3",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/steampunk_camera.glb",
     "../../../assets/shared/IridescenceAbalone.glb"

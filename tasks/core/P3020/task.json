@@ -1,7 +1,6 @@
 {
   "id": "P3020",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/GlamVelvetSofa.glb"

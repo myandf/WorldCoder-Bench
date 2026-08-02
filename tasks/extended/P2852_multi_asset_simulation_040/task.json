@@ -1,7 +1,6 @@
 {
   "id": "P2852_multi_asset_simulation_040",
   "domain": "visualization",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/LittlestTokyo.glb"

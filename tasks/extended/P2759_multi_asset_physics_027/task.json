@@ -1,7 +1,6 @@
 {
   "id": "P2759_multi_asset_physics_027",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ToyCar.glb",
     "../../../assets/shared/Avocado.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2920__robust_v1",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/DiffuseTransmissionPlant.glb",

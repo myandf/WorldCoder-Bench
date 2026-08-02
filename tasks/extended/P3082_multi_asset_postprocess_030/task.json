@@ -1,7 +1,6 @@
 {
   "id": "P3082_multi_asset_postprocess_030",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/IridescenceAbalone.glb"

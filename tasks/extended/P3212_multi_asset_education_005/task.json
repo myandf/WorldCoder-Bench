@@ -1,7 +1,6 @@
 {
   "id": "P3212_multi_asset_education_005",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/bath_day.glb"

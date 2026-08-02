@@ -1,7 +1,6 @@
 {
   "id": "P3136_multi_asset_chemistry-lab_009",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnisotropyBarnLamp.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

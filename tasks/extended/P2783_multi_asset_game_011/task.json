@@ -1,7 +1,6 @@
 {
   "id": "P2783_multi_asset_game_011",
   "domain": "game",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/RobotExpressive.glb",

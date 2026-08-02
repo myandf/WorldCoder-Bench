@@ -1,7 +1,6 @@
 {
   "id": "P2871_multi_asset_shaders_019",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/AntiqueCamera.glb"

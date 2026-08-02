@@ -1,7 +1,6 @@
 {
   "id": "P2760_multi_asset_physics_028",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ToyCar.glb",
     "../../../assets/shared/Fox.glb"

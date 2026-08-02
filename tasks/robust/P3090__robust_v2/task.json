@@ -1,7 +1,6 @@
 {
   "id": "P3090__robust_v2",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/space_ship_hallway.glb",

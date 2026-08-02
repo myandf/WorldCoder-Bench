@@ -1,7 +1,6 @@
 {
   "id": "P2838_multi_asset_simulation_026",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/ABeautifulGame.glb"

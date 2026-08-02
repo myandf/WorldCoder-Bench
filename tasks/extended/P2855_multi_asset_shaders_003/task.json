@@ -1,7 +1,6 @@
 {
   "id": "P2855_multi_asset_shaders_003",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Ion Drive Shader Reactor Console",
   "description": "The user operates a reactor console where the BoxAnimated serves as a containment core and the PrimaryIonDrive is the engine being powered. By adjusting shader parameters through sliders and clicking interaction points, the user channels energy from the core into the drive, managing heat dissipation, plasma frequency, and chromatic aberration effects while maintaining energy conservation between systems. Undo/redo buttons allow reverting shader state changes.",
   "assets": [

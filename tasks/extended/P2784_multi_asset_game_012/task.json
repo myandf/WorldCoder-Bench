@@ -1,7 +1,6 @@
 {
   "id": "P2784_multi_asset_game_012",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/AnimatedMorphCube.glb",

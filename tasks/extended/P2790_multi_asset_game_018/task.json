@@ -1,7 +1,6 @@
 {
   "id": "P2790_multi_asset_game_018",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/ToyCar.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2902",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/coffeemat.glb",
     "../../../assets/shared/Corset.glb"

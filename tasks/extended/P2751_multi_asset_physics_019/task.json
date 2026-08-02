@@ -1,7 +1,6 @@
 {
   "id": "P2751_multi_asset_physics_019",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CesiumMilkTruck.glb",
     "../../../assets/shared/AntiqueCamera.glb"

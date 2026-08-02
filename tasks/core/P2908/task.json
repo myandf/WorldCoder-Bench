@@ -1,7 +1,6 @@
 {
   "id": "P2908",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/CarbonFibre.glb"

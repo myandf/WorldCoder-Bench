@@ -1,7 +1,6 @@
 {
   "id": "P3111_multi_asset_graphics_019",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/Corset.glb"

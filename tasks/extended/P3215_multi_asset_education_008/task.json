@@ -1,7 +1,6 @@
 {
   "id": "P3215_multi_asset_education_008",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CesiumMan.glb",
     "../../../assets/shared/RobotExpressive.glb"

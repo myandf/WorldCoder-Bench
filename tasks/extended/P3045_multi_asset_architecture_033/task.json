@@ -1,7 +1,6 @@
 {
   "id": "P3045_multi_asset_architecture_033",
   "domain": "architecture",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/Duck.glb",
     "../../../assets/shared/Lantern.glb"

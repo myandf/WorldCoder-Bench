@@ -1,7 +1,6 @@
 {
   "id": "P2859__robust_v3",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassBrokenWindow.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2984__robust_v3",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassVaseFlowers.glb",
     "../../../assets/shared/CarbonFibre.glb"

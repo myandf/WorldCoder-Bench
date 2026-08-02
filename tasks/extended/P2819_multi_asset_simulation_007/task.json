@@ -1,7 +1,6 @@
 {
   "id": "P2819_multi_asset_simulation_007",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/DirectionalLight.glb",

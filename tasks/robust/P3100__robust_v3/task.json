@@ -1,7 +1,6 @@
 {
   "id": "P3100__robust_v3",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/Duck.glb"

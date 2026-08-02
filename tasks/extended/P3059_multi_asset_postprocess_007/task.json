@@ -1,7 +1,6 @@
 {
   "id": "P3059_multi_asset_postprocess_007",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/Fox.glb"

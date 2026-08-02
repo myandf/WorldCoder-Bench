@@ -1,7 +1,6 @@
 {
   "id": "P3222_multi_asset_education_015",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/LittlestTokyo.glb"

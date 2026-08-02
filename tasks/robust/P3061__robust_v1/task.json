@@ -1,7 +1,6 @@
 {
   "id": "P3061__robust_v1",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RiggedFigure.glb",
     "../../../assets/shared/SpecularSilkPouf.glb",

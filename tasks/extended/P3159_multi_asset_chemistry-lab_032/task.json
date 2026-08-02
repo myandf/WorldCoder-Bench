@@ -1,7 +1,6 @@
 {
   "id": "P3159_multi_asset_chemistry-lab_032",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Forensic Toxicology Coating Analysis Lab",
   "description": "A forensic chemistry workstation where a skull specimen must be analyzed for toxic metallic coatings. The user pipettes reagent solutions onto different skull regions coated with ClearCoat car paint samples, observes color-change reactions, adjusts pH and temperature parameters, and must balance reagent conservation while identifying all coating compounds. Undo/redo lets the user reverse failed titrations.",
   "assets": [

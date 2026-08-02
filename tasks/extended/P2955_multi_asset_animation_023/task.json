@@ -1,7 +1,6 @@
 {
   "id": "P2955_multi_asset_animation_023",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2953",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BoxAnimated.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

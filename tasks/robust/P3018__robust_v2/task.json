@@ -1,7 +1,6 @@
 {
   "id": "P3018__robust_v2",
   "domain": "architecture",
-  "difficulty": "L6",
   "title": "Poolside Pavilion Architect",
   "description": "Design a futuristic poolside pavilion by positioning architectural columns (robot sentinels wearing sunglasses) around a central pool. Users place, rotate, scale, and reorder robotic column guardians along a parametric curve surrounding the pool, while maintaining a fixed total structural mass budget. Undo/redo support lets users iterate freely on their pavilion layout.",
   "assets": [

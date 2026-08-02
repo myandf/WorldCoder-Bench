@@ -1,7 +1,6 @@
 {
   "id": "P2820_multi_asset_simulation_008",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/BoxAnimated.glb"

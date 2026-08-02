@@ -1,7 +1,6 @@
 {
   "id": "P2772__robust_v2",
   "domain": "physics",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/Corset.glb"

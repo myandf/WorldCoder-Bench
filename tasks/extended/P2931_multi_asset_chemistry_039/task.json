@@ -1,7 +1,6 @@
 {
   "id": "P2931_multi_asset_chemistry_039",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassBrokenWindow.glb",
     "../../../assets/shared/MaterialsVariantsShoe.glb"

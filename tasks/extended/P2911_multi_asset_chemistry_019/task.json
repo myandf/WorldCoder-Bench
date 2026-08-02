@@ -1,7 +1,6 @@
 {
   "id": "P2911_multi_asset_chemistry_019",
   "domain": "molecular",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/DispersionTest.glb",

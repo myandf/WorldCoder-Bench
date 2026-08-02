@@ -1,7 +1,6 @@
 {
   "id": "P2812_multi_asset_game_040",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",

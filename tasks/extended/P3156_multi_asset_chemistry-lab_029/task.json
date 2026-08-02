@@ -1,7 +1,6 @@
 {
   "id": "P3156_multi_asset_chemistry-lab_029",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnisotropyBarnLamp.glb",
     "../../../assets/shared/Corset.glb"

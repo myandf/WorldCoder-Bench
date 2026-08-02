@@ -1,7 +1,6 @@
 {
   "id": "P2884_multi_asset_shaders_032",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/ScatteringSkull.glb",

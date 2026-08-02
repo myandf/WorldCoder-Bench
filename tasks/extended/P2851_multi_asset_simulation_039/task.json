@@ -1,7 +1,6 @@
 {
   "id": "P2851_multi_asset_simulation_039",
   "domain": "animation",
-  "difficulty": "L6",
   "title": "Robot Assembly Line Energy Simulator",
   "description": "A physics-inspired simulation where a robot arm operates on an assembly line, picking up and placing interpolation test objects onto conveyor platforms. The user controls the robot's joint angles, gripper force, and conveyor speed while maintaining energy conservation across the system. An undo/redo history allows reverting any configuration step.",
   "assets": [

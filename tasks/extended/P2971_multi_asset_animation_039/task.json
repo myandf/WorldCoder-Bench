@@ -1,7 +1,6 @@
 {
   "id": "P2971_multi_asset_animation_039",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

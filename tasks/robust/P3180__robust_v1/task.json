@@ -1,7 +1,6 @@
 {
   "id": "P3180__robust_v1",
   "domain": "soft_body",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/Fox.glb"

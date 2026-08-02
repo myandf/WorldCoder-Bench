@@ -1,7 +1,6 @@
 {
   "id": "P3155_multi_asset_chemistry-lab_028",
   "domain": "chemistry",
-  "difficulty": "L6",
   "title": "Robotic Luminescence Titration Lab",
   "description": "A robot lab assistant manages a precision titration experiment where glowing reagents are dispensed from enchanted lanterns into glass hurricane candle holders serving as reaction vessels. The user must command the robot to mix exact volumes from multiple lanterns while obeying conservation of reagent mass, coupling pH and luminescence outputs, and using undo/redo to correct mistakes across a 12-step calibration sequence.",
   "assets": [

@@ -1,7 +1,6 @@
 {
   "id": "P2830_multi_asset_simulation_018",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/RobotExpressive.glb"

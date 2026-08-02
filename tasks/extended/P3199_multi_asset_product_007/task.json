@@ -1,7 +1,6 @@
 {
   "id": "P3199_multi_asset_product_007",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/steampunk_camera.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

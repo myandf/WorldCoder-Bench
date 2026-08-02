@@ -1,7 +1,6 @@
 {
   "id": "P2797_multi_asset_game_025",
   "domain": "game",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/Fox.glb"

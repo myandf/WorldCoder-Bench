@@ -1,7 +1,6 @@
 {
   "id": "P3062_multi_asset_postprocess_010",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/IridescenceAbalone.glb",
     "../../../assets/shared/DispersionTest.glb"

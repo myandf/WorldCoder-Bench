@@ -1,7 +1,6 @@
 {
   "id": "P2913__robust_v1",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/AnimatedMorphCube.glb",

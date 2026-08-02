@@ -1,7 +1,6 @@
 {
   "id": "P2940",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/WaterBottle.glb",

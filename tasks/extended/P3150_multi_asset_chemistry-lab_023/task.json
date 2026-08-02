@@ -1,7 +1,6 @@
 {
   "id": "P3150_multi_asset_chemistry-lab_023",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/RobotExpressive.glb",

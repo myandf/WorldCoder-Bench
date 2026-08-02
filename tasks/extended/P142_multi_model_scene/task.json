@@ -3,7 +3,6 @@
   "title": "Multi-Model Scene Builder",
   "domain": "creative",
   "route": "B",
-  "difficulty": "L5",
   "target_framework": "three.js",
   "prompt": "Implement a multi-model 3D scene builder using Three.js. Users can select and place multiple 3D models from a model library to compose a scene.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules inside <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to preload 4 models:\n  - assets/ToyCar.glb (car)\n  - assets/RobotExpressive.glb (robot)\n  - assets/Duck.glb (duck)\n  - assets/Lantern.glb (lantern);\n(2) After loading is complete, display thumbnail buttons for the 4 models in the left panel (id=\"palette\");\n\n[Placement Interaction]\n(3) Clicking a model in the panel enters \"placement mode\";\n(4) Display a semi-transparent preview while the mouse moves over the ground plane;\n(5) Click the ground to confirm placement and instantiate the model at that position;\n\n[Selection and Manipulation]\n(6) Click a placed model to select it (yellow outline or emissive highlight);\n(7) After selection, the model can be moved by dragging with the mouse (on the xz plane);\n(8) Rotate the selected object with the mouse wheel (15 degrees per step);\n(9) A UI slider (id=\"scaleSlider\", range 0.5-3) controls the scale of the selected object;\n(10) Press the Delete key to delete the selected object;\n\n[Multiple Selection]\n(11) Shift+click to select multiple objects;\n(12) When multiple objects are selected, the \"Align\" button (id=\"alignBtn\") aligns the selected objects to the grid (spacing of 2 units);\n\n[OrbitControls]\n(13) Support orbit viewing when not dragging;\n\n[HUD Display]\n(14) HUD in the upper-left corner:\n  - Total number of scene objects (id=\"objectCount\")\n  - Number of selected objects (id=\"selectedCount\")\n  - Grid snapping state (id=\"gridSnap\", on/off)\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelsLoaded: boolean (all 4 models have finished loading)\n  - objectCount: number\n  - selectedCount: number\n  - gridSnap: boolean\n  - placementMode: string (name of the model currently in placement mode; \"\" means none)\n\nOutput a single standalone HTML file.",
   "reference_images": [],
@@ -22,6 +21,5 @@
     "multi-model"
   ],
   "estimated_human_time_minutes": 240,
-  "physics_constraints": [],
-  "difficulty_analysis": "L5: Load 4 different GLB models, model selection panel, click-to-place on the ground, outline selection highlight, drag movement + mouse-wheel rotation + slider scaling, multiple selection/deletion/grid alignment."
+  "physics_constraints": []
 }

@@ -1,7 +1,6 @@
 {
   "id": "P3196_multi_asset_product_004",
   "domain": "product",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SheenWoodLeatherSofa.glb",
     "../../../assets/shared/ScatteringSkull.glb"

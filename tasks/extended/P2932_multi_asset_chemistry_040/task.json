@@ -1,7 +1,6 @@
 {
   "id": "P2932_multi_asset_chemistry_040",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/PotOfCoals.glb",
     "../../../assets/shared/CarbonFibre.glb"

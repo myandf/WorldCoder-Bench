@@ -1,7 +1,6 @@
 {
   "id": "P2907_multi_asset_chemistry_015",
   "domain": "molecular",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/SpecularSilkPouf.glb"

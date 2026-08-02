@@ -1,7 +1,6 @@
 {
   "id": "P3069_multi_asset_postprocess_017",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/coffeemat.glb",

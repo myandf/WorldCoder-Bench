@@ -1,7 +1,6 @@
 {
   "id": "P3034_multi_asset_architecture_022",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/Avocado.glb"

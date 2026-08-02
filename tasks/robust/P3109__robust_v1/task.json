@@ -1,7 +1,6 @@
 {
   "id": "P3109__robust_v1",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

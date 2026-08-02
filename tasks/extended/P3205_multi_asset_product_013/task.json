@@ -1,7 +1,6 @@
 {
   "id": "P3205_multi_asset_product_013",
   "domain": "product",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/CarbonFibre.glb"

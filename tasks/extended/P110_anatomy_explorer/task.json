@@ -3,7 +3,6 @@
   "title": "3D Anatomy Model Explorer",
   "domain": "visualization",
   "route": "B",
-  "difficulty": "L3",
   "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D anatomy model explorer. Load the ScatteringSkull.glb model, allow users to toggle the visibility of different parts using buttons, highlight a part and display its name when clicked, and provide adjustable opacity.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/ScatteringSkull.glb;\n(2) After loading is complete, traverse all child meshes in the model and record the list of names;\n(3) Center the model at the scene origin;\n\n[OrbitControls]\n(4) Support rotation and zooming for viewing, with minDistance=0.5, maxDistance=5;\n\n[Part Visibility Controls]\n(5) Create a toggle button (DOM button) for each major child mesh in the model and place it in the left panel (id=\"partsList\");\n(6) Clicking a button toggles the visible property of the corresponding mesh;\n(7) The button displays the part name and turns gray when the part is hidden;\n\n[Part Selection Highlighting]\n(8) Use Raycaster to detect mouse clicks on meshes;\n(9) Set the selected mesh's emissive color to blue (0x4488ff), and restore the original materials of all other meshes;\n(10) Display the selected part name in the right panel (id=\"detailPanel\");\n\n[Opacity Control]\n(11) Provide a global opacity slider (id=\"opacitySlider\", range 0.1-1.0, step 0.05);\n(12) Adjusting the slider changes the opacity of all visible meshes;\n\n[HUD Display]\n(13) HUD in the upper-left corner:\n  - Number of visible parts (id=\"visibleCount\")\n  - Selected part name (id=\"selectedPart\"; display \"None\" when nothing is selected)\n  - Current opacity (id=\"opacityValue\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - totalParts: number (total number of parts)\n  - visibleParts: number (number of visible parts)\n  - selectedPart: string (selected part name; \"\" means none)\n  - opacity: number (current opacity)\n  - cameraDistance: number\n\nOutput a standalone HTML file in the same directory as assets/, and run it through an HTTP server.",
   "reference_images": [],
@@ -19,6 +18,5 @@
     "transparency"
   ],
   "estimated_human_time_minutes": 90,
-  "physics_constraints": [],
-  "difficulty_analysis": "L3: Load the model using GLTFLoader, traverse child meshes and toggle their visibility, use Raycaster to select and highlight parts on click, and control opacity with a slider."
+  "physics_constraints": []
 }

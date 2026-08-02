@@ -1,7 +1,6 @@
 {
   "id": "P2909__robust_v2",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

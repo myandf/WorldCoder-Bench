@@ -1,7 +1,6 @@
 {
   "id": "P2748_multi_asset_physics_016",
   "domain": "product",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/steampunk_camera.glb"

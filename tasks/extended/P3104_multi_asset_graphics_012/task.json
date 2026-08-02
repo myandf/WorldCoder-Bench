@@ -1,7 +1,6 @@
 {
   "id": "P3104_multi_asset_graphics_012",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/CarbonFibre.glb"

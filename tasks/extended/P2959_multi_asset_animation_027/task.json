@@ -1,7 +1,6 @@
 {
   "id": "P2959_multi_asset_animation_027",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/RobotExpressive.glb"

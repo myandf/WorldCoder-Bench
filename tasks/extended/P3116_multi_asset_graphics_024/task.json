@@ -1,7 +1,6 @@
 {
   "id": "P3116_multi_asset_graphics_024",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BoomBox.glb",
     "../../../assets/shared/CarbonFibre.glb"

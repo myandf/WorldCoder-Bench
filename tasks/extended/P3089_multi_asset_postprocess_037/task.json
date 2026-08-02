@@ -1,7 +1,6 @@
 {
   "id": "P3089_multi_asset_postprocess_037",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CesiumMan.glb",
     "../../../assets/shared/DispersionTest.glb"

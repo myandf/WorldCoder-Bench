@@ -1,7 +1,6 @@
 {
   "id": "P3211_multi_asset_education_004",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/coffeemat.glb",
     "../../../assets/shared/ScatteringSkull.glb"

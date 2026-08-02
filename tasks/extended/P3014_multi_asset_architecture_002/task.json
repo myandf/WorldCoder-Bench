@@ -1,7 +1,6 @@
 {
   "id": "P3014_multi_asset_architecture_002",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ChairDamaskPurplegold.glb",
     "../../../assets/shared/CommercialRefrigerator.glb"

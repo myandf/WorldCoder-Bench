@@ -1,7 +1,6 @@
 {
   "id": "P2817_multi_asset_simulation_005",
   "domain": "visualization",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/space_ship_hallway.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

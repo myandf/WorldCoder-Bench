@@ -1,7 +1,6 @@
 {
   "id": "P3108",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassVaseFlowers.glb",
     "../../../assets/shared/SunglassesKhronos.glb",

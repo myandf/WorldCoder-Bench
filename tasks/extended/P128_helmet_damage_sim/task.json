@@ -3,7 +3,6 @@
   "title": "Helmet Impact Damage Simulation",
   "domain": "physics",
   "route": "B",
-  "difficulty": "L5",
   "target_framework": "three.js",
   "prompt": "Implement a helmet impact damage simulation using Three.js. Load ScatteringSkull.glb, click the surface to simulate impacts that produce dents, and observe material changes and declining structural integrity.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/ScatteringSkull.glb;\n(2) Display the model centered in the scene;\n\n[Impact Interaction]\n(3) Click the model surface using a Raycaster to add an impact point;\n(4) Display the impact point as a red marker (small sphere with radius=0.02);\n(5) For each impact, create a visual dent effect within a radius of 0.3 around the impact point (by scaling displacement or overlaying a decal);\n\n[Material Degradation]\n(6) After a cumulative total of 3 impacts, increase the overall material roughness by 0.2 (to simulate wear);\n(7) For each impact, add a metalness variation in the impact area (to simulate surface damage);\n\n[Structural Integrity]\n(8) Initial integrity is 100%;\n(9) Each impact reduces integrity by 10-15% (randomly);\n(10) When integrity <= 30%, change the model to a red warning tint;\n(11) When integrity <= 0%, display a \"Structural Failure\" warning;\n\n[OrbitControls]\n(12) Support rotating the view;\n\n[HUD Display]\n(13) HUD in the upper-left corner:\n  - Impact count (id=\"impactCount\")\n  - Structural integrity (id=\"integrity\", percentage)\n  - Current roughness (id=\"roughness\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - impactCount: number\n  - integrity: number (0-100)\n  - roughness: number\n  - lastImpactPos: {x,y,z} (most recent impact position)\n\nOutput a single standalone HTML file.",
   "reference_images": [],
@@ -23,6 +22,5 @@
     "impact dent radius: 0.3 units",
     "roughness increase after 3 impacts",
     "structural integrity decrease per impact: 10-15%"
-  ],
-  "difficulty_analysis": "L5: Precise Raycaster-based surface clicking, vertex displacement calculations, dynamic material property modification, and structural integrity state management."
+  ]
 }

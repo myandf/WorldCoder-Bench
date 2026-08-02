@@ -1,7 +1,6 @@
 {
   "id": "P3161_multi_asset_chemistry-lab_034",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DispersionTest.glb",
     "../../../assets/shared/ScatteringSkull.glb"

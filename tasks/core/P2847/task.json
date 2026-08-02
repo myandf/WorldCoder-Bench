@@ -1,7 +1,6 @@
 {
   "id": "P2847",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/space_ship_hallway.glb"

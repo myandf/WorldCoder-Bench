@@ -1,7 +1,6 @@
 {
   "id": "P2924_multi_asset_chemistry_032",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/Fox.glb"

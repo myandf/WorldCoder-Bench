@@ -1,7 +1,6 @@
 {
   "id": "P3020__robust_v2",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/GlamVelvetSofa.glb"

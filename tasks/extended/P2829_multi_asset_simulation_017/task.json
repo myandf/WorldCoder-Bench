@@ -1,7 +1,6 @@
 {
   "id": "P2829_multi_asset_simulation_017",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BoomBox.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

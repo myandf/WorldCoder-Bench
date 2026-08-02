@@ -1,7 +1,6 @@
 {
   "id": "P2936_multi_asset_animation_004",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/coffeemat.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

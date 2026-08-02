@@ -1,7 +1,6 @@
 {
   "id": "P3193_multi_asset_product_001",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/ToyCar.glb"

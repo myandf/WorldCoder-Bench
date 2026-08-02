@@ -1,7 +1,6 @@
 {
   "id": "P2775_multi_asset_game_003",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/RobotExpressive.glb",

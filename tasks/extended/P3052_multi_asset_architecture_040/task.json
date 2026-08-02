@@ -1,7 +1,6 @@
 {
   "id": "P3052_multi_asset_architecture_040",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SheenChair.glb",
     "../../../assets/shared/ScatteringSkull.glb"

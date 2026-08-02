@@ -1,7 +1,6 @@
 {
   "id": "P3096_multi_asset_graphics_004",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/DirectionalLight.glb"

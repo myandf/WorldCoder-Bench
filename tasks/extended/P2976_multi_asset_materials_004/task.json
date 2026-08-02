@@ -1,7 +1,6 @@
 {
   "id": "P2976_multi_asset_materials_004",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/AnisotropyBarnLamp.glb"

@@ -3,7 +3,6 @@
   "title": "3D Particle Fireworks System",
   "domain": "creative",
   "route": "B",
-  "difficulty": "L3",
   "target_framework": "three.js",
   "prompt": "Implement a 3D particle fireworks system using Three.js.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Interaction and Lifecycle]\n(1) Click the canvas's \"sky\" area (the upper half of the view) to launch one firework in that direction;\n(2) Lifecycle of a single firework: ascent phase (one bright particle flies upward along the launch direction) → explosion (bursts at the explosion point with at least 200 particles distributed over a spherical surface) → falling fade-out (falls under gravity and is removed from the scene after its opacity reaches 0);\n(3) For each explosion, randomly select a color from the palette: red, gold, green, blue, purple, white;\n(4) Particles must use THREE.Points, with either a custom ShaderMaterial or a PointsMaterial with size attenuation;\n(5) After the explosion, particles are affected by gravity, with a vertically downward acceleration of approximately 2.0 units/s² (correctly multiplied by the frame dt);\n(6) The ascending projectile should preferably have a brief trailing streak/trail (optional to implement, but the prompt encourages implementing a fading trail);\n\n[Buttons and Scene]\n(7) Auto-launch button id=\"autoBtn\": when enabled, automatically launch one firework in a random direction every 1–2 seconds;\n(8) Clear-all button id=\"clearBtn\": clear all particles/fireworks that have not yet disappeared;\n(9) Use OrbitControls and a dark background;\n\n[HUD]\n(10) Display: current total number of active particles id=\"particleCount\", cumulative number of explosions id=\"explosionCount\", and frame rate id=\"fps\";\n\n[State Exposure (Required)]\n(11) Update window.__3D_STATE__ every frame with: particleCount (number of active particles), explosionCount (cumulative number of explosions), activeFireworks (current number of unfinished fireworks/bursts, an integer), and simTime (simulation time in seconds). When auto-launch is enabled, it is recommended to additionally set autoFireworks: true for easier debugging (optional field; if implemented, it must remain consistent with the button state).\n\nOutput a single HTML file and open it through a local HTTP server.",
   "reference_images": [],
@@ -18,6 +17,5 @@
     "three.js",
     "interactive"
   ],
-  "estimated_human_time_minutes": 120,
-  "difficulty_analysis": "L3: Points + custom shading or attenuation, multi-stage lifecycle, gravity and fade-out, auto-launch/clear controls and HUD, and __3D_STATE__ synchronization."
+  "estimated_human_time_minutes": 120
 }

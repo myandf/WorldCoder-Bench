@@ -3,7 +3,6 @@
   "title": "Cell Mitosis Stage Animation",
   "domain": "animation",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Use Three.js to implement simplified models of a cell, cell nucleus, and organelles, and demonstrate the visual changes across the 5 stages of mitosis.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Visual Model]\n(1) Cell membrane: a large transparent or semi-transparent sphere; cell nucleus: a smaller sphere inside; organelles: several distributed small spheres/points.\n(2) Five stages: Interphase, Prophase, Metaphase, Anaphase, and Telophase. Each stage must have clear visual differences: for example, an intact nucleus during Interphase; disappearance of the nuclear envelope/chromosome condensation during Prophase (which may be simulated using arrangements of small cylinders/spheres); alignment at the metaphase plate during Metaphase; separation toward the two poles during Anaphase; and elongation and division into two cells during Telophase (cellCount changes to 2), etc. Implementation details may be simplified, but the stages must be visually distinguishable.\n\n[Controls]\n(3) Buttons id=\"nextStage\" and id=\"prevStage\" manually switch stages.\n(4) Autoplay: a checkbox or button with id=\"autoPlay\"; when true, stages automatically advance over time and either loop or stop at Telophase.\n(5) The stage description panel id=\"stageInfo\" displays the current stage name and a brief description.\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - currentStage: number (0–4 recommended)\n  - stageName: string (matching or synonymous with the five English stage names)\n  - autoPlaying: boolean\n  - cellCount: number (1 or 2; may be 2 after Telophase)\n  - chromosomeCount: number (the number of visualized chromosome/chromatid groups; may vary by stage)\n  - simTime: number (seconds)\n\nOutput a single HTML file.",
   "reference_images": [],
@@ -18,6 +17,5 @@
     "stages",
     "three.js"
   ],
-  "estimated_human_time_minutes": 300,
-  "difficulty_analysis": "L4: Geometry/transparency/count changes across five stages, autoplay and manual switching, with stageInfo consistent with __3D_STATE__."
+  "estimated_human_time_minutes": 300
 }

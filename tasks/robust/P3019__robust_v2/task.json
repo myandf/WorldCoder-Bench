@@ -1,7 +1,6 @@
 {
   "id": "P3019__robust_v2",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlamVelvetSofa.glb",
     "../../../assets/shared/DirectionalLight.glb"

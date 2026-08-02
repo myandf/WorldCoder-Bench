@@ -1,7 +1,6 @@
 {
   "id": "P2805_multi_asset_game_033",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ToyCar.glb",
     "../../../assets/shared/space_ship_hallway.glb"

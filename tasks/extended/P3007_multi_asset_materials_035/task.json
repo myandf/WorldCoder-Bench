@@ -1,7 +1,6 @@
 {
   "id": "P3007_multi_asset_materials_035",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/ChairDamaskPurplegold.glb"

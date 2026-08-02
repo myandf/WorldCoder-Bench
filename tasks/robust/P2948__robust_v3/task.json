@@ -1,7 +1,6 @@
 {
   "id": "P2948__robust_v3",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/BarramundiFish.glb",

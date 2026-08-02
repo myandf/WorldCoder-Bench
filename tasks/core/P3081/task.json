@@ -1,7 +1,6 @@
 {
   "id": "P3081",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DispersionTest.glb",
     "../../../assets/shared/ScatteringSkull.glb"

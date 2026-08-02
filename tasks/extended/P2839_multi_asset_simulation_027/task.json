@@ -1,7 +1,6 @@
 {
   "id": "P2839_multi_asset_simulation_027",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/RobotExpressive.glb"

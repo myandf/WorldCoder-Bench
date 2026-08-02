@@ -1,7 +1,6 @@
 {
   "id": "P2771_multi_asset_physics_039",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/coffeemat.glb",

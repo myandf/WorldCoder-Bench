@@ -1,7 +1,6 @@
 {
   "id": "P2921_multi_asset_chemistry_029",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/PrimaryIonDrive.glb",
     "../../../assets/shared/IridescenceAbalone.glb"

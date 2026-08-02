@@ -1,7 +1,6 @@
 {
   "id": "P3208_multi_asset_education_001",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/ABeautifulGame.glb"

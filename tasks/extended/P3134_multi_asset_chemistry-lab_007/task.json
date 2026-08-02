@@ -1,7 +1,6 @@
 {
   "id": "P3134_multi_asset_chemistry-lab_007",
   "domain": "chemistry",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

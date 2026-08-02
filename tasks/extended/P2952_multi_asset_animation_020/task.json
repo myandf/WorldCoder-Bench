@@ -1,7 +1,6 @@
 {
   "id": "P2952_multi_asset_animation_020",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/RobotExpressive.glb",

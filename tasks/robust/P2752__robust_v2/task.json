@@ -1,7 +1,6 @@
 {
   "id": "P2752__robust_v2",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CesiumMilkTruck.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

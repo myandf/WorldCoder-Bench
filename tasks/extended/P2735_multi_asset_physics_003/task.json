@@ -1,7 +1,6 @@
 {
   "id": "P2735_multi_asset_physics_003",
   "domain": "physics",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/CarConcept.glb"

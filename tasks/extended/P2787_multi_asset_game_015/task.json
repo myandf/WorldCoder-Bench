@@ -1,7 +1,6 @@
 {
   "id": "P2787_multi_asset_game_015",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/coffeemat.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2977_multi_asset_materials_005",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/BoomBox.glb"

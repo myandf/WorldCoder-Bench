@@ -1,7 +1,6 @@
 {
   "id": "P2755_multi_asset_physics_023",
   "domain": "physics",
-  "difficulty": "L6",
   "title": "Momentum Transfer Lab: Collision Dynamics",
   "description": "A physics sandbox where a ShaderBall and Corset sit on a frictionless rail system. The user configures mass, velocity, and elasticity for each object, launches collisions, observes momentum and kinetic energy conservation in real-time graphs, and can undo/redo parameter changes to compare outcomes.",
   "assets": [

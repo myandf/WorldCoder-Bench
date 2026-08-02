@@ -3,7 +3,6 @@
   "title": "Advanced Chair Configurator",
   "domain": "product",
   "route": "B",
-  "difficulty": "L3",
   "target_framework": "three.js",
   "prompt": "Use Three.js to implement an advanced chair configurator. Load SheenChair.glb and support material switching, color selection, and saving/loading configurations.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/SheenChair.glb;\n(2) Display the model centered;\n\n[Material Selection]\n(3) Three material buttons (with ids \"matLeather\"/\"matFabric\"/\"matVelvet\", respectively);\n(4) Leather: roughness=0.3, metalness=0.1;\n(5) Fabric: roughness=0.9, metalness=0;\n(6) Velvet: roughness=0.7, metalness=0.05, with a sheen effect;\n\n[Color Selection]\n(7) A color picker (id=\"cushionColor\", type=\"color\") changes the cushion color;\n(8) Locate the mesh representing the cushion in the model (determine it by name or position);\n\n[Leg Style]\n(9) Toggle button (id=\"legStyle\"): wood (brown, roughness=0.8) / metal (silver, metalness=0.9);\n(10) Modify the material of the chair-leg mesh;\n\n[Save/Load]\n(11) The \"Save\" button (id=\"saveBtn\") stores the current configuration as JSON in localStorage;\n(12) The \"Load\" button (id=\"loadBtn\") reads the configuration from localStorage and applies it;\n(13) Configuration contents: {material, color, legStyle};\n\n[OrbitControls]\n(14) Support rotating the view;\n\n[HUD Display]\n(15) HUD in the upper-left corner:\n  - Material type (id=\"materialType\")\n  - Color hex value (id=\"colorValue\")\n  - Number of saved configurations (id=\"savedCount\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - materialType: string\n  - colorHex: string\n  - legStyle: string (\"wood\"/\"metal\")\n  - savedConfigs: number\n\nOutput a standalone HTML file.",
   "reference_images": [],
@@ -19,6 +18,5 @@
     "localStorage"
   ],
   "estimated_human_time_minutes": 90,
-  "physics_constraints": [],
-  "difficulty_analysis": "L3: Load the model with GLTFLoader, switch material properties (roughness/metalness), apply color selection, and serialize/deserialize with localStorage."
+  "physics_constraints": []
 }

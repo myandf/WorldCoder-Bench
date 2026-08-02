@@ -1,7 +1,6 @@
 {
   "id": "P3020__robust_v3",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/GlamVelvetSofa.glb"

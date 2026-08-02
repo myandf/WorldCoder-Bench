@@ -1,7 +1,6 @@
 {
   "id": "P2990_multi_asset_materials_018",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionPlant.glb",
     "../../../assets/shared/ScatteringSkull.glb"

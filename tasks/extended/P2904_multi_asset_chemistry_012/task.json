@@ -1,7 +1,6 @@
 {
   "id": "P2904_multi_asset_chemistry_012",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/CarbonFibre.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2854_multi_asset_shaders_002",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/IridescenceLamp.glb",

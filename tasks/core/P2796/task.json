@@ -1,7 +1,6 @@
 {
   "id": "P2796",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/RobotExpressive.glb"

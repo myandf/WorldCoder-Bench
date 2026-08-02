@@ -1,7 +1,6 @@
 {
   "id": "P3128__robust_v1",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/coffeemat.glb",
     "../../../assets/shared/DispersionTest.glb"

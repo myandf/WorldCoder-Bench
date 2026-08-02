@@ -1,7 +1,6 @@
 {
   "id": "P3076_multi_asset_postprocess_024",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SpecularSilkPouf.glb",
     "../../../assets/shared/ScatteringSkull.glb"

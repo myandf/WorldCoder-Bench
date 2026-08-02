@@ -1,7 +1,6 @@
 {
   "id": "P2943__robust_v3",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/InterpolationTest.glb",
     "../../../assets/shared/steampunk_camera.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2917_multi_asset_chemistry_025",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DispersionTest.glb",
     "../../../assets/shared/CarbonFibre.glb"

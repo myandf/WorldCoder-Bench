@@ -1,7 +1,6 @@
 {
   "id": "P2835",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/InterpolationTest.glb"

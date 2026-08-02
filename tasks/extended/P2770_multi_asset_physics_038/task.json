@@ -1,7 +1,6 @@
 {
   "id": "P2770_multi_asset_physics_038",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/CarbonFibre.glb"

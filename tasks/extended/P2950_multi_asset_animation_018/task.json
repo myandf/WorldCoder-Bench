@@ -1,7 +1,6 @@
 {
   "id": "P2950_multi_asset_animation_018",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Duck.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

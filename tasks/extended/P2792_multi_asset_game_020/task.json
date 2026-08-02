@@ -1,7 +1,6 @@
 {
   "id": "P2792_multi_asset_game_020",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/ScatteringSkull.glb"

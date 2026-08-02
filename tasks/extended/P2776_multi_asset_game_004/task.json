@@ -1,7 +1,6 @@
 {
   "id": "P2776_multi_asset_game_004",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/LittlestTokyo.glb"

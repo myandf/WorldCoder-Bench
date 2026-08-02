@@ -1,7 +1,6 @@
 {
   "id": "P3124_multi_asset_graphics_032",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SpecularSilkPouf.glb",
     "../../../assets/shared/Corset.glb"

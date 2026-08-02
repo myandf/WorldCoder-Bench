@@ -1,7 +1,6 @@
 {
   "id": "P2837",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/Duck.glb"

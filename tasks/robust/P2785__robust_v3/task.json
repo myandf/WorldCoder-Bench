@@ -1,7 +1,6 @@
 {
   "id": "P2785__robust_v3",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CesiumMan.glb",
     "../../../assets/shared/DirectionalLight.glb"

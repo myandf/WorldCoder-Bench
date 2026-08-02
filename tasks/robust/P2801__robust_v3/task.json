@@ -1,7 +1,6 @@
 {
   "id": "P2801__robust_v3",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RiggedFigure.glb",
     "../../../assets/shared/ScatteringSkull.glb"

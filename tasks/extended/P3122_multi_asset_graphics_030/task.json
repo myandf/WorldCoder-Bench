@@ -1,7 +1,6 @@
 {
   "id": "P3122_multi_asset_graphics_030",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/LeePerrySmith.glb"

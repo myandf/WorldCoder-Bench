@@ -1,7 +1,6 @@
 {
   "id": "P2873__robust_v1",
   "domain": "shaders",
-  "difficulty": "L6",
   "description": "A miniature virtual city surrounds a central pool that acts as a magical reflective portal. The user manipulates custom shaders controlling water caustics, city emission glow, day-night cycle, and atmospheric fog — all governed by an energy conservation system where boosting one effect drains others. Undo/redo lets the user step through shader states.",
   "title": "City Pool Shader Energy Balancer",
   "assets": [

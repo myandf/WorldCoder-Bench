@@ -1,7 +1,6 @@
 {
   "id": "P2928_multi_asset_chemistry_036",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/coffeemat.glb",

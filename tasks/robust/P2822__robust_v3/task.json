@@ -1,7 +1,6 @@
 {
   "id": "P2822__robust_v3",
   "domain": "animation",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/RiggedFigure.glb",
     "../../../assets/shared/CesiumMan.glb"

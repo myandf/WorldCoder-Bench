@@ -1,7 +1,6 @@
 {
   "id": "P3027_multi_asset_architecture_015",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/Duck.glb"

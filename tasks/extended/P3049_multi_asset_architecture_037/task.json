@@ -1,7 +1,6 @@
 {
   "id": "P3049_multi_asset_architecture_037",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/CommercialRefrigerator.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

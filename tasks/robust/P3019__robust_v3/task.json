@@ -1,7 +1,6 @@
 {
   "id": "P3019__robust_v3",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SheenWoodLeatherSofa.glb",
     "../../../assets/shared/DirectionalLight.glb"

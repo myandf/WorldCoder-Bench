@@ -1,7 +1,6 @@
 {
   "id": "P2982_multi_asset_materials_010",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/coffeemat.glb"

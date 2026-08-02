@@ -1,7 +1,6 @@
 {
   "id": "P2883",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/space_ship_hallway.glb"

@@ -3,7 +3,6 @@
   "title": "3D Lighting Studio",
   "domain": "creative",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D lighting studio. Load lighting fixture models, allowing users to adjust light properties and positions and observe real-time shadow effects.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/IridescenceLamp.glb and assets/Lantern.glb;\n(2) Place the two lighting fixtures at (-2,0,0) and (2,0,0), respectively;\n\n[Light System]\n(3) Attach one PointLight inside each lighting fixture;\n(4) Light intensity slider (id=\"intensitySlider\", range 0-5, default 1);\n(5) Light color picker (id=\"lightColor\", type=\"color\", default warm white #ffeedd);\n\n[Scene Objects]\n(6) Place a white sphere (radius=1) at the center as the illuminated object;\n(7) Use a ground plane to receive shadows;\n\n[Shadows]\n(8) Enable renderer.shadowMap;\n(9) Set castShadow = true for both PointLights;\n(10) The sphere and lighting fixtures cast shadows, and the ground receives shadows;\n(11) A \"Shadow Toggle\" button (id=\"shadowToggle\") toggles the shadowMap on or off;\n\n[OrbitControls]\n(12) Support orbit viewing;\n\n[HUD Display]\n(13) HUD in the upper-left corner:\n  - Number of lights (id=\"lightCount\")\n  - Shadow state (id=\"shadowState\", on/off)\n  - Current intensity (id=\"intensityValue\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean (both models have finished loading)\n  - lightCount: number\n  - shadowEnabled: boolean\n  - intensity: number\n  - lightColor: string (hex)\n\nOutput a single standalone HTML file.",
   "reference_images": [],
@@ -20,6 +19,5 @@
     "interactive"
   ],
   "estimated_human_time_minutes": 120,
-  "physics_constraints": [],
-  "difficulty_analysis": "L4: Load multiple GLB models, provide adjustable light intensity/color, render real-time cast shadows, provide a shadow map toggle, and support dragging light source positions."
+  "physics_constraints": []
 }

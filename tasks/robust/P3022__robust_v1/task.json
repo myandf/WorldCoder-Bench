@@ -1,7 +1,6 @@
 {
   "id": "P3022__robust_v1",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/ABeautifulGame.glb"

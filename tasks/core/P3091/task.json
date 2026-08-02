@@ -1,7 +1,6 @@
 {
   "id": "P3091",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/IridescenceLamp.glb"

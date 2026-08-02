@@ -1,7 +1,6 @@
 {
   "id": "P3203_multi_asset_product_011",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/minimalistic_modern_bedroom.glb",
     "../../../assets/shared/Corset.glb"

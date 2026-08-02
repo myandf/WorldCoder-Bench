@@ -1,7 +1,6 @@
 {
   "id": "P2848_multi_asset_simulation_036",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/InterpolationTest.glb",
     "../../../assets/shared/AntiqueCamera.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2886_multi_asset_shaders_034",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/CarbonFibre.glb",

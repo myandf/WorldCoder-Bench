@@ -1,7 +1,6 @@
 {
   "id": "P3030",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/space_ship_hallway.glb",
     "../../../assets/shared/bath_day.glb"

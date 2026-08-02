@@ -1,7 +1,6 @@
 {
   "id": "P2833_multi_asset_simulation_021",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

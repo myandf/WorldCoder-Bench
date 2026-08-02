@@ -1,7 +1,6 @@
 {
   "id": "P2925__robust_v1",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Lantern.glb",
     "../../../assets/shared/PrimaryIonDrive.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3209_multi_asset_education_002",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BoomBox.glb",
     "../../../assets/shared/nemetona.glb"

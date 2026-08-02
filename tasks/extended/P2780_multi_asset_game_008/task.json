@@ -1,7 +1,6 @@
 {
   "id": "P2780_multi_asset_game_008",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/DirectionalLight.glb"

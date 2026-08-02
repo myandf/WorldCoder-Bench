@@ -1,7 +1,6 @@
 {
   "id": "P2969_multi_asset_animation_004",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/WaterBottle.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3086__robust_v3",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2899_multi_asset_chemistry_007",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Lantern.glb",
     "../../../assets/shared/CarbonFibre.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2880_multi_asset_shaders_028",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Chromatic Lens Workshop",
   "description": "An antique camera sits on a pedestal beside a prismatic dispersion test object. The user manipulates custom shader parameters on both objects—adjusting chromatic aberration, refraction index, fresnel intensity, and spectral separation—to match a target visual reference. An undo/redo system tracks all parameter changes, and a conservation law ensures total light energy across RGB channels remains constant.",
   "assets": [

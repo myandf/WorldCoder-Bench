@@ -1,7 +1,6 @@
 {
   "id": "P3153_multi_asset_chemistry-lab_026",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SpecularSilkPouf.glb",
     "../../../assets/shared/WaterBottle.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3086",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

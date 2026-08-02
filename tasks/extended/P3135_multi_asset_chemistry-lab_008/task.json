@@ -1,7 +1,6 @@
 {
   "id": "P3135_multi_asset_chemistry-lab_008",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/RobotExpressive.glb"

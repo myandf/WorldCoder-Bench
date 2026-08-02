@@ -3,7 +3,6 @@
   "title": "Water Bottle Bowling",
   "domain": "physics",
   "route": "B",
-  "difficulty": "L4",
   "target_framework": "three.js",
   "prompt": "Implement a water bottle bowling game using Three.js. Use water bottle models as bowling pins and launch a bowling ball to knock them down.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/WaterBottle.glb;\n(2) Clone it 10 times to use as bowling pins, arranged in a triangular formation (4-3-2-1);\n(3) Keep the bottles upright, with spacing of 0.8 units;\n\n[Bowling Ball]\n(4) Use SphereGeometry (radius=0.3, dark blue) for the ball;\n(5) Place the ball initially 8 units in front of the pin formation;\n\n[Launch Interaction]\n(6) Drag the mouse left and right to adjust the launch angle;\n(7) Drag up and down to adjust the launch force (5-20 m/s);\n(8) Release to launch, and display a force indicator bar;\n\n[Physics Simulation]\n(9) The ball rolls along the launch direction, with a friction decay coefficient of 0.95;\n(10) When the ball hits a pin, calculate the collision force and push the pin over (rotation);\n(11) A pin is considered down when its rotation exceeds 45 degrees;\n\n[Scoring]\n(12) Allow 2 throws per frame (10 frames total); knocking all pins down = Strike;\n(13) Simplification: count the number of knocked-down pins after each throw;\n(14) A \"Reset\" button (id=\"resetBtn\") stands all pins upright again;\n\n[HUD Display]\n(15) HUD in the upper-left corner:\n  - Number of pins down (id=\"pinsDown\")\n  - Current frame (id=\"frame\")\n  - Total score (id=\"totalScore\")\n  - Ball speed (id=\"ballSpeed\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - pinsDown: number (0-10)\n  - frame: number (1-10)\n  - totalScore: number\n  - ballSpeed: number\n  - ballPos: {x,y,z}\n\nOutput a standalone HTML file.",
   "reference_images": [],
@@ -24,6 +23,5 @@
     "ball radius: 0.3",
     "friction coefficient: 0.95",
     "pin topple: rotation > 45 degrees"
-  ],
-  "difficulty_analysis": "L4: Load and clone 10 models as pins using GLTFLoader, drag-based ball launching physics, collision-induced rotation and knockdown detection, and a frame-based scoring system."
+  ]
 }

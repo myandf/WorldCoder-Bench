@@ -1,7 +1,6 @@
 {
   "id": "P2794__robust_v3",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Corset.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

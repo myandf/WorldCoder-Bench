@@ -1,7 +1,6 @@
 {
   "id": "P2946_multi_asset_animation_014",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/RiggedFigure.glb"

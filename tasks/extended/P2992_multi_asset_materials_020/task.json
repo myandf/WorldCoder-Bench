@@ -1,7 +1,6 @@
 {
   "id": "P2992_multi_asset_materials_020",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/IridescenceAbalone.glb",
     "../../../assets/shared/Fox.glb"

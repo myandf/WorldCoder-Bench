@@ -1,7 +1,6 @@
 {
   "id": "P2879__robust_v3",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2828__robust_v3",
   "domain": "visualization",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/LittlestTokyo.glb"

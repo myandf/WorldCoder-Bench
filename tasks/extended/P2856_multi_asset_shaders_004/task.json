@@ -1,7 +1,6 @@
 {
   "id": "P2856_multi_asset_shaders_004",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Dungeon Ember Enchantment System",
   "description": "A dungeon scene with a glowing pot of coals at its center. The user channels ember energy from the coals into the dungeon walls using custom shaders, painting heat distortion and emissive glow across surfaces. Energy is conserved between the coals and the walls, with undo/redo support and multi-input coupling between heat intensity, color temperature, and distortion strength.",
   "assets": [

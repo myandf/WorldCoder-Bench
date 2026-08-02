@@ -1,7 +1,6 @@
 {
   "id": "P3068__robust_v1",
   "domain": "postprocess",
-  "difficulty": "L6",
   "title": "Iridescent City Forge — Post-Process Alchemy",
   "description": "A miniature VirtualCity sits on a table beside a glowing PotOfCoals. The user forges iridescent shield domes (derived from the IridescenceAbalone shell) over city districts by scooping energy from the coals and painting post-processing effects onto each district. Effects are governed by a conservation law: a fixed global 'energy budget' is split among bloom, chromatic aberration, vignette, tone-mapping exposure, and film grain across all districts, so boosting one district's effect reduces what remains for others. Full undo/redo history is required.",
   "assets": [

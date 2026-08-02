@@ -1,7 +1,6 @@
 {
   "id": "P2890__robust_v3",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/GlassBrokenWindow.glb",
     "../../../assets/shared/CarbonFibre.glb",

@@ -1,7 +1,6 @@
 {
   "id": "P2927__robust_v1",
   "domain": "molecular",
-  "difficulty": "L6",
   "title": "Molecular Fusion Reactor: Organic-Polymer Synthesis",
   "description": "Users operate a virtual chemistry workbench where an Avocado represents an organic fatty-acid molecule and Sunglasses represent a polymer chain catalyst. Players must drag reactants into a central reaction vessel, adjust temperature and pressure sliders, trigger bond-breaking and bond-forming steps in the correct sequence, and manage conservation of atomic mass across all transformations. Undo/redo buttons let users reverse missteps in the multi-step synthesis.",
   "assets": [

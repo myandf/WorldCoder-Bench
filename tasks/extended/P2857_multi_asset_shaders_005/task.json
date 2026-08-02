@@ -1,7 +1,6 @@
 {
   "id": "P2857_multi_asset_shaders_005",
   "domain": "shaders",
-  "difficulty": "L6",
   "title": "Dragon's Elemental Siege — Shader Spell System",
   "description": "A translucent dragon hovers above a miniature city. The user crafts elemental shader spells by combining color channels, distortion parameters, and glow intensities across multiple linked controls, then casts them onto city buildings to transform their material appearance. A conservation law ensures total shader energy is fixed — boosting one spell weakens others — and full undo/redo tracks every step.",
   "assets": [

@@ -1,7 +1,6 @@
 {
   "id": "P2831_multi_asset_simulation_019",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/Duck.glb"

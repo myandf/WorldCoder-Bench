@@ -1,7 +1,6 @@
 {
   "id": "P3105_multi_asset_graphics_013",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/CarbonFibre.glb"

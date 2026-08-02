@@ -1,7 +1,6 @@
 {
   "id": "P3081__robust_v3",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/GlassVaseFlowers.glb",
     "../../../assets/shared/ScatteringSkull.glb"

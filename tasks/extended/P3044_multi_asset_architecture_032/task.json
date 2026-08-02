@@ -1,7 +1,6 @@
 {
   "id": "P3044_multi_asset_architecture_032",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CommercialRefrigerator.glb",
     "../../../assets/shared/bath_day.glb"

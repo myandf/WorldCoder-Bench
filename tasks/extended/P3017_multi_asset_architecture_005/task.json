@@ -1,7 +1,6 @@
 {
   "id": "P3017_multi_asset_architecture_005",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Duck.glb",
     "../../../assets/shared/WaterBottle.glb"

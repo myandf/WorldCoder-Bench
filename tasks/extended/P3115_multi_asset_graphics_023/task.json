@@ -1,7 +1,6 @@
 {
   "id": "P3115_multi_asset_graphics_023",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SpecularSilkPouf.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

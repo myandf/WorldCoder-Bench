@@ -1,7 +1,6 @@
 {
   "id": "P3197_multi_asset_product_005",
   "domain": "product",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/coffeemat.glb",
     "../../../assets/shared/ChairDamaskPurplegold.glb"

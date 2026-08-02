@@ -1,7 +1,6 @@
 {
   "id": "P3063_multi_asset_postprocess_011",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/IridescenceAbalone.glb",
     "../../../assets/shared/ScatteringSkull.glb"

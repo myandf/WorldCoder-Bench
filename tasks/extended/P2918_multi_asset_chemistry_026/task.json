@@ -1,7 +1,6 @@
 {
   "id": "P2918_multi_asset_chemistry_026",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/Fox.glb"

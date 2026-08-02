@@ -1,7 +1,6 @@
 {
   "id": "P2800_multi_asset_game_028",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ABeautifulGame.glb",
     "../../../assets/shared/DirectionalLight.glb"

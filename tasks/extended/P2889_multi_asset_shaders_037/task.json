@@ -1,7 +1,6 @@
 {
   "id": "P2889_multi_asset_shaders_037",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/BoxAnimated.glb",

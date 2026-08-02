@@ -1,7 +1,6 @@
 {
   "id": "P2935_multi_asset_animation_003",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/BoxAnimated.glb",
     "../../../assets/shared/SunglassesKhronos.glb",

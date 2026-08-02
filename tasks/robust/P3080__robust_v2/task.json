@@ -1,7 +1,6 @@
 {
   "id": "P3080__robust_v2",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

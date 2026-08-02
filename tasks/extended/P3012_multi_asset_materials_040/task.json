@@ -1,7 +1,6 @@
 {
   "id": "P3012_multi_asset_materials_040",
   "domain": "materials",
-  "difficulty": "L6",
   "title": "Antique Studio Material Conservation Lab",
   "description": "You are a virtual material conservator in a vintage photography studio. An antique camera sits on a wooden leather sofa, and you must adjust PBR material properties (roughness, metalness, sheen, color tint, emissive glow, opacity) across both objects while obeying a total 'material energy budget' that is conserved across all channels. Full undo/redo history tracks every adjustment.",
   "assets": [

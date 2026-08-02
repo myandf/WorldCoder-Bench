@@ -1,7 +1,6 @@
 {
   "id": "P2945_multi_asset_animation_013",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/AntiqueCamera.glb",

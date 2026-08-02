@@ -1,7 +1,6 @@
 {
   "id": "P2785",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/DirectionalLight.glb"

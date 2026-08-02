@@ -1,7 +1,6 @@
 {
   "id": "P3071_multi_asset_postprocess_019",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Lantern.glb",
     "../../../assets/shared/space_ship_hallway.glb"

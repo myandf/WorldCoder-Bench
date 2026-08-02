@@ -1,7 +1,6 @@
 {
   "id": "P2995_multi_asset_materials_023",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DispersionTest.glb",
     "../../../assets/shared/ClearCoatCarPaint.glb"

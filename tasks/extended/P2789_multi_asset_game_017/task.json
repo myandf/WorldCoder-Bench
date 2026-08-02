@@ -1,7 +1,6 @@
 {
   "id": "P2789_multi_asset_game_017",
   "domain": "game",
-  "difficulty": "L6",
   "title": "Tactical Pool Chess Arena",
   "description": "A strategic arena where chess pieces from ABeautifulGame are deployed around a pool table battlefield. Animated soldiers patrol the perimeter as guards. Players must drag chess pieces onto designated pool-table pockets to score points, managing a finite energy budget that obeys conservation laws, with full undo/redo support for every move.",
   "assets": [

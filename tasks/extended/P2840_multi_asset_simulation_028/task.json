@@ -1,7 +1,6 @@
 {
   "id": "P2840_multi_asset_simulation_028",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/PrimaryIonDrive.glb",
     "../../../assets/shared/space_ship_hallway.glb"

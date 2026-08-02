@@ -1,7 +1,6 @@
 {
   "id": "P2811__robust_v2",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/space_ship_hallway.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

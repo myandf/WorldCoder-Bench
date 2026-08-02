@@ -1,7 +1,6 @@
 {
   "id": "P3010_multi_asset_materials_038",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlamVelvetSofa.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

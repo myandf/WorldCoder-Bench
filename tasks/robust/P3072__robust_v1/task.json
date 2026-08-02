@@ -1,7 +1,6 @@
 {
   "id": "P3072__robust_v1",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

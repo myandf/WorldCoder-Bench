@@ -1,7 +1,6 @@
 {
   "id": "P3187__robust_v2",
   "domain": "soft_body",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/CesiumMan.glb"

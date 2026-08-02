@@ -1,7 +1,6 @@
 {
   "id": "P3008_multi_asset_materials_036",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/Fox.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2738_multi_asset_physics_006",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/Fox.glb"

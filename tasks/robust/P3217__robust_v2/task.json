@@ -1,7 +1,6 @@
 {
   "id": "P3217__robust_v2",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/RobotExpressive.glb"

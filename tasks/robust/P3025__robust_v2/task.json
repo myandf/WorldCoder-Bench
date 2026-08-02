@@ -1,7 +1,6 @@
 {
   "id": "P3025__robust_v2",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/bath_day.glb"

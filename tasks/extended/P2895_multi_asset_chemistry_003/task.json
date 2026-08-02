@@ -1,7 +1,6 @@
 {
   "id": "P2895_multi_asset_chemistry_003",
   "domain": "molecular",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ClearCoatCarPaint.glb",
     "../../../assets/shared/Fox.glb"

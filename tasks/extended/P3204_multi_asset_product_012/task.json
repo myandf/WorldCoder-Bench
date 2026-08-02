@@ -1,7 +1,6 @@
 {
   "id": "P3204_multi_asset_product_012",
   "domain": "product",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/minimalistic_modern_bedroom.glb",
     "../../../assets/shared/steampunk_camera.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3074_multi_asset_postprocess_022",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/ScatteringSkull.glb"

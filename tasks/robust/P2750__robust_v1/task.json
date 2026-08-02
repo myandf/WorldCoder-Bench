@@ -1,7 +1,6 @@
 {
   "id": "P2750__robust_v1",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CarbonFibre.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

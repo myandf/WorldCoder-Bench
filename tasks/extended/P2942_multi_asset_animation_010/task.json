@@ -1,7 +1,6 @@
 {
   "id": "P2942_multi_asset_animation_010",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/nemetona.glb",
     "../../../assets/shared/CesiumMan.glb",

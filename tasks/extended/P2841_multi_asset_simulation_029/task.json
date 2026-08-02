@@ -1,7 +1,6 @@
 {
   "id": "P2841_multi_asset_simulation_029",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Corset.glb",
     "../../../assets/shared/RiggedFigure.glb"

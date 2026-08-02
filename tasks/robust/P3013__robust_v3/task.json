@@ -1,7 +1,6 @@
 {
   "id": "P3013__robust_v3",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/ChairDamaskPurplegold.glb",
     "../../../assets/shared/LittlestTokyo.glb"

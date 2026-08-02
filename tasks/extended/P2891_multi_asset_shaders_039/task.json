@@ -1,7 +1,6 @@
 {
   "id": "P2891_multi_asset_shaders_039",
   "domain": "shaders",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/CarbonFibre.glb"

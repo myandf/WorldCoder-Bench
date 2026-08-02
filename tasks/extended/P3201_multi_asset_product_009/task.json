@@ -1,7 +1,6 @@
 {
   "id": "P3201_multi_asset_product_009",
   "domain": "product",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/coffeemat.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3003_multi_asset_materials_031",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DispersionTest.glb",
     "../../../assets/shared/minimalistic_modern_bedroom.glb"

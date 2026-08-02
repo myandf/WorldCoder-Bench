@@ -1,7 +1,6 @@
 {
   "id": "P2968_multi_asset_animation_003",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/CarbonFibre.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2859",
   "domain": "shaders",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/GlassBrokenWindow.glb",
     "../../../assets/shared/WaterBottle.glb"

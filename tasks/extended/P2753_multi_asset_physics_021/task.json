@@ -1,7 +1,6 @@
 {
   "id": "P2753_multi_asset_physics_021",
   "domain": "physics",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/ScatteringSkull.glb"

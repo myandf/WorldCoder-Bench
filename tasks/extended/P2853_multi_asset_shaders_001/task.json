@@ -1,7 +1,6 @@
 {
   "id": "P2853_multi_asset_shaders_001",
   "domain": "shaders",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/WaterBottle.glb"

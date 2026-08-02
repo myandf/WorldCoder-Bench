@@ -1,7 +1,6 @@
 {
   "id": "P2825__robust_v1",
   "domain": "visualization",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/LittlestTokyo.glb"

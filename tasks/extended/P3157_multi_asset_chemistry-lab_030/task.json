@@ -1,7 +1,6 @@
 {
   "id": "P3157_multi_asset_chemistry-lab_030",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/BoomBox.glb"

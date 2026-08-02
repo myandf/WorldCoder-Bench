@@ -1,7 +1,6 @@
 {
   "id": "P2739__robust_v2",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/steampunk_camera.glb",

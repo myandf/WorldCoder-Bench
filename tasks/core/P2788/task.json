@@ -1,7 +1,6 @@
 {
   "id": "P2788",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/steampunk_camera.glb"

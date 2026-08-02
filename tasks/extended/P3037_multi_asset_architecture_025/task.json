@@ -1,7 +1,6 @@
 {
   "id": "P3037_multi_asset_architecture_025",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SheenWoodLeatherSofa.glb",
     "../../../assets/shared/Corset.glb"

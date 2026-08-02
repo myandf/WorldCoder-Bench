@@ -1,7 +1,6 @@
 {
   "id": "P2844_multi_asset_simulation_032",
   "domain": "visualization",
-  "difficulty": "L6",
   "title": "Urban Solar Energy & Shade Simulation",
   "description": "Users manage a virtual city's solar energy grid by placing and configuring shadow-casting structures and tinted lens filters across city blocks. Adjust sun position, lens tint properties, and shadow mesh orientations to maximize solar panel output while keeping pedestrian zones shaded. The simulation enforces energy conservation laws, couples multiple inputs, and supports full undo/redo of all actions.",
   "assets": [

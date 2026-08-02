@@ -1,7 +1,6 @@
 {
   "id": "P2903",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/AntiqueCamera.glb",
     "../../../assets/shared/IridescenceAbalone.glb"

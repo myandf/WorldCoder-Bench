@@ -1,7 +1,6 @@
 {
   "id": "P2743_multi_asset_physics_011",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/CarbonFibre.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3127_multi_asset_graphics_035",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DiffuseTransmissionTeacup.glb",
     "../../../assets/shared/InterpolationTest.glb"

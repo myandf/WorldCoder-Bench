@@ -1,7 +1,6 @@
 {
   "id": "P2929__robust_v3",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/IridescenceAbalone.glb",
     "../../../assets/shared/PrimaryIonDrive.glb"

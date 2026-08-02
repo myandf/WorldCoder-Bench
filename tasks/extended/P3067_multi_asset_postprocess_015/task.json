@@ -1,7 +1,6 @@
 {
   "id": "P3067_multi_asset_postprocess_015",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/AnimatedMorphCube.glb",

@@ -1,7 +1,6 @@
 {
   "id": "P2919_multi_asset_chemistry_027",
   "domain": "chemistry",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/space_ship_hallway.glb",
     "../../../assets/shared/DiffuseTransmissionTeacup.glb"

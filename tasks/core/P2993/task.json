@@ -1,7 +1,6 @@
 {
   "id": "P2993",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/CommercialRefrigerator.glb",
     "../../../assets/shared/GlamVelvetSofa.glb"

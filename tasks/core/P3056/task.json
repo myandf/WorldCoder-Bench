@@ -1,7 +1,6 @@
 {
   "id": "P3056",
   "domain": "postprocess",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/MosquitoInAmber.glb"

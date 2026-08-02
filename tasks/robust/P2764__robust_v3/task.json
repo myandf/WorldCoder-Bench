@@ -1,7 +1,6 @@
 {
   "id": "P2764__robust_v3",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/CarConcept.glb"

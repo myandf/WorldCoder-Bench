@@ -1,7 +1,6 @@
 {
   "id": "P2818_multi_asset_simulation_006",
   "domain": "game",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/Duck.glb"

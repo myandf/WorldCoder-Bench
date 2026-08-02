@@ -1,7 +1,6 @@
 {
   "id": "P3158_multi_asset_chemistry-lab_031",
   "domain": "chemistry",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/LittlestTokyo.glb",
     "../../../assets/shared/BoomBox.glb"

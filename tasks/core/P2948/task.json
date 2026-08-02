@@ -1,7 +1,6 @@
 {
   "id": "P2948",
   "domain": "animation",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/DirectionalLight.glb",
     "../../../assets/shared/Fox.glb",

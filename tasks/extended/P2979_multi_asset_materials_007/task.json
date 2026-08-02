@@ -1,7 +1,6 @@
 {
   "id": "P2979_multi_asset_materials_007",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/minimalistic_modern_bedroom.glb",

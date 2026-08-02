@@ -1,7 +1,6 @@
 {
   "id": "P2765_multi_asset_physics_033",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Corset.glb",
     "../../../assets/shared/CarbonFibre.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3119_multi_asset_graphics_027",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/AnimatedMorphCube.glb",
     "../../../assets/shared/PotOfCoals.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P2734",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/BarramundiFish.glb",
     "../../../assets/shared/Lantern.glb"

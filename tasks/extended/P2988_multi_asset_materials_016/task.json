@@ -1,7 +1,6 @@
 {
   "id": "P2988_multi_asset_materials_016",
   "domain": "materials",
-  "difficulty": "L6",
   "title": "Alchemist's Material Transmutation Workshop",
   "description": "The user operates an alchemist's workshop where a purple-gold damask chair, a mystical skull, and a pot of glowing coals serve as material transmutation stations. By dragging material essence orbs between the three artifacts and adjusting coupled parameters (heat, spectral energy, fabric weave density), the user transmutes surface materials across all objects simultaneously, governed by a conservation law where total material energy remains constant. Full undo/redo history tracks every transmutation step.",
   "assets": [

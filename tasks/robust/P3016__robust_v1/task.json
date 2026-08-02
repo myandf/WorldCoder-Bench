@@ -1,7 +1,6 @@
 {
   "id": "P3016__robust_v1",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/coffeemat.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3031_multi_asset_architecture_019",
   "domain": "architecture",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SheenChair.glb",
     "../../../assets/shared/space_ship_hallway.glb"

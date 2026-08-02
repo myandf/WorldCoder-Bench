@@ -1,7 +1,6 @@
 {
   "id": "P3093",
   "domain": "materials",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SpecularSilkPouf.glb",
     "../../../assets/shared/AnimatedMorphCube.glb"

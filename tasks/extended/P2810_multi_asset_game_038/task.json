@@ -1,7 +1,6 @@
 {
   "id": "P2810_multi_asset_game_038",
   "domain": "game",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/ScatteringSkull.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

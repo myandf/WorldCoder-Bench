@@ -1,7 +1,6 @@
 {
   "id": "P2967_multi_asset_animation_002",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/ScatteringSkull.glb",

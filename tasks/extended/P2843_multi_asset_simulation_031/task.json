@@ -1,7 +1,6 @@
 {
   "id": "P2843_multi_asset_simulation_031",
   "domain": "product",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/SunglassesKhronos.glb"

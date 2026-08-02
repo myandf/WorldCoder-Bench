@@ -1,7 +1,6 @@
 {
   "id": "P2960__robust_v3",
   "domain": "animation",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Fox.glb",
     "../../../assets/shared/RobotExpressive.glb"

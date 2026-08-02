@@ -1,7 +1,6 @@
 {
   "id": "P3015",
   "domain": "architecture",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/bath_day.glb",
     "../../../assets/shared/coffeemat.glb"

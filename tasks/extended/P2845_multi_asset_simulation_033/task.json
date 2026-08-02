@@ -1,7 +1,6 @@
 {
   "id": "P2845_multi_asset_simulation_033",
   "domain": "game",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/Avocado.glb",
     "../../../assets/shared/RobotExpressive.glb"

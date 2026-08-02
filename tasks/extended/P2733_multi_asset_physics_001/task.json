@@ -1,7 +1,6 @@
 {
   "id": "P2733_multi_asset_physics_001",
   "domain": "physics",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/Lantern.glb",
     "../../../assets/shared/Fox.glb"

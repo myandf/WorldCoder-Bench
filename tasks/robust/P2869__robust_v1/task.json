@@ -1,7 +1,6 @@
 {
   "id": "P2869__robust_v1",
   "domain": "shaders",
-  "difficulty": "L4",
   "assets": [
     "../../../assets/shared/WaterBottle.glb",
     "../../../assets/shared/InterpolationTest.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3094_multi_asset_graphics_002",
   "domain": "materials",
-  "difficulty": "L6",
   "assets": [
     "../../../assets/shared/MaterialsVariantsShoe.glb",
     "../../../assets/shared/AntiqueCamera.glb"

@@ -1,7 +1,6 @@
 {
   "id": "P3088__robust_v2",
   "domain": "postprocess",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/RobotExpressive.glb",
     "../../../assets/shared/WaterBottle.glb",

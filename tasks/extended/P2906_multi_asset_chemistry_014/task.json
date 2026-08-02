@@ -1,7 +1,6 @@
 {
   "id": "P2906_multi_asset_chemistry_014",
   "domain": "molecular",
-  "difficulty": "L5",
   "assets": [
     "../../../assets/shared/SunglassesKhronos.glb",
     "../../../assets/shared/AnisotropyBarnLamp.glb"
