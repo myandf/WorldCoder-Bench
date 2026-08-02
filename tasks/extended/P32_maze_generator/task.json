@@ -1,9 +1,7 @@
 {
   "id": "P32_maze_generator",
   "title": "3D Maze Generation + Pathfinding",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D maze game with automatic pathfinding. The player explores a procedurally generated maze from a first-person perspective and searches for the exit.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';\n// Write your code here\n</script>\n\n[Maze Generation]\n(1) Procedurally generate a 15×15 maze grid using DFS (recursive backtracking) or Prim's algorithm;\n(2) Each cell must be 2×2 units (that is, the maze must have a total footprint of 30×30 units);\n(3) Use BoxGeometry for the walls (width 0.2, height 3, with depth depending on orientation), with a dark MeshStandardMaterial;\n(4) Use a light-colored material for passage floors and a dark-colored material for floors at wall positions to create visual distinction;\n\n[Markers]\n(5) Place a green marker pillar at the start point (0, 0) using CylinderGeometry with an emissive green appearance;\n(6) Place a red marker pillar at the exit (14, 14);\n\n[First-Person Controls]\n(7) Use PointerLockControls to implement mouse-look controls;\n(8) Use WASD for movement at a speed of 5 units/s;\n(9) Collision detection: the player must not be able to pass through maze walls. Cast a Raycaster in the movement direction (with a distance of approximately 0.6); if it hits a wall, prevent movement in that direction;\n\n[Minimap]\n(10) Place a 200×200-pixel 2D minimap in the upper-right corner (id=\"minimap\", using a <canvas> element);\n(11) The minimap must show a top-down view of the entire maze layout (walls = black lines, passages = white);\n(12) Display the player's position on the minimap in real time as a blue dot;\n(13) Mark the exit on the minimap with a red dot;\n\n[Pathfinding]\n(14) \"Solve\" button (id=\"solveBtn\"): when clicked, use BFS or the A* algorithm to calculate the shortest path from the player's current position to the exit;\n(15) Display the path in the 3D scene using a colored line (Line or TubeGeometry);\n(16) After solving, set solved=true, and record the path length (number of cells) in pathLength;\n\n[Regeneration]\n(17) \"New Maze\" button (id=\"newMazeBtn\"): when clicked, regenerate the maze, return the player to the starting point, and clear the path;\n\n[Timer]\n(18) Timer (id=\"timer\"): begin timing when the player moves for the first time, stop when the player reaches the exit, and display it in \"MM:SS\" format;\n\n[HUD Display]\n(19) Display the following in the interface:\n  - Timer (id=\"timer\")\n  - Solve button (id=\"solveBtn\")\n  - New Maze button (id=\"newMazeBtn\")\n  - Minimap canvas (id=\"minimap\")\n\n[State Exposure]\n(20) Update window.__3D_STATE__ every frame with the following fields:\n  - mazeSize: number (15)\n  - playerCell: { row, col } (coordinates of the maze cell currently occupied by the player)\n  - exitCell: { row, col } (exit cell coordinates, fixed at {row:14, col:14})\n  - solved: boolean (whether the path has been solved)\n  - pathLength: number (length of the solved path; 0 when unsolved)\n  - timer: number (elapsed time in seconds)\n  - wallCount: number (total number of wall segments in the maze)\n\nOutput a single HTML file that can run by being opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -18,12 +16,5 @@
     "minimap",
     "collision"
   ],
-  "estimated_human_time_minutes": 200,
-  "physics_constraints": [
-    "maze: 15x15 grid, DFS or Prim generation, each cell 2x2 units",
-    "walls: BoxGeometry height 3, collision raycaster distance ~0.6",
-    "player movement: 5 units/s, WASD + PointerLockControls",
-    "pathfinding: BFS or A* from playerCell to exitCell",
-    "timer: starts on first movement, stops when playerCell equals exitCell"
-  ]
+  "estimated_human_time_minutes": 200
 }

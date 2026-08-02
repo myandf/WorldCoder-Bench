@@ -1,9 +1,7 @@
 {
   "id": "P48_spline_editor",
   "title": "Spline Curve Editor",
-  "domain": "visualization",
   "route": "C",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement an interactive spline curve editor that supports dragging control points, TubeGeometry extrusion, curve type switching, and other features. Refer to the official three.js example webgl_geometry_spline_editor, but modify it substantially.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\nimport { TransformControls } from 'three/addons/controls/TransformControls.js';\n</script>\n\n[Initial Control Points (6)]\nInitialize 6 control points with the following coordinates (CatmullRomCurve3):\n  P0: (-5, 0, 0)\n  P1: (-3, 3, 2)\n  P2: (-1, -2, -1)\n  P3: (1, 4, 1)\n  P4: (3, -1, -2)\n  P5: (5, 2, 0)\n\nVisualize each control point with a small sphere (SphereGeometry, radius=0.3, red MeshStandardMaterial).\n\n[Curve and TubeGeometry]\n(1) Connect the control points using CatmullRomCurve3 (default) or cubic Bezier curves to generate a smooth curve.\n(2) Use TubeGeometry to extrude the curve into a tube mesh with the following parameters: tubularSegments=200, radius controlled by a slider, radialSegments=12, closed=false.\n(3) Tube material: MeshStandardMaterial, color #4488ff, metalness=0.3, roughness=0.5.\n\n[TransformControls Dragging]\n(4) After clicking a control-point sphere, attach TransformControls to that sphere so it can be dragged and moved.\n(5) Update the curve and TubeGeometry in real time while dragging a control point (regenerate the curve and tube geometry whenever a control point moves).\n(6) Disable OrbitControls while dragging and restore them after release.\n\n[UI Controls]\n(7) id=\"tubeRadius\": range slider with min=0.05, max=1.0, step=0.05, and default value 0.2. Rebuild TubeGeometry in real time when it changes.\n(8) id=\"addPoint\": button that, when clicked, inserts a new control point at the midpoint of the current curve (at t=0.5) and automatically updates the curve. New control point position = curve.getPointAt(0.5).\n(9) id=\"removePoint\": button that removes the last control point. The number of control points must not fall below 2 (disable the button or have no effect when there are fewer than 2 points).\n(10) id=\"curveType\": dropdown or button with values \"catmullrom\" and \"bezier\". Regenerate the curve and tube after switching.\n  - catmullrom: use CatmullRomCurve3.\n  - bezier: interpret the control points as cubic Bezier curves (in groups of 4) and join them using CubicBezierCurve3. If the number of points does not satisfy 3n+1, generate curves only from the leading portion that satisfies the requirement and ignore the remaining points.\n(11) id=\"showPolygon\": checkbox controlling whether the control polygon is displayed (a LineLoop polyline connecting all control points). Checked by default.\n(12) id=\"curveLength\": read-only display showing the arc length of the current curve (curve.getLength()), rounded to 2 decimal places.\n(13) id=\"exportBtn\": button that, when clicked, copies the control-point coordinate array to the clipboard in JSON format: [{x,y,z}, ...].\n\n[Lighting and Scene]\n- DirectionalLight (1, 1, 1) positioned at (5, 10, 5).\n- AmbientLight with intensity 0.4.\n- GridHelper 10x10 ground grid.\n- OrbitControls.\n\n[State Exposure (Required, Updated Every Frame)]\nwindow.__3D_STATE__ = {\n  pointCount: number,           // Current number of control points\n  points: [{x, y, z}, ...],     // Coordinates of each control point (preserve precision to 2 decimal places)\n  curveType: string,            // \"catmullrom\" or \"bezier\"\n  tubeRadius: number,           // Current tube radius\n  curveLength: number,          // Curve arc length\n  showPolygon: boolean          // Whether the control polygon is displayed\n}\n\nOutput a single HTML file that can run when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,14 +15,5 @@
     "TubeGeometry",
     "interactive"
   ],
-  "estimated_human_time_minutes": 240,
-  "physics_constraints": [
-    "6 initial control points on CatmullRomCurve3",
-    "TubeGeometry extruded along curve, 200 tubular segments",
-    "TransformControls for dragging control points",
-    "addPoint inserts at curve midpoint (t=0.5)",
-    "removePoint removes last point, minimum 2 points",
-    "curveType toggle: catmullrom vs cubic bezier",
-    "curveLength = curve.getLength(), must be positive and finite"
-  ]
+  "estimated_human_time_minutes": 240
 }

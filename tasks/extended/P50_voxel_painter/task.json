@@ -1,9 +1,7 @@
 {
   "id": "P50_voxel_painter",
   "title": "Voxel Painter",
-  "domain": "product",
   "route": "C",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement an interactive 3D voxel painter that supports placing/deleting voxels, color selection, layer visibility control, and undo/redo. Refer to the official three.js example webgl_interactive_voxelpainter, but modify it substantially.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Grid and Foundation]\n(1) A 16×16×16 voxel space. Each voxel is a 1×1×1 BoxGeometry unit.\n(2) Place a 16×16 ground plane at the bottom (y=0) as the initial placement surface. Visually, the ground must be a light-gray, semi-transparent grid.\n(3) Initial scene state: only the ground is present, voxelCount=0 (the ground is not included in voxelCount).\n\n[Placing Voxels]\n(4) Left-click without Shift: use the surface detected by the Raycaster (the ground or a face of an existing voxel) to place a new voxel in the direction of that surface's normal.\n  - The Raycaster must correctly handle the face normal so that the new voxel is positioned outside the hit face.\n  - The new voxel must use the currently selected color.\n  - The placement position must be within the 16×16×16 range (x: 0-15, y: 0-15, z: 0-15); do not place a voxel if it is outside this range.\n(5) Each voxel must be an independent Mesh (BoxGeometry + MeshLambertMaterial), with the color selected at the time of placement.\n\n[Deleting Voxels]\n(6) Shift+left-click an existing voxel: delete that voxel. The ground cannot be deleted.\n\n[Color Palette]\n(7) id=\"palette\": a container containing 8 color buttons. The 8 colors (hexadecimal values) are:\n  - #ff0000 (red), #00ff00 (green), #0000ff (blue), #ffff00 (yellow),\n  - #ff8800 (orange), #8800ff (purple), #00ffff (cyan), #ffffff (white)\n(8) Clicking a color button changes the currently selected color. The currently selected button must have a visual highlight, such as a thicker border.\n(9) The first color (red, #ff0000) is selected by default.\n\n[Layer Visibility]\n(10) id=\"layerSlider\": a range slider with min=0, max=16, step=1, and a default value of 16.\n(11) The slider value represents the \"visible layer upper limit\": all voxels whose Y layer index is >= the layerSlider value must be hidden.\n  - When layerSlider=16, all layers are visible (Y: 0-15 are all visible).\n  - When layerSlider=8, only voxels with Y < 8 (layers 0-7) are visible.\n  - When layerSlider=0, all voxels are hidden (but the ground remains visible at all times).\n\n[Undo/Redo]\n(12) id=\"undoBtn\": the undo button. Undo the most recent placement or deletion operation.\n(13) id=\"redoBtn\": the redo button. Redo the most recently undone operation.\n(14) The operation stack must retain at most 50 steps. Clear the redo stack after a new operation.\n\n[Clear]\n(15) id=\"clearBtn\": clear all voxels, restoring the initial empty scene, and clear both the undo and redo stacks.\n\n[HUD]\n(16) id=\"voxelCount\": the current total number of voxels, excluding the ground.\n\n[Lighting and Camera]\n- A white DirectionalLight shines from (10, 20, 10) with intensity 1.0.\n- AmbientLight intensity is 0.5.\n- Use OrbitControls, with the initial camera position aimed at the center of the grid.\n\n[State Exposure (Required; Update Every Frame or After Each Operation)]\nwindow.__3D_STATE__ = {\n  voxelCount: number,           // Current total number of voxels, excluding the ground\n  currentColor: string,         // Hexadecimal value of the currently selected color, such as \"#ff0000\"\n  layerVisible: number,         // Current layer slider value (0-16)\n  undoStackSize: number,        // Current size of the undo stack\n  redoStackSize: number,        // Current size of the redo stack\n  gridOccupancy: [number, ...]  // Array of length 16, where gridOccupancy[y] = number of voxels in Y layer y\n}\n\nOutput a single standalone HTML file that can run when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,14 +15,5 @@
     "undo-redo",
     "interactive"
   ],
-  "estimated_human_time_minutes": 300,
-  "physics_constraints": [
-    "16x16x16 voxel grid, placement by face normal detection",
-    "Raycaster-based click placement on existing surface normals",
-    "Shift+click removes voxel",
-    "Undo/Redo stack max 50 operations",
-    "Layer visibility by Y threshold (layerSlider)",
-    "gridOccupancy[y] must accurately reflect voxel count per layer",
-    "voxelCount must equal sum of gridOccupancy"
-  ]
+  "estimated_human_time_minutes": 300
 }

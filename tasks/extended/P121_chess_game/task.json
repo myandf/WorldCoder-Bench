@@ -1,9 +1,7 @@
 {
   "id": "P121_chess_game",
   "title": "3D Chess",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D chess game. Load ABeautifulGame.glb (containing the complete chessboard and pieces) and implement basic piece-movement interactions.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/ABeautifulGame.glb;\n(2) The model contains the chessboard and all pieces and must be displayed centered;\n\n[Piece Mapping]\n(3) Traverse the model's child meshes and map the pieces to the 8x8 chessboard squares based on their names or positions;\n(4) Distinguish the white and black pieces (by material color or name);\n\n[Piece-Movement Interaction]\n(5) Use a Raycaster to detect clicks on pieces;\n(6) On the first click, select a piece (highlight it with a yellow emissive color) and display its available destination squares (green translucent blocks);\n(7) On the second click, execute the move to the target square: smoothly animate the piece moving to the target position;\n(8) If the target square contains an opponent's piece, \"capture\" it (remove it from the scene);\n\n[Turn-Based Play]\n(9) White moves first, and turns alternate;\n(10) Only the current side's own pieces may be moved;\n\n[Basic Rules (Simplified)]\n(11) Implement only simple move validation: the square must be within the chessboard bounds, and the target square must not contain a piece belonging to the current side;\n(12) Full rules (such as check, special pawn moves, etc.) do not need to be implemented, but movement directions must be basically correct;\n\n[OrbitControls]\n(13) Support rotating the view around the chessboard;\n\n[HUD Display]\n(14) HUD in the upper-left corner:\n  - Current side to move (id=\"currentTurn\", \"White\"/\"Black\")\n  - Move count (id=\"moveCount\")\n  - Number of captured pieces (id=\"capturedCount\")\n  - Selected piece (id=\"selectedPiece\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ on every frame:\n  - modelLoaded: boolean\n  - currentTurn: string (\"white\"/\"black\")\n  - moveCount: number\n  - capturedCount: number\n  - selectedPiece: string (name of the selected piece; \"\" indicates none)\n  - boardState: Array (8x8 array of strings representing the simplified board state)\n\nOutput a single standalone HTML file.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,6 +15,5 @@
     "strategy",
     "turn-based"
   ],
-  "estimated_human_time_minutes": 300,
-  "physics_constraints": []
+  "estimated_human_time_minutes": 300
 }

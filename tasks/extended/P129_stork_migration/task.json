@@ -1,9 +1,7 @@
 {
   "id": "P129_stork_migration",
   "title": "Migratory Bird Migration Path Visualization",
-  "domain": "visualization",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a migratory bird migration path visualization. 6 storks fly along a curved path.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/Fox.glb;\n(2) Clone 6 instances and distribute them along the path with front-to-back spacing;\n(3) Play the flying animation on each instance;\n\n[Migration Path]\n(4) Use CatmullRomCurve3 to define a curved path spanning the scene;\n(5) Path control points: (0,10,0), (20,12,20), (40,8,40), (60,15,20), (80,10,0), (100,12,-20);\n(6) Visualize the path using TubeGeometry or Line;\n\n[Path Following]\n(7) The birds move along the path and face in the direction of the path tangent;\n(8) The 6 birds have slightly different speeds (base speed 5 m/s ± random 20%);\n\n[Time Control]\n(9) Time multiplier slider (id=\"timeScale\", range 0.5-5, default 1);\n\n[Camera Tracking]\n(10) Click any bird (Raycaster) to switch the camera to follow that bird;\n(11) Click an empty area again to restore the free view (OrbitControls);\n\n[Terrain]\n(12) A simple ground plane with a green texture or color;\n\n[HUD Display]\n(13) HUD in the upper-left corner:\n  - Distance traveled (id=\"distance\", path progress percentage of the frontmost bird)\n  - Group spread (id=\"spread\", distance between the frontmost and rearmost birds)\n  - Time multiplier (id=\"timeValue\")\n  - Tracked bird number (id=\"trackedBird\", -1 means none)\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - birdCount: number (6)\n  - leadDistance: number (lead bird's path progress, 0-1)\n  - spread: number\n  - timeScale: number\n  - trackedBird: number (-1 or 0-5)\n\nOutput a standalone HTML file.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,8 +15,5 @@
     "animation",
     "path"
   ],
-  "estimated_human_time_minutes": 120,
-  "physics_constraints": [
-    "time multiplier range: 0.5x-5x"
-  ]
+  "estimated_human_time_minutes": 120
 }

@@ -1,9 +1,7 @@
 {
   "id": "P119_corset_deformer",
   "title": "3D Mesh Deformation Tool",
-  "domain": "graphics",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Implement a 3D mesh deformation tool using Three.js. Load the Corset.glb model, allowing users to click and drag to push or pull the model's surface vertices.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/Corset.glb;\n(2) Center the model and scale it appropriately;\n\n[Deformation Interaction]\n(3) When the model surface is clicked with the left mouse button, use Raycaster to obtain the intersection point;\n(4) Displace all vertices within the brush radius centered on the intersection point along the normal direction;\n(5) The displacement amount must be inversely related to the distance from the center (Gaussian falloff);\n(6) Clicking pushes outward by default (protrusion); hold Shift to push inward (indentation);\n\n[Brush Controls]\n(7) Brush size slider (id=\"brushSize\", range 0.05-0.5, default 0.15);\n(8) Deformation strength slider (id=\"strength\", range 0.01-0.1, default 0.03);\n\n[Undo/Reset]\n(9) The \"Undo\" button (id=\"undoBtn\") undoes the most recent deformation;\n(10) The \"Reset\" button (id=\"resetBtn\") restores the original model;\n(11) The Undo stack has a maximum depth of 20;\n\n[OrbitControls]\n(12) Support rotating the view (disable orbit controls during deformation and restore them after release);\n\n[HUD Display]\n(13) HUD in the upper-left corner:\n  - Deformation count (id=\"deformCount\")\n  - Brush size (id=\"brushValue\")\n  - Undo stack size (id=\"undoSize\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - deformCount: number\n  - brushSize: number\n  - strength: number\n  - undoStackSize: number\n  - vertexCount: number\n\nOutput a single standalone HTML file.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,6 +15,5 @@
     "interactive",
     "vertex"
   ],
-  "estimated_human_time_minutes": 240,
-  "physics_constraints": []
+  "estimated_human_time_minutes": 240
 }

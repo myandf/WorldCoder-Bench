@@ -1,9 +1,7 @@
 {
   "id": "P07_sph_fluid",
   "title": "3D SPH Particle Fluid Simulation (Dam Break)",
-  "domain": "physics",
   "route": "C",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D SPH (Smoothed Particle Hydrodynamics) particle fluid simulation that simulates a dam-break scenario.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[SPH Physics Model]\nParticle count: N = 500 spherical particles (radius 0.08 for rendering)\nParticle mass: m = 0.02 kg each\nInitial distribution: uniformly arranged in a grid in the left half of the container (x ∈ [0, 2], y ∈ [0, 3], z ∈ [0, 2])\n\nContainer: rectangular cuboid 6×4×2 (x ∈ [0,6], y ∈ [0,4], z ∈ [0,2]), with only a bottom and four walls; the top is open\n\nCore formulas:\n- Smoothing kernel function (Poly6 kernel):\n  W(r, h) = 315 / (64·π·h⁹) · (h²-r²)³, when r < h\n  where h = 0.2 (smoothing length)\n\n- Density calculation:\n  ρᵢ = Σⱼ mⱼ · W(|rᵢ - rⱼ|, h)\n\n- Pressure (Tait equation):\n  pᵢ = k · ((ρᵢ/ρ₀)⁷ - 1)\n  where k = 20.0 (stiffness coefficient), ρ₀ = 1000 (rest density)\n\n- Pressure gradient force (Spiky kernel gradient):\n  W_spiky_grad(r, h) = -45/(π·h⁶) · (h-r)² · r̂\n  fᵢ_pressure = -Σⱼ mⱼ · (pᵢ+pⱼ)/(2ρⱼ) · ∇W_spiky(rᵢ-rⱼ, h)\n\n- Viscosity force (Viscosity kernel Laplacian):\n  W_visc_lap(r, h) = 45/(π·h⁶) · (h-r)\n  fᵢ_viscosity = μ · Σⱼ mⱼ · (vⱼ-vᵢ)/ρⱼ · ∇²W_visc(rᵢ-rⱼ, h)\n  where μ = 0.1 (viscosity coefficient)\n\n- Gravity: fᵢ_gravity = (0, -9.81·ρᵢ, 0)\n\n- Time integration: Semi-implicit Euler, dt = 0.001s\n  vᵢ += dt · (fᵢ_pressure + fᵢ_viscosity + fᵢ_gravity) / ρᵢ\n  xᵢ += dt · vᵢ\n\n- Boundary handling: particles bounce when they collide with the container walls, with a coefficient of restitution of 0.3\n\nExecute 3-5 physics substeps per frame to maintain stability.\n\n[Rendering]\n(1) Render particles using THREE.InstancedMesh(SphereGeometry, 500 instances)\n(2) Map particle colors according to velocity: stationary = dark blue (#1a237e), fast = light blue (#42a5f5)\n(3) Display the container as a wireframe\n(4) Use a semi-transparent grid for the bottom surface\n(5) OrbitControls\n\n[HUD and Controls]\n(6) HUD in the upper-left corner:\n  - Particle count (id=\"particleCount\")\n  - Average density (id=\"avgDensity\")\n  - Average speed (id=\"avgSpeed\")\n  - Simulation time (id=\"simTime\")\n\n(7) Reset button (id=\"resetBtn\"): restore the initial positions\n\n[State Exposure]\n(8) Update window.__3D_STATE__ every frame with:\n  - particleCount: particle count\n  - particles: an array in which each item contains {x,y,z, vx,vy,vz, density, pressure}\n  - avgDensity: average density\n  - avgSpeed: average speed\n  - maxSpeed: maximum speed\n  - simTime: simulation time\n  - totalKE: total kinetic energy = Σ 0.5·m·v²\n  - centerOfMass: {x,y,z} center-of-mass position\n\nOutput a single standalone HTML file that runs when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -16,14 +14,5 @@
     "simulation",
     "dam-break"
   ],
-  "estimated_human_time_minutes": 480,
-  "physics_constraints": [
-    "SPH with Poly6, Spiky, and Viscosity kernels",
-    "Tait equation of state with k=20, ρ₀=1000",
-    "Semi-implicit Euler with dt=0.001",
-    "Mass conservation: total particle count must stay constant",
-    "Momentum conservation: center of mass x-velocity should be approximately conserved (gravity only in y)",
-    "Containment: all particles must stay within [0,6]×[0,4]×[0,2] bounds",
-    "Settling: after ~30s, average speed should decrease significantly as fluid reaches equilibrium"
-  ]
+  "estimated_human_time_minutes": 480
 }

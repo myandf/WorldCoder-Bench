@@ -1,9 +1,7 @@
 {
   "id": "P131_fish_sorting",
   "title": "3D Fish Sorting Game",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Implement a 3D fish sorting game using Three.js. Drag the fish into the correct containers according to size.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/BarramundiFish.glb;\n(2) Clone 10 fish in 3 sizes: small (scale 0.5, 4 fish), medium (scale 1.0, 3 fish), and large (scale 1.5, 3 fish);\n(3) Scatter them randomly across the upper area of the scene;\n\n[Sorting Containers]\n(4) Use 3 translucent boxes (BoxGeometry) as containers, labeled \"Small\"/\"Medium\"/\"Large\";\n(5) Arrange the containers in a row in the lower area of the scene;\n\n[Drag Interaction]\n(6) Use Raycaster to detect clicks on fish;\n(7) Hold down the mouse button and drag a fish to move it on a horizontal plane;\n(8) When the mouse button is released, detect whether the fish is above a container;\n(9) Correct sorting: the fish turns green, 10 points are added, and it drops into the container;\n(10) Incorrect sorting: the fish turns red, 5 points are deducted, and it snaps back to its original position;\n\n[Timer]\n(11) A 90-second countdown (id=\"timer\");\n(12) When time runs out, the game ends and displays the final score;\n\n[HUD Display]\n(13) HUD in the upper-left corner:\n  - Score (id=\"score\")\n  - Sorted count (id=\"sorted\")\n  - Accuracy (id=\"accuracy\")\n  - Remaining time (id=\"timer\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - score: number\n  - sortedCount: number\n  - accuracy: number (0-100%)\n  - timeRemaining: number (seconds)\n  - fishRemaining: number\n\nOutput a single standalone HTML file.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,10 +15,5 @@
     "drag",
     "interactive"
   ],
-  "estimated_human_time_minutes": 120,
-  "physics_constraints": [
-    "timer: 90 seconds",
-    "correct sort: +10 points",
-    "wrong sort: -5 points"
-  ]
+  "estimated_human_time_minutes": 120
 }

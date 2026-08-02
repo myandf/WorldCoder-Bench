@@ -1,9 +1,7 @@
 {
   "id": "P55_tree_hierarchy",
   "title": "3D Tree Hierarchy (Radial Expansion)",
-  "domain": "visualization",
   "route": "C",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to display hardcoded tree data in a 3D radial/hierarchical layout (in the style of an organizational chart or directory tree).\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Data]\n(1) Hardcode a tree with exactly 50 nodes and a maximum depth of 4 (root depth is 0).\n\n[Layout and Rendering]\n(2) 3D radial tree: child nodes expand around their parent in a fan-shaped/conical arrangement, with connections rendered as line segments or thin cylinders.\n(3) Clicking a node expands or collapses its subtree (collapse it if it is already expanded).\n(4) id=\"searchFilter\": a text input that filters by node label (hide non-matching subtrees or gray them out; visibleNodes must reflect the current number of visible nodes).\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  nodeCount: number,\n  visibleNodes: number,\n  expandedNodes: number,\n  selectedNode: null | string | number,\n  searchFilter: string\n}\n\nnodeCount must always be 50; after collapsing, visibleNodes < 50; expandedNodes is the current count of expanded internal nodes (the implementation must define this clearly and keep it consistent with the UI).\n\nOutput a single HTML file that runs when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,11 +15,5 @@
     "filter",
     "org-chart"
   ],
-  "estimated_human_time_minutes": 180,
-  "physics_constraints": [
-    "50 nodes, max depth 4",
-    "Click expand/collapse subtree",
-    "searchFilter id",
-    "visibleNodes reflects filter + collapse"
-  ]
+  "estimated_human_time_minutes": 180
 }

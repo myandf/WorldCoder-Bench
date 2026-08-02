@@ -1,8 +1,6 @@
 {
   "id": "P38_golf_3d",
   "title": "P38_golf_3d",
-  "domain": "game",
-  "framework": "three.js",
   "prompt": "PLACEHOLDER_PROMPT_LOST",
   "_note": "original prompt was lost, task.json was corrupted"
 }

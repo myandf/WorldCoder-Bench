@@ -1,9 +1,7 @@
 {
   "id": "P104_duck_shooting_gallery",
   "title": "3D Duck Shooting Gallery",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D duck shooting gallery game. Load the Duck.glb model, generate multiple moving ducks, and allow the player to shoot by clicking.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/Duck.glb;\n(2) After loading is complete, clone 5 duck model instances and distribute them throughout the scene;\n(3) After loading is complete, set window.__3D_STATE__.modelLoaded = true;\n\n[Scene Setup]\n(4) Set the scene background to sky blue (0x87CEEB);\n(5) Create a shooting gallery backdrop wall (BoxGeometry, width 20 x height 10 x depth 0.5, dark brown 0x8B4513), positioned at z=-5;\n(6) Add a ground plane at the bottom (green 0x228B22);\n(7) Fix the camera at position (0, 3, 8), facing the center of the scene; it must not be movable;\n(8) Use DirectionalLight + AmbientLight for illumination;\n\n[Duck Movement]\n(9) The 5 ducks move from left to right along the X-axis (from x=-12 to x=12, cyclically resetting to the left side after reaching the boundary);\n(10) Distribute the 5 ducks at different heights: y = 1, 2, 3, 4, 5;\n(11) Each duck has a different speed: 2, 3, 4, 3.5, and 2.5 units/second, respectively;\n(12) Scale the ducks to 0.8 and orient them to face the direction of movement (to the right);\n\n[Shooting Interaction]\n(13) Clicking the screen casts a ray (Raycaster) to detect whether any duck is hit;\n(14) After a duck is hit:\n  a) That duck plays a \"falling\" animation: it rotates downward and falls (using a tween or manual interpolation: rotation.z rotates by 90 degrees and y decreases to -2 within 1 second);\n  b) score += 1;\n  c) After 3 seconds, the duck reappears on the left side at its original height and resumes moving;\n(15) When a click does not hit a duck, missCount += 1;\n\n[Timer and Game Flow]\n(16) The game has a 60-second countdown (id=\"timer\"), updated every second;\n(17) When the countdown ends, display a \"Game Over\" panel (id=\"gameOver\") showing the final score and hit rate;\n(18) The \"Restart\" button (id=\"restartBtn\") resets all state;\n\n[HUD Display]\n(19) The HUD in the upper-left corner displays:\n  - Score (id=\"score\")\n  - Miss count (id=\"missCount\")\n  - Countdown (id=\"timer\")\n  - Number of active ducks (id=\"activeDucks\")\n\n[Crosshair]\n(20) Display a crosshair at the center of the screen (implemented with CSS); the crosshair follows the mouse when it moves (or remains fixed at the center);\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean (whether the model has finished loading)\n  - score: number (score)\n  - missCount: number (number of misses)\n  - timeLeft: number (remaining time in seconds)\n  - activeDucks: number (current number of active ducks, 0-5)\n  - gameOver: boolean (whether the game is over)\n  - duckPositions: Array<{x,y,z}> (current positions of the 5 ducks)\n  - hitRate: number (hit rate from 0-1, score/(score+missCount), or 0 when no shots have been fired)\n\nOutput a single HTML file. Place this file in the same directory as the assets/ folder and run it through a local HTTP server.",
   "reference_images": [],
   "reference_videos": [],
@@ -19,13 +17,5 @@
     "animation",
     "three.js"
   ],
-  "estimated_human_time_minutes": 180,
-  "physics_constraints": [
-    "duck speeds: 2, 3, 4, 3.5, 2.5 units/s",
-    "duck heights: y = 1, 2, 3, 4, 5",
-    "duck movement range: x from -12 to 12, loop",
-    "falling animation: 1s rotation + drop",
-    "respawn delay: 3 seconds after hit",
-    "game duration: 60 seconds"
-  ]
+  "estimated_human_time_minutes": 180
 }

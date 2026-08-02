@@ -1,9 +1,7 @@
 {
   "id": "P111_truck_physics",
   "title": "Truck Driving Physics Simulation",
-  "domain": "physics",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Implement a truck driving physics simulation using Three.js. Load the CesiumMilkTruck.glb model, use WASD controls for driving, and implement basic vehicle physics.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/CesiumMilkTruck.glb;\n(2) Place the truck on the ground at (0,0,0) with an appropriate scale;\n\n[Ground and Obstacles]\n(3) Create a 100x100 ground plane (gray);\n(4) Randomly place 5 cubic obstacles (red, dimensions 2x2x2), with y=1, distributed within the (-30,30) range;\n\n[Driving Physics]\n(5) Press W to accelerate (acceleration of 5 m/s²), and press S to brake/reverse;\n(6) Press A/D to steer (maximum steering angle of 30 degrees), and return the steering to center when released;\n(7) Friction: multiply the speed by a decay factor of 0.98 each frame;\n(8) Maximum speed of 15 m/s;\n(9) The truck's heading changes according to the steering angle;\n\n[Wheel Rotation]\n(10) Find the wheel meshes in the model by searching for names containing wheel;\n(11) Rotate the wheels around the x-axis, with angular velocity proportional to the vehicle speed;\n\n[Collision Detection]\n(12) Use AABB collision detection between the truck and obstacles;\n(13) On collision, stop the truck, bounce it back slightly, and increment the collision count by 1;\n\n[Follow Camera]\n(14) Make the camera follow above and behind the truck (offset 0,5,-10) and lookAt the truck;\n\n[HUD Display]\n(15) HUD in the upper-left corner:\n  - Speed in km/h (id=\"speed\")\n  - Position x,z (id=\"position\")\n  - Steering angle (id=\"steering\")\n  - Number of collisions (id=\"collisions\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - speed: number (m/s)\n  - position: {x, y, z}\n  - rotation: number (truck heading in radians)\n  - steeringAngle: number (current steering angle)\n  - collisionCount: number\n  - wheelRotation: number\n\nOutput a standalone HTML file.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,11 +15,5 @@
     "driving",
     "collision"
   ],
-  "estimated_human_time_minutes": 180,
-  "physics_constraints": [
-    "friction: 0.98 deceleration factor per frame",
-    "max speed: 15 m/s",
-    "steering angle max: 30 degrees",
-    "wheel rotation synced with speed"
-  ]
+  "estimated_human_time_minutes": 180
 }

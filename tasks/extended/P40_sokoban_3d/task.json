@@ -1,9 +1,7 @@
 {
   "id": "P40_sokoban_3d",
   "title": "3D Sokoban",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Implement Sokoban in 3D using Three.js: an 8×8 grid, three boxes, three targets, a player sphere, undo, and reset.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules inside <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Level]\n(1) Use an 8×8 grid; generate a solvable level randomly or with a fixed seed, containing 3 boxes, 3 targets, walls, and empty spaces;\n(2) Use a ground plane, represent walls as cubes, and distinguish target cells using color/markers;\n\n[Player]\n(3) Represent the player as a colored SphereGeometry occupying one cell;\n(4) Each valid WASD input moves one cell at a time (mapped to row/col);\n\n[Pushing]\n(5) If the next cell in the movement direction contains a box and the cell behind that box is empty, move both the player and the box forward by one cell;\n(6) If the cell behind the box contains a wall or another box, do not move; boxes cannot be pushed beyond the boundary;\n(7) Increment moves by 1 after each valid move;\n\n[Victory]\n(8) When all three boxes are on targets, set levelComplete=true;\n\n[Buttons]\n(9) id=\"undoBtn\": undo one move, restoring positions and moves;\n(10) id=\"resetBtn\": reset the level with moves=0 and levelComplete=false;\n\n[State Exposure (Required)]\n(11) After every move, expose window.__3D_STATE__:\n  - playerPos:{row,col} 0..7\n  - boxes:[{row,col}]×3\n  - targets:[{row,col}]×3\n  - moves, boxesOnTarget 0..3, levelComplete\n\n[Evaluation Helper (Recommended)]\n(12) window.__STATEPROBE_move__('W'|'A'|'S'|'D') must behave consistently with keyboard input.\n\nOutput a single HTML file that runs when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,13 +15,5 @@
     "undo",
     "interactive"
   ],
-  "estimated_human_time_minutes": 140,
-  "physics_constraints": [
-    "grid 8x8",
-    "3 boxes 3 targets procedural",
-    "player sphere WASD one cell",
-    "push only if behind empty",
-    "win all on targets",
-    "undoBtn resetBtn"
-  ]
+  "estimated_human_time_minutes": 140
 }

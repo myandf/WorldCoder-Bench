@@ -1,9 +1,7 @@
 {
   "id": "P31_fps_game",
   "title": "FPS Shooting Game",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a first-person shooter (FPS) game. The player uses a ray gun to eliminate enemy blocks in a multi-room arena.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules within <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';\n// Write your code here\n</script>\n\n[Arena Construction]\n(1) Use BoxGeometry walls to build 3 interconnected rooms (each approximately 20×20, connected through 4-unit-wide doorways), with large planes for the floor and ceiling;\n(2) Use dark-colored MeshStandardMaterial for the walls, gray for the floor, and a light color for the ceiling;\n(3) Each room must have a differently colored PointLight to distinguish its atmosphere;\n\n[Player Controls]\n(4) Use PointerLockControls to implement mouse-look controls (click the canvas to lock the pointer);\n(5) Use WASD for movement, with a movement speed of 8 units/s;\n(6) Movement requires wall collision detection: cast a short-range Raycaster (distance approximately 1.0) along the player's movement direction, and prevent movement in that direction when it hits a wall;\n(7) Fix the camera height at y=1.6 (simulating eye level);\n\n[Enemy System]\n(8) Place 10 enemy blocks (BoxGeometry 1×2×1) throughout the 3 rooms, using red materials;\n(9) Each enemy has HP=100 and displays an HP bar above its head (using PlaneGeometry + dynamic color or a Canvas texture), always facing the camera to create a billboard effect;\n(10) Enemy AI: slowly rotate to face the player; when the distance to the player is < 30 units, move toward the player at a speed of 1.5 units/s;\n(11) When an enemy dies (HP<=0): change its material to gray, make it fall to one side (rotate 90° around the Z axis), and stop its AI behavior;\n\n[Weapon System]\n(12) Draw a crosshair at the center of the screen (implemented with DOM or CSS, as a white +);\n(13) Shoot on left-click: cast a Raycaster from the center of the camera along the viewing direction and detect living enemies within a range of 50 units;\n(14) On a hit, reduce the enemy's HP by 25;\n(15) Ammunition system: each magazine holds 30 rounds and the count must be displayed on the HUD; ammo-1 when firing;\n(16) When ammo=0, shooting has no effect. Press the R key to reload; reloading takes 2 seconds (during this period isReloading=true and shooting is disabled);\n\n[HUD Display]\n(17) Display the following in the upper-left corner:\n  - Player health (id=\"playerHP\")\n  - Ammunition count (id=\"ammo\", format \"current/30\")\n  - Kill count (id=\"kills\")\n  - Number of living enemies (id=\"enemiesAlive\")\n\n[State Exposure]\n(18) Update window.__3D_STATE__ every frame, containing:\n  - playerHP: number (player health, initially 100)\n  - ammo: number (current ammunition count)\n  - maxAmmo: number (magazine capacity=30)\n  - kills: number (kill count)\n  - enemiesAlive: number (number of living enemies)\n  - playerPos: { x, y, z } (player position)\n  - enemies: [{ x, y, z, hp, alive }] (state array for the 10 enemies)\n  - isReloading: boolean (whether reloading is currently in progress)\n\nOutput a single HTML file that can run when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -18,13 +16,5 @@
     "collision",
     "interactive"
   ],
-  "estimated_human_time_minutes": 240,
-  "physics_constraints": [
-    "player movement: 8 units/s, WASD relative to camera facing",
-    "wall collision: raycaster-based, distance ~1.0, blocks movement",
-    "shooting: raycaster from camera center, range 50 units, 25 damage per hit",
-    "ammo: 30 per clip, R to reload, 2s reload time, no shooting while reloading",
-    "enemy AI: rotate toward player, move at 1.5 units/s when within 30 units",
-    "enemy HP: 100, dead at HP<=0, turns gray and falls over"
-  ]
+  "estimated_human_time_minutes": 240
 }

@@ -1,9 +1,7 @@
 {
   "id": "P122_waterbottle_physics",
   "title": "Bottle Flip Challenge",
-  "domain": "physics",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a bottle flip challenge game. Load WaterBottle.glb, allow the player to drag and launch the bottle, and determine whether it lands upright.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in the <head>, and import through ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/WaterBottle.glb;\n(2) Initially place the bottle upright on the tabletop (y=0);\n\n[Tabletop]\n(3) A gray tabletop plane (10x10), y=0;\n\n[Launch Interaction]\n(4) Press the mouse button over the bottle and drag upward;\n(5) On release, calculate the launch force (vector) based on the drag direction and distance;\n(6) While dragging, display a dashed line indicating the direction and force magnitude;\n\n[Physics Simulation]\n(7) Gravity g = 9.8 m/s² (downward);\n(8) The bottle undergoes both translation and rotation while airborne;\n(9) Angular velocity is determined by the horizontal component of the launch force;\n\n[Landing Determination]\n(10) Determine that the bottle has landed when the bottle's bottom y <= 0;\n(11) Upon landing, if the bottle's rotational angle deviates from vertical by < 15 degrees, the upright landing is successful (+1 point, green flash);\n(12) Otherwise, it is a failure (red flash);\n(13) Automatically reset the bottle to its initial position 2 seconds after landing;\n\n[HUD Display]\n(14) HUD in the upper-left corner:\n  - Score (id=\"score\")\n  - Throw count (id=\"throwCount\")\n  - Last landing angle (id=\"lastAngle\")\n  - Best consecutive success count (id=\"bestStreak\")\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - score: number\n  - throwCount: number\n  - lastAngle: number (degrees)\n  - bestStreak: number\n  - bottlePos: {x, y, z}\n  - bottleRotation: {x, y, z} (Euler angles)\n  - isFlying: boolean\n\nOutput a single standalone HTML file.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,9 +15,5 @@
     "game",
     "rotation"
   ],
-  "estimated_human_time_minutes": 120,
-  "physics_constraints": [
-    "gravity: g = 9.8 m/s²",
-    "landing upright: rotation within 15 degrees of vertical"
-  ]
+  "estimated_human_time_minutes": 120
 }

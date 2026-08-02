@@ -1,9 +1,7 @@
 {
   "id": "P39_tank_battle",
   "title": "3D Tank Battle",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D tank battle game. The player controls a tank on the battlefield and must destroy 5 enemy tanks.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import through ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\n// Write your code here\n</script>\n\n[Battlefield Terrain]\n(1) A flat battlefield measuring 100×100 units, with the ground using a light green/sand-colored material (MeshStandardMaterial);\n(2) 10 randomly placed obstacle blocks (BoxGeometry, 2-3 units high, with random width and depth of 3-5 units) serving as cover;\n(3) Low walls surround the perimeter of the battlefield to prevent tanks from leaving the boundaries;\n(4) Use a light blue background color for the sky;\n\n[Player Tank Model]\n(5) Build the tank from geometries combined in a Group:\n  - Hull: BoxGeometry (length 4 × height 1.2 × width 3), dark green;\n  - Turret: CylinderGeometry (radius 1.2, height 0.8), mounted at the center of the top of the hull, a slightly brighter dark green;\n  - Barrel: CylinderGeometry (radius 0.15, length 3), extending from the front of the turret;\n(6) The tank casts shadows;\n\n[Player Controls]\n(7) W/S keys: move forward/backward, with a hull movement speed of 6 units/s;\n(8) A/D keys: turn the hull left/right (rotate the hull's yaw), with a turning speed of 1.5 rad/s;\n(9) Horizontal mouse movement: independently rotate the turret (turretAngle, relative to the hull);\n(10) Left-click: fire a shell;\n\n[Shell Physics]\n(11) Use SphereGeometry (radius 0.2) for shells, spawning them at the muzzle of the barrel;\n(12) Shells have an initial speed of 30 units/s and are fired along the barrel's direction;\n(13) Shells are affected by gravity and follow a parabolic trajectory, with g = 9.8 m/s²;\n(14) A shell disappears when it hits the ground or an obstacle, producing an explosion particle effect (10-20 small cubes spreading outward and then disappearing);\n(15) A shell that hits an enemy tank deals 50 damage;\n\n[Enemy Tank AI]\n(16) 5 enemy tanks, using the same model as the player but with red-toned materials;\n(17) Enemy HP = 150, with an HP bar above each tank's head (billboard);\n(18) AI behavior: randomly patrol and move at 3 units/s; fire toward the player once every 3-5 seconds;\n(19) An enemy shell that hits the player deals 25 damage;\n(20) When an enemy tank dies (HP<=0): turn it gray, stop its movement and firing, and emit black smoke (particle effect optional);\n\n[Player Status]\n(21) Player HP = 200;\n\n[Camera]\n(22) Third-person camera: follow the player's tank from behind and above the tank (offset approximately (0, 8, -12)), looking toward the area in front of the tank;\n\n[HUD Display]\n(23) Display the following in the interface:\n  - Player health (id=\"playerHP\")\n  - Number of shells fired (id=\"shellsFired\")\n  - Number of surviving enemy tanks (id=\"enemyCount\")\n  - Score (id=\"score\", +100 points for each tank destroyed)\n\n[State Exposure]\n(24) Update window.__3D_STATE__ every frame, containing:\n  - playerHP: number (player health)\n  - shellsFired: number (total number of shells fired)\n  - enemyCount: number (number of surviving enemy tanks)\n  - score: number (score)\n  - playerPos: { x, y, z } (player tank position)\n  - turretAngle: number (turret angle relative to the hull, in radians)\n  - enemies: [{ x, y, z, hp, alive }] (state array for the 5 enemy tanks)\n  - activeShells: number (number of shells currently in flight)\n\nOutput a single HTML file that can run by being opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -19,15 +17,5 @@
     "particle",
     "interactive"
   ],
-  "estimated_human_time_minutes": 260,
-  "physics_constraints": [
-    "player tank: move 6 units/s, turn 1.5 rad/s, WASD controls",
-    "turret: independent mouse rotation relative to tank body",
-    "shell: initial velocity 30 units/s along barrel direction, gravity 9.8 m/s²",
-    "shell damage: 50 to enemy on hit",
-    "enemy HP: 150, enemy damage to player: 25 per hit",
-    "enemy AI: patrol at 3 units/s, fire every 3-5s toward player",
-    "player HP: 200",
-    "explosion: particle burst on shell impact (10-20 particles)"
-  ]
+  "estimated_human_time_minutes": 260
 }

@@ -1,8 +1,6 @@
 {
   "id": "P60_product_configurator",
   "title": "P60_product_configurator",
-  "domain": "product",
-  "framework": "three.js",
   "prompt": "PLACEHOLDER_PROMPT_LOST",
   "_note": "original prompt was lost, task.json was corrupted"
 }

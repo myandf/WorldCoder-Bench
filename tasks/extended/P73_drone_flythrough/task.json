@@ -1,9 +1,7 @@
 {
   "id": "P73_drone_flythrough",
   "title": "Drone Flythrough",
-  "domain": "visualization",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a drone-style camera flythrough along a CatmullRomCurve3, with a simplified outdoor scene and POIs.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\n</script>\n\n[Scene]\n(1) A large ground plane, one road (a dark, elongated plane), 10 trees (Cylinder trunks + Cone canopies), and 5 buildings (Boxes of different heights).\n\n[Path]\n(2) Use CatmullRomCurve3 with at least 10 control points; the curve may be closed or open. Set the camera position along the curve using getPoint(t), with t advanced based on time and speed.\n\n[Controls]\n(3) id=\"playBtn\": toggle between play and pause (either change the button text or use aria-pressed).\n(4) id=\"speedSlider\": a range of approximately 0.2–3.0 that controls the speed multiplier for progression along the path.\n(5) id=\"pathProgress\": a range of 0–1 (or 0–100 normalized to 0–1 in the state), displays the current path parameter and can be dragged to jump to a different path parameter; keep it synchronized with the current t.\n(6) id=\"manualOverrideToggle\": a checkbox that, when checked, enables OrbitControls (or similar) for manual camera control and pauses automatic movement along the path; when unchecked, resumes path following.\n\n[POIs]\n(7) 5 spheres with text labels (using Sprites or HTML overlays). Clicking one displays information; the div with id=\"poiInfo\" displays the current POI name and description.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  pathProgress: number,\n  speed: number,\n  isPaused: boolean,\n  currentPOI: string | null,\n  cameraPos: { x: number, y: number, z: number },\n  poiCount: number\n}\n\nOutput a single HTML file that can be run by opening it directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,12 +15,5 @@
     "camera-path",
     "outdoor"
   ],
-  "estimated_human_time_minutes": 300,
-  "physics_constraints": [
-    "Ground, road, 10 trees (cone+cylinder), 5 box buildings",
-    "CatmullRomCurve3 with >=10 control points",
-    "playBtn, speedSlider, pathProgress bar 0-1",
-    "5 labeled POI spheres, poiInfo on click",
-    "manualOverrideToggle for free camera"
-  ]
+  "estimated_human_time_minutes": 300
 }

@@ -1,9 +1,7 @@
 {
   "id": "P36_space_shooter_adv",
   "title": "Advanced Space Shooter",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Implement a top-down space shooter using Three.js: the ship is centered at the bottom, with keyboard movement and shooting; enemy waves move downward; lasers destroy enemies in one hit; include particle explosions, lives, and waves.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\n// Write your code here\n</script>\n\n[View]\n(1) Use a top-down camera (for example, positioned on +Y and looking toward the XZ plane), with the ship near the bottom center of the screen; use a dark background or starfield;\n\n[Player]\n(2) Use A/D to move along the horizontal axis, consistent with the implementation, and constrain movement to the bottom area;\n(3) Press Space to fire a laser: a thin, elongated Mesh that travels upward (+Z or +Y, consistent with the scene) at a speed faster than the enemies;\n\n[Enemy Waves]\n(4) Spawn 10 enemies per wave from the top and move them toward the bottom; increment waveNum starting from 1, and optionally increase speed/density;\n(5) An enemy is destroyed by 1 laser hit; when destroyed, create a particle burst using Points or multiple small meshes that briefly spread outward;\n\n[Lives]\n(6) Initialize lives to 3; when an enemy reaches the bottom or collides with the ship, decrement lives by 1 (use a fixed rule and document it with a comment); when lives=0, the game ends and input may be frozen;\n\n[Score]\n(7) Increase score when an enemy is destroyed (the exact point value is up to you and must be written to __3D_STATE__);\n\n[UI]\n(8) Include id=\"score\", id=\"lives\", and id=\"wave\";\n\n[State Exposure (Required)]\n(9) Update window.__3D_STATE__ every frame with:\n  - score, lives, waveNum, enemiesAlive, shipPos:{x,y,z}, shotsFired\n\n[Evaluation Helpers (Recommended)]\n(10) window.__STATEPROBE_destroyOneEnemy__() immediately destroys one enemy, applying the same score increase and particles as a real kill; window.__STATEPROBE_damagePlayer__() simulates losing one life.\n\nOutput a single HTML file that runs when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,13 +15,5 @@
     "keyboard",
     "interactive"
   ],
-  "estimated_human_time_minutes": 200,
-  "physics_constraints": [
-    "top-down ship bottom center",
-    "A/D move, Space shoot upward",
-    "10 enemies per wave, downward",
-    "1 hit kill, particle explosion",
-    "lives: 3, lose on bottom or collision",
-    "waveNum increases difficulty"
-  ]
+  "estimated_human_time_minutes": 200
 }

@@ -1,9 +1,7 @@
 {
   "id": "P120_flamingo_flock",
   "title": "Boid Flocking Simulation",
-  "domain": "physics",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Implement Craig Reynolds' Boid flocking simulation using Three.js, displayed with flamingo models.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import through ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/Fox.glb;\n(2) Clone 15 instances and randomly place them within the range from (-20,5,-20) to (20,15,20);\n(3) Play the flying animation for each instance using AnimationMixer;\n\n[Boid Rules]\n(4) Separation: push away when the distance to a neighbor is < 3;\n(5) Alignment: align with the average velocity direction of neighboring boids;\n(6) Cohesion: move toward the center of the neighboring flock;\n(7) Control the weight of each rule using sliders (id=\"sepWeight\"/\"alignWeight\"/\"cohWeight\", range 0-2, default 1);\n\n[Predator]\n(8) A red sphere (radius=0.5) follows the mouse on the horizontal plane;\n(9) A Boid accelerates away when it is within 5 units of the predator;\n\n[Boundaries]\n(10) When a Boid moves outside the boundary from (-30,0,-30) to (30,25,30), it turns back;\n\n[HUD Display]\n(11) HUD in the upper-left corner:\n  - Flock center position (id=\"flockCenter\")\n  - Average speed (id=\"avgSpeed\")\n  - Separation/alignment/cohesion weight values\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean\n  - boidCount: number (15)\n  - flockCenter: {x, y, z}\n  - avgSpeed: number\n  - separationWeight: number\n  - alignmentWeight: number\n  - cohesionWeight: number\n\nOutput a single standalone HTML file.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,11 +15,5 @@
     "GLTFLoader",
     "animation"
   ],
-  "estimated_human_time_minutes": 150,
-  "physics_constraints": [
-    "separation weight: 0-2",
-    "alignment weight: 0-2",
-    "cohesion weight: 0-2",
-    "predator avoidance distance: 5 units"
-  ]
+  "estimated_human_time_minutes": 150
 }

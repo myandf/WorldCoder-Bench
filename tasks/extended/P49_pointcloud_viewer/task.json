@@ -1,9 +1,7 @@
 {
   "id": "P49_pointcloud_viewer",
   "title": "Point Cloud Visualization (Shader Point Size Attenuation)",
-  "domain": "visualization",
   "route": "C",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a large-scale point cloud viewer (bunny-like shape: sampled from a mixture of 5 Gaussian clusters).\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Point Cloud]\n(1) Generate exactly 100000 points using hard-coded logic (5 3D Gaussian centers + random sampling), and store them in BufferGeometry.\n(2) Use THREE.Points + a custom ShaderMaterial: point size must attenuate with depth (size attenuation).\n\n[UI]\n(3) id=\"colorMode\": select the coloring mode uniform | height | distance-from-center (a select element may be used).\n(4) id=\"pointSize\": range slider with a range of 0.5–5.0, controlling the point-size scale in the shader.\n(5) id=\"clipMin\" and id=\"clipMax\": clipping planes along the world Y axis (or equivalent logic); points outside the interval must not be rendered or must be discarded.\n(6) id=\"showBBox\": checkbox or button that toggles the display of the axis-aligned bounding-box wireframe.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  totalPoints: number,\n  visiblePoints: number,\n  colorMode: string,\n  pointSize: number,\n  clipRange: { min: number, max: number },\n  boundingBox: { min: { x,y,z }, max: { x,y,z } }\n}\n\ntotalPoints must always be 100000; visiblePoints must decrease when the clipping range is tightened.\n\nOutput a single HTML file that runs when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -16,11 +14,5 @@
     "Gaussian",
     "clipping"
   ],
-  "estimated_human_time_minutes": 220,
-  "physics_constraints": [
-    "Exactly 100000 points from 5 Gaussian blobs",
-    "ShaderMaterial with distance-based point size",
-    "clipMin/clipMax affect visiblePoints",
-    "boundingBox min/max all finite"
-  ]
+  "estimated_human_time_minutes": 220
 }

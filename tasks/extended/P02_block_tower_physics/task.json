@@ -1,9 +1,7 @@
 {
   "id": "P02_block_tower_physics",
   "title": "3D Block Tower Projectile Collapse Simulation",
-  "domain": "physics",
   "route": "C",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D block tower projectile collapse simulation scene.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Scene Layout]\n(1) Ground: a 30x30 gray plane at y=0;\n(2) Block tower: 10 levels, with 3 blocks per level. Odd-numbered levels (levels 1/3/5...) are arranged parallel to the X-axis, while even-numbered levels are arranged parallel to the Z-axis (similar to Jenga-style cross-stacking). Each block has dimensions 3x1x1, and the material color alternates by level (such as ochre/brown). The center of the bottom of the block tower is at (0, 0, 0);\n\n[Two-Stage Physics Model]\nThe key design of this scene: the block tower has two states—\n- Static mode (kinematic): blocks remain fixed and are not affected by physics. Initially, all blocks are static.\n- Dynamic mode (dynamic): blocks are affected by gravity and collisions, and can move and collapse.\n\nState transition rules:\n(3) Initially, all 30 blocks are in static mode—they remain stably fixed as though glued together;\n(4) When a sphere hits a static block, that block and all blocks in the levels above it (with higher y coordinates) switch to dynamic mode and begin to be affected by physics;\n(5) Dynamic blocks are affected by gravity g=9.8 m/s^2 and bounce when they collide with the ground or other blocks (restitution=0.3, friction=0.5);\n(6) Collision detection: use AABB detection for sphere-block, block-block (only between dynamic blocks), and block-ground collisions. Treat sphere-block detection as bounding sphere vs AABB;\n(7) Collision response: after detecting a collision, separate the two objects along the axis of minimum penetration and rebound the velocity components according to restitution. Sphere mass=2.0 and block mass=1.0; during collisions, distribute velocity changes according to the mass ratio (conservation of momentum);\n\n[Projectile Ball Interaction]\n(8) Click the scene to launch a red sphere from the camera position in the clicked direction (radius 0.5, initial speed 15 m/s). The sphere is affected by gravity and collides with blocks and the ground;\n(9) At most 10 balls may exist simultaneously. When there are more than 10 balls, remove the earliest launched ball;\n\n[Additional Interaction]\n(10) Reset button (id=\"resetBtn\", upper-right corner): when clicked, remove all balls and restore all blocks to their initial positions and static mode;\n(11) Scoreboard: knocked-down blocks (dynamic blocks with y < 0.3) count as fallen blocks;\n\n[HUD and State Exposure]\n(12) The HUD in the upper-left corner displays:\n  - Number of static blocks (id=\"staticCount\")\n  - Number of dynamic blocks (id=\"dynamicCount\")\n  - Number of fallen blocks (id=\"fallenCount\")\n  - Number of launched balls (id=\"ballCount\")\n(13) Update window.__3D_STATE__ every frame with:\n  - blocks: an array in which each item contains { x, y, z, vx, vy, vz, isKinematic: boolean }\n  - balls: an array in which each item contains { x, y, z, vx, vy, vz }\n  - staticBlockCount: number of static blocks (those with isKinematic=true)\n  - dynamicBlockCount: number of dynamic blocks (those with isKinematic=false)\n  - fallenBlockCount: number of fallen blocks (those with isKinematic=false and y < 0.3)\n  - ballCount: number of balls\n  - towerIntact: boolean indicating whether all blocks are still static (no dynamic blocks)\n\n[OrbitControls]\n(14) Support mouse-drag view rotation. The camera is initially positioned at (15, 12, 15) and looks toward the origin.\n\nOutput a single HTML file that can run when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,13 +15,5 @@
     "kinematic-to-dynamic",
     "interactive"
   ],
-  "estimated_human_time_minutes": 120,
-  "physics_constraints": [
-    "gravity: a_y = -9.8, applied to dynamic blocks and balls only",
-    "initial: all 30 blocks are kinematic (static)",
-    "activation: ball hitting kinematic block converts it + all blocks above to dynamic",
-    "AABB collision for sphere-vs-box and box-vs-box (dynamic only)",
-    "restitution: 0.3, friction: 0.5",
-    "momentum conservation: ball(m=2) vs block(m=1)"
-  ]
+  "estimated_human_time_minutes": 120
 }

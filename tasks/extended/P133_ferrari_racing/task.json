@@ -1,9 +1,7 @@
 {
   "id": "P133_ferrari_racing",
   "title": "Ferrari Circuit Racing",
-  "domain": "game",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a Ferrari circuit racing game. Load the ToyCar.glb model as the player's race car and compete against an AI opponent in a 3-lap race on a circuit.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/ToyCar.glb as the player's race car;\n(2) After loading, scale the model appropriately and place it at the track's starting point;\n(3) After loading is complete, set window.__3D_STATE__.modelLoaded = true;\n\n[Track Construction]\n(4) Create a circuit track using TorusGeometry or a custom curve (radius 40 meters, track width 8 meters), with a dark gray asphalt material (0x333333);\n(5) Place curbs with alternating red and white stripes along both sides of the track;\n(6) Distribute 4 checkpoints evenly around the track, marked by translucent arches in different colors: yellow, blue, green, and purple. Make an arch flash when the player passes through its checkpoint;\n(7) Mark the start/finish line with a black-and-white checkerboard pattern;\n(8) Place grass planes inside and outside the track, and use 0x87CEEB for the sky background;\n\n[AI Opponent]\n(9) Create an AI opponent race car using a simple BoxGeometry box model colored red (0xff0000), and have it drive automatically along the track centerline;\n(10) Set the AI speed to approximately 8-12 m/s, with small random fluctuations;\n(11) Make the AI race car move smoothly along the track path and turn automatically;\n\n[Driving Controls]\n(12) Use the W key to accelerate, with a maximum speed of 15 m/s, and the S key to brake/reverse, with a minimum speed of -3 m/s;\n(13) Use the A/D keys to steer left/right. Steering speed must depend on vehicle speed, with more responsive turning at low speeds;\n(14) Natural deceleration: when W is not pressed, gradually reduce the speed using a friction decay factor of 0.98;\n(15) The race car must drive along the track, and its speed must decrease when it reaches the track edge due to greater friction on the grass;\n(16) Make the camera follow behind the race car from a third-person perspective with smooth following;\n\n[Race Logic]\n(17) The race consists of 3 laps. The player must pass through all 4 checkpoints in order for each lap to be valid;\n(18) When passing a checkpoint, briefly display a HUD notification (\"Checkpoint X/4\");\n(19) Display the lap time when a lap is completed;\n(20) End the race after 3 laps and display the final position and total time;\n(21) If the player is the first to complete 3 laps, display \"You win!\"; otherwise, display \"AI wins!\";\n\n[HUD Display]\n(22) Display the following in the upper-left HUD:\n  - Current speed (id=\"speed\", km/h)\n  - Current lap (id=\"lap\", format \"1/3\")\n  - Checkpoint progress (id=\"checkpoints\", format \"2/4\")\n  - Race position (id=\"position\", \"1st\" or \"2nd\")\n  - Current lap time (id=\"lapTime\", seconds, rounded to 1 decimal place)\n  - Total time (id=\"totalTime\", seconds, rounded to 1 decimal place)\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n{\n  modelLoaded: boolean,\n  speed: number,\n  lap: number,\n  totalLaps: number,\n  checkpointsPassed: number,\n  totalCheckpoints: number,\n  position: number,\n  lapTime: number,\n  totalTime: number,\n  raceState: string,\n  aiLap: number,\n  aiCheckpoints: number,\n  playerAngle: number,\n  aiAngle: number\n}\n\nOutput a single HTML file in the same directory as the assets/ folder and run it through a local HTTP server.",
   "reference_images": [],
   "reference_videos": [],
@@ -21,14 +19,5 @@
     "WASD",
     "three.js"
   ],
-  "estimated_human_time_minutes": 300,
-  "physics_constraints": [
-    "max speed: 15 m/s, brake min: -3 m/s",
-    "friction deceleration: 0.98 per frame",
-    "steering rate proportional to speed",
-    "circular track radius: 40 meters, width: 8 meters",
-    "4 checkpoints per lap, 3 laps to finish",
-    "AI speed: 8-12 m/s with random oscillation",
-    "grass friction penalty on track edges"
-  ]
+  "estimated_human_time_minutes": 300
 }

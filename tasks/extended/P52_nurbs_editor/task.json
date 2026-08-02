@@ -1,9 +1,7 @@
 {
   "id": "P52_nurbs_editor",
   "title": "NURBS Surface Editor",
-  "domain": "visualization",
   "route": "C",
-  "target_framework": "three.js",
   "prompt": "Implement an interactive NURBS (or a reasonable approximation using a B-spline/NURBS surface) editor with Three.js.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following import map in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Control Grid]\n(1) Use a fixed 5×5 control-point grid (25 points), initially arranged on a plane or with slight undulations.\n(2) Move control points by mouse dragging (using a Raycaster to hit control-point spheres or handles), and update the surface Mesh in real time.\n(3) id=\"degree\": a range input or select element for adjusting the degree/order between 2–5 (a uniform knot vector may be used).\n(4) id=\"showPolygon\": a checkbox that toggles the display of the control polygon (polylines/points).\n\n[Surface]\n(5) Generate a BufferGeometry using a sufficiently dense parameter-sampling grid (for example, 64×64, or adjusted according to performance), with correct normals.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  controlPointCount: number,\n  degree: number,\n  surfaceVertexCount: number,\n  showPolygon: boolean\n}\n\ncontrolPointCount must always be 25; degree must be between 2–5; surfaceVertexCount > 1000.\n\nOutput a single HTML file that can run by being opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,11 +15,5 @@
     "surface",
     "interactive"
   ],
-  "estimated_human_time_minutes": 300,
-  "physics_constraints": [
-    "5x5 control grid, draggable points",
-    "degree 2-5",
-    "showPolygon toggle",
-    "surfaceVertexCount updates when tessellation changes"
-  ]
+  "estimated_human_time_minutes": 300
 }

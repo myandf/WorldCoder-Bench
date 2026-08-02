@@ -1,9 +1,7 @@
 {
   "id": "P98_audio_visualizer",
   "title": "3D Audio Visualization (Audio Visualizer 3D)",
-  "domain": "creative",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a 3D spectrum visualization without a real audio file: simulate a 128-point FFT using sine/synthetic functions.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n</script>\n\n[Simulated Data]\n(1) Generate 128 amplitude values (bins) per frame, using sin/cos and a low-frequency envelope to simulate beat spikes; the Web Audio API is not required.\n\n[Modes]\n(2) id=\"vizMode\": <select> with the options bars (Cylinder bars arranged in a circle, with bar heights driven by bins), sphere (sphere vertex/instance displacement deformation), and wave (fluctuating 3D polyline/curve point sequence). Rebuild or update the geometry when switching modes.\n\n[Visuals]\n(3) Map colors by frequency: low = red, mid = green, high = blue (HSL or piecewise lerp may be used).\n(4) Beat: when a simulated low-frequency transient occurs, trigger a brief full-screen or ambient-light flash (beatDetected is true for one frame).\n\n[Controls]\n(5) id=\"sensitivity\": range approximately 0.1–3.0, scaling the amplitude mapping.\n\n[State Exposure (Required)]\nwindow.__3D_STATE__ = {\n  vizMode: string,\n  sensitivity: number,\n  binCount: number,\n  maxAmplitude: number,\n  avgAmplitude: number,\n  beatDetected: boolean,\n  simTime: number\n}\n\nOutput a single HTML file that can run when opened directly in a browser.",
   "reference_images": [],
   "reference_videos": [],
@@ -17,12 +15,5 @@
     "creative",
     "beat-detection"
   ],
-  "estimated_human_time_minutes": 300,
-  "physics_constraints": [
-    "128 simulated frequency bins, no audio file",
-    "vizMode: bars / sphere / wave",
-    "Color by frequency red-green-blue",
-    "Simulated beat spike -> flash, beatDetected",
-    "sensitivity slider"
-  ]
+  "estimated_human_time_minutes": 300
 }

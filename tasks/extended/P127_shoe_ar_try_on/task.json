@@ -1,9 +1,7 @@
 {
   "id": "P127_shoe_ar_try_on",
   "title": "Shoe AR Virtual Try-On",
-  "domain": "product",
   "route": "B",
-  "target_framework": "three.js",
   "prompt": "Use Three.js to implement a shoe AR virtual try-on simulator. Load a shoe model and align it with a foot placeholder, with support for size scaling, left/right foot switching, fine angle adjustment, and snapshots.\n\n[Three.js Import Method (Must Be Followed Strictly)]\nUse the following importmap in <head>, and import via ES Modules in <script type=\"module\">:\n<script type=\"importmap\">\n{ \"imports\": {\n    \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n    \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n} }\n</script>\n<script type=\"module\">\nimport * as THREE from 'three';\nimport { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\nimport { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n// Write your code here\n</script>\n\n[Model Loading]\n(1) Use GLTFLoader to load assets/MaterialsVariantsShoe.glb;\n(2) After loading is complete, center the shoe model and scale it appropriately;\n(3) After loading is complete, set window.__3D_STATE__.modelLoaded = true;\n\n[Foot Placeholder]\n(4) Create a foot placeholder: use a BoxGeometry cuboid with width 0.3, height 0.15, and length 0.8, with a semi-transparent skin-colored material (0xffd1a4, opacity 0.5), to simulate the shape and position of a foot;\n(5) Place the foot above a platform consisting of a gray circular CylinderGeometry;\n\n[Shoe Alignment]\n(6) Automatically align the shoe above the foot placeholder, with its position and rotation adjusted so that it looks as though it is being worn on the foot;\n\n[Size Controls]\n(7) Add a size slider (id=\"sizeSlider\", range 36-46, step 1, default 40) corresponding to European shoe sizes;\n(8) When the slider changes, scale the shoe model proportionally: use size 40 as the baseline (scale=1.0), and scale by ±3% for each one-size increase or decrease;\n(9) Scale the foot placeholder synchronously as well;\n(10) Display the current size beside it (id=\"sizeDisplay\");\n\n[Left/Right Foot Switching]\n(11) Add a toggle button (id=\"footToggle\") that switches between \"Left Foot\" and \"Right Foot\";\n(12) When switching, mirror the shoe model along the X axis (scale.x *= -1), and mirror the foot placeholder correspondingly;\n(13) Update window.__3D_STATE__.footSide ('left' or 'right');\n\n[Fine Angle Adjustment]\n(14) Add a rotation slider (id=\"rotationSlider\", range -15 to +15, step 1, default 0), in degrees;\n(15) Control the shoe's fine rotation angle around the Y axis (vertical axis);\n\n[Snapshot Functionality]\n(16) Add a \"Snapshot\" button (id=\"snapshotBtn\");\n(17) When clicked, use renderer.domElement.toDataURL() to capture the current view;\n(18) Add the thumbnail to the snapshot gallery area below the page (id=\"snapshotGallery\");\n(19) For each snapshot, increment window.__3D_STATE__.snapshotCount++;\n\n[OrbitControls]\n(20) Use OrbitControls to enable orbiting around the shoe and viewing it from all angles;\n\n[HUD Display]\n(21) The HUD panel in the upper-left corner must display:\n  - Current size (id=\"currentSize\", for example, \"EU 40\");\n  - Foot side (id=\"footSideDisplay\", \"Left Foot\" / \"Right Foot\");\n  - Rotation angle (id=\"rotationDisplay\");\n  - Snapshot count (id=\"snapshotCountDisplay\");\n  - Model loading status (id=\"loadStatus\");\n\n[Visual Effects]\n(22) Use a light gray gradient (0xf0f0f0) for the scene background;\n(23) Add 3-point lighting: Key light + Fill light + Rim light;\n(24) Add a circular shadow beneath the platform (shadow plane);\n\n[State Exposure (Required)]\nUpdate window.__3D_STATE__ every frame:\n  - modelLoaded: boolean (whether model loading is complete)\n  - currentSize: number (current European size 36-46)\n  - footSide: string ('left' or 'right')\n  - rotationAngle: number (rotation angle -15 to 15)\n  - snapshotCount: number (number of snapshots)\n  - shoeScale: number (current shoe scale factor)\n  - cameraDistance: number (camera distance)\n\nOutput a single standalone HTML file. Place this file in the same directory as the assets/ folder and run it through a local HTTP server.",
   "reference_images": [],
   "reference_videos": [],
@@ -20,12 +18,5 @@
     "OrbitControls",
     "three.js"
   ],
-  "estimated_human_time_minutes": 240,
-  "physics_constraints": [
-    "size slider EU 36-46, ±3% scale per size from base 40",
-    "left/right foot toggle mirrors model on X axis",
-    "rotation adjustment ±15 degrees around Y axis",
-    "snapshot captures renderer to dataURL",
-    "shoe auto-aligns to foot placeholder"
-  ]
+  "estimated_human_time_minutes": 240
 }
