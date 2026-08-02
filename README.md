@@ -8,7 +8,7 @@ evaluation material, assets, and evaluator code are in one package.
 | Path | Contents |
 | --- | --- |
 | `tasks/core/` | 205 public task specifications; hidden contracts are not published |
-| `tasks/dev/` | 200 tasks with public rubric, reference, and validation files |
+| `tasks/dev/` | 200 task specifications with public evaluation rubrics |
 | `tasks/extended/` | 1,621 public task specifications; hidden contracts are not published |
 | `tasks/robust/` | 615 derived public task specifications; hidden contracts are not published |
 | `assets/shared/` | Shared task assets |
@@ -19,8 +19,6 @@ Each Dev task directory contains:
 ```text
 task.json
 rubric.json
-reference.html
-validation.json
 ```
 
 See `tasks/dev/README.md` for the Dev file contract.
@@ -44,9 +42,9 @@ Robust behavioral contracts remain private.
 
 The package contains 2,026 canonical tasks plus 615 derived Robust variants.
 It is a deterministic local reconstruction with the assets required by its
-public tasks and colocated offline Dev validation reports. Complete official
-frozen 2026 membership is not independently verified. Twelve source gaps are
-represented by controlled task/contract augmentations.
+public tasks. Complete official frozen 2026 membership is not independently
+verified. Twelve source gaps are represented by controlled task/contract
+augmentations.
 
 Do not add or publish `WorldCoder-Bench-evaluation-private`, hidden contracts,
 model outputs, screenshots, trajectories, or raw model reports.
