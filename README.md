@@ -37,11 +37,3 @@ node code/evaluator/cli.mjs --validate --split core
 
 The public evaluator accepts only `tasks/dev/`, because Core, Extended, and
 Robust behavioral contracts remain private.
-
-## Release status
-
-The package contains 2,026 canonical tasks plus 615 derived Robust variants.
-It is a deterministic local reconstruction with the assets required by its
-public tasks. Complete official frozen 2026 membership is not independently
-verified. Twelve source gaps are represented by controlled task/contract
-augmentations.
