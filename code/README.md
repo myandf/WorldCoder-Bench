@@ -4,9 +4,9 @@
 Rubrics are loaded from `tasks/dev/<task-id>/rubric.json`.
 
 ```bash
-npm ci
+npm install --no-save --package-lock=false playwright@1.58.2
 npx playwright install chromium
-npm run evaluate -- --task <task-id> --html-path <generated.html> --offline
+./code/run_eval.sh --split dev --task <task-id> --html-path <generated.html> --offline
 ```
 
 `code/stateprobe/` contains the action executor, state probe, checkers,

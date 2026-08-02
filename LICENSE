@@ -3,11 +3,11 @@ WorldCoder-Bench Research Release License 1.0
 
 SPDX-License-Identifier: LicenseRef-WorldCoder-Bench-Research-Release-1.0
 
-For benchmark-authored code, task metadata, documentation, manifests, and
-generated textures that do not carry a more specific notice, the copyright
-holders grant a non-exclusive, worldwide, royalty-free license to use, copy,
-modify, and redistribute the material for non-commercial research, education,
-peer review, and reproducibility.
+For benchmark-authored code, task metadata, documentation, and generated
+textures that do not carry a more specific notice, the copyright holders grant
+a non-exclusive, worldwide, royalty-free license to use, copy, modify, and
+redistribute the material for non-commercial research, education, peer review,
+and reproducibility.
 
 Redistribution is permitted in source or archive form provided that:
 
@@ -17,11 +17,10 @@ Redistribution is permitted in source or archive form provided that:
 4. all third-party notices, attribution, trademark terms, and license files
    remain with the corresponding material.
 
-This license does not relicense third-party software or assets. Those files are
-governed by the licenses recorded in `manifests/asset_provenance.jsonl`,
-`THIRD_PARTY_NOTICES.md`, and `licenses/third_party/`. It also grants no right
-to publish the separate hidden evaluation package or other material excluded
-from the public release boundary.
+This license does not relicense third-party software or assets. Third-party
+material remains governed by its original terms. This license also grants no
+right to publish the separate hidden evaluation package or other material
+excluded from the public release boundary.
 
 Commercial use of benchmark-authored material requires separate permission.
 Third-party material may provide broader or narrower rights under its own
